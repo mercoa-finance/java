@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,6 +16,8 @@ import com.mercoa.api.resources.commons.types.BirthDate;
 import com.mercoa.api.resources.commons.types.FullName;
 import com.mercoa.api.resources.commons.types.IndividualGovernmentId;
 import com.mercoa.api.resources.commons.types.PhoneNumber;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -33,6 +37,8 @@ public final class RepresentativeRequest {
 
     private final Responsibilities responsibilities;
 
+    private final Map<String, Object> additionalProperties;
+
     private RepresentativeRequest(
             FullName name,
             PhoneNumber phone,
@@ -40,7 +46,8 @@ public final class RepresentativeRequest {
             Address address,
             BirthDate birthDate,
             IndividualGovernmentId governmentId,
-            Responsibilities responsibilities) {
+            Responsibilities responsibilities,
+            Map<String, Object> additionalProperties) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -48,6 +55,7 @@ public final class RepresentativeRequest {
         this.birthDate = birthDate;
         this.governmentId = governmentId;
         this.responsibilities = responsibilities;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("name")
@@ -89,6 +97,11 @@ public final class RepresentativeRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof RepresentativeRequest && equalTo((RepresentativeRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(RepresentativeRequest other) {
@@ -180,6 +193,9 @@ public final class RepresentativeRequest {
 
         private Responsibilities responsibilities;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -245,7 +261,8 @@ public final class RepresentativeRequest {
 
         @Override
         public RepresentativeRequest build() {
-            return new RepresentativeRequest(name, phone, email, address, birthDate, governmentId, responsibilities);
+            return new RepresentativeRequest(
+                    name, phone, email, address, birthDate, governmentId, responsibilities, additionalProperties);
         }
     }
 }

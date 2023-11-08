@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.ocr.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,6 +16,8 @@ import com.mercoa.api.resources.entitytypes.types.EntityResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.BankAccountResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.CheckResponse;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,15 +32,19 @@ public final class OcrResponse {
 
     private final Optional<BankAccountResponse> bankAccount;
 
+    private final Map<String, Object> additionalProperties;
+
     private OcrResponse(
             InvoiceResponse invoice,
             EntityResponse vendor,
             Optional<CheckResponse> check,
-            Optional<BankAccountResponse> bankAccount) {
+            Optional<BankAccountResponse> bankAccount,
+            Map<String, Object> additionalProperties) {
         this.invoice = invoice;
         this.vendor = vendor;
         this.check = check;
         this.bankAccount = bankAccount;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("invoice")
@@ -63,6 +71,11 @@ public final class OcrResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof OcrResponse && equalTo((OcrResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(OcrResponse other) {
@@ -118,6 +131,9 @@ public final class OcrResponse {
 
         private Optional<CheckResponse> check = Optional.empty();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -171,7 +187,7 @@ public final class OcrResponse {
 
         @Override
         public OcrResponse build() {
-            return new OcrResponse(invoice, vendor, check, bankAccount);
+            return new OcrResponse(invoice, vendor, check, bankAccount, additionalProperties);
         }
     }
 }

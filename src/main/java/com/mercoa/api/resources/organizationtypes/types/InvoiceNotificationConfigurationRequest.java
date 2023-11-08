@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -16,8 +20,11 @@ import java.util.Objects;
 public final class InvoiceNotificationConfigurationRequest implements IInvoiceNotificationConfigurationRequest {
     private final String url;
 
-    private InvoiceNotificationConfigurationRequest(String url) {
+    private final Map<String, Object> additionalProperties;
+
+    private InvoiceNotificationConfigurationRequest(String url, Map<String, Object> additionalProperties) {
         this.url = url;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("url")
@@ -31,6 +38,11 @@ public final class InvoiceNotificationConfigurationRequest implements IInvoiceNo
         if (this == other) return true;
         return other instanceof InvoiceNotificationConfigurationRequest
                 && equalTo((InvoiceNotificationConfigurationRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(InvoiceNotificationConfigurationRequest other) {
@@ -65,6 +77,9 @@ public final class InvoiceNotificationConfigurationRequest implements IInvoiceNo
     public static final class Builder implements UrlStage, _FinalStage {
         private String url;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -82,7 +97,7 @@ public final class InvoiceNotificationConfigurationRequest implements IInvoiceNo
 
         @Override
         public InvoiceNotificationConfigurationRequest build() {
-            return new InvoiceNotificationConfigurationRequest(url);
+            return new InvoiceNotificationConfigurationRequest(url, additionalProperties);
         }
     }
 }

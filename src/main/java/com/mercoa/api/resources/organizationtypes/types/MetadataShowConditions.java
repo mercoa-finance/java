@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +13,9 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodType;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -30,19 +34,23 @@ public final class MetadataShowConditions {
 
     private final Optional<List<String>> paymentDestinationCustomSchemaIds;
 
+    private final Map<String, Object> additionalProperties;
+
     private MetadataShowConditions(
             Optional<Boolean> hasOptions,
             Optional<Boolean> hasDocument,
             Optional<List<PaymentMethodType>> paymentSourceTypes,
             Optional<List<String>> paymentSourceCustomSchemaIds,
             Optional<List<PaymentMethodType>> paymentDestinationTypes,
-            Optional<List<String>> paymentDestinationCustomSchemaIds) {
+            Optional<List<String>> paymentDestinationCustomSchemaIds,
+            Map<String, Object> additionalProperties) {
         this.hasOptions = hasOptions;
         this.hasDocument = hasDocument;
         this.paymentSourceTypes = paymentSourceTypes;
         this.paymentSourceCustomSchemaIds = paymentSourceCustomSchemaIds;
         this.paymentDestinationTypes = paymentDestinationTypes;
         this.paymentDestinationCustomSchemaIds = paymentDestinationCustomSchemaIds;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -99,6 +107,11 @@ public final class MetadataShowConditions {
         return other instanceof MetadataShowConditions && equalTo((MetadataShowConditions) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(MetadataShowConditions other) {
         return hasOptions.equals(other.hasOptions)
                 && hasDocument.equals(other.hasDocument)
@@ -141,6 +154,9 @@ public final class MetadataShowConditions {
         private Optional<List<PaymentMethodType>> paymentDestinationTypes = Optional.empty();
 
         private Optional<List<String>> paymentDestinationCustomSchemaIds = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -227,7 +243,8 @@ public final class MetadataShowConditions {
                     paymentSourceTypes,
                     paymentSourceCustomSchemaIds,
                     paymentDestinationTypes,
-                    paymentDestinationCustomSchemaIds);
+                    paymentDestinationCustomSchemaIds,
+                    additionalProperties);
         }
     }
 }

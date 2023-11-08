@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +13,9 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -19,8 +23,11 @@ import java.util.Objects;
 public final class EntityHidePayeesRequest {
     private final List<String> payees;
 
-    private EntityHidePayeesRequest(List<String> payees) {
+    private final Map<String, Object> additionalProperties;
+
+    private EntityHidePayeesRequest(List<String> payees, Map<String, Object> additionalProperties) {
         this.payees = payees;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -35,6 +42,11 @@ public final class EntityHidePayeesRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EntityHidePayeesRequest && equalTo((EntityHidePayeesRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(EntityHidePayeesRequest other) {
@@ -58,6 +70,9 @@ public final class EntityHidePayeesRequest {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
         private List<String> payees = new ArrayList<>();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -84,7 +99,7 @@ public final class EntityHidePayeesRequest {
         }
 
         public EntityHidePayeesRequest build() {
-            return new EntityHidePayeesRequest(payees);
+            return new EntityHidePayeesRequest(payees, additionalProperties);
         }
     }
 }

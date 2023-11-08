@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.paymentmethodtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -32,6 +35,8 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
 
     private final Map<String, String> data;
 
+    private final Map<String, Object> additionalProperties;
+
     private CustomPaymentMethodRequest(
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
@@ -39,7 +44,8 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
             Optional<String> accountName,
             Optional<String> accountNumber,
             String schemaId,
-            Map<String, String> data) {
+            Map<String, String> data,
+            Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
         this.foreignId = foreignId;
@@ -47,6 +53,7 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
         this.accountNumber = accountNumber;
         this.schemaId = schemaId;
         this.data = data;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -105,6 +112,11 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CustomPaymentMethodRequest && equalTo((CustomPaymentMethodRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(CustomPaymentMethodRequest other) {
@@ -189,6 +201,9 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
         private Optional<Boolean> defaultDestination = Optional.empty();
 
         private Optional<Boolean> defaultSource = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -317,7 +332,14 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
         @Override
         public CustomPaymentMethodRequest build() {
             return new CustomPaymentMethodRequest(
-                    defaultSource, defaultDestination, foreignId, accountName, accountNumber, schemaId, data);
+                    defaultSource,
+                    defaultDestination,
+                    foreignId,
+                    accountName,
+                    accountNumber,
+                    schemaId,
+                    data,
+                    additionalProperties);
         }
     }
 }

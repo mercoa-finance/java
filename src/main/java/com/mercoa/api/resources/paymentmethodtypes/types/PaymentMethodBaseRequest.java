@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.paymentmethodtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -20,9 +24,15 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
 
     private final Optional<Boolean> defaultDestination;
 
-    private PaymentMethodBaseRequest(Optional<Boolean> defaultSource, Optional<Boolean> defaultDestination) {
+    private final Map<String, Object> additionalProperties;
+
+    private PaymentMethodBaseRequest(
+            Optional<Boolean> defaultSource,
+            Optional<Boolean> defaultDestination,
+            Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -49,6 +59,11 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
         return other instanceof PaymentMethodBaseRequest && equalTo((PaymentMethodBaseRequest) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(PaymentMethodBaseRequest other) {
         return defaultSource.equals(other.defaultSource) && defaultDestination.equals(other.defaultDestination);
     }
@@ -72,6 +87,9 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
         private Optional<Boolean> defaultSource = Optional.empty();
 
         private Optional<Boolean> defaultDestination = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -104,7 +122,7 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
         }
 
         public PaymentMethodBaseRequest build() {
-            return new PaymentMethodBaseRequest(defaultSource, defaultDestination);
+            return new PaymentMethodBaseRequest(defaultSource, defaultDestination, additionalProperties);
         }
     }
 }

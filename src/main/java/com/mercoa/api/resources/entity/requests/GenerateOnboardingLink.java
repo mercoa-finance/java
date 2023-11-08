@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entity.requests;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,6 +13,8 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.EntityOnboardingLinkType;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -21,9 +25,15 @@ public final class GenerateOnboardingLink {
 
     private final Optional<String> connectedEntityId;
 
-    private GenerateOnboardingLink(EntityOnboardingLinkType type, Optional<String> connectedEntityId) {
+    private final Map<String, Object> additionalProperties;
+
+    private GenerateOnboardingLink(
+            EntityOnboardingLinkType type,
+            Optional<String> connectedEntityId,
+            Map<String, Object> additionalProperties) {
         this.type = type;
         this.connectedEntityId = connectedEntityId;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -46,6 +56,11 @@ public final class GenerateOnboardingLink {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof GenerateOnboardingLink && equalTo((GenerateOnboardingLink) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(GenerateOnboardingLink other) {
@@ -86,6 +101,9 @@ public final class GenerateOnboardingLink {
 
         private Optional<String> connectedEntityId = Optional.empty();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -125,7 +143,7 @@ public final class GenerateOnboardingLink {
 
         @Override
         public GenerateOnboardingLink build() {
-            return new GenerateOnboardingLink(type, connectedEntityId);
+            return new GenerateOnboardingLink(type, connectedEntityId, additionalProperties);
         }
     }
 }

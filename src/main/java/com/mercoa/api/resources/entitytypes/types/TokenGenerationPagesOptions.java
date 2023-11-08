@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,11 +26,17 @@ public final class TokenGenerationPagesOptions {
 
     private final Optional<Boolean> notifications;
 
+    private final Map<String, Object> additionalProperties;
+
     private TokenGenerationPagesOptions(
-            Optional<Boolean> paymentMethods, Optional<Boolean> representatives, Optional<Boolean> notifications) {
+            Optional<Boolean> paymentMethods,
+            Optional<Boolean> representatives,
+            Optional<Boolean> notifications,
+            Map<String, Object> additionalProperties) {
         this.paymentMethods = paymentMethods;
         this.representatives = representatives;
         this.notifications = notifications;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("paymentMethods")
@@ -48,6 +58,11 @@ public final class TokenGenerationPagesOptions {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof TokenGenerationPagesOptions && equalTo((TokenGenerationPagesOptions) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(TokenGenerationPagesOptions other) {
@@ -77,6 +92,9 @@ public final class TokenGenerationPagesOptions {
         private Optional<Boolean> representatives = Optional.empty();
 
         private Optional<Boolean> notifications = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -121,7 +139,8 @@ public final class TokenGenerationPagesOptions {
         }
 
         public TokenGenerationPagesOptions build() {
-            return new TokenGenerationPagesOptions(paymentMethods, representatives, notifications);
+            return new TokenGenerationPagesOptions(
+                    paymentMethods, representatives, notifications, additionalProperties);
         }
     }
 }

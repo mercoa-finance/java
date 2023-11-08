@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,19 +32,23 @@ public final class MetadataSchema {
 
     private final Optional<MetadataShowConditions> showConditions;
 
+    private final Map<String, Object> additionalProperties;
+
     private MetadataSchema(
             String key,
             String displayName,
             Optional<String> description,
             MetadataType type,
             Optional<Boolean> allowMultiple,
-            Optional<MetadataShowConditions> showConditions) {
+            Optional<MetadataShowConditions> showConditions,
+            Map<String, Object> additionalProperties) {
         this.key = key;
         this.displayName = displayName;
         this.description = description;
         this.type = type;
         this.allowMultiple = allowMultiple;
         this.showConditions = showConditions;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("key")
@@ -83,6 +91,11 @@ public final class MetadataSchema {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof MetadataSchema && equalTo((MetadataSchema) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(MetadataSchema other) {
@@ -152,6 +165,9 @@ public final class MetadataSchema {
         private Optional<Boolean> allowMultiple = Optional.empty();
 
         private Optional<String> description = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -236,7 +252,8 @@ public final class MetadataSchema {
 
         @Override
         public MetadataSchema build() {
-            return new MetadataSchema(key, displayName, description, type, allowMultiple, showConditions);
+            return new MetadataSchema(
+                    key, displayName, description, type, allowMultiple, showConditions, additionalProperties);
         }
     }
 }

@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -19,9 +23,12 @@ public final class AmountTrigger {
 
     private final CurrencyCode currency;
 
-    private AmountTrigger(double amount, CurrencyCode currency) {
+    private final Map<String, Object> additionalProperties;
+
+    private AmountTrigger(double amount, CurrencyCode currency, Map<String, Object> additionalProperties) {
         this.amount = amount;
         this.currency = currency;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("amount")
@@ -38,6 +45,11 @@ public final class AmountTrigger {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof AmountTrigger && equalTo((AmountTrigger) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(AmountTrigger other) {
@@ -78,6 +90,9 @@ public final class AmountTrigger {
 
         private CurrencyCode currency;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -103,7 +118,7 @@ public final class AmountTrigger {
 
         @Override
         public AmountTrigger build() {
-            return new AmountTrigger(amount, currency);
+            return new AmountTrigger(amount, currency, additionalProperties);
         }
     }
 }

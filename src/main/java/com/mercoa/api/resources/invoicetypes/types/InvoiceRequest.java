@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.invoicetypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -62,6 +65,8 @@ public final class InvoiceRequest {
 
     private final Optional<String> creatorId;
 
+    private final Map<String, Object> additionalProperties;
+
     private InvoiceRequest(
             Optional<InvoiceStatus> status,
             Optional<Double> amount,
@@ -83,7 +88,8 @@ public final class InvoiceRequest {
             Optional<Map<String, String>> metadata,
             Optional<String> uploadedImage,
             Optional<String> createdById,
-            Optional<String> creatorId) {
+            Optional<String> creatorId,
+            Map<String, Object> additionalProperties) {
         this.status = status;
         this.amount = amount;
         this.currency = currency;
@@ -105,6 +111,7 @@ public final class InvoiceRequest {
         this.uploadedImage = uploadedImage;
         this.createdById = createdById;
         this.creatorId = creatorId;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("status")
@@ -257,6 +264,11 @@ public final class InvoiceRequest {
         return other instanceof InvoiceRequest && equalTo((InvoiceRequest) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(InvoiceRequest other) {
         return status.equals(other.status)
                 && amount.equals(other.amount)
@@ -359,6 +371,9 @@ public final class InvoiceRequest {
         private Optional<String> createdById = Optional.empty();
 
         private Optional<String> creatorId = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -640,7 +655,8 @@ public final class InvoiceRequest {
                     metadata,
                     uploadedImage,
                     createdById,
-                    creatorId);
+                    creatorId,
+                    additionalProperties);
         }
     }
 }

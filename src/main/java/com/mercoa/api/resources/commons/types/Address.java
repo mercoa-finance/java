@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.commons.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,19 +32,23 @@ public final class Address {
 
     private final Optional<String> country;
 
+    private final Map<String, Object> additionalProperties;
+
     private Address(
             String addressLine1,
             Optional<String> addressLine2,
             String city,
             String stateOrProvince,
             String postalCode,
-            Optional<String> country) {
+            Optional<String> country,
+            Map<String, Object> additionalProperties) {
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
         this.city = city;
         this.stateOrProvince = stateOrProvince;
         this.postalCode = postalCode;
         this.country = country;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("addressLine1")
@@ -77,6 +85,11 @@ public final class Address {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof Address && equalTo((Address) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(Address other) {
@@ -148,6 +161,9 @@ public final class Address {
 
         private Optional<String> addressLine2 = Optional.empty();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -217,7 +233,8 @@ public final class Address {
 
         @Override
         public Address build() {
-            return new Address(addressLine1, addressLine2, city, stateOrProvince, postalCode, country);
+            return new Address(
+                    addressLine1, addressLine2, city, stateOrProvince, postalCode, country, additionalProperties);
         }
     }
 }

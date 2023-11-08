@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.invoice.requests;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -18,8 +22,11 @@ import java.util.Optional;
 public final class SendPayerEmail {
     private final Optional<Boolean> attachInvoice;
 
-    private SendPayerEmail(Optional<Boolean> attachInvoice) {
+    private final Map<String, Object> additionalProperties;
+
+    private SendPayerEmail(Optional<Boolean> attachInvoice, Map<String, Object> additionalProperties) {
         this.attachInvoice = attachInvoice;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -34,6 +41,11 @@ public final class SendPayerEmail {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof SendPayerEmail && equalTo((SendPayerEmail) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(SendPayerEmail other) {
@@ -58,6 +70,9 @@ public final class SendPayerEmail {
     public static final class Builder {
         private Optional<Boolean> attachInvoice = Optional.empty();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         public Builder from(SendPayerEmail other) {
@@ -77,7 +92,7 @@ public final class SendPayerEmail {
         }
 
         public SendPayerEmail build() {
-            return new SendPayerEmail(attachInvoice);
+            return new SendPayerEmail(attachInvoice, additionalProperties);
         }
     }
 }

@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.invoicetypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,6 +19,7 @@ import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,6 +95,8 @@ public final class InvoiceResponse {
 
     private final Optional<InvoiceFeesResponse> fees;
 
+    private final Map<String, Object> additionalProperties;
+
     private InvoiceResponse(
             String id,
             InvoiceStatus status,
@@ -125,7 +130,8 @@ public final class InvoiceResponse {
             Optional<OffsetDateTime> processedAt,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
-            Optional<InvoiceFeesResponse> fees) {
+            Optional<InvoiceFeesResponse> fees,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.status = status;
         this.amount = amount;
@@ -159,6 +165,7 @@ public final class InvoiceResponse {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.fees = fees;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("id")
@@ -363,6 +370,11 @@ public final class InvoiceResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof InvoiceResponse && equalTo((InvoiceResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(InvoiceResponse other) {
@@ -666,6 +678,9 @@ public final class InvoiceResponse {
         private Optional<CurrencyCode> currency = Optional.empty();
 
         private Optional<Double> amount = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -1204,7 +1219,8 @@ public final class InvoiceResponse {
                     processedAt,
                     createdAt,
                     updatedAt,
-                    fees);
+                    fees,
+                    additionalProperties);
         }
     }
 }

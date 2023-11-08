@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.invoicetypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -22,15 +26,19 @@ public final class InvoiceFeesResponse {
 
     private final double destinationPlatformMarkupFee;
 
+    private final Map<String, Object> additionalProperties;
+
     private InvoiceFeesResponse(
             double sourcePaymentMethodFee,
             double sourcePlatformMarkupFee,
             double destinationPaymentMethodFee,
-            double destinationPlatformMarkupFee) {
+            double destinationPlatformMarkupFee,
+            Map<String, Object> additionalProperties) {
         this.sourcePaymentMethodFee = sourcePaymentMethodFee;
         this.sourcePlatformMarkupFee = sourcePlatformMarkupFee;
         this.destinationPaymentMethodFee = destinationPaymentMethodFee;
         this.destinationPlatformMarkupFee = destinationPlatformMarkupFee;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -69,6 +77,11 @@ public final class InvoiceFeesResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof InvoiceFeesResponse && equalTo((InvoiceFeesResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(InvoiceFeesResponse other) {
@@ -133,6 +146,9 @@ public final class InvoiceFeesResponse {
 
         private double destinationPlatformMarkupFee;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -194,7 +210,8 @@ public final class InvoiceFeesResponse {
                     sourcePaymentMethodFee,
                     sourcePlatformMarkupFee,
                     destinationPaymentMethodFee,
-                    destinationPlatformMarkupFee);
+                    destinationPlatformMarkupFee,
+                    additionalProperties);
         }
     }
 }

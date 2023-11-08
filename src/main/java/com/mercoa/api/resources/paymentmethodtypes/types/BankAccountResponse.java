@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.paymentmethodtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -30,6 +34,8 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
 
     private final OffsetDateTime updatedAt;
 
+    private final String accountName;
+
     private final String bankName;
 
     private final String routingNumber;
@@ -40,6 +46,8 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
 
     private final BankStatus status;
 
+    private final Map<String, Object> additionalProperties;
+
     private BankAccountResponse(
             String id,
             boolean isDefaultSource,
@@ -47,22 +55,26 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
             List<CurrencyCode> supportedCurrencies,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
+            String accountName,
             String bankName,
             String routingNumber,
             String accountNumber,
             BankType accountType,
-            BankStatus status) {
+            BankStatus status,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.isDefaultSource = isDefaultSource;
         this.isDefaultDestination = isDefaultDestination;
         this.supportedCurrencies = supportedCurrencies;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.accountName = accountName;
         this.bankName = bankName;
         this.routingNumber = routingNumber;
         this.accountNumber = accountNumber;
         this.accountType = accountType;
         this.status = status;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("id")
@@ -107,6 +119,11 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
         return updatedAt;
     }
 
+    @JsonProperty("accountName")
+    public String getAccountName() {
+        return accountName;
+    }
+
     @JsonProperty("bankName")
     public String getBankName() {
         return bankName;
@@ -138,6 +155,11 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
         return other instanceof BankAccountResponse && equalTo((BankAccountResponse) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(BankAccountResponse other) {
         return id.equals(other.id)
                 && isDefaultSource == other.isDefaultSource
@@ -145,6 +167,7 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
                 && supportedCurrencies.equals(other.supportedCurrencies)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt)
+                && accountName.equals(other.accountName)
                 && bankName.equals(other.bankName)
                 && routingNumber.equals(other.routingNumber)
                 && accountNumber.equals(other.accountNumber)
@@ -161,6 +184,7 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
                 this.supportedCurrencies,
                 this.createdAt,
                 this.updatedAt,
+                this.accountName,
                 this.bankName,
                 this.routingNumber,
                 this.accountNumber,
@@ -196,7 +220,11 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
     }
 
     public interface UpdatedAtStage {
-        BankNameStage updatedAt(OffsetDateTime updatedAt);
+        AccountNameStage updatedAt(OffsetDateTime updatedAt);
+    }
+
+    public interface AccountNameStage {
+        BankNameStage accountName(String accountName);
     }
 
     public interface BankNameStage {
@@ -236,6 +264,7 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
                     IsDefaultDestinationStage,
                     CreatedAtStage,
                     UpdatedAtStage,
+                    AccountNameStage,
                     BankNameStage,
                     RoutingNumberStage,
                     AccountNumberStage,
@@ -252,6 +281,8 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
 
         private OffsetDateTime updatedAt;
 
+        private String accountName;
+
         private String bankName;
 
         private String routingNumber;
@@ -264,6 +295,9 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
 
         private List<CurrencyCode> supportedCurrencies = new ArrayList<>();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -274,6 +308,7 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
             supportedCurrencies(other.getSupportedCurrencies());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
+            accountName(other.getAccountName());
             bankName(other.getBankName());
             routingNumber(other.getRoutingNumber());
             accountNumber(other.getAccountNumber());
@@ -320,8 +355,15 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
 
         @Override
         @JsonSetter("updatedAt")
-        public BankNameStage updatedAt(OffsetDateTime updatedAt) {
+        public AccountNameStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = updatedAt;
+            return this;
+        }
+
+        @Override
+        @JsonSetter("accountName")
+        public BankNameStage accountName(String accountName) {
+            this.accountName = accountName;
             return this;
         }
 
@@ -389,11 +431,13 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
                     supportedCurrencies,
                     createdAt,
                     updatedAt,
+                    accountName,
                     bankName,
                     routingNumber,
                     accountNumber,
                     accountType,
-                    status);
+                    status,
+                    additionalProperties);
         }
     }
 }

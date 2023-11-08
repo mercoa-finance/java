@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entity.invoice.requests;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,6 +15,8 @@ import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
 import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -45,6 +49,8 @@ public final class InvoiceMetricsRequest {
 
     private final Optional<CurrencyCode> currency;
 
+    private final Map<String, Object> additionalProperties;
+
     private InvoiceMetricsRequest(
             Optional<String> search,
             Optional<Boolean> excludePayables,
@@ -58,7 +64,8 @@ public final class InvoiceMetricsRequest {
             Optional<OffsetDateTime> dueDateEnd,
             Optional<OffsetDateTime> createdDateStart,
             Optional<OffsetDateTime> createdDateEnd,
-            Optional<CurrencyCode> currency) {
+            Optional<CurrencyCode> currency,
+            Map<String, Object> additionalProperties) {
         this.search = search;
         this.excludePayables = excludePayables;
         this.excludeReceivables = excludeReceivables;
@@ -72,6 +79,7 @@ public final class InvoiceMetricsRequest {
         this.createdDateStart = createdDateStart;
         this.createdDateEnd = createdDateEnd;
         this.currency = currency;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -184,6 +192,11 @@ public final class InvoiceMetricsRequest {
         return other instanceof InvoiceMetricsRequest && equalTo((InvoiceMetricsRequest) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(InvoiceMetricsRequest other) {
         return search.equals(other.search)
                 && excludePayables.equals(other.excludePayables)
@@ -254,6 +267,9 @@ public final class InvoiceMetricsRequest {
         private Optional<OffsetDateTime> createdDateEnd = Optional.empty();
 
         private Optional<CurrencyCode> currency = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -431,7 +447,8 @@ public final class InvoiceMetricsRequest {
                     dueDateEnd,
                     createdDateStart,
                     createdDateEnd,
-                    currency);
+                    currency,
+                    additionalProperties);
         }
     }
 }

@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.commons.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,10 +26,17 @@ public final class BirthDate {
 
     private final Optional<String> year;
 
-    private BirthDate(Optional<String> day, Optional<String> month, Optional<String> year) {
+    private final Map<String, Object> additionalProperties;
+
+    private BirthDate(
+            Optional<String> day,
+            Optional<String> month,
+            Optional<String> year,
+            Map<String, Object> additionalProperties) {
         this.day = day;
         this.month = month;
         this.year = year;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("day")
@@ -47,6 +58,11 @@ public final class BirthDate {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof BirthDate && equalTo((BirthDate) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(BirthDate other) {
@@ -74,6 +90,9 @@ public final class BirthDate {
         private Optional<String> month = Optional.empty();
 
         private Optional<String> year = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -118,7 +137,7 @@ public final class BirthDate {
         }
 
         public BirthDate build() {
-            return new BirthDate(day, month, year);
+            return new BirthDate(day, month, year, additionalProperties);
         }
     }
 }

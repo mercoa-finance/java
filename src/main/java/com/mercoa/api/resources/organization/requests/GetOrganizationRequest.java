@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.organization.requests;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,19 +32,23 @@ public final class GetOrganizationRequest {
 
     private final Optional<Boolean> metadataSchema;
 
+    private final Map<String, Object> additionalProperties;
+
     private GetOrganizationRequest(
             Optional<Boolean> paymentMethods,
             Optional<Boolean> emailProvider,
             Optional<Boolean> colorScheme,
             Optional<Boolean> payeeOnboardingOptions,
             Optional<Boolean> payorOnboardingOptions,
-            Optional<Boolean> metadataSchema) {
+            Optional<Boolean> metadataSchema,
+            Map<String, Object> additionalProperties) {
         this.paymentMethods = paymentMethods;
         this.emailProvider = emailProvider;
         this.colorScheme = colorScheme;
         this.payeeOnboardingOptions = payeeOnboardingOptions;
         this.payorOnboardingOptions = payorOnboardingOptions;
         this.metadataSchema = metadataSchema;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -97,6 +105,11 @@ public final class GetOrganizationRequest {
         return other instanceof GetOrganizationRequest && equalTo((GetOrganizationRequest) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(GetOrganizationRequest other) {
         return paymentMethods.equals(other.paymentMethods)
                 && emailProvider.equals(other.emailProvider)
@@ -139,6 +152,9 @@ public final class GetOrganizationRequest {
         private Optional<Boolean> payorOnboardingOptions = Optional.empty();
 
         private Optional<Boolean> metadataSchema = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -225,7 +241,8 @@ public final class GetOrganizationRequest {
                     colorScheme,
                     payeeOnboardingOptions,
                     payorOnboardingOptions,
-                    metadataSchema);
+                    metadataSchema,
+                    additionalProperties);
         }
     }
 }

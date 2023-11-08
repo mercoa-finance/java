@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.paymentmethodtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -31,6 +35,8 @@ public final class PaymentMethodSchemaField {
 
     private final Optional<List<String>> options;
 
+    private final Map<String, Object> additionalProperties;
+
     private PaymentMethodSchemaField(
             String name,
             Optional<String> displayName,
@@ -38,7 +44,8 @@ public final class PaymentMethodSchemaField {
             boolean optional,
             Optional<Boolean> useAsAccountName,
             Optional<Boolean> useAsAccountNumber,
-            Optional<List<String>> options) {
+            Optional<List<String>> options,
+            Map<String, Object> additionalProperties) {
         this.name = name;
         this.displayName = displayName;
         this.type = type;
@@ -46,6 +53,7 @@ public final class PaymentMethodSchemaField {
         this.useAsAccountName = useAsAccountName;
         this.useAsAccountNumber = useAsAccountNumber;
         this.options = options;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("name")
@@ -99,6 +107,11 @@ public final class PaymentMethodSchemaField {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof PaymentMethodSchemaField && equalTo((PaymentMethodSchemaField) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(PaymentMethodSchemaField other) {
@@ -181,6 +194,9 @@ public final class PaymentMethodSchemaField {
         private Optional<Boolean> useAsAccountName = Optional.empty();
 
         private Optional<String> displayName = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -288,7 +304,14 @@ public final class PaymentMethodSchemaField {
         @Override
         public PaymentMethodSchemaField build() {
             return new PaymentMethodSchemaField(
-                    name, displayName, type, optional, useAsAccountName, useAsAccountNumber, options);
+                    name,
+                    displayName,
+                    type,
+                    optional,
+                    useAsAccountName,
+                    useAsAccountNumber,
+                    options,
+                    additionalProperties);
         }
     }
 }

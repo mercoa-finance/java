@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -33,6 +37,8 @@ public final class EntityUserResponse {
 
     private final OffsetDateTime updatedAt;
 
+    private final Map<String, Object> additionalProperties;
+
     private EntityUserResponse(
             String id,
             Optional<String> foreignId,
@@ -40,7 +46,8 @@ public final class EntityUserResponse {
             Optional<String> name,
             List<String> roles,
             OffsetDateTime createdAt,
-            OffsetDateTime updatedAt) {
+            OffsetDateTime updatedAt,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.foreignId = foreignId;
         this.email = email;
@@ -48,6 +55,7 @@ public final class EntityUserResponse {
         this.roles = roles;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("id")
@@ -92,6 +100,11 @@ public final class EntityUserResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EntityUserResponse && equalTo((EntityUserResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(EntityUserResponse other) {
@@ -169,6 +182,9 @@ public final class EntityUserResponse {
         private Optional<String> email = Optional.empty();
 
         private Optional<String> foreignId = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -270,7 +286,8 @@ public final class EntityUserResponse {
 
         @Override
         public EntityUserResponse build() {
-            return new EntityUserResponse(id, foreignId, email, name, roles, createdAt, updatedAt);
+            return new EntityUserResponse(
+                    id, foreignId, email, name, roles, createdAt, updatedAt, additionalProperties);
         }
     }
 }

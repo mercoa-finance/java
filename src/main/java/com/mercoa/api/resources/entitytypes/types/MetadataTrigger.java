@@ -9,44 +9,47 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = EntityMetadataResponse.Builder.class)
-public final class EntityMetadataResponse {
+@JsonDeserialize(builder = MetadataTrigger.Builder.class)
+public final class MetadataTrigger {
     private final String key;
 
-    private final List<String> value;
+    private final String value;
 
     private final Map<String, Object> additionalProperties;
 
-    private EntityMetadataResponse(String key, List<String> value, Map<String, Object> additionalProperties) {
+    private MetadataTrigger(String key, String value, Map<String, Object> additionalProperties) {
         this.key = key;
         this.value = value;
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return The metadata key to match
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * @return The metadata value the invoice must have to trigger this policy
+     */
     @JsonProperty("value")
-    public List<String> getValue() {
+    public String getValue() {
         return value;
     }
 
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof EntityMetadataResponse && equalTo((EntityMetadataResponse) other);
+        return other instanceof MetadataTrigger && equalTo((MetadataTrigger) other);
     }
 
     @JsonAnyGetter
@@ -54,7 +57,7 @@ public final class EntityMetadataResponse {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(EntityMetadataResponse other) {
+    private boolean equalTo(MetadataTrigger other) {
         return key.equals(other.key) && value.equals(other.value);
     }
 
@@ -73,26 +76,24 @@ public final class EntityMetadataResponse {
     }
 
     public interface KeyStage {
-        _FinalStage key(String key);
+        ValueStage key(String key);
 
-        Builder from(EntityMetadataResponse other);
+        Builder from(MetadataTrigger other);
+    }
+
+    public interface ValueStage {
+        _FinalStage value(String value);
     }
 
     public interface _FinalStage {
-        EntityMetadataResponse build();
-
-        _FinalStage value(List<String> value);
-
-        _FinalStage addValue(String value);
-
-        _FinalStage addAllValue(List<String> value);
+        MetadataTrigger build();
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements KeyStage, _FinalStage {
+    public static final class Builder implements KeyStage, ValueStage, _FinalStage {
         private String key;
 
-        private List<String> value = new ArrayList<>();
+        private String value;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -100,42 +101,37 @@ public final class EntityMetadataResponse {
         private Builder() {}
 
         @Override
-        public Builder from(EntityMetadataResponse other) {
+        public Builder from(MetadataTrigger other) {
             key(other.getKey());
             value(other.getValue());
             return this;
         }
 
+        /**
+         * <p>The metadata key to match</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @Override
         @JsonSetter("key")
-        public _FinalStage key(String key) {
+        public ValueStage key(String key) {
             this.key = key;
             return this;
         }
 
+        /**
+         * <p>The metadata value the invoice must have to trigger this policy</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @Override
-        public _FinalStage addAllValue(List<String> value) {
-            this.value.addAll(value);
+        @JsonSetter("value")
+        public _FinalStage value(String value) {
+            this.value = value;
             return this;
         }
 
         @Override
-        public _FinalStage addValue(String value) {
-            this.value.add(value);
-            return this;
-        }
-
-        @Override
-        @JsonSetter(value = "value", nulls = Nulls.SKIP)
-        public _FinalStage value(List<String> value) {
-            this.value.clear();
-            this.value.addAll(value);
-            return this;
-        }
-
-        @Override
-        public EntityMetadataResponse build() {
-            return new EntityMetadataResponse(key, value, additionalProperties);
+        public MetadataTrigger build() {
+            return new MetadataTrigger(key, value, additionalProperties);
         }
     }
 }

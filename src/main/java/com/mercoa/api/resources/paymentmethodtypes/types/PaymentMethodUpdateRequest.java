@@ -30,7 +30,7 @@ public final class PaymentMethodUpdateRequest {
         return new PaymentMethodUpdateRequest(new CustomValue(value));
     }
 
-    public static PaymentMethodUpdateRequest bankAccount(PaymentMethodBaseRequest value) {
+    public static PaymentMethodUpdateRequest bankAccount(BankAccountUpdateRequest value) {
         return new PaymentMethodUpdateRequest(new BankAccountValue(value));
     }
 
@@ -69,7 +69,7 @@ public final class PaymentMethodUpdateRequest {
         return Optional.empty();
     }
 
-    public Optional<PaymentMethodBaseRequest> getBankAccount() {
+    public Optional<BankAccountUpdateRequest> getBankAccount() {
         if (isBankAccount()) {
             return Optional.of(((BankAccountValue) value).value);
         }
@@ -105,7 +105,7 @@ public final class PaymentMethodUpdateRequest {
     public interface Visitor<T> {
         T visitCustom(CustomPaymentMethodUpdateRequest custom);
 
-        T visitBankAccount(PaymentMethodBaseRequest bankAccount);
+        T visitBankAccount(BankAccountUpdateRequest bankAccount);
 
         T visitCard(PaymentMethodBaseRequest card);
 
@@ -167,12 +167,12 @@ public final class PaymentMethodUpdateRequest {
     @JsonTypeName("bankAccount")
     private static final class BankAccountValue implements Value {
         @JsonUnwrapped
-        private PaymentMethodBaseRequest value;
+        private BankAccountUpdateRequest value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private BankAccountValue() {}
 
-        private BankAccountValue(PaymentMethodBaseRequest value) {
+        private BankAccountValue(BankAccountUpdateRequest value) {
             this.value = value;
         }
 

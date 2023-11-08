@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -18,9 +22,12 @@ public final class ApproverRule {
 
     private final IdentifierList identifierList;
 
-    private ApproverRule(int numApprovers, IdentifierList identifierList) {
+    private final Map<String, Object> additionalProperties;
+
+    private ApproverRule(int numApprovers, IdentifierList identifierList, Map<String, Object> additionalProperties) {
         this.numApprovers = numApprovers;
         this.identifierList = identifierList;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("numApprovers")
@@ -37,6 +44,11 @@ public final class ApproverRule {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ApproverRule && equalTo((ApproverRule) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(ApproverRule other) {
@@ -77,6 +89,9 @@ public final class ApproverRule {
 
         private IdentifierList identifierList;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -102,7 +117,7 @@ public final class ApproverRule {
 
         @Override
         public ApproverRule build() {
-            return new ApproverRule(numApprovers, identifierList);
+            return new ApproverRule(numApprovers, identifierList, additionalProperties);
         }
     }
 }

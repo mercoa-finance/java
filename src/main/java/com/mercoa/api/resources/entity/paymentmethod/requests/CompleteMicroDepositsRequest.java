@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entity.paymentmethod.requests;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +13,9 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -19,8 +23,11 @@ import java.util.Objects;
 public final class CompleteMicroDepositsRequest {
     private final List<Integer> amounts;
 
-    private CompleteMicroDepositsRequest(List<Integer> amounts) {
+    private final Map<String, Object> additionalProperties;
+
+    private CompleteMicroDepositsRequest(List<Integer> amounts, Map<String, Object> additionalProperties) {
         this.amounts = amounts;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("amounts")
@@ -32,6 +39,11 @@ public final class CompleteMicroDepositsRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CompleteMicroDepositsRequest && equalTo((CompleteMicroDepositsRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(CompleteMicroDepositsRequest other) {
@@ -55,6 +67,9 @@ public final class CompleteMicroDepositsRequest {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
         private List<Integer> amounts = new ArrayList<>();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -81,7 +96,7 @@ public final class CompleteMicroDepositsRequest {
         }
 
         public CompleteMicroDepositsRequest build() {
-            return new CompleteMicroDepositsRequest(amounts);
+            return new CompleteMicroDepositsRequest(amounts, additionalProperties);
         }
     }
 }

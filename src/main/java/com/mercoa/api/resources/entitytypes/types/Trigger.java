@@ -30,16 +30,24 @@ public final class Trigger {
         return new Trigger(new AmountValue(value));
     }
 
-    public static Trigger all(Object value) {
-        return new Trigger(new AllValue(value));
+    public static Trigger vendor(VendorTrigger value) {
+        return new Trigger(new VendorValue(value));
+    }
+
+    public static Trigger metadata(MetadataTrigger value) {
+        return new Trigger(new MetadataValue(value));
     }
 
     public boolean isAmount() {
         return value instanceof AmountValue;
     }
 
-    public boolean isAll() {
-        return value instanceof AllValue;
+    public boolean isVendor() {
+        return value instanceof VendorValue;
+    }
+
+    public boolean isMetadata() {
+        return value instanceof MetadataValue;
     }
 
     public boolean _isUnknown() {
@@ -53,9 +61,16 @@ public final class Trigger {
         return Optional.empty();
     }
 
-    public Optional<Object> getAll() {
-        if (isAll()) {
-            return Optional.of(((AllValue) value).value);
+    public Optional<VendorTrigger> getVendor() {
+        if (isVendor()) {
+            return Optional.of(((VendorValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<MetadataTrigger> getMetadata() {
+        if (isMetadata()) {
+            return Optional.of(((MetadataValue) value).value);
         }
         return Optional.empty();
     }
@@ -75,13 +90,19 @@ public final class Trigger {
     public interface Visitor<T> {
         T visitAmount(AmountTrigger amount);
 
-        T visitAll(Object all);
+        T visitVendor(VendorTrigger vendor);
+
+        T visitMetadata(MetadataTrigger metadata);
 
         T _visitUnknown(Object unknownType);
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = _UnknownValue.class)
-    @JsonSubTypes({@JsonSubTypes.Type(AmountValue.class), @JsonSubTypes.Type(AllValue.class)})
+    @JsonSubTypes({
+        @JsonSubTypes.Type(AmountValue.class),
+        @JsonSubTypes.Type(VendorValue.class),
+        @JsonSubTypes.Type(MetadataValue.class)
+    })
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
         <T> T visit(Visitor<T> visitor);
@@ -125,28 +146,68 @@ public final class Trigger {
         }
     }
 
-    @JsonTypeName("all")
-    private static final class AllValue implements Value {
-        @JsonProperty("value")
-        private Object value;
+    @JsonTypeName("vendor")
+    private static final class VendorValue implements Value {
+        @JsonUnwrapped
+        private VendorTrigger value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-        private AllValue(@JsonProperty("value") Object value) {
+        private VendorValue() {}
+
+        private VendorValue(VendorTrigger value) {
             this.value = value;
         }
 
         @Override
         public <T> T visit(Visitor<T> visitor) {
-            return visitor.visitAll(value);
+            return visitor.visitVendor(value);
         }
 
         @Override
         public boolean equals(Object other) {
             if (this == other) return true;
-            return other instanceof AllValue && equalTo((AllValue) other);
+            return other instanceof VendorValue && equalTo((VendorValue) other);
         }
 
-        private boolean equalTo(AllValue other) {
+        private boolean equalTo(VendorValue other) {
+            return value.equals(other.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @Override
+        public String toString() {
+            return "Trigger{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("metadata")
+    private static final class MetadataValue implements Value {
+        @JsonUnwrapped
+        private MetadataTrigger value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private MetadataValue() {}
+
+        private MetadataValue(MetadataTrigger value) {
+            this.value = value;
+        }
+
+        @Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitMetadata(value);
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof MetadataValue && equalTo((MetadataValue) other);
+        }
+
+        private boolean equalTo(MetadataValue other) {
             return value.equals(other.value);
         }
 

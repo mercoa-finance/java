@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -18,8 +22,12 @@ import java.util.Optional;
 public final class TokenGenerationEntityOptions {
     private final Optional<Boolean> enableMercoaPayments;
 
-    private TokenGenerationEntityOptions(Optional<Boolean> enableMercoaPayments) {
+    private final Map<String, Object> additionalProperties;
+
+    private TokenGenerationEntityOptions(
+            Optional<Boolean> enableMercoaPayments, Map<String, Object> additionalProperties) {
         this.enableMercoaPayments = enableMercoaPayments;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -34,6 +42,11 @@ public final class TokenGenerationEntityOptions {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof TokenGenerationEntityOptions && equalTo((TokenGenerationEntityOptions) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(TokenGenerationEntityOptions other) {
@@ -58,6 +71,9 @@ public final class TokenGenerationEntityOptions {
     public static final class Builder {
         private Optional<Boolean> enableMercoaPayments = Optional.empty();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         public Builder from(TokenGenerationEntityOptions other) {
@@ -77,7 +93,7 @@ public final class TokenGenerationEntityOptions {
         }
 
         public TokenGenerationEntityOptions build() {
-            return new TokenGenerationEntityOptions(enableMercoaPayments);
+            return new TokenGenerationEntityOptions(enableMercoaPayments, additionalProperties);
         }
     }
 }

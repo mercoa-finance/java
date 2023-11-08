@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -34,6 +38,10 @@ public final class BusinessOnboardingOptions {
 
     private final OnboardingOption description;
 
+    private final OnboardingOption representatives;
+
+    private final Map<String, Object> additionalProperties;
+
     private BusinessOnboardingOptions(
             OnboardingOption email,
             OnboardingOption name,
@@ -44,7 +52,9 @@ public final class BusinessOnboardingOptions {
             OnboardingOption phone,
             OnboardingOption formationDate,
             OnboardingOption website,
-            OnboardingOption description) {
+            OnboardingOption description,
+            OnboardingOption representatives,
+            Map<String, Object> additionalProperties) {
         this.email = email;
         this.name = name;
         this.type = type;
@@ -55,6 +65,8 @@ public final class BusinessOnboardingOptions {
         this.formationDate = formationDate;
         this.website = website;
         this.description = description;
+        this.representatives = representatives;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("email")
@@ -107,10 +119,20 @@ public final class BusinessOnboardingOptions {
         return description;
     }
 
+    @JsonProperty("representatives")
+    public OnboardingOption getRepresentatives() {
+        return representatives;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof BusinessOnboardingOptions && equalTo((BusinessOnboardingOptions) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(BusinessOnboardingOptions other) {
@@ -123,7 +145,8 @@ public final class BusinessOnboardingOptions {
                 && phone.equals(other.phone)
                 && formationDate.equals(other.formationDate)
                 && website.equals(other.website)
-                && description.equals(other.description);
+                && description.equals(other.description)
+                && representatives.equals(other.representatives);
     }
 
     @Override
@@ -138,7 +161,8 @@ public final class BusinessOnboardingOptions {
                 this.phone,
                 this.formationDate,
                 this.website,
-                this.description);
+                this.description,
+                this.representatives);
     }
 
     @Override
@@ -189,7 +213,11 @@ public final class BusinessOnboardingOptions {
     }
 
     public interface DescriptionStage {
-        _FinalStage description(OnboardingOption description);
+        RepresentativesStage description(OnboardingOption description);
+    }
+
+    public interface RepresentativesStage {
+        _FinalStage representatives(OnboardingOption representatives);
     }
 
     public interface _FinalStage {
@@ -208,6 +236,7 @@ public final class BusinessOnboardingOptions {
                     FormationDateStage,
                     WebsiteStage,
                     DescriptionStage,
+                    RepresentativesStage,
                     _FinalStage {
         private OnboardingOption email;
 
@@ -229,6 +258,11 @@ public final class BusinessOnboardingOptions {
 
         private OnboardingOption description;
 
+        private OnboardingOption representatives;
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -243,6 +277,7 @@ public final class BusinessOnboardingOptions {
             formationDate(other.getFormationDate());
             website(other.getWebsite());
             description(other.getDescription());
+            representatives(other.getRepresentatives());
             return this;
         }
 
@@ -311,15 +346,33 @@ public final class BusinessOnboardingOptions {
 
         @Override
         @JsonSetter("description")
-        public _FinalStage description(OnboardingOption description) {
+        public RepresentativesStage description(OnboardingOption description) {
             this.description = description;
+            return this;
+        }
+
+        @Override
+        @JsonSetter("representatives")
+        public _FinalStage representatives(OnboardingOption representatives) {
+            this.representatives = representatives;
             return this;
         }
 
         @Override
         public BusinessOnboardingOptions build() {
             return new BusinessOnboardingOptions(
-                    email, name, type, doingBusinessAs, ein, address, phone, formationDate, website, description);
+                    email,
+                    name,
+                    type,
+                    doingBusinessAs,
+                    ein,
+                    address,
+                    phone,
+                    formationDate,
+                    website,
+                    description,
+                    representatives,
+                    additionalProperties);
         }
     }
 }

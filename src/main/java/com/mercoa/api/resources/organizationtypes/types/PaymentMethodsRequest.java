@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +13,9 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -23,13 +27,17 @@ public final class PaymentMethodsRequest {
 
     private final List<PaymentRailRequest> vendorDisbursements;
 
+    private final Map<String, Object> additionalProperties;
+
     private PaymentMethodsRequest(
             List<PaymentRailRequest> payerPayments,
             List<PaymentRailRequest> backupDisbursements,
-            List<PaymentRailRequest> vendorDisbursements) {
+            List<PaymentRailRequest> vendorDisbursements,
+            Map<String, Object> additionalProperties) {
         this.payerPayments = payerPayments;
         this.backupDisbursements = backupDisbursements;
         this.vendorDisbursements = vendorDisbursements;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -62,6 +70,11 @@ public final class PaymentMethodsRequest {
         return other instanceof PaymentMethodsRequest && equalTo((PaymentMethodsRequest) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(PaymentMethodsRequest other) {
         return payerPayments.equals(other.payerPayments)
                 && backupDisbursements.equals(other.backupDisbursements)
@@ -89,6 +102,9 @@ public final class PaymentMethodsRequest {
         private List<PaymentRailRequest> backupDisbursements = new ArrayList<>();
 
         private List<PaymentRailRequest> vendorDisbursements = new ArrayList<>();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -151,7 +167,8 @@ public final class PaymentMethodsRequest {
         }
 
         public PaymentMethodsRequest build() {
-            return new PaymentMethodsRequest(payerPayments, backupDisbursements, vendorDisbursements);
+            return new PaymentMethodsRequest(
+                    payerPayments, backupDisbursements, vendorDisbursements, additionalProperties);
         }
     }
 }

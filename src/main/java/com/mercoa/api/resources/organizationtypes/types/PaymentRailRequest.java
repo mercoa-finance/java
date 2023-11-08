@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,6 +13,8 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodType;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -27,17 +31,21 @@ public final class PaymentRailRequest implements IPaymentRailRequest {
 
     private final boolean active;
 
+    private final Map<String, Object> additionalProperties;
+
     private PaymentRailRequest(
             PaymentMethodType type,
             String name,
             Optional<PaymentRailMarkup> markup,
             Optional<String> description,
-            boolean active) {
+            boolean active,
+            Map<String, Object> additionalProperties) {
         this.type = type;
         this.name = name;
         this.markup = markup;
         this.description = description;
         this.active = active;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("type")
@@ -77,6 +85,11 @@ public final class PaymentRailRequest implements IPaymentRailRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof PaymentRailRequest && equalTo((PaymentRailRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(PaymentRailRequest other) {
@@ -138,6 +151,9 @@ public final class PaymentRailRequest implements IPaymentRailRequest {
         private Optional<String> description = Optional.empty();
 
         private Optional<PaymentRailMarkup> markup = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -204,7 +220,7 @@ public final class PaymentRailRequest implements IPaymentRailRequest {
 
         @Override
         public PaymentRailRequest build() {
-            return new PaymentRailRequest(type, name, markup, description, active);
+            return new PaymentRailRequest(type, name, markup, description, active, additionalProperties);
         }
     }
 }

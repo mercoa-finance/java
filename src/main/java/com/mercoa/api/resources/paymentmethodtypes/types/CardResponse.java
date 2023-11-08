@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.paymentmethodtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -40,6 +44,8 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
 
     private final String expYear;
 
+    private final Map<String, Object> additionalProperties;
+
     private CardResponse(
             String id,
             boolean isDefaultSource,
@@ -51,7 +57,8 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
             CardBrand cardBrand,
             String lastFour,
             String expMonth,
-            String expYear) {
+            String expYear,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.isDefaultSource = isDefaultSource;
         this.isDefaultDestination = isDefaultDestination;
@@ -63,6 +70,7 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
         this.lastFour = lastFour;
         this.expMonth = expMonth;
         this.expYear = expYear;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("id")
@@ -136,6 +144,11 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CardResponse && equalTo((CardResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(CardResponse other) {
@@ -263,6 +276,9 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
         private String expYear;
 
         private List<CurrencyCode> supportedCurrencies = new ArrayList<>();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -393,7 +409,8 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
                     cardBrand,
                     lastFour,
                     expMonth,
-                    expYear);
+                    expYear,
+                    additionalProperties);
         }
     }
 }

@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,6 +16,8 @@ import com.mercoa.api.resources.commons.types.Address;
 import com.mercoa.api.resources.commons.types.FullName;
 import com.mercoa.api.resources.commons.types.PhoneNumber;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -42,6 +46,8 @@ public final class RepresentativeResponse {
 
     private final Optional<OffsetDateTime> disabledOn;
 
+    private final Map<String, Object> additionalProperties;
+
     private RepresentativeResponse(
             String id,
             FullName name,
@@ -53,7 +59,8 @@ public final class RepresentativeResponse {
             Responsibilities responsibilities,
             OffsetDateTime createdOn,
             OffsetDateTime updatedOn,
-            Optional<OffsetDateTime> disabledOn) {
+            Optional<OffsetDateTime> disabledOn,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -65,6 +72,7 @@ public final class RepresentativeResponse {
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
         this.disabledOn = disabledOn;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("id")
@@ -126,6 +134,11 @@ public final class RepresentativeResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof RepresentativeResponse && equalTo((RepresentativeResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(RepresentativeResponse other) {
@@ -252,6 +265,9 @@ public final class RepresentativeResponse {
 
         private Optional<OffsetDateTime> disabledOn = Optional.empty();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -366,7 +382,8 @@ public final class RepresentativeResponse {
                     responsibilities,
                     createdOn,
                     updatedOn,
-                    disabledOn);
+                    disabledOn,
+                    additionalProperties);
         }
     }
 }

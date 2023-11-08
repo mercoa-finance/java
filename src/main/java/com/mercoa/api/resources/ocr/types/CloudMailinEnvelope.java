@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.ocr.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +13,9 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -36,6 +40,8 @@ public final class CloudMailinEnvelope {
 
     private final Optional<String> md5;
 
+    private final Map<String, Object> additionalProperties;
+
     private CloudMailinEnvelope(
             String to,
             List<String> recipients,
@@ -45,7 +51,8 @@ public final class CloudMailinEnvelope {
             Object spf,
             boolean tls,
             Optional<String> tlsCipher,
-            Optional<String> md5) {
+            Optional<String> md5,
+            Map<String, Object> additionalProperties) {
         this.to = to;
         this.recipients = recipients;
         this.from = from;
@@ -55,6 +62,7 @@ public final class CloudMailinEnvelope {
         this.tls = tls;
         this.tlsCipher = tlsCipher;
         this.md5 = md5;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("to")
@@ -106,6 +114,11 @@ public final class CloudMailinEnvelope {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CloudMailinEnvelope && equalTo((CloudMailinEnvelope) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(CloudMailinEnvelope other) {
@@ -207,6 +220,9 @@ public final class CloudMailinEnvelope {
         private Optional<String> tlsCipher = Optional.empty();
 
         private List<String> recipients = new ArrayList<>();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -314,7 +330,8 @@ public final class CloudMailinEnvelope {
 
         @Override
         public CloudMailinEnvelope build() {
-            return new CloudMailinEnvelope(to, recipients, from, heloDomain, remoteIp, spf, tls, tlsCipher, md5);
+            return new CloudMailinEnvelope(
+                    to, recipients, from, heloDomain, remoteIp, spf, tls, tlsCipher, md5, additionalProperties);
         }
     }
 }

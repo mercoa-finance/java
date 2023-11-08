@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entity.invoice.requests;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -18,8 +22,11 @@ import java.util.Optional;
 public final class GetInvoice {
     private final Optional<Boolean> includeFees;
 
-    private GetInvoice(Optional<Boolean> includeFees) {
+    private final Map<String, Object> additionalProperties;
+
+    private GetInvoice(Optional<Boolean> includeFees, Map<String, Object> additionalProperties) {
         this.includeFees = includeFees;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -34,6 +41,11 @@ public final class GetInvoice {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof GetInvoice && equalTo((GetInvoice) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(GetInvoice other) {
@@ -58,6 +70,9 @@ public final class GetInvoice {
     public static final class Builder {
         private Optional<Boolean> includeFees = Optional.empty();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         public Builder from(GetInvoice other) {
@@ -77,7 +92,7 @@ public final class GetInvoice {
         }
 
         public GetInvoice build() {
-            return new GetInvoice(includeFees);
+            return new GetInvoice(includeFees, additionalProperties);
         }
     }
 }

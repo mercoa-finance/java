@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.invoicetypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -18,9 +22,13 @@ public final class ApprovalSlotAssignment {
 
     private final String assignedUserId;
 
-    private ApprovalSlotAssignment(String approvalSlotId, String assignedUserId) {
+    private final Map<String, Object> additionalProperties;
+
+    private ApprovalSlotAssignment(
+            String approvalSlotId, String assignedUserId, Map<String, Object> additionalProperties) {
         this.approvalSlotId = approvalSlotId;
         this.assignedUserId = assignedUserId;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -40,6 +48,11 @@ public final class ApprovalSlotAssignment {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ApprovalSlotAssignment && equalTo((ApprovalSlotAssignment) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(ApprovalSlotAssignment other) {
@@ -80,6 +93,9 @@ public final class ApprovalSlotAssignment {
 
         private String assignedUserId;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -109,7 +125,7 @@ public final class ApprovalSlotAssignment {
 
         @Override
         public ApprovalSlotAssignment build() {
-            return new ApprovalSlotAssignment(approvalSlotId, assignedUserId);
+            return new ApprovalSlotAssignment(approvalSlotId, assignedUserId, additionalProperties);
         }
     }
 }

@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -37,6 +41,8 @@ public final class OrganizationRequest {
 
     private final Optional<List<MetadataSchema>> metadataSchema;
 
+    private final Map<String, Object> additionalProperties;
+
     private OrganizationRequest(
             Optional<String> name,
             Optional<String> logo,
@@ -47,7 +53,8 @@ public final class OrganizationRequest {
             Optional<ColorSchemeRequest> colorScheme,
             Optional<OnboardingOptionsRequest> payeeOnboardingOptions,
             Optional<OnboardingOptionsRequest> payorOnboardingOptions,
-            Optional<List<MetadataSchema>> metadataSchema) {
+            Optional<List<MetadataSchema>> metadataSchema,
+            Map<String, Object> additionalProperties) {
         this.name = name;
         this.logo = logo;
         this.websiteUrl = websiteUrl;
@@ -58,6 +65,7 @@ public final class OrganizationRequest {
         this.payeeOnboardingOptions = payeeOnboardingOptions;
         this.payorOnboardingOptions = payorOnboardingOptions;
         this.metadataSchema = metadataSchema;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("name")
@@ -114,6 +122,11 @@ public final class OrganizationRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof OrganizationRequest && equalTo((OrganizationRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(OrganizationRequest other) {
@@ -174,6 +187,9 @@ public final class OrganizationRequest {
         private Optional<OnboardingOptionsRequest> payorOnboardingOptions = Optional.empty();
 
         private Optional<List<MetadataSchema>> metadataSchema = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -312,7 +328,8 @@ public final class OrganizationRequest {
                     colorScheme,
                     payeeOnboardingOptions,
                     payorOnboardingOptions,
-                    metadataSchema);
+                    metadataSchema,
+                    additionalProperties);
         }
     }
 }

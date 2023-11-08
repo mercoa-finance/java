@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.paymentmethodtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -34,6 +38,8 @@ public final class PaymentMethodSchemaResponse {
 
     private final OffsetDateTime updatedAt;
 
+    private final Map<String, Object> additionalProperties;
+
     private PaymentMethodSchemaResponse(
             String id,
             String name,
@@ -42,7 +48,8 @@ public final class PaymentMethodSchemaResponse {
             List<CurrencyCode> supportedCurrencies,
             List<PaymentMethodSchemaField> fields,
             OffsetDateTime createdAt,
-            OffsetDateTime updatedAt) {
+            OffsetDateTime updatedAt,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.name = name;
         this.isSource = isSource;
@@ -51,6 +58,7 @@ public final class PaymentMethodSchemaResponse {
         this.fields = fields;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("id")
@@ -106,6 +114,11 @@ public final class PaymentMethodSchemaResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof PaymentMethodSchemaResponse && equalTo((PaymentMethodSchemaResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(PaymentMethodSchemaResponse other) {
@@ -207,6 +220,9 @@ public final class PaymentMethodSchemaResponse {
         private List<PaymentMethodSchemaField> fields = new ArrayList<>();
 
         private List<CurrencyCode> supportedCurrencies = new ArrayList<>();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -324,7 +340,15 @@ public final class PaymentMethodSchemaResponse {
         @Override
         public PaymentMethodSchemaResponse build() {
             return new PaymentMethodSchemaResponse(
-                    id, name, isSource, isDestination, supportedCurrencies, fields, createdAt, updatedAt);
+                    id,
+                    name,
+                    isSource,
+                    isDestination,
+                    supportedCurrencies,
+                    fields,
+                    createdAt,
+                    updatedAt,
+                    additionalProperties);
         }
     }
 }

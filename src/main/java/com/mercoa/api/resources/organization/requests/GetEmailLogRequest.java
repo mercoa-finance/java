@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.organization.requests;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,6 +13,8 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -21,9 +25,15 @@ public final class GetEmailLogRequest {
 
     private final Optional<OffsetDateTime> endDate;
 
-    private GetEmailLogRequest(Optional<OffsetDateTime> startDate, Optional<OffsetDateTime> endDate) {
+    private final Map<String, Object> additionalProperties;
+
+    private GetEmailLogRequest(
+            Optional<OffsetDateTime> startDate,
+            Optional<OffsetDateTime> endDate,
+            Map<String, Object> additionalProperties) {
         this.startDate = startDate;
         this.endDate = endDate;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("startDate")
@@ -40,6 +50,11 @@ public final class GetEmailLogRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof GetEmailLogRequest && equalTo((GetEmailLogRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(GetEmailLogRequest other) {
@@ -65,6 +80,9 @@ public final class GetEmailLogRequest {
         private Optional<OffsetDateTime> startDate = Optional.empty();
 
         private Optional<OffsetDateTime> endDate = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -97,7 +115,7 @@ public final class GetEmailLogRequest {
         }
 
         public GetEmailLogRequest build() {
-            return new GetEmailLogRequest(startDate, endDate);
+            return new GetEmailLogRequest(startDate, endDate, additionalProperties);
         }
     }
 }

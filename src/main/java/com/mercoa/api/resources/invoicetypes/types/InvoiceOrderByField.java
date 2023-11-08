@@ -12,6 +12,8 @@ public enum InvoiceOrderByField {
 
     CREATED_AT("CREATED_AT"),
 
+    UPDATED_AT("UPDATED_AT"),
+
     INVOICE_NUMBER("INVOICE_NUMBER"),
 
     VENDOR_NAME("VENDOR_NAME"),

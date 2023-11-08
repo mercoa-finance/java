@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.invoicetypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -20,9 +24,12 @@ public final class CommentRequest {
 
     private final Optional<String> userId;
 
-    private CommentRequest(String text, Optional<String> userId) {
+    private final Map<String, Object> additionalProperties;
+
+    private CommentRequest(String text, Optional<String> userId, Map<String, Object> additionalProperties) {
         this.text = text;
         this.userId = userId;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("text")
@@ -39,6 +46,11 @@ public final class CommentRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CommentRequest && equalTo((CommentRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(CommentRequest other) {
@@ -79,6 +91,9 @@ public final class CommentRequest {
 
         private Optional<String> userId = Optional.empty();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -110,7 +125,7 @@ public final class CommentRequest {
 
         @Override
         public CommentRequest build() {
-            return new CommentRequest(text, userId);
+            return new CommentRequest(text, userId, additionalProperties);
         }
     }
 }

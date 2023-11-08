@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,7 +15,9 @@ import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -54,6 +58,8 @@ public final class CounterpartyResponse implements IEntityResponse {
 
     private final List<CounterpartyNetworkType> counterpartyType;
 
+    private final Map<String, Object> additionalProperties;
+
     private CounterpartyResponse(
             String id,
             String name,
@@ -71,7 +77,8 @@ public final class CounterpartyResponse implements IEntityResponse {
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             List<PaymentMethodResponse> paymentMethods,
-            List<CounterpartyNetworkType> counterpartyType) {
+            List<CounterpartyNetworkType> counterpartyType,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -89,6 +96,7 @@ public final class CounterpartyResponse implements IEntityResponse {
         this.updatedAt = updatedAt;
         this.paymentMethods = paymentMethods;
         this.counterpartyType = counterpartyType;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("id")
@@ -216,6 +224,11 @@ public final class CounterpartyResponse implements IEntityResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CounterpartyResponse && equalTo((CounterpartyResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(CounterpartyResponse other) {
@@ -395,6 +408,9 @@ public final class CounterpartyResponse implements IEntityResponse {
         private Optional<String> emailTo = Optional.empty();
 
         private Optional<String> foreignId = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -630,7 +646,8 @@ public final class CounterpartyResponse implements IEntityResponse {
                     createdAt,
                     updatedAt,
                     paymentMethods,
-                    counterpartyType);
+                    counterpartyType,
+                    additionalProperties);
         }
     }
 }

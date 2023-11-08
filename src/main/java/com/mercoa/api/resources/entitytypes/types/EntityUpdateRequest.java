@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -35,6 +39,8 @@ public final class EntityUpdateRequest {
 
     private final Optional<String> logo;
 
+    private final Map<String, Object> additionalProperties;
+
     private EntityUpdateRequest(
             Optional<String> foreignId,
             Optional<String> emailTo,
@@ -44,7 +50,8 @@ public final class EntityUpdateRequest {
             Optional<ProfileRequest> profile,
             Optional<Boolean> isPayor,
             Optional<Boolean> isPayee,
-            Optional<String> logo) {
+            Optional<String> logo,
+            Map<String, Object> additionalProperties) {
         this.foreignId = foreignId;
         this.emailTo = emailTo;
         this.emailToAlias = emailToAlias;
@@ -54,6 +61,7 @@ public final class EntityUpdateRequest {
         this.isPayor = isPayor;
         this.isPayee = isPayee;
         this.logo = logo;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -128,6 +136,11 @@ public final class EntityUpdateRequest {
         return other instanceof EntityUpdateRequest && equalTo((EntityUpdateRequest) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(EntityUpdateRequest other) {
         return foreignId.equals(other.foreignId)
                 && emailTo.equals(other.emailTo)
@@ -182,6 +195,9 @@ public final class EntityUpdateRequest {
         private Optional<Boolean> isPayee = Optional.empty();
 
         private Optional<String> logo = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -299,7 +315,16 @@ public final class EntityUpdateRequest {
 
         public EntityUpdateRequest build() {
             return new EntityUpdateRequest(
-                    foreignId, emailTo, emailToAlias, ownedByOrg, accountType, profile, isPayor, isPayee, logo);
+                    foreignId,
+                    emailTo,
+                    emailToAlias,
+                    ownedByOrg,
+                    accountType,
+                    profile,
+                    isPayor,
+                    isPayee,
+                    logo,
+                    additionalProperties);
         }
     }
 }

@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -18,9 +22,13 @@ public final class EmailProviderResponse {
 
     private final String inboxDomain;
 
-    private EmailProviderResponse(EmailSenderResponse sender, String inboxDomain) {
+    private final Map<String, Object> additionalProperties;
+
+    private EmailProviderResponse(
+            EmailSenderResponse sender, String inboxDomain, Map<String, Object> additionalProperties) {
         this.sender = sender;
         this.inboxDomain = inboxDomain;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("sender")
@@ -37,6 +45,11 @@ public final class EmailProviderResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EmailProviderResponse && equalTo((EmailProviderResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(EmailProviderResponse other) {
@@ -77,6 +90,9 @@ public final class EmailProviderResponse {
 
         private String inboxDomain;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -102,7 +118,7 @@ public final class EmailProviderResponse {
 
         @Override
         public EmailProviderResponse build() {
-            return new EmailProviderResponse(sender, inboxDomain);
+            return new EmailProviderResponse(sender, inboxDomain, additionalProperties);
         }
     }
 }

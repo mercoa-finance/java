@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -25,12 +29,19 @@ public final class EntityUserRequest {
 
     private final Optional<List<String>> roles;
 
+    private final Map<String, Object> additionalProperties;
+
     private EntityUserRequest(
-            Optional<String> foreignId, Optional<String> email, Optional<String> name, Optional<List<String>> roles) {
+            Optional<String> foreignId,
+            Optional<String> email,
+            Optional<String> name,
+            Optional<List<String>> roles,
+            Map<String, Object> additionalProperties) {
         this.foreignId = foreignId;
         this.email = email;
         this.name = name;
         this.roles = roles;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -65,6 +76,11 @@ public final class EntityUserRequest {
         return other instanceof EntityUserRequest && equalTo((EntityUserRequest) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(EntityUserRequest other) {
         return foreignId.equals(other.foreignId)
                 && email.equals(other.email)
@@ -95,6 +111,9 @@ public final class EntityUserRequest {
         private Optional<String> name = Optional.empty();
 
         private Optional<List<String>> roles = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -151,7 +170,7 @@ public final class EntityUserRequest {
         }
 
         public EntityUserRequest build() {
-            return new EntityUserRequest(foreignId, email, name, roles);
+            return new EntityUserRequest(foreignId, email, name, roles, additionalProperties);
         }
     }
 }

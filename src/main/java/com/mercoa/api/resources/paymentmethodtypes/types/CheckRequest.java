@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.paymentmethodtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -34,6 +38,8 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
 
     private final String country;
 
+    private final Map<String, Object> additionalProperties;
+
     private CheckRequest(
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
@@ -43,7 +49,8 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
             String city,
             String stateOrProvince,
             String postalCode,
-            String country) {
+            String country,
+            Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
         this.payToTheOrderOf = payToTheOrderOf;
@@ -53,6 +60,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
         this.stateOrProvince = stateOrProvince;
         this.postalCode = postalCode;
         this.country = country;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -112,6 +120,11 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CheckRequest && equalTo((CheckRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(CheckRequest other) {
@@ -217,6 +230,9 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
         private Optional<Boolean> defaultDestination = Optional.empty();
 
         private Optional<Boolean> defaultSource = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -334,7 +350,8 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
                     city,
                     stateOrProvince,
                     postalCode,
-                    country);
+                    country,
+                    additionalProperties);
         }
     }
 }

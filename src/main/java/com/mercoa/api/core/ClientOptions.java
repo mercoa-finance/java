@@ -29,7 +29,7 @@ public final class ClientOptions {
                 "X-Fern-SDK-Name",
                 "com.mercoa.fern:api-sdk",
                 "X-Fern-SDK-Version",
-                "0.0.1751",
+                "0.0.1818",
                 "X-Fern-Language",
                 "JAVA"));
         this.headerSuppliers = headerSuppliers;

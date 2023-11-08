@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.invoice.requests;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,6 +16,8 @@ import com.mercoa.api.resources.commons.types.OrderDirection;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceOrderByField;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -48,6 +52,8 @@ public final class GetAllInvoicesRequest {
 
     private final Optional<Boolean> includeFees;
 
+    private final Map<String, Object> additionalProperties;
+
     private GetAllInvoicesRequest(
             Optional<String> entityId,
             Optional<OffsetDateTime> startDate,
@@ -62,7 +68,8 @@ public final class GetAllInvoicesRequest {
             Optional<String> approverId,
             Optional<String> invoiceId,
             Optional<InvoiceStatus> status,
-            Optional<Boolean> includeFees) {
+            Optional<Boolean> includeFees,
+            Map<String, Object> additionalProperties) {
         this.entityId = entityId;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -77,6 +84,7 @@ public final class GetAllInvoicesRequest {
         this.invoiceId = invoiceId;
         this.status = status;
         this.includeFees = includeFees;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -197,6 +205,11 @@ public final class GetAllInvoicesRequest {
         return other instanceof GetAllInvoicesRequest && equalTo((GetAllInvoicesRequest) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(GetAllInvoicesRequest other) {
         return entityId.equals(other.entityId)
                 && startDate.equals(other.startDate)
@@ -271,6 +284,9 @@ public final class GetAllInvoicesRequest {
         private Optional<InvoiceStatus> status = Optional.empty();
 
         private Optional<Boolean> includeFees = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -461,7 +477,8 @@ public final class GetAllInvoicesRequest {
                     approverId,
                     invoiceId,
                     status,
-                    includeFees);
+                    includeFees,
+                    additionalProperties);
         }
     }
 }

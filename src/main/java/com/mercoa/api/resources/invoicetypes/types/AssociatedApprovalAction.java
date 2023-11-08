@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.invoicetypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -18,9 +22,12 @@ public final class AssociatedApprovalAction {
 
     private final ApproverAction action;
 
-    private AssociatedApprovalAction(String userId, ApproverAction action) {
+    private final Map<String, Object> additionalProperties;
+
+    private AssociatedApprovalAction(String userId, ApproverAction action, Map<String, Object> additionalProperties) {
         this.userId = userId;
         this.action = action;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("userId")
@@ -37,6 +44,11 @@ public final class AssociatedApprovalAction {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof AssociatedApprovalAction && equalTo((AssociatedApprovalAction) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(AssociatedApprovalAction other) {
@@ -77,6 +89,9 @@ public final class AssociatedApprovalAction {
 
         private ApproverAction action;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -102,7 +117,7 @@ public final class AssociatedApprovalAction {
 
         @Override
         public AssociatedApprovalAction build() {
-            return new AssociatedApprovalAction(userId, action);
+            return new AssociatedApprovalAction(userId, action, additionalProperties);
         }
     }
 }

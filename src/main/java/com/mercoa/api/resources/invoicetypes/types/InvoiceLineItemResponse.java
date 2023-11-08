@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.invoicetypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -43,6 +46,8 @@ public final class InvoiceLineItemResponse {
 
     private final OffsetDateTime updatedAt;
 
+    private final Map<String, Object> additionalProperties;
+
     private InvoiceLineItemResponse(
             String id,
             Optional<Double> amount,
@@ -55,7 +60,8 @@ public final class InvoiceLineItemResponse {
             Optional<OffsetDateTime> serviceEndDate,
             Optional<Map<String, String>> metadata,
             OffsetDateTime createdAt,
-            OffsetDateTime updatedAt) {
+            OffsetDateTime updatedAt,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.amount = amount;
         this.currency = currency;
@@ -68,6 +74,7 @@ public final class InvoiceLineItemResponse {
         this.metadata = metadata;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("id")
@@ -140,6 +147,11 @@ public final class InvoiceLineItemResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof InvoiceLineItemResponse && equalTo((InvoiceLineItemResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(InvoiceLineItemResponse other) {
@@ -262,6 +274,9 @@ public final class InvoiceLineItemResponse {
         private Optional<CurrencyCode> currency = Optional.empty();
 
         private Optional<Double> amount = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -442,7 +457,8 @@ public final class InvoiceLineItemResponse {
                     serviceEndDate,
                     metadata,
                     createdAt,
-                    updatedAt);
+                    updatedAt,
+                    additionalProperties);
         }
     }
 }

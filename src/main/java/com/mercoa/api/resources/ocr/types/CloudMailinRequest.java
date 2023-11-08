@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.ocr.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +13,9 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -30,19 +34,23 @@ public final class CloudMailinRequest {
 
     private final List<CloudMailinAttachment> attachments;
 
+    private final Map<String, Object> additionalProperties;
+
     private CloudMailinRequest(
             Object headers,
             CloudMailinEnvelope envelope,
             String plain,
             Optional<String> html,
             Optional<String> replyPlain,
-            List<CloudMailinAttachment> attachments) {
+            List<CloudMailinAttachment> attachments,
+            Map<String, Object> additionalProperties) {
         this.headers = headers;
         this.envelope = envelope;
         this.plain = plain;
         this.html = html;
         this.replyPlain = replyPlain;
         this.attachments = attachments;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("headers")
@@ -79,6 +87,11 @@ public final class CloudMailinRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CloudMailinRequest && equalTo((CloudMailinRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(CloudMailinRequest other) {
@@ -149,6 +162,9 @@ public final class CloudMailinRequest {
         private Optional<String> replyPlain = Optional.empty();
 
         private Optional<String> html = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -232,7 +248,8 @@ public final class CloudMailinRequest {
 
         @Override
         public CloudMailinRequest build() {
-            return new CloudMailinRequest(headers, envelope, plain, html, replyPlain, attachments);
+            return new CloudMailinRequest(
+                    headers, envelope, plain, html, replyPlain, attachments, additionalProperties);
         }
     }
 }

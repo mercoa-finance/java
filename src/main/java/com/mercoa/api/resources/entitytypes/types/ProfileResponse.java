@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -20,10 +24,15 @@ public final class ProfileResponse {
 
     private final Optional<IndividualProfileResponse> individual;
 
+    private final Map<String, Object> additionalProperties;
+
     private ProfileResponse(
-            Optional<BusinessProfileResponse> business, Optional<IndividualProfileResponse> individual) {
+            Optional<BusinessProfileResponse> business,
+            Optional<IndividualProfileResponse> individual,
+            Map<String, Object> additionalProperties) {
         this.business = business;
         this.individual = individual;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -46,6 +55,11 @@ public final class ProfileResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ProfileResponse && equalTo((ProfileResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(ProfileResponse other) {
@@ -71,6 +85,9 @@ public final class ProfileResponse {
         private Optional<BusinessProfileResponse> business = Optional.empty();
 
         private Optional<IndividualProfileResponse> individual = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -103,7 +120,7 @@ public final class ProfileResponse {
         }
 
         public ProfileResponse build() {
-            return new ProfileResponse(business, individual);
+            return new ProfileResponse(business, individual, additionalProperties);
         }
     }
 }

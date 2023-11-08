@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -20,9 +24,13 @@ public final class TokenGenerationVendorOptions {
 
     private final VendorNetwork network;
 
-    private TokenGenerationVendorOptions(Optional<Boolean> disableCreation, VendorNetwork network) {
+    private final Map<String, Object> additionalProperties;
+
+    private TokenGenerationVendorOptions(
+            Optional<Boolean> disableCreation, VendorNetwork network, Map<String, Object> additionalProperties) {
         this.disableCreation = disableCreation;
         this.network = network;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -42,6 +50,11 @@ public final class TokenGenerationVendorOptions {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof TokenGenerationVendorOptions && equalTo((TokenGenerationVendorOptions) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(TokenGenerationVendorOptions other) {
@@ -82,6 +95,9 @@ public final class TokenGenerationVendorOptions {
 
         private Optional<Boolean> disableCreation = Optional.empty();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -117,7 +133,7 @@ public final class TokenGenerationVendorOptions {
 
         @Override
         public TokenGenerationVendorOptions build() {
-            return new TokenGenerationVendorOptions(disableCreation, network);
+            return new TokenGenerationVendorOptions(disableCreation, network, additionalProperties);
         }
     }
 }

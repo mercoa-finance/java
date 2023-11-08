@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,6 +13,8 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -25,12 +29,19 @@ public final class NotificationResponse {
 
     private final OffsetDateTime createdAt;
 
+    private final Map<String, Object> additionalProperties;
+
     private NotificationResponse(
-            String id, Optional<String> invoiceId, NotificationType type, OffsetDateTime createdAt) {
+            String id,
+            Optional<String> invoiceId,
+            NotificationType type,
+            OffsetDateTime createdAt,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.invoiceId = invoiceId;
         this.type = type;
         this.createdAt = createdAt;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("id")
@@ -60,6 +71,11 @@ public final class NotificationResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof NotificationResponse && equalTo((NotificationResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(NotificationResponse other) {
@@ -115,6 +131,9 @@ public final class NotificationResponse {
 
         private Optional<String> invoiceId = Optional.empty();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -166,7 +185,7 @@ public final class NotificationResponse {
 
         @Override
         public NotificationResponse build() {
-            return new NotificationResponse(id, invoiceId, type, createdAt);
+            return new NotificationResponse(id, invoiceId, type, createdAt, additionalProperties);
         }
     }
 }

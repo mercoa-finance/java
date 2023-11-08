@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,6 +17,8 @@ import com.mercoa.api.resources.commons.types.BirthDate;
 import com.mercoa.api.resources.commons.types.FullName;
 import com.mercoa.api.resources.commons.types.IndividualGovernmentId;
 import com.mercoa.api.resources.commons.types.PhoneNumber;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -33,19 +37,23 @@ public final class IndividualProfileRequest {
 
     private final Optional<IndividualGovernmentId> governmentId;
 
+    private final Map<String, Object> additionalProperties;
+
     private IndividualProfileRequest(
             Optional<String> email,
             FullName name,
             Optional<PhoneNumber> phone,
             Optional<Address> address,
             Optional<BirthDate> birthDate,
-            Optional<IndividualGovernmentId> governmentId) {
+            Optional<IndividualGovernmentId> governmentId,
+            Map<String, Object> additionalProperties) {
         this.email = email;
         this.name = name;
         this.phone = phone;
         this.address = address;
         this.birthDate = birthDate;
         this.governmentId = governmentId;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("email")
@@ -82,6 +90,11 @@ public final class IndividualProfileRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof IndividualProfileRequest && equalTo((IndividualProfileRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(IndividualProfileRequest other) {
@@ -150,6 +163,9 @@ public final class IndividualProfileRequest {
         private Optional<PhoneNumber> phone = Optional.empty();
 
         private Optional<String> email = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -238,7 +254,8 @@ public final class IndividualProfileRequest {
 
         @Override
         public IndividualProfileRequest build() {
-            return new IndividualProfileRequest(email, name, phone, address, birthDate, governmentId);
+            return new IndividualProfileRequest(
+                    email, name, phone, address, birthDate, governmentId, additionalProperties);
         }
     }
 }

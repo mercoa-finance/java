@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.banklookup.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -18,9 +22,12 @@ public final class BankLookupResponse {
 
     private final BankAddress bankAddress;
 
-    private BankLookupResponse(String bankName, BankAddress bankAddress) {
+    private final Map<String, Object> additionalProperties;
+
+    private BankLookupResponse(String bankName, BankAddress bankAddress, Map<String, Object> additionalProperties) {
         this.bankName = bankName;
         this.bankAddress = bankAddress;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("bankName")
@@ -37,6 +44,11 @@ public final class BankLookupResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof BankLookupResponse && equalTo((BankLookupResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(BankLookupResponse other) {
@@ -77,6 +89,9 @@ public final class BankLookupResponse {
 
         private BankAddress bankAddress;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -102,7 +117,7 @@ public final class BankLookupResponse {
 
         @Override
         public BankLookupResponse build() {
-            return new BankLookupResponse(bankName, bankAddress);
+            return new BankLookupResponse(bankName, bankAddress, additionalProperties);
         }
     }
 }

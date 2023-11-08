@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,6 +15,8 @@ import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.commons.types.Address;
 import com.mercoa.api.resources.commons.types.PhoneNumber;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -39,6 +43,8 @@ public final class BusinessProfileRequest {
 
     private final Optional<OffsetDateTime> formationDate;
 
+    private final Map<String, Object> additionalProperties;
+
     private BusinessProfileRequest(
             Optional<String> email,
             String legalBusinessName,
@@ -49,7 +55,8 @@ public final class BusinessProfileRequest {
             Optional<String> description,
             Optional<Address> address,
             Optional<TaxId> taxId,
-            Optional<OffsetDateTime> formationDate) {
+            Optional<OffsetDateTime> formationDate,
+            Map<String, Object> additionalProperties) {
         this.email = email;
         this.legalBusinessName = legalBusinessName;
         this.businessType = businessType;
@@ -60,6 +67,7 @@ public final class BusinessProfileRequest {
         this.address = address;
         this.taxId = taxId;
         this.formationDate = formationDate;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -137,6 +145,11 @@ public final class BusinessProfileRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof BusinessProfileRequest && equalTo((BusinessProfileRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(BusinessProfileRequest other) {
@@ -243,6 +256,9 @@ public final class BusinessProfileRequest {
         private Optional<BusinessType> businessType = Optional.empty();
 
         private Optional<String> email = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -425,7 +441,8 @@ public final class BusinessProfileRequest {
                     description,
                     address,
                     taxId,
-                    formationDate);
+                    formationDate,
+                    additionalProperties);
         }
     }
 }

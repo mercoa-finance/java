@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -22,11 +26,19 @@ public final class EmailSenderResponse {
 
     private final boolean hasApiKey;
 
-    private EmailSenderResponse(EmailSenderProvider provider, String fromEmail, String fromName, boolean hasApiKey) {
+    private final Map<String, Object> additionalProperties;
+
+    private EmailSenderResponse(
+            EmailSenderProvider provider,
+            String fromEmail,
+            String fromName,
+            boolean hasApiKey,
+            Map<String, Object> additionalProperties) {
         this.provider = provider;
         this.fromEmail = fromEmail;
         this.fromName = fromName;
         this.hasApiKey = hasApiKey;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("provider")
@@ -53,6 +65,11 @@ public final class EmailSenderResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EmailSenderResponse && equalTo((EmailSenderResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(EmailSenderResponse other) {
@@ -109,6 +126,9 @@ public final class EmailSenderResponse {
 
         private boolean hasApiKey;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -150,7 +170,7 @@ public final class EmailSenderResponse {
 
         @Override
         public EmailSenderResponse build() {
-            return new EmailSenderResponse(provider, fromEmail, fromName, hasApiKey);
+            return new EmailSenderResponse(provider, fromEmail, fromName, hasApiKey, additionalProperties);
         }
     }
 }

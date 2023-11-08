@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.banklookup.requests;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -16,8 +20,11 @@ import java.util.Objects;
 public final class BankLookupRequest {
     private final String routingNumber;
 
-    private BankLookupRequest(String routingNumber) {
+    private final Map<String, Object> additionalProperties;
+
+    private BankLookupRequest(String routingNumber, Map<String, Object> additionalProperties) {
         this.routingNumber = routingNumber;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -32,6 +39,11 @@ public final class BankLookupRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof BankLookupRequest && equalTo((BankLookupRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(BankLookupRequest other) {
@@ -66,6 +78,9 @@ public final class BankLookupRequest {
     public static final class Builder implements RoutingNumberStage, _FinalStage {
         private String routingNumber;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -87,7 +102,7 @@ public final class BankLookupRequest {
 
         @Override
         public BankLookupRequest build() {
-            return new BankLookupRequest(routingNumber);
+            return new BankLookupRequest(routingNumber, additionalProperties);
         }
     }
 }

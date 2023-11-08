@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,6 +15,8 @@ import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.commons.types.Address;
 import com.mercoa.api.resources.commons.types.FullName;
 import com.mercoa.api.resources.commons.types.PhoneNumber;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -31,19 +35,23 @@ public final class IndividualProfileResponse {
 
     private final boolean governmentIdProvided;
 
+    private final Map<String, Object> additionalProperties;
+
     private IndividualProfileResponse(
             String email,
             FullName name,
             Optional<PhoneNumber> phone,
             Optional<Address> address,
             boolean birthDateProvided,
-            boolean governmentIdProvided) {
+            boolean governmentIdProvided,
+            Map<String, Object> additionalProperties) {
         this.email = email;
         this.name = name;
         this.phone = phone;
         this.address = address;
         this.birthDateProvided = birthDateProvided;
         this.governmentIdProvided = governmentIdProvided;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("email")
@@ -80,6 +88,11 @@ public final class IndividualProfileResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof IndividualProfileResponse && equalTo((IndividualProfileResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(IndividualProfileResponse other) {
@@ -151,6 +164,9 @@ public final class IndividualProfileResponse {
 
         private Optional<PhoneNumber> phone = Optional.empty();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -220,7 +236,8 @@ public final class IndividualProfileResponse {
 
         @Override
         public IndividualProfileResponse build() {
-            return new IndividualProfileResponse(email, name, phone, address, birthDateProvided, governmentIdProvided);
+            return new IndividualProfileResponse(
+                    email, name, phone, address, birthDateProvided, governmentIdProvided, additionalProperties);
         }
     }
 }

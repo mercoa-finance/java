@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -35,6 +39,8 @@ public final class EntityRequest {
 
     private final Optional<String> logo;
 
+    private final Map<String, Object> additionalProperties;
+
     private EntityRequest(
             Optional<String> foreignId,
             Optional<String> emailTo,
@@ -44,7 +50,8 @@ public final class EntityRequest {
             ProfileRequest profile,
             boolean isPayor,
             boolean isPayee,
-            Optional<String> logo) {
+            Optional<String> logo,
+            Map<String, Object> additionalProperties) {
         this.foreignId = foreignId;
         this.emailTo = emailTo;
         this.emailToAlias = emailToAlias;
@@ -54,6 +61,7 @@ public final class EntityRequest {
         this.isPayor = isPayor;
         this.isPayee = isPayee;
         this.logo = logo;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -126,6 +134,11 @@ public final class EntityRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EntityRequest && equalTo((EntityRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(EntityRequest other) {
@@ -225,6 +238,9 @@ public final class EntityRequest {
         private Optional<String> emailTo = Optional.empty();
 
         private Optional<String> foreignId = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -366,7 +382,16 @@ public final class EntityRequest {
         @Override
         public EntityRequest build() {
             return new EntityRequest(
-                    foreignId, emailTo, emailToAlias, ownedByOrg, accountType, profile, isPayor, isPayee, logo);
+                    foreignId,
+                    emailTo,
+                    emailToAlias,
+                    ownedByOrg,
+                    accountType,
+                    profile,
+                    isPayor,
+                    isPayee,
+                    logo,
+                    additionalProperties);
         }
     }
 }

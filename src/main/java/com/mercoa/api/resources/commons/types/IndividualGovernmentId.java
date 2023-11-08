@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.commons.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -20,9 +24,12 @@ public final class IndividualGovernmentId {
 
     private final Optional<Itin> itin;
 
-    private IndividualGovernmentId(Optional<Ssn> ssn, Optional<Itin> itin) {
+    private final Map<String, Object> additionalProperties;
+
+    private IndividualGovernmentId(Optional<Ssn> ssn, Optional<Itin> itin, Map<String, Object> additionalProperties) {
         this.ssn = ssn;
         this.itin = itin;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("ssn")
@@ -39,6 +46,11 @@ public final class IndividualGovernmentId {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof IndividualGovernmentId && equalTo((IndividualGovernmentId) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(IndividualGovernmentId other) {
@@ -64,6 +76,9 @@ public final class IndividualGovernmentId {
         private Optional<Ssn> ssn = Optional.empty();
 
         private Optional<Itin> itin = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -96,7 +111,7 @@ public final class IndividualGovernmentId {
         }
 
         public IndividualGovernmentId build() {
-            return new IndividualGovernmentId(ssn, itin);
+            return new IndividualGovernmentId(ssn, itin, additionalProperties);
         }
     }
 }

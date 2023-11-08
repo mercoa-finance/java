@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.commons.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -20,9 +24,12 @@ public final class Ssn {
 
     private final String lastFour;
 
-    private Ssn(Optional<String> full, String lastFour) {
+    private final Map<String, Object> additionalProperties;
+
+    private Ssn(Optional<String> full, String lastFour, Map<String, Object> additionalProperties) {
         this.full = full;
         this.lastFour = lastFour;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("full")
@@ -39,6 +46,11 @@ public final class Ssn {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof Ssn && equalTo((Ssn) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(Ssn other) {
@@ -79,6 +91,9 @@ public final class Ssn {
 
         private Optional<String> full = Optional.empty();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -110,7 +125,7 @@ public final class Ssn {
 
         @Override
         public Ssn build() {
-            return new Ssn(full, lastFour);
+            return new Ssn(full, lastFour, additionalProperties);
         }
     }
 }

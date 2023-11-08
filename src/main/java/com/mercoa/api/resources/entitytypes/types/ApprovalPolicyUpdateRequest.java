@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,27 +12,36 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ApprovalPolicyUpdateRequest.Builder.class)
 public final class ApprovalPolicyUpdateRequest {
-    private final Optional<Trigger> trigger;
+    private final Optional<List<Trigger>> trigger;
 
     private final Optional<Rule> rule;
 
     private final Optional<String> upstreamPolicyId;
 
+    private final Map<String, Object> additionalProperties;
+
     private ApprovalPolicyUpdateRequest(
-            Optional<Trigger> trigger, Optional<Rule> rule, Optional<String> upstreamPolicyId) {
+            Optional<List<Trigger>> trigger,
+            Optional<Rule> rule,
+            Optional<String> upstreamPolicyId,
+            Map<String, Object> additionalProperties) {
         this.trigger = trigger;
         this.rule = rule;
         this.upstreamPolicyId = upstreamPolicyId;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("trigger")
-    public Optional<Trigger> getTrigger() {
+    public Optional<List<Trigger>> getTrigger() {
         return trigger;
     }
 
@@ -48,6 +59,11 @@ public final class ApprovalPolicyUpdateRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ApprovalPolicyUpdateRequest && equalTo((ApprovalPolicyUpdateRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(ApprovalPolicyUpdateRequest other) {
@@ -72,11 +88,14 @@ public final class ApprovalPolicyUpdateRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Trigger> trigger = Optional.empty();
+        private Optional<List<Trigger>> trigger = Optional.empty();
 
         private Optional<Rule> rule = Optional.empty();
 
         private Optional<String> upstreamPolicyId = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -88,12 +107,12 @@ public final class ApprovalPolicyUpdateRequest {
         }
 
         @JsonSetter(value = "trigger", nulls = Nulls.SKIP)
-        public Builder trigger(Optional<Trigger> trigger) {
+        public Builder trigger(Optional<List<Trigger>> trigger) {
             this.trigger = trigger;
             return this;
         }
 
-        public Builder trigger(Trigger trigger) {
+        public Builder trigger(List<Trigger> trigger) {
             this.trigger = Optional.of(trigger);
             return this;
         }
@@ -121,7 +140,7 @@ public final class ApprovalPolicyUpdateRequest {
         }
 
         public ApprovalPolicyUpdateRequest build() {
-            return new ApprovalPolicyUpdateRequest(trigger, rule, upstreamPolicyId);
+            return new ApprovalPolicyUpdateRequest(trigger, rule, upstreamPolicyId, additionalProperties);
         }
     }
 }

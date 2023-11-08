@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -25,12 +29,21 @@ public final class EmailLogResponse {
 
     private final OffsetDateTime createdAt;
 
-    private EmailLogResponse(String from, String to, String subject, String rawContent, OffsetDateTime createdAt) {
+    private final Map<String, Object> additionalProperties;
+
+    private EmailLogResponse(
+            String from,
+            String to,
+            String subject,
+            String rawContent,
+            OffsetDateTime createdAt,
+            Map<String, Object> additionalProperties) {
         this.from = from;
         this.to = to;
         this.subject = subject;
         this.rawContent = rawContent;
         this.createdAt = createdAt;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("from")
@@ -62,6 +75,11 @@ public final class EmailLogResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EmailLogResponse && equalTo((EmailLogResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(EmailLogResponse other) {
@@ -125,6 +143,9 @@ public final class EmailLogResponse {
 
         private OffsetDateTime createdAt;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -174,7 +195,7 @@ public final class EmailLogResponse {
 
         @Override
         public EmailLogResponse build() {
-            return new EmailLogResponse(from, to, subject, rawContent, createdAt);
+            return new EmailLogResponse(from, to, subject, rawContent, createdAt, additionalProperties);
         }
     }
 }

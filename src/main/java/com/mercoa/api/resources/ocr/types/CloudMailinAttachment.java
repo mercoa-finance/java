@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.ocr.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -30,6 +34,8 @@ public final class CloudMailinAttachment {
 
     private final Object contentId;
 
+    private final Map<String, Object> additionalProperties;
+
     private CloudMailinAttachment(
             Optional<String> content,
             Optional<String> url,
@@ -37,7 +43,8 @@ public final class CloudMailinAttachment {
             String contentType,
             Object size,
             Object disposition,
-            Object contentId) {
+            Object contentId,
+            Map<String, Object> additionalProperties) {
         this.content = content;
         this.url = url;
         this.fileName = fileName;
@@ -45,6 +52,7 @@ public final class CloudMailinAttachment {
         this.size = size;
         this.disposition = disposition;
         this.contentId = contentId;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("content")
@@ -86,6 +94,11 @@ public final class CloudMailinAttachment {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CloudMailinAttachment && equalTo((CloudMailinAttachment) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(CloudMailinAttachment other) {
@@ -164,6 +177,9 @@ public final class CloudMailinAttachment {
 
         private Optional<String> content = Optional.empty();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -241,7 +257,8 @@ public final class CloudMailinAttachment {
 
         @Override
         public CloudMailinAttachment build() {
-            return new CloudMailinAttachment(content, url, fileName, contentType, size, disposition, contentId);
+            return new CloudMailinAttachment(
+                    content, url, fileName, contentType, size, disposition, contentId, additionalProperties);
         }
     }
 }

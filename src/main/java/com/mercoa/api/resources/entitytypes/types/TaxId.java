@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -16,8 +20,11 @@ import java.util.Objects;
 public final class TaxId {
     private final Ein ein;
 
-    private TaxId(Ein ein) {
+    private final Map<String, Object> additionalProperties;
+
+    private TaxId(Ein ein, Map<String, Object> additionalProperties) {
         this.ein = ein;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("ein")
@@ -29,6 +36,11 @@ public final class TaxId {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof TaxId && equalTo((TaxId) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(TaxId other) {
@@ -63,6 +75,9 @@ public final class TaxId {
     public static final class Builder implements EinStage, _FinalStage {
         private Ein ein;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -80,7 +95,7 @@ public final class TaxId {
 
         @Override
         public TaxId build() {
-            return new TaxId(ein);
+            return new TaxId(ein, additionalProperties);
         }
     }
 }

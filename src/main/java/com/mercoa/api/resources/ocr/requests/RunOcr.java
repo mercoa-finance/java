@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.ocr.requests;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,6 +13,8 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.VendorNetwork;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -25,11 +29,19 @@ public final class RunOcr {
 
     private final String image;
 
-    private RunOcr(Optional<VendorNetwork> vendorNetwork, Optional<String> entityId, String mimeType, String image) {
+    private final Map<String, Object> additionalProperties;
+
+    private RunOcr(
+            Optional<VendorNetwork> vendorNetwork,
+            Optional<String> entityId,
+            String mimeType,
+            String image,
+            Map<String, Object> additionalProperties) {
         this.vendorNetwork = vendorNetwork;
         this.entityId = entityId;
         this.mimeType = mimeType;
         this.image = image;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -68,6 +80,11 @@ public final class RunOcr {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof RunOcr && equalTo((RunOcr) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(RunOcr other) {
@@ -122,6 +139,9 @@ public final class RunOcr {
         private Optional<String> entityId = Optional.empty();
 
         private Optional<VendorNetwork> vendorNetwork = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -192,7 +212,7 @@ public final class RunOcr {
 
         @Override
         public RunOcr build() {
-            return new RunOcr(vendorNetwork, entityId, mimeType, image);
+            return new RunOcr(vendorNetwork, entityId, mimeType, image, additionalProperties);
         }
     }
 }

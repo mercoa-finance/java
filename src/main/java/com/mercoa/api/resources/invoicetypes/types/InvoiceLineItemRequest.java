@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.invoicetypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -39,6 +42,8 @@ public final class InvoiceLineItemRequest {
 
     private final Optional<Map<String, String>> metadata;
 
+    private final Map<String, Object> additionalProperties;
+
     private InvoiceLineItemRequest(
             Optional<String> id,
             Optional<Double> amount,
@@ -49,7 +54,8 @@ public final class InvoiceLineItemRequest {
             Optional<Double> unitPrice,
             Optional<OffsetDateTime> serviceStartDate,
             Optional<OffsetDateTime> serviceEndDate,
-            Optional<Map<String, String>> metadata) {
+            Optional<Map<String, String>> metadata,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.amount = amount;
         this.currency = currency;
@@ -60,6 +66,7 @@ public final class InvoiceLineItemRequest {
         this.serviceStartDate = serviceStartDate;
         this.serviceEndDate = serviceEndDate;
         this.metadata = metadata;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -127,6 +134,11 @@ public final class InvoiceLineItemRequest {
         return other instanceof InvoiceLineItemRequest && equalTo((InvoiceLineItemRequest) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(InvoiceLineItemRequest other) {
         return id.equals(other.id)
                 && amount.equals(other.amount)
@@ -185,6 +197,9 @@ public final class InvoiceLineItemRequest {
         private Optional<OffsetDateTime> serviceEndDate = Optional.empty();
 
         private Optional<Map<String, String>> metadata = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -323,7 +338,8 @@ public final class InvoiceLineItemRequest {
                     unitPrice,
                     serviceStartDate,
                     serviceEndDate,
-                    metadata);
+                    metadata,
+                    additionalProperties);
         }
     }
 }

@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -20,9 +24,13 @@ public final class ColorSchemeResponse {
 
     private final Optional<String> secondaryColor;
 
-    private ColorSchemeResponse(Optional<String> primaryColor, Optional<String> secondaryColor) {
+    private final Map<String, Object> additionalProperties;
+
+    private ColorSchemeResponse(
+            Optional<String> primaryColor, Optional<String> secondaryColor, Map<String, Object> additionalProperties) {
         this.primaryColor = primaryColor;
         this.secondaryColor = secondaryColor;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("primaryColor")
@@ -39,6 +47,11 @@ public final class ColorSchemeResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ColorSchemeResponse && equalTo((ColorSchemeResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(ColorSchemeResponse other) {
@@ -64,6 +77,9 @@ public final class ColorSchemeResponse {
         private Optional<String> primaryColor = Optional.empty();
 
         private Optional<String> secondaryColor = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -96,7 +112,7 @@ public final class ColorSchemeResponse {
         }
 
         public ColorSchemeResponse build() {
-            return new ColorSchemeResponse(primaryColor, secondaryColor);
+            return new ColorSchemeResponse(primaryColor, secondaryColor, additionalProperties);
         }
     }
 }

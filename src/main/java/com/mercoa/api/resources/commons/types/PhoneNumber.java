@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.commons.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -18,9 +22,12 @@ public final class PhoneNumber {
 
     private final String number;
 
-    private PhoneNumber(String countryCode, String number) {
+    private final Map<String, Object> additionalProperties;
+
+    private PhoneNumber(String countryCode, String number, Map<String, Object> additionalProperties) {
         this.countryCode = countryCode;
         this.number = number;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("countryCode")
@@ -37,6 +44,11 @@ public final class PhoneNumber {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof PhoneNumber && equalTo((PhoneNumber) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(PhoneNumber other) {
@@ -77,6 +89,9 @@ public final class PhoneNumber {
 
         private String number;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -102,7 +117,7 @@ public final class PhoneNumber {
 
         @Override
         public PhoneNumber build() {
-            return new PhoneNumber(countryCode, number);
+            return new PhoneNumber(countryCode, number, additionalProperties);
         }
     }
 }

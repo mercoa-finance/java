@@ -3,31 +3,45 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ApprovalPolicyRequest.Builder.class)
 public final class ApprovalPolicyRequest {
-    private final Trigger trigger;
+    private final List<Trigger> trigger;
 
     private final Rule rule;
 
     private final String upstreamPolicyId;
 
-    private ApprovalPolicyRequest(Trigger trigger, Rule rule, String upstreamPolicyId) {
+    private final Map<String, Object> additionalProperties;
+
+    private ApprovalPolicyRequest(
+            List<Trigger> trigger, Rule rule, String upstreamPolicyId, Map<String, Object> additionalProperties) {
         this.trigger = trigger;
         this.rule = rule;
         this.upstreamPolicyId = upstreamPolicyId;
+        this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return List of triggers that will cause this policy to be evaluated. If no triggers are provided, the policy will be evaluated for all invoices.
+     */
     @JsonProperty("trigger")
-    public Trigger getTrigger() {
+    public List<Trigger> getTrigger() {
         return trigger;
     }
 
@@ -50,6 +64,11 @@ public final class ApprovalPolicyRequest {
         return other instanceof ApprovalPolicyRequest && equalTo((ApprovalPolicyRequest) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(ApprovalPolicyRequest other) {
         return trigger.equals(other.trigger)
                 && rule.equals(other.rule)
@@ -66,18 +85,14 @@ public final class ApprovalPolicyRequest {
         return ObjectMappers.stringify(this);
     }
 
-    public static TriggerStage builder() {
+    public static RuleStage builder() {
         return new Builder();
-    }
-
-    public interface TriggerStage {
-        RuleStage trigger(Trigger trigger);
-
-        Builder from(ApprovalPolicyRequest other);
     }
 
     public interface RuleStage {
         UpstreamPolicyIdStage rule(Rule rule);
+
+        Builder from(ApprovalPolicyRequest other);
     }
 
     public interface UpstreamPolicyIdStage {
@@ -86,15 +101,24 @@ public final class ApprovalPolicyRequest {
 
     public interface _FinalStage {
         ApprovalPolicyRequest build();
+
+        _FinalStage trigger(List<Trigger> trigger);
+
+        _FinalStage addTrigger(Trigger trigger);
+
+        _FinalStage addAllTrigger(List<Trigger> trigger);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements TriggerStage, RuleStage, UpstreamPolicyIdStage, _FinalStage {
-        private Trigger trigger;
-
+    public static final class Builder implements RuleStage, UpstreamPolicyIdStage, _FinalStage {
         private Rule rule;
 
         private String upstreamPolicyId;
+
+        private List<Trigger> trigger = new ArrayList<>();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -103,13 +127,6 @@ public final class ApprovalPolicyRequest {
             trigger(other.getTrigger());
             rule(other.getRule());
             upstreamPolicyId(other.getUpstreamPolicyId());
-            return this;
-        }
-
-        @Override
-        @JsonSetter("trigger")
-        public RuleStage trigger(Trigger trigger) {
-            this.trigger = trigger;
             return this;
         }
 
@@ -131,9 +148,37 @@ public final class ApprovalPolicyRequest {
             return this;
         }
 
+        /**
+         * <p>List of triggers that will cause this policy to be evaluated. If no triggers are provided, the policy will be evaluated for all invoices.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @Override
+        public _FinalStage addAllTrigger(List<Trigger> trigger) {
+            this.trigger.addAll(trigger);
+            return this;
+        }
+
+        /**
+         * <p>List of triggers that will cause this policy to be evaluated. If no triggers are provided, the policy will be evaluated for all invoices.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @Override
+        public _FinalStage addTrigger(Trigger trigger) {
+            this.trigger.add(trigger);
+            return this;
+        }
+
+        @Override
+        @JsonSetter(value = "trigger", nulls = Nulls.SKIP)
+        public _FinalStage trigger(List<Trigger> trigger) {
+            this.trigger.clear();
+            this.trigger.addAll(trigger);
+            return this;
+        }
+
         @Override
         public ApprovalPolicyRequest build() {
-            return new ApprovalPolicyRequest(trigger, rule, upstreamPolicyId);
+            return new ApprovalPolicyRequest(trigger, rule, upstreamPolicyId, additionalProperties);
         }
     }
 }

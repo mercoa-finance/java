@@ -3,12 +3,19 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -16,17 +23,25 @@ import java.util.Objects;
 public final class ApprovalPolicyResponse {
     private final String id;
 
-    private final Trigger trigger;
+    private final List<Trigger> trigger;
 
     private final Rule rule;
 
     private final String upstreamPolicyId;
 
-    private ApprovalPolicyResponse(String id, Trigger trigger, Rule rule, String upstreamPolicyId) {
+    private final Map<String, Object> additionalProperties;
+
+    private ApprovalPolicyResponse(
+            String id,
+            List<Trigger> trigger,
+            Rule rule,
+            String upstreamPolicyId,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.trigger = trigger;
         this.rule = rule;
         this.upstreamPolicyId = upstreamPolicyId;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("id")
@@ -35,7 +50,7 @@ public final class ApprovalPolicyResponse {
     }
 
     @JsonProperty("trigger")
-    public Trigger getTrigger() {
+    public List<Trigger> getTrigger() {
         return trigger;
     }
 
@@ -53,6 +68,11 @@ public final class ApprovalPolicyResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ApprovalPolicyResponse && equalTo((ApprovalPolicyResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(ApprovalPolicyResponse other) {
@@ -77,13 +97,9 @@ public final class ApprovalPolicyResponse {
     }
 
     public interface IdStage {
-        TriggerStage id(String id);
+        RuleStage id(String id);
 
         Builder from(ApprovalPolicyResponse other);
-    }
-
-    public interface TriggerStage {
-        RuleStage trigger(Trigger trigger);
     }
 
     public interface RuleStage {
@@ -96,17 +112,26 @@ public final class ApprovalPolicyResponse {
 
     public interface _FinalStage {
         ApprovalPolicyResponse build();
+
+        _FinalStage trigger(List<Trigger> trigger);
+
+        _FinalStage addTrigger(Trigger trigger);
+
+        _FinalStage addAllTrigger(List<Trigger> trigger);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements IdStage, TriggerStage, RuleStage, UpstreamPolicyIdStage, _FinalStage {
+    public static final class Builder implements IdStage, RuleStage, UpstreamPolicyIdStage, _FinalStage {
         private String id;
-
-        private Trigger trigger;
 
         private Rule rule;
 
         private String upstreamPolicyId;
+
+        private List<Trigger> trigger = new ArrayList<>();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -121,15 +146,8 @@ public final class ApprovalPolicyResponse {
 
         @Override
         @JsonSetter("id")
-        public TriggerStage id(String id) {
+        public RuleStage id(String id) {
             this.id = id;
-            return this;
-        }
-
-        @Override
-        @JsonSetter("trigger")
-        public RuleStage trigger(Trigger trigger) {
-            this.trigger = trigger;
             return this;
         }
 
@@ -148,8 +166,28 @@ public final class ApprovalPolicyResponse {
         }
 
         @Override
+        public _FinalStage addAllTrigger(List<Trigger> trigger) {
+            this.trigger.addAll(trigger);
+            return this;
+        }
+
+        @Override
+        public _FinalStage addTrigger(Trigger trigger) {
+            this.trigger.add(trigger);
+            return this;
+        }
+
+        @Override
+        @JsonSetter(value = "trigger", nulls = Nulls.SKIP)
+        public _FinalStage trigger(List<Trigger> trigger) {
+            this.trigger.clear();
+            this.trigger.addAll(trigger);
+            return this;
+        }
+
+        @Override
         public ApprovalPolicyResponse build() {
-            return new ApprovalPolicyResponse(id, trigger, rule, upstreamPolicyId);
+            return new ApprovalPolicyResponse(id, trigger, rule, upstreamPolicyId, additionalProperties);
         }
     }
 }

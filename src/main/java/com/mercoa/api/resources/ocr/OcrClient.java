@@ -7,8 +7,8 @@ import com.mercoa.api.core.ApiError;
 import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
-import com.mercoa.api.resources.ocr.requests.CloudMailinWebhook;
 import com.mercoa.api.resources.ocr.requests.RunOcr;
+import com.mercoa.api.resources.ocr.types.CloudMailinRequest;
 import com.mercoa.api.resources.ocr.types.OcrResponse;
 import java.io.IOException;
 import java.util.HashMap;
@@ -78,34 +78,24 @@ public class OcrClient {
         return ocr(request, null);
     }
 
-    public void cloudMailinWebhook(CloudMailinWebhook request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+    public void cloudMailinWebhook(CloudMailinRequest request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("cloudMailinWebhook");
-        httpUrl.addQueryParameter("org", request.getOrg());
-        if (request.getVendorNetwork().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "vendorNetwork", request.getVendorNetwork().get().toString());
-        }
-        if (request.getDisableVendorCreation().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "disableVendorCreation",
-                    request.getDisableVendorCreation().get().toString());
-        }
+                .addPathSegments("cloudMailinWebhook")
+                .build();
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()),
-                    MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
+                .addHeader("Content-Type", "application/json")
+                .build();
         try {
             Response response =
                     clientOptions.httpClient().newCall(okhttpRequest).execute();
@@ -120,7 +110,7 @@ public class OcrClient {
         }
     }
 
-    public void cloudMailinWebhook(CloudMailinWebhook request) {
+    public void cloudMailinWebhook(CloudMailinRequest request) {
         cloudMailinWebhook(request, null);
     }
 }

@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -16,8 +20,11 @@ import java.util.Objects;
 public final class Ein {
     private final String number;
 
-    private Ein(String number) {
+    private final Map<String, Object> additionalProperties;
+
+    private Ein(String number, Map<String, Object> additionalProperties) {
         this.number = number;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -32,6 +39,11 @@ public final class Ein {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof Ein && equalTo((Ein) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(Ein other) {
@@ -66,6 +78,9 @@ public final class Ein {
     public static final class Builder implements NumberStage, _FinalStage {
         private String number;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -87,7 +102,7 @@ public final class Ein {
 
         @Override
         public Ein build() {
-            return new Ein(number);
+            return new Ein(number, additionalProperties);
         }
     }
 }

@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.invoicetypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +13,9 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -23,10 +27,14 @@ public final class FindInvoiceResponse {
 
     private final List<InvoiceResponse> data;
 
-    private FindInvoiceResponse(int count, boolean hasMore, List<InvoiceResponse> data) {
+    private final Map<String, Object> additionalProperties;
+
+    private FindInvoiceResponse(
+            int count, boolean hasMore, List<InvoiceResponse> data, Map<String, Object> additionalProperties) {
         this.count = count;
         this.hasMore = hasMore;
         this.data = data;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -54,6 +62,11 @@ public final class FindInvoiceResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof FindInvoiceResponse && equalTo((FindInvoiceResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(FindInvoiceResponse other) {
@@ -101,6 +114,9 @@ public final class FindInvoiceResponse {
         private boolean hasMore;
 
         private List<InvoiceResponse> data = new ArrayList<>();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -156,7 +172,7 @@ public final class FindInvoiceResponse {
 
         @Override
         public FindInvoiceResponse build() {
-            return new FindInvoiceResponse(count, hasMore, data);
+            return new FindInvoiceResponse(count, hasMore, data, additionalProperties);
         }
     }
 }

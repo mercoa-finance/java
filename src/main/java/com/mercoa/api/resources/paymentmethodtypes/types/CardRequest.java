@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.paymentmethodtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -32,6 +36,8 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
 
     private final String token;
 
+    private final Map<String, Object> additionalProperties;
+
     private CardRequest(
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
@@ -40,7 +46,8 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
             String lastFour,
             String expMonth,
             String expYear,
-            String token) {
+            String token,
+            Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
         this.cardType = cardType;
@@ -49,6 +56,7 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
         this.expMonth = expMonth;
         this.expYear = expYear;
         this.token = token;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -103,6 +111,11 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CardRequest && equalTo((CardRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(CardRequest other) {
@@ -201,6 +214,9 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
 
         private Optional<Boolean> defaultSource = Optional.empty();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -295,7 +311,15 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
         @Override
         public CardRequest build() {
             return new CardRequest(
-                    defaultSource, defaultDestination, cardType, cardBrand, lastFour, expMonth, expYear, token);
+                    defaultSource,
+                    defaultDestination,
+                    cardType,
+                    cardBrand,
+                    lastFour,
+                    expMonth,
+                    expYear,
+                    token,
+                    additionalProperties);
         }
     }
 }

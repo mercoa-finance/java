@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entity.user.notifications.requests;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,6 +15,8 @@ import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.commons.types.OrderDirection;
 import com.mercoa.api.resources.entitytypes.types.NotificationType;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -31,19 +35,23 @@ public final class EntityGetNotificationsRequest {
 
     private final Optional<NotificationType> notificationType;
 
+    private final Map<String, Object> additionalProperties;
+
     private EntityGetNotificationsRequest(
             Optional<OffsetDateTime> startDate,
             Optional<OffsetDateTime> endDate,
             Optional<OrderDirection> orderDirection,
             Optional<Integer> limit,
             Optional<String> startingAfter,
-            Optional<NotificationType> notificationType) {
+            Optional<NotificationType> notificationType,
+            Map<String, Object> additionalProperties) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.orderDirection = orderDirection;
         this.limit = limit;
         this.startingAfter = startingAfter;
         this.notificationType = notificationType;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -100,6 +108,11 @@ public final class EntityGetNotificationsRequest {
         return other instanceof EntityGetNotificationsRequest && equalTo((EntityGetNotificationsRequest) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(EntityGetNotificationsRequest other) {
         return startDate.equals(other.startDate)
                 && endDate.equals(other.endDate)
@@ -142,6 +155,9 @@ public final class EntityGetNotificationsRequest {
         private Optional<String> startingAfter = Optional.empty();
 
         private Optional<NotificationType> notificationType = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -223,7 +239,7 @@ public final class EntityGetNotificationsRequest {
 
         public EntityGetNotificationsRequest build() {
             return new EntityGetNotificationsRequest(
-                    startDate, endDate, orderDirection, limit, startingAfter, notificationType);
+                    startDate, endDate, orderDirection, limit, startingAfter, notificationType, additionalProperties);
         }
     }
 }

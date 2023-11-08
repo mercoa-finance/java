@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.paymentmethodtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -19,6 +23,8 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
     private final Optional<Boolean> defaultSource;
 
     private final Optional<Boolean> defaultDestination;
+
+    private final Optional<String> accountName;
 
     private final String bankName;
 
@@ -30,21 +36,27 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
 
     private final Optional<PlaidLinkRequest> plaid;
 
+    private final Map<String, Object> additionalProperties;
+
     private BankAccountRequest(
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
+            Optional<String> accountName,
             String bankName,
             String routingNumber,
             String accountNumber,
             BankType accountType,
-            Optional<PlaidLinkRequest> plaid) {
+            Optional<PlaidLinkRequest> plaid,
+            Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
+        this.accountName = accountName;
         this.bankName = bankName;
         this.routingNumber = routingNumber;
         this.accountNumber = accountNumber;
         this.accountType = accountType;
         this.plaid = plaid;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -63,6 +75,11 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
     @Override
     public Optional<Boolean> getDefaultDestination() {
         return defaultDestination;
+    }
+
+    @JsonProperty("accountName")
+    public Optional<String> getAccountName() {
+        return accountName;
     }
 
     @JsonProperty("bankName")
@@ -99,9 +116,15 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         return other instanceof BankAccountRequest && equalTo((BankAccountRequest) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(BankAccountRequest other) {
         return defaultSource.equals(other.defaultSource)
                 && defaultDestination.equals(other.defaultDestination)
+                && accountName.equals(other.accountName)
                 && bankName.equals(other.bankName)
                 && routingNumber.equals(other.routingNumber)
                 && accountNumber.equals(other.accountNumber)
@@ -114,6 +137,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         return Objects.hash(
                 this.defaultSource,
                 this.defaultDestination,
+                this.accountName,
                 this.bankName,
                 this.routingNumber,
                 this.accountNumber,
@@ -159,6 +183,10 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
 
         _FinalStage defaultDestination(Boolean defaultDestination);
 
+        _FinalStage accountName(Optional<String> accountName);
+
+        _FinalStage accountName(String accountName);
+
         _FinalStage plaid(Optional<PlaidLinkRequest> plaid);
 
         _FinalStage plaid(PlaidLinkRequest plaid);
@@ -177,9 +205,14 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
 
         private Optional<PlaidLinkRequest> plaid = Optional.empty();
 
+        private Optional<String> accountName = Optional.empty();
+
         private Optional<Boolean> defaultDestination = Optional.empty();
 
         private Optional<Boolean> defaultSource = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -187,6 +220,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         public Builder from(BankAccountRequest other) {
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
+            accountName(other.getAccountName());
             bankName(other.getBankName());
             routingNumber(other.getRoutingNumber());
             accountNumber(other.getAccountNumber());
@@ -240,6 +274,19 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
+        @Override
+        public _FinalStage accountName(String accountName) {
+            this.accountName = Optional.of(accountName);
+            return this;
+        }
+
+        @Override
+        @JsonSetter(value = "accountName", nulls = Nulls.SKIP)
+        public _FinalStage accountName(Optional<String> accountName) {
+            this.accountName = accountName;
+            return this;
+        }
+
         /**
          * <p>If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
@@ -277,7 +324,15 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         @Override
         public BankAccountRequest build() {
             return new BankAccountRequest(
-                    defaultSource, defaultDestination, bankName, routingNumber, accountNumber, accountType, plaid);
+                    defaultSource,
+                    defaultDestination,
+                    accountName,
+                    bankName,
+                    routingNumber,
+                    accountNumber,
+                    accountType,
+                    plaid,
+                    additionalProperties);
         }
     }
 }

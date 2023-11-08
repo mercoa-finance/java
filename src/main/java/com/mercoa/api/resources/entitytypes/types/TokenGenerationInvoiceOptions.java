@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -23,9 +27,13 @@ public final class TokenGenerationInvoiceOptions {
 
     private final Optional<Boolean> markPaid;
 
-    private TokenGenerationInvoiceOptions(List<InvoiceStatus> status, Optional<Boolean> markPaid) {
+    private final Map<String, Object> additionalProperties;
+
+    private TokenGenerationInvoiceOptions(
+            List<InvoiceStatus> status, Optional<Boolean> markPaid, Map<String, Object> additionalProperties) {
         this.status = status;
         this.markPaid = markPaid;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("status")
@@ -45,6 +53,11 @@ public final class TokenGenerationInvoiceOptions {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof TokenGenerationInvoiceOptions && equalTo((TokenGenerationInvoiceOptions) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(TokenGenerationInvoiceOptions other) {
@@ -70,6 +83,9 @@ public final class TokenGenerationInvoiceOptions {
         private List<InvoiceStatus> status = new ArrayList<>();
 
         private Optional<Boolean> markPaid = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -108,7 +124,7 @@ public final class TokenGenerationInvoiceOptions {
         }
 
         public TokenGenerationInvoiceOptions build() {
-            return new TokenGenerationInvoiceOptions(status, markPaid);
+            return new TokenGenerationInvoiceOptions(status, markPaid, additionalProperties);
         }
     }
 }

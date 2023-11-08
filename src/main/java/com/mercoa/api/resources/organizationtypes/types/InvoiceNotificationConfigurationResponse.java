@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.NotificationType;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -19,9 +23,13 @@ public final class InvoiceNotificationConfigurationResponse implements IInvoiceN
 
     private final NotificationType type;
 
-    private InvoiceNotificationConfigurationResponse(String url, NotificationType type) {
+    private final Map<String, Object> additionalProperties;
+
+    private InvoiceNotificationConfigurationResponse(
+            String url, NotificationType type, Map<String, Object> additionalProperties) {
         this.url = url;
         this.type = type;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("url")
@@ -40,6 +48,11 @@ public final class InvoiceNotificationConfigurationResponse implements IInvoiceN
         if (this == other) return true;
         return other instanceof InvoiceNotificationConfigurationResponse
                 && equalTo((InvoiceNotificationConfigurationResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(InvoiceNotificationConfigurationResponse other) {
@@ -80,6 +93,9 @@ public final class InvoiceNotificationConfigurationResponse implements IInvoiceN
 
         private NotificationType type;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -105,7 +121,7 @@ public final class InvoiceNotificationConfigurationResponse implements IInvoiceN
 
         @Override
         public InvoiceNotificationConfigurationResponse build() {
-            return new InvoiceNotificationConfigurationResponse(url, type);
+            return new InvoiceNotificationConfigurationResponse(url, type, additionalProperties);
         }
     }
 }

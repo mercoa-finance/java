@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.paymentmethodtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +48,8 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
     private final Map<String, String> data;
 
+    private final Map<String, Object> additionalProperties;
+
     private CustomPaymentMethodResponse(
             String id,
             boolean isDefaultSource,
@@ -57,7 +62,8 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
             Optional<String> accountNumber,
             String schemaId,
             PaymentMethodSchemaResponse schema,
-            Map<String, String> data) {
+            Map<String, String> data,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.isDefaultSource = isDefaultSource;
         this.isDefaultDestination = isDefaultDestination;
@@ -70,6 +76,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
         this.schemaId = schemaId;
         this.schema = schema;
         this.data = data;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("id")
@@ -157,6 +164,11 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CustomPaymentMethodResponse && equalTo((CustomPaymentMethodResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(CustomPaymentMethodResponse other) {
@@ -292,6 +304,9 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
         private Optional<String> accountName = Optional.empty();
 
         private List<CurrencyCode> supportedCurrencies = new ArrayList<>();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -472,7 +487,8 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
                     accountNumber,
                     schemaId,
                     schema,
-                    data);
+                    data,
+                    additionalProperties);
         }
     }
 }

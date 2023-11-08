@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -24,15 +28,19 @@ public final class Responsibilities {
 
     private final Optional<Integer> ownershipPercentage;
 
+    private final Map<String, Object> additionalProperties;
+
     private Responsibilities(
             Optional<String> jobTitle,
             Optional<Boolean> isController,
             Optional<Boolean> isOwner,
-            Optional<Integer> ownershipPercentage) {
+            Optional<Integer> ownershipPercentage,
+            Map<String, Object> additionalProperties) {
         this.jobTitle = jobTitle;
         this.isController = isController;
         this.isOwner = isOwner;
         this.ownershipPercentage = ownershipPercentage;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("jobTitle")
@@ -70,6 +78,11 @@ public final class Responsibilities {
         return other instanceof Responsibilities && equalTo((Responsibilities) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(Responsibilities other) {
         return jobTitle.equals(other.jobTitle)
                 && isController.equals(other.isController)
@@ -100,6 +113,9 @@ public final class Responsibilities {
         private Optional<Boolean> isOwner = Optional.empty();
 
         private Optional<Integer> ownershipPercentage = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -156,7 +172,7 @@ public final class Responsibilities {
         }
 
         public Responsibilities build() {
-            return new Responsibilities(jobTitle, isController, isOwner, ownershipPercentage);
+            return new Responsibilities(jobTitle, isController, isOwner, ownershipPercentage, additionalProperties);
         }
     }
 }

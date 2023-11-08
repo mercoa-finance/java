@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -26,19 +30,23 @@ public final class IndividualOnboardingOptions {
 
     private final OnboardingOption phone;
 
+    private final Map<String, Object> additionalProperties;
+
     private IndividualOnboardingOptions(
             OnboardingOption email,
             OnboardingOption name,
             OnboardingOption dateOfBirth,
             OnboardingOption ssnLast4,
             OnboardingOption address,
-            OnboardingOption phone) {
+            OnboardingOption phone,
+            Map<String, Object> additionalProperties) {
         this.email = email;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.ssnLast4 = ssnLast4;
         this.address = address;
         this.phone = phone;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("email")
@@ -75,6 +83,11 @@ public final class IndividualOnboardingOptions {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof IndividualOnboardingOptions && equalTo((IndividualOnboardingOptions) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(IndividualOnboardingOptions other) {
@@ -145,6 +158,9 @@ public final class IndividualOnboardingOptions {
 
         private OnboardingOption phone;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -202,7 +218,8 @@ public final class IndividualOnboardingOptions {
 
         @Override
         public IndividualOnboardingOptions build() {
-            return new IndividualOnboardingOptions(email, name, dateOfBirth, ssnLast4, address, phone);
+            return new IndividualOnboardingOptions(
+                    email, name, dateOfBirth, ssnLast4, address, phone, additionalProperties);
         }
     }
 }

@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.paymentmethodtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -45,6 +49,8 @@ public final class CheckResponse implements IPaymentMethodBaseResponse {
 
     private final String country;
 
+    private final Map<String, Object> additionalProperties;
+
     private CheckResponse(
             String id,
             boolean isDefaultSource,
@@ -58,7 +64,8 @@ public final class CheckResponse implements IPaymentMethodBaseResponse {
             String city,
             String stateOrProvince,
             String postalCode,
-            String country) {
+            String country,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.isDefaultSource = isDefaultSource;
         this.isDefaultDestination = isDefaultDestination;
@@ -72,6 +79,7 @@ public final class CheckResponse implements IPaymentMethodBaseResponse {
         this.stateOrProvince = stateOrProvince;
         this.postalCode = postalCode;
         this.country = country;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("id")
@@ -155,6 +163,11 @@ public final class CheckResponse implements IPaymentMethodBaseResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CheckResponse && equalTo((CheckResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(CheckResponse other) {
@@ -299,6 +312,9 @@ public final class CheckResponse implements IPaymentMethodBaseResponse {
         private Optional<String> addressLine2 = Optional.empty();
 
         private List<CurrencyCode> supportedCurrencies = new ArrayList<>();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -453,7 +469,8 @@ public final class CheckResponse implements IPaymentMethodBaseResponse {
                     city,
                     stateOrProvince,
                     postalCode,
-                    country);
+                    country,
+                    additionalProperties);
         }
     }
 }

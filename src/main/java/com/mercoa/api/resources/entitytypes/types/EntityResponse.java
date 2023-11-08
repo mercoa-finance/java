@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +13,9 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -48,6 +52,8 @@ public final class EntityResponse implements IEntityResponse {
 
     private final OffsetDateTime updatedAt;
 
+    private final Map<String, Object> additionalProperties;
+
     private EntityResponse(
             String id,
             String name,
@@ -63,7 +69,8 @@ public final class EntityResponse implements IEntityResponse {
             boolean isPayor,
             boolean isPayee,
             OffsetDateTime createdAt,
-            OffsetDateTime updatedAt) {
+            OffsetDateTime updatedAt,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -79,6 +86,7 @@ public final class EntityResponse implements IEntityResponse {
         this.isPayee = isPayee;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("id")
@@ -196,6 +204,11 @@ public final class EntityResponse implements IEntityResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EntityResponse && equalTo((EntityResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(EntityResponse other) {
@@ -355,6 +368,9 @@ public final class EntityResponse implements IEntityResponse {
         private Optional<String> emailTo = Optional.empty();
 
         private Optional<String> foreignId = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -546,7 +562,8 @@ public final class EntityResponse implements IEntityResponse {
                     isPayor,
                     isPayee,
                     createdAt,
-                    updatedAt);
+                    updatedAt,
+                    additionalProperties);
         }
     }
 }

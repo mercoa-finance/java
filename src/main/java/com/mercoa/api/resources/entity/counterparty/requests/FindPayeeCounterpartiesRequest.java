@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entity.counterparty.requests;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,6 +13,8 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.CounterpartyNetworkType;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -29,19 +33,23 @@ public final class FindPayeeCounterpartiesRequest {
 
     private final Optional<String> startingAfter;
 
+    private final Map<String, Object> additionalProperties;
+
     private FindPayeeCounterpartiesRequest(
             Optional<String> name,
             Optional<CounterpartyNetworkType> networkType,
             Optional<Boolean> paymentMethods,
             Optional<String> counterpartyId,
             Optional<Integer> limit,
-            Optional<String> startingAfter) {
+            Optional<String> startingAfter,
+            Map<String, Object> additionalProperties) {
         this.name = name;
         this.networkType = networkType;
         this.paymentMethods = paymentMethods;
         this.counterpartyId = counterpartyId;
         this.limit = limit;
         this.startingAfter = startingAfter;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -98,6 +106,11 @@ public final class FindPayeeCounterpartiesRequest {
         return other instanceof FindPayeeCounterpartiesRequest && equalTo((FindPayeeCounterpartiesRequest) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(FindPayeeCounterpartiesRequest other) {
         return name.equals(other.name)
                 && networkType.equals(other.networkType)
@@ -135,6 +148,9 @@ public final class FindPayeeCounterpartiesRequest {
         private Optional<Integer> limit = Optional.empty();
 
         private Optional<String> startingAfter = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -216,7 +232,7 @@ public final class FindPayeeCounterpartiesRequest {
 
         public FindPayeeCounterpartiesRequest build() {
             return new FindPayeeCounterpartiesRequest(
-                    name, networkType, paymentMethods, counterpartyId, limit, startingAfter);
+                    name, networkType, paymentMethods, counterpartyId, limit, startingAfter, additionalProperties);
         }
     }
 }

@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.banklookup.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -24,12 +28,21 @@ public final class BankAddress {
 
     private final String postalCodeExtension;
 
-    private BankAddress(String address, String city, String state, String postalCode, String postalCodeExtension) {
+    private final Map<String, Object> additionalProperties;
+
+    private BankAddress(
+            String address,
+            String city,
+            String state,
+            String postalCode,
+            String postalCodeExtension,
+            Map<String, Object> additionalProperties) {
         this.address = address;
         this.city = city;
         this.state = state;
         this.postalCode = postalCode;
         this.postalCodeExtension = postalCodeExtension;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("address")
@@ -61,6 +74,11 @@ public final class BankAddress {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof BankAddress && equalTo((BankAddress) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(BankAddress other) {
@@ -124,6 +142,9 @@ public final class BankAddress {
 
         private String postalCodeExtension;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -173,7 +194,7 @@ public final class BankAddress {
 
         @Override
         public BankAddress build() {
-            return new BankAddress(address, city, state, postalCode, postalCodeExtension);
+            return new BankAddress(address, city, state, postalCode, postalCodeExtension, additionalProperties);
         }
     }
 }

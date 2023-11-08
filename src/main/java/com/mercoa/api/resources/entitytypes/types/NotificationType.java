@@ -22,7 +22,9 @@ public enum NotificationType {
 
     INVOICE_CREATED("INVOICE_CREATED"),
 
-    INVOICE_EMAILED("INVOICE_EMAILED");
+    INVOICE_EMAILED("INVOICE_EMAILED"),
+
+    INVOICE_FAILED("INVOICE_FAILED");
 
     private final String value;
 

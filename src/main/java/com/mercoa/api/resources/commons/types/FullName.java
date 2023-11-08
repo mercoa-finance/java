@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.commons.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -24,11 +28,19 @@ public final class FullName {
 
     private final Optional<String> suffix;
 
-    private FullName(String firstName, Optional<String> middleName, String lastName, Optional<String> suffix) {
+    private final Map<String, Object> additionalProperties;
+
+    private FullName(
+            String firstName,
+            Optional<String> middleName,
+            String lastName,
+            Optional<String> suffix,
+            Map<String, Object> additionalProperties) {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
         this.suffix = suffix;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("firstName")
@@ -55,6 +67,11 @@ public final class FullName {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof FullName && equalTo((FullName) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(FullName other) {
@@ -110,6 +127,9 @@ public final class FullName {
 
         private Optional<String> middleName = Optional.empty();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -163,7 +183,7 @@ public final class FullName {
 
         @Override
         public FullName build() {
-            return new FullName(firstName, middleName, lastName, suffix);
+            return new FullName(firstName, middleName, lastName, suffix, additionalProperties);
         }
     }
 }

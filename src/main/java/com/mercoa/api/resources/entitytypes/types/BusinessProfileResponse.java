@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,6 +14,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.commons.types.Address;
 import com.mercoa.api.resources.commons.types.PhoneNumber;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -38,6 +42,8 @@ public final class BusinessProfileResponse {
 
     private final boolean taxIdProvided;
 
+    private final Map<String, Object> additionalProperties;
+
     private BusinessProfileResponse(
             Optional<String> email,
             String legalBusinessName,
@@ -48,7 +54,8 @@ public final class BusinessProfileResponse {
             Optional<String> description,
             Optional<Address> address,
             Optional<Boolean> ownersProvided,
-            boolean taxIdProvided) {
+            boolean taxIdProvided,
+            Map<String, Object> additionalProperties) {
         this.email = email;
         this.legalBusinessName = legalBusinessName;
         this.businessType = businessType;
@@ -59,6 +66,7 @@ public final class BusinessProfileResponse {
         this.address = address;
         this.ownersProvided = ownersProvided;
         this.taxIdProvided = taxIdProvided;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("email")
@@ -118,6 +126,11 @@ public final class BusinessProfileResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof BusinessProfileResponse && equalTo((BusinessProfileResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(BusinessProfileResponse other) {
@@ -224,6 +237,9 @@ public final class BusinessProfileResponse {
         private Optional<BusinessType> businessType = Optional.empty();
 
         private Optional<String> email = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -376,7 +392,8 @@ public final class BusinessProfileResponse {
                     description,
                     address,
                     ownersProvided,
-                    taxIdProvided);
+                    taxIdProvided,
+                    additionalProperties);
         }
     }
 }

@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.paymentmethodtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +13,9 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,17 +32,21 @@ public final class PaymentMethodSchemaRequest {
 
     private final List<PaymentMethodSchemaField> fields;
 
+    private final Map<String, Object> additionalProperties;
+
     private PaymentMethodSchemaRequest(
             String name,
             boolean isSource,
             boolean isDestination,
             Optional<List<CurrencyCode>> supportedCurrencies,
-            List<PaymentMethodSchemaField> fields) {
+            List<PaymentMethodSchemaField> fields,
+            Map<String, Object> additionalProperties) {
         this.name = name;
         this.isSource = isSource;
         this.isDestination = isDestination;
         this.supportedCurrencies = supportedCurrencies;
         this.fields = fields;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("name")
@@ -79,6 +87,11 @@ public final class PaymentMethodSchemaRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof PaymentMethodSchemaRequest && equalTo((PaymentMethodSchemaRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(PaymentMethodSchemaRequest other) {
@@ -142,6 +155,9 @@ public final class PaymentMethodSchemaRequest {
         private List<PaymentMethodSchemaField> fields = new ArrayList<>();
 
         private Optional<List<CurrencyCode>> supportedCurrencies = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -223,7 +239,8 @@ public final class PaymentMethodSchemaRequest {
 
         @Override
         public PaymentMethodSchemaRequest build() {
-            return new PaymentMethodSchemaRequest(name, isSource, isDestination, supportedCurrencies, fields);
+            return new PaymentMethodSchemaRequest(
+                    name, isSource, isDestination, supportedCurrencies, fields, additionalProperties);
         }
     }
 }

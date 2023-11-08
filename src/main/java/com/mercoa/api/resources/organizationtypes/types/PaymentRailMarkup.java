@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -18,9 +22,12 @@ public final class PaymentRailMarkup {
 
     private final double amount;
 
-    private PaymentRailMarkup(PaymentRailMarkupType type, double amount) {
+    private final Map<String, Object> additionalProperties;
+
+    private PaymentRailMarkup(PaymentRailMarkupType type, double amount, Map<String, Object> additionalProperties) {
         this.type = type;
         this.amount = amount;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("type")
@@ -37,6 +44,11 @@ public final class PaymentRailMarkup {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof PaymentRailMarkup && equalTo((PaymentRailMarkup) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(PaymentRailMarkup other) {
@@ -77,6 +89,9 @@ public final class PaymentRailMarkup {
 
         private double amount;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -102,7 +117,7 @@ public final class PaymentRailMarkup {
 
         @Override
         public PaymentRailMarkup build() {
-            return new PaymentRailMarkup(type, amount);
+            return new PaymentRailMarkup(type, amount, additionalProperties);
         }
     }
 }

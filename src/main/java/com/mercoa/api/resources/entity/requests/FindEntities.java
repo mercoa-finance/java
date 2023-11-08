@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entity.requests;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,6 +13,8 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.EntityStatus;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -33,6 +37,8 @@ public final class FindEntities {
 
     private final Optional<String> startingAfter;
 
+    private final Map<String, Object> additionalProperties;
+
     private FindEntities(
             Optional<Boolean> ownedByOrg,
             Optional<String> foreignId,
@@ -41,7 +47,8 @@ public final class FindEntities {
             Optional<Boolean> isPayor,
             Optional<String> name,
             Optional<Integer> limit,
-            Optional<String> startingAfter) {
+            Optional<String> startingAfter,
+            Map<String, Object> additionalProperties) {
         this.ownedByOrg = ownedByOrg;
         this.foreignId = foreignId;
         this.status = status;
@@ -50,6 +57,7 @@ public final class FindEntities {
         this.name = name;
         this.limit = limit;
         this.startingAfter = startingAfter;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -121,6 +129,11 @@ public final class FindEntities {
         return other instanceof FindEntities && equalTo((FindEntities) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(FindEntities other) {
         return ownedByOrg.equals(other.ownedByOrg)
                 && foreignId.equals(other.foreignId)
@@ -171,6 +184,9 @@ public final class FindEntities {
         private Optional<Integer> limit = Optional.empty();
 
         private Optional<String> startingAfter = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -275,7 +291,8 @@ public final class FindEntities {
         }
 
         public FindEntities build() {
-            return new FindEntities(ownedByOrg, foreignId, status, isPayee, isPayor, name, limit, startingAfter);
+            return new FindEntities(
+                    ownedByOrg, foreignId, status, isPayee, isPayor, name, limit, startingAfter, additionalProperties);
         }
     }
 }

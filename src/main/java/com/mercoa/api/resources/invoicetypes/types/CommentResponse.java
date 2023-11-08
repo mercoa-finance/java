@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.invoicetypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,6 +14,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.EntityUserResponse;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -30,19 +34,23 @@ public final class CommentResponse {
 
     private final OffsetDateTime updatedAt;
 
+    private final Map<String, Object> additionalProperties;
+
     private CommentResponse(
             String id,
             String text,
             Optional<EntityUserResponse> user,
             Optional<AssociatedApprovalAction> associatedApprovalAction,
             OffsetDateTime createdAt,
-            OffsetDateTime updatedAt) {
+            OffsetDateTime updatedAt,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.text = text;
         this.user = user;
         this.associatedApprovalAction = associatedApprovalAction;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("id")
@@ -82,6 +90,11 @@ public final class CommentResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CommentResponse && equalTo((CommentResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(CommentResponse other) {
@@ -151,6 +164,9 @@ public final class CommentResponse {
         private Optional<AssociatedApprovalAction> associatedApprovalAction = Optional.empty();
 
         private Optional<EntityUserResponse> user = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -225,7 +241,8 @@ public final class CommentResponse {
 
         @Override
         public CommentResponse build() {
-            return new CommentResponse(id, text, user, associatedApprovalAction, createdAt, updatedAt);
+            return new CommentResponse(
+                    id, text, user, associatedApprovalAction, createdAt, updatedAt, additionalProperties);
         }
     }
 }

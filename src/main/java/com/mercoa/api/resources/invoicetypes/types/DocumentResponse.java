@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.invoicetypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -18,9 +22,12 @@ public final class DocumentResponse {
 
     private final String uri;
 
-    private DocumentResponse(String mimeType, String uri) {
+    private final Map<String, Object> additionalProperties;
+
+    private DocumentResponse(String mimeType, String uri, Map<String, Object> additionalProperties) {
         this.mimeType = mimeType;
         this.uri = uri;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("mimeType")
@@ -37,6 +44,11 @@ public final class DocumentResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof DocumentResponse && equalTo((DocumentResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(DocumentResponse other) {
@@ -77,6 +89,9 @@ public final class DocumentResponse {
 
         private String uri;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -102,7 +117,7 @@ public final class DocumentResponse {
 
         @Override
         public DocumentResponse build() {
-            return new DocumentResponse(mimeType, uri);
+            return new DocumentResponse(mimeType, uri, additionalProperties);
         }
     }
 }

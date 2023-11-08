@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +13,9 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -23,10 +27,14 @@ public final class FindCounterpartiesResponse {
 
     private final List<CounterpartyResponse> data;
 
-    private FindCounterpartiesResponse(int count, boolean hasMore, List<CounterpartyResponse> data) {
+    private final Map<String, Object> additionalProperties;
+
+    private FindCounterpartiesResponse(
+            int count, boolean hasMore, List<CounterpartyResponse> data, Map<String, Object> additionalProperties) {
         this.count = count;
         this.hasMore = hasMore;
         this.data = data;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -54,6 +62,11 @@ public final class FindCounterpartiesResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof FindCounterpartiesResponse && equalTo((FindCounterpartiesResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(FindCounterpartiesResponse other) {
@@ -101,6 +114,9 @@ public final class FindCounterpartiesResponse {
         private boolean hasMore;
 
         private List<CounterpartyResponse> data = new ArrayList<>();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -156,7 +172,7 @@ public final class FindCounterpartiesResponse {
 
         @Override
         public FindCounterpartiesResponse build() {
-            return new FindCounterpartiesResponse(count, hasMore, data);
+            return new FindCounterpartiesResponse(count, hasMore, data, additionalProperties);
         }
     }
 }

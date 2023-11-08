@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -24,15 +28,19 @@ public final class OnboardingOptionsRequest {
 
     private final Optional<IndividualOnboardingOptions> individual;
 
+    private final Map<String, Object> additionalProperties;
+
     private OnboardingOptionsRequest(
             Optional<Boolean> enableBusiness,
             Optional<Boolean> enableIndividual,
             Optional<BusinessOnboardingOptions> business,
-            Optional<IndividualOnboardingOptions> individual) {
+            Optional<IndividualOnboardingOptions> individual,
+            Map<String, Object> additionalProperties) {
         this.enableBusiness = enableBusiness;
         this.enableIndividual = enableIndividual;
         this.business = business;
         this.individual = individual;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("enableBusiness")
@@ -59,6 +67,11 @@ public final class OnboardingOptionsRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof OnboardingOptionsRequest && equalTo((OnboardingOptionsRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(OnboardingOptionsRequest other) {
@@ -91,6 +104,9 @@ public final class OnboardingOptionsRequest {
         private Optional<BusinessOnboardingOptions> business = Optional.empty();
 
         private Optional<IndividualOnboardingOptions> individual = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -147,7 +163,8 @@ public final class OnboardingOptionsRequest {
         }
 
         public OnboardingOptionsRequest build() {
-            return new OnboardingOptionsRequest(enableBusiness, enableIndividual, business, individual);
+            return new OnboardingOptionsRequest(
+                    enableBusiness, enableIndividual, business, individual, additionalProperties);
         }
     }
 }

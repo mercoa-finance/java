@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,19 +32,23 @@ public final class TokenGenerationOptions {
 
     private final Optional<TokenGenerationEntityOptions> entity;
 
+    private final Map<String, Object> additionalProperties;
+
     private TokenGenerationOptions(
             Optional<String> expiresIn,
             Optional<TokenGenerationInvoiceOptions> invoice,
             Optional<TokenGenerationPagesOptions> pages,
             Optional<TokenGenerationStyleOptions> style,
             Optional<TokenGenerationVendorOptions> vendors,
-            Optional<TokenGenerationEntityOptions> entity) {
+            Optional<TokenGenerationEntityOptions> entity,
+            Map<String, Object> additionalProperties) {
         this.expiresIn = expiresIn;
         this.invoice = invoice;
         this.pages = pages;
         this.style = style;
         this.vendors = vendors;
         this.entity = entity;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -82,6 +90,11 @@ public final class TokenGenerationOptions {
         return other instanceof TokenGenerationOptions && equalTo((TokenGenerationOptions) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(TokenGenerationOptions other) {
         return expiresIn.equals(other.expiresIn)
                 && invoice.equals(other.invoice)
@@ -118,6 +131,9 @@ public final class TokenGenerationOptions {
         private Optional<TokenGenerationVendorOptions> vendors = Optional.empty();
 
         private Optional<TokenGenerationEntityOptions> entity = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -198,7 +214,7 @@ public final class TokenGenerationOptions {
         }
 
         public TokenGenerationOptions build() {
-            return new TokenGenerationOptions(expiresIn, invoice, pages, style, vendors, entity);
+            return new TokenGenerationOptions(expiresIn, invoice, pages, style, vendors, entity, additionalProperties);
         }
     }
 }

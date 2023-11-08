@@ -19,29 +19,26 @@ import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = EntityAddPayorsRequest.Builder.class)
-public final class EntityAddPayorsRequest {
-    private final List<String> payors;
+@JsonDeserialize(builder = VendorTrigger.Builder.class)
+public final class VendorTrigger {
+    private final List<String> vendorIds;
 
     private final Map<String, Object> additionalProperties;
 
-    private EntityAddPayorsRequest(List<String> payors, Map<String, Object> additionalProperties) {
-        this.payors = payors;
+    private VendorTrigger(List<String> vendorIds, Map<String, Object> additionalProperties) {
+        this.vendorIds = vendorIds;
         this.additionalProperties = additionalProperties;
     }
 
-    /**
-     * @return List of payor entity IDs to associate with the entity
-     */
-    @JsonProperty("payors")
-    public List<String> getPayors() {
-        return payors;
+    @JsonProperty("vendorIds")
+    public List<String> getVendorIds() {
+        return vendorIds;
     }
 
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof EntityAddPayorsRequest && equalTo((EntityAddPayorsRequest) other);
+        return other instanceof VendorTrigger && equalTo((VendorTrigger) other);
     }
 
     @JsonAnyGetter
@@ -49,13 +46,13 @@ public final class EntityAddPayorsRequest {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(EntityAddPayorsRequest other) {
-        return payors.equals(other.payors);
+    private boolean equalTo(VendorTrigger other) {
+        return vendorIds.equals(other.vendorIds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.payors);
+        return Objects.hash(this.vendorIds);
     }
 
     @Override
@@ -69,37 +66,37 @@ public final class EntityAddPayorsRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private List<String> payors = new ArrayList<>();
+        private List<String> vendorIds = new ArrayList<>();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        public Builder from(EntityAddPayorsRequest other) {
-            payors(other.getPayors());
+        public Builder from(VendorTrigger other) {
+            vendorIds(other.getVendorIds());
             return this;
         }
 
-        @JsonSetter(value = "payors", nulls = Nulls.SKIP)
-        public Builder payors(List<String> payors) {
-            this.payors.clear();
-            this.payors.addAll(payors);
+        @JsonSetter(value = "vendorIds", nulls = Nulls.SKIP)
+        public Builder vendorIds(List<String> vendorIds) {
+            this.vendorIds.clear();
+            this.vendorIds.addAll(vendorIds);
             return this;
         }
 
-        public Builder addPayors(String payors) {
-            this.payors.add(payors);
+        public Builder addVendorIds(String vendorIds) {
+            this.vendorIds.add(vendorIds);
             return this;
         }
 
-        public Builder addAllPayors(List<String> payors) {
-            this.payors.addAll(payors);
+        public Builder addAllVendorIds(List<String> vendorIds) {
+            this.vendorIds.addAll(vendorIds);
             return this;
         }
 
-        public EntityAddPayorsRequest build() {
-            return new EntityAddPayorsRequest(payors, additionalProperties);
+        public VendorTrigger build() {
+            return new VendorTrigger(vendorIds, additionalProperties);
         }
     }
 }

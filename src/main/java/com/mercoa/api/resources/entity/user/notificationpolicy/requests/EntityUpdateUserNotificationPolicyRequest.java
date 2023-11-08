@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.entity.user.notificationpolicy.requests;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -16,8 +20,11 @@ import java.util.Objects;
 public final class EntityUpdateUserNotificationPolicyRequest {
     private final boolean disabled;
 
-    private EntityUpdateUserNotificationPolicyRequest(boolean disabled) {
+    private final Map<String, Object> additionalProperties;
+
+    private EntityUpdateUserNotificationPolicyRequest(boolean disabled, Map<String, Object> additionalProperties) {
         this.disabled = disabled;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("disabled")
@@ -30,6 +37,11 @@ public final class EntityUpdateUserNotificationPolicyRequest {
         if (this == other) return true;
         return other instanceof EntityUpdateUserNotificationPolicyRequest
                 && equalTo((EntityUpdateUserNotificationPolicyRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(EntityUpdateUserNotificationPolicyRequest other) {
@@ -64,6 +76,9 @@ public final class EntityUpdateUserNotificationPolicyRequest {
     public static final class Builder implements DisabledStage, _FinalStage {
         private boolean disabled;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -81,7 +96,7 @@ public final class EntityUpdateUserNotificationPolicyRequest {
 
         @Override
         public EntityUpdateUserNotificationPolicyRequest build() {
-            return new EntityUpdateUserNotificationPolicyRequest(disabled);
+            return new EntityUpdateUserNotificationPolicyRequest(disabled, additionalProperties);
         }
     }
 }

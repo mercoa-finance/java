@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entity.paymentmethod.requests;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,6 +13,8 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodType;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -19,8 +23,11 @@ import java.util.Optional;
 public final class GetAllPaymentMethodsRequest {
     private final Optional<PaymentMethodType> type;
 
-    private GetAllPaymentMethodsRequest(Optional<PaymentMethodType> type) {
+    private final Map<String, Object> additionalProperties;
+
+    private GetAllPaymentMethodsRequest(Optional<PaymentMethodType> type, Map<String, Object> additionalProperties) {
         this.type = type;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -35,6 +42,11 @@ public final class GetAllPaymentMethodsRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof GetAllPaymentMethodsRequest && equalTo((GetAllPaymentMethodsRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(GetAllPaymentMethodsRequest other) {
@@ -59,6 +71,9 @@ public final class GetAllPaymentMethodsRequest {
     public static final class Builder {
         private Optional<PaymentMethodType> type = Optional.empty();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         public Builder from(GetAllPaymentMethodsRequest other) {
@@ -78,7 +93,7 @@ public final class GetAllPaymentMethodsRequest {
         }
 
         public GetAllPaymentMethodsRequest build() {
-            return new GetAllPaymentMethodsRequest(type);
+            return new GetAllPaymentMethodsRequest(type, additionalProperties);
         }
     }
 }

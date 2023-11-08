@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,19 +13,39 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = NotificationPolicyResponse.Builder.class)
 public final class NotificationPolicyResponse {
+    private final boolean disabled;
+
     private final List<String> additionalRoles;
 
     private final NotificationType type;
 
-    private NotificationPolicyResponse(List<String> additionalRoles, NotificationType type) {
+    private final Map<String, Object> additionalProperties;
+
+    private NotificationPolicyResponse(
+            boolean disabled,
+            List<String> additionalRoles,
+            NotificationType type,
+            Map<String, Object> additionalProperties) {
+        this.disabled = disabled;
         this.additionalRoles = additionalRoles;
         this.type = type;
+        this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return True if the selected notification type is disabled for this entity
+     */
+    @JsonProperty("disabled")
+    public boolean getDisabled() {
+        return disabled;
     }
 
     /**
@@ -45,13 +67,18 @@ public final class NotificationPolicyResponse {
         return other instanceof NotificationPolicyResponse && equalTo((NotificationPolicyResponse) other);
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
     private boolean equalTo(NotificationPolicyResponse other) {
-        return additionalRoles.equals(other.additionalRoles) && type.equals(other.type);
+        return disabled == other.disabled && additionalRoles.equals(other.additionalRoles) && type.equals(other.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.additionalRoles, this.type);
+        return Objects.hash(this.disabled, this.additionalRoles, this.type);
     }
 
     @Override
@@ -59,14 +86,18 @@ public final class NotificationPolicyResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static TypeStage builder() {
+    public static DisabledStage builder() {
         return new Builder();
+    }
+
+    public interface DisabledStage {
+        TypeStage disabled(boolean disabled);
+
+        Builder from(NotificationPolicyResponse other);
     }
 
     public interface TypeStage {
         _FinalStage type(NotificationType type);
-
-        Builder from(NotificationPolicyResponse other);
     }
 
     public interface _FinalStage {
@@ -80,17 +111,34 @@ public final class NotificationPolicyResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements TypeStage, _FinalStage {
+    public static final class Builder implements DisabledStage, TypeStage, _FinalStage {
+        private boolean disabled;
+
         private NotificationType type;
 
         private List<String> additionalRoles = new ArrayList<>();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
         @Override
         public Builder from(NotificationPolicyResponse other) {
+            disabled(other.getDisabled());
             additionalRoles(other.getAdditionalRoles());
             type(other.getType());
+            return this;
+        }
+
+        /**
+         * <p>True if the selected notification type is disabled for this entity</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @Override
+        @JsonSetter("disabled")
+        public TypeStage disabled(boolean disabled) {
+            this.disabled = disabled;
             return this;
         }
 
@@ -131,7 +179,7 @@ public final class NotificationPolicyResponse {
 
         @Override
         public NotificationPolicyResponse build() {
-            return new NotificationPolicyResponse(additionalRoles, type);
+            return new NotificationPolicyResponse(disabled, additionalRoles, type, additionalProperties);
         }
     }
 }

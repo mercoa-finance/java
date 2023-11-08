@@ -18,40 +18,24 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = CustomPaymentMethodUpdateRequest.Builder.class)
-public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBaseRequest {
+@JsonDeserialize(builder = BankAccountUpdateRequest.Builder.class)
+public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest {
     private final Optional<Boolean> defaultSource;
 
     private final Optional<Boolean> defaultDestination;
 
-    private final Optional<String> foreignId;
-
     private final Optional<String> accountName;
-
-    private final Optional<String> accountNumber;
-
-    private final Optional<String> schemaId;
-
-    private final Optional<Map<String, String>> data;
 
     private final Map<String, Object> additionalProperties;
 
-    private CustomPaymentMethodUpdateRequest(
+    private BankAccountUpdateRequest(
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
-            Optional<String> foreignId,
             Optional<String> accountName,
-            Optional<String> accountNumber,
-            Optional<String> schemaId,
-            Optional<Map<String, String>> data,
             Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
-        this.foreignId = foreignId;
         this.accountName = accountName;
-        this.accountNumber = accountNumber;
-        this.schemaId = schemaId;
-        this.data = data;
         this.additionalProperties = additionalProperties;
     }
 
@@ -73,44 +57,15 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
         return defaultDestination;
     }
 
-    /**
-     * @return ID for this payment method in your system
-     */
-    @JsonProperty("foreignId")
-    public Optional<String> getForeignId() {
-        return foreignId;
-    }
-
     @JsonProperty("accountName")
     public Optional<String> getAccountName() {
         return accountName;
     }
 
-    @JsonProperty("accountNumber")
-    public Optional<String> getAccountNumber() {
-        return accountNumber;
-    }
-
-    /**
-     * @return Payment method schema used for this payment method. Defines the fields that this payment method contains.
-     */
-    @JsonProperty("schemaId")
-    public Optional<String> getSchemaId() {
-        return schemaId;
-    }
-
-    /**
-     * @return Object of key/value pairs that matches the keys in the linked payment method schema.
-     */
-    @JsonProperty("data")
-    public Optional<Map<String, String>> getData() {
-        return data;
-    }
-
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof CustomPaymentMethodUpdateRequest && equalTo((CustomPaymentMethodUpdateRequest) other);
+        return other instanceof BankAccountUpdateRequest && equalTo((BankAccountUpdateRequest) other);
     }
 
     @JsonAnyGetter
@@ -118,26 +73,15 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
         return this.additionalProperties;
     }
 
-    private boolean equalTo(CustomPaymentMethodUpdateRequest other) {
+    private boolean equalTo(BankAccountUpdateRequest other) {
         return defaultSource.equals(other.defaultSource)
                 && defaultDestination.equals(other.defaultDestination)
-                && foreignId.equals(other.foreignId)
-                && accountName.equals(other.accountName)
-                && accountNumber.equals(other.accountNumber)
-                && schemaId.equals(other.schemaId)
-                && data.equals(other.data);
+                && accountName.equals(other.accountName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                this.defaultSource,
-                this.defaultDestination,
-                this.foreignId,
-                this.accountName,
-                this.accountNumber,
-                this.schemaId,
-                this.data);
+        return Objects.hash(this.defaultSource, this.defaultDestination, this.accountName);
     }
 
     @Override
@@ -155,29 +99,17 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
 
         private Optional<Boolean> defaultDestination = Optional.empty();
 
-        private Optional<String> foreignId = Optional.empty();
-
         private Optional<String> accountName = Optional.empty();
-
-        private Optional<String> accountNumber = Optional.empty();
-
-        private Optional<String> schemaId = Optional.empty();
-
-        private Optional<Map<String, String>> data = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        public Builder from(CustomPaymentMethodUpdateRequest other) {
+        public Builder from(BankAccountUpdateRequest other) {
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
-            foreignId(other.getForeignId());
             accountName(other.getAccountName());
-            accountNumber(other.getAccountNumber());
-            schemaId(other.getSchemaId());
-            data(other.getData());
             return this;
         }
 
@@ -203,17 +135,6 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             return this;
         }
 
-        @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
-        public Builder foreignId(Optional<String> foreignId) {
-            this.foreignId = foreignId;
-            return this;
-        }
-
-        public Builder foreignId(String foreignId) {
-            this.foreignId = Optional.of(foreignId);
-            return this;
-        }
-
         @JsonSetter(value = "accountName", nulls = Nulls.SKIP)
         public Builder accountName(Optional<String> accountName) {
             this.accountName = accountName;
@@ -225,49 +146,8 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             return this;
         }
 
-        @JsonSetter(value = "accountNumber", nulls = Nulls.SKIP)
-        public Builder accountNumber(Optional<String> accountNumber) {
-            this.accountNumber = accountNumber;
-            return this;
-        }
-
-        public Builder accountNumber(String accountNumber) {
-            this.accountNumber = Optional.of(accountNumber);
-            return this;
-        }
-
-        @JsonSetter(value = "schemaId", nulls = Nulls.SKIP)
-        public Builder schemaId(Optional<String> schemaId) {
-            this.schemaId = schemaId;
-            return this;
-        }
-
-        public Builder schemaId(String schemaId) {
-            this.schemaId = Optional.of(schemaId);
-            return this;
-        }
-
-        @JsonSetter(value = "data", nulls = Nulls.SKIP)
-        public Builder data(Optional<Map<String, String>> data) {
-            this.data = data;
-            return this;
-        }
-
-        public Builder data(Map<String, String> data) {
-            this.data = Optional.of(data);
-            return this;
-        }
-
-        public CustomPaymentMethodUpdateRequest build() {
-            return new CustomPaymentMethodUpdateRequest(
-                    defaultSource,
-                    defaultDestination,
-                    foreignId,
-                    accountName,
-                    accountNumber,
-                    schemaId,
-                    data,
-                    additionalProperties);
+        public BankAccountUpdateRequest build() {
+            return new BankAccountUpdateRequest(defaultSource, defaultDestination, accountName, additionalProperties);
         }
     }
 }

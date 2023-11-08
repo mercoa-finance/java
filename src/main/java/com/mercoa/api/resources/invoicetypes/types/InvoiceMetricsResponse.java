@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.invoicetypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -23,11 +27,19 @@ public final class InvoiceMetricsResponse {
 
     private final CurrencyCode currency;
 
-    private InvoiceMetricsResponse(double totalAmount, int totalCount, double averageAmount, CurrencyCode currency) {
+    private final Map<String, Object> additionalProperties;
+
+    private InvoiceMetricsResponse(
+            double totalAmount,
+            int totalCount,
+            double averageAmount,
+            CurrencyCode currency,
+            Map<String, Object> additionalProperties) {
         this.totalAmount = totalAmount;
         this.totalCount = totalCount;
         this.averageAmount = averageAmount;
         this.currency = currency;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("totalAmount")
@@ -54,6 +66,11 @@ public final class InvoiceMetricsResponse {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof InvoiceMetricsResponse && equalTo((InvoiceMetricsResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(InvoiceMetricsResponse other) {
@@ -110,6 +127,9 @@ public final class InvoiceMetricsResponse {
 
         private CurrencyCode currency;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -151,7 +171,7 @@ public final class InvoiceMetricsResponse {
 
         @Override
         public InvoiceMetricsResponse build() {
-            return new InvoiceMetricsResponse(totalAmount, totalCount, averageAmount, currency);
+            return new InvoiceMetricsResponse(totalAmount, totalCount, averageAmount, currency, additionalProperties);
         }
     }
 }

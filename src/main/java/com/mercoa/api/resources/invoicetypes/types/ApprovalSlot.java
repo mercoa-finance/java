@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.invoicetypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -31,19 +35,23 @@ public final class ApprovalSlot {
 
     private final OffsetDateTime date;
 
+    private final Map<String, Object> additionalProperties;
+
     private ApprovalSlot(
             String approvalSlotId,
             Optional<String> assignedUserId,
             ApproverAction action,
             List<String> eligibleRoles,
             List<String> eligibleUserIds,
-            OffsetDateTime date) {
+            OffsetDateTime date,
+            Map<String, Object> additionalProperties) {
         this.approvalSlotId = approvalSlotId;
         this.assignedUserId = assignedUserId;
         this.action = action;
         this.eligibleRoles = eligibleRoles;
         this.eligibleUserIds = eligibleUserIds;
         this.date = date;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -86,6 +94,11 @@ public final class ApprovalSlot {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ApprovalSlot && equalTo((ApprovalSlot) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(ApprovalSlot other) {
@@ -164,6 +177,9 @@ public final class ApprovalSlot {
         private List<String> eligibleRoles = new ArrayList<>();
 
         private Optional<String> assignedUserId = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -262,7 +278,8 @@ public final class ApprovalSlot {
 
         @Override
         public ApprovalSlot build() {
-            return new ApprovalSlot(approvalSlotId, assignedUserId, action, eligibleRoles, eligibleUserIds, date);
+            return new ApprovalSlot(
+                    approvalSlotId, assignedUserId, action, eligibleRoles, eligibleUserIds, date, additionalProperties);
         }
     }
 }

@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.paymentmethodtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -30,19 +34,23 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
 
     private final OffsetDateTime updatedAt;
 
+    private final Map<String, Object> additionalProperties;
+
     private PaymentMethodBaseResponse(
             String id,
             boolean isDefaultSource,
             boolean isDefaultDestination,
             List<CurrencyCode> supportedCurrencies,
             OffsetDateTime createdAt,
-            OffsetDateTime updatedAt) {
+            OffsetDateTime updatedAt,
+            Map<String, Object> additionalProperties) {
         this.id = id;
         this.isDefaultSource = isDefaultSource;
         this.isDefaultDestination = isDefaultDestination;
         this.supportedCurrencies = supportedCurrencies;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("id")
@@ -91,6 +99,11 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof PaymentMethodBaseResponse && equalTo((PaymentMethodBaseResponse) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(PaymentMethodBaseResponse other) {
@@ -174,6 +187,9 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
 
         private List<CurrencyCode> supportedCurrencies = new ArrayList<>();
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -253,7 +269,13 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
         @Override
         public PaymentMethodBaseResponse build() {
             return new PaymentMethodBaseResponse(
-                    id, isDefaultSource, isDefaultDestination, supportedCurrencies, createdAt, updatedAt);
+                    id,
+                    isDefaultSource,
+                    isDefaultDestination,
+                    supportedCurrencies,
+                    createdAt,
+                    updatedAt,
+                    additionalProperties);
         }
     }
 }

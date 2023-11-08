@@ -3,12 +3,16 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -20,10 +24,13 @@ public final class OnboardingOption {
 
     private final boolean required;
 
-    private OnboardingOption(boolean show, boolean edit, boolean required) {
+    private final Map<String, Object> additionalProperties;
+
+    private OnboardingOption(boolean show, boolean edit, boolean required, Map<String, Object> additionalProperties) {
         this.show = show;
         this.edit = edit;
         this.required = required;
+        this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("show")
@@ -45,6 +52,11 @@ public final class OnboardingOption {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof OnboardingOption && equalTo((OnboardingOption) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(OnboardingOption other) {
@@ -91,6 +103,9 @@ public final class OnboardingOption {
 
         private boolean required;
 
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
+
         private Builder() {}
 
         @Override
@@ -124,7 +139,7 @@ public final class OnboardingOption {
 
         @Override
         public OnboardingOption build() {
-            return new OnboardingOption(show, edit, required);
+            return new OnboardingOption(show, edit, required, additionalProperties);
         }
     }
 }

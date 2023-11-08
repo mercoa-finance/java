@@ -3,6 +3,8 @@
  */
 package com.mercoa.api.resources.paymentmethodtypes.types;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -20,9 +24,13 @@ public final class PlaidLinkRequest {
 
     private final Optional<String> publicToken;
 
-    private PlaidLinkRequest(Optional<String> accountId, Optional<String> publicToken) {
+    private final Map<String, Object> additionalProperties;
+
+    private PlaidLinkRequest(
+            Optional<String> accountId, Optional<String> publicToken, Map<String, Object> additionalProperties) {
         this.accountId = accountId;
         this.publicToken = publicToken;
+        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -45,6 +53,11 @@ public final class PlaidLinkRequest {
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof PlaidLinkRequest && equalTo((PlaidLinkRequest) other);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     private boolean equalTo(PlaidLinkRequest other) {
@@ -70,6 +83,9 @@ public final class PlaidLinkRequest {
         private Optional<String> accountId = Optional.empty();
 
         private Optional<String> publicToken = Optional.empty();
+
+        @JsonAnySetter
+        private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
@@ -102,7 +118,7 @@ public final class PlaidLinkRequest {
         }
 
         public PlaidLinkRequest build() {
-            return new PlaidLinkRequest(accountId, publicToken);
+            return new PlaidLinkRequest(accountId, publicToken, additionalProperties);
         }
     }
 }
