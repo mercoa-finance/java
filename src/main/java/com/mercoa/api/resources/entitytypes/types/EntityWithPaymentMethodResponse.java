@@ -14,7 +14,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +21,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = CounterpartyResponse.Builder.class)
-public final class CounterpartyResponse implements IEntityResponse {
+@JsonDeserialize(builder = EntityWithPaymentMethodResponse.Builder.class)
+public final class EntityWithPaymentMethodResponse implements IEntityResponse {
     private final String id;
 
     private final String name;
@@ -56,13 +55,11 @@ public final class CounterpartyResponse implements IEntityResponse {
 
     private final OffsetDateTime updatedAt;
 
-    private final List<PaymentMethodResponse> paymentMethods;
-
-    private final List<CounterpartyNetworkType> counterpartyType;
+    private final Optional<List<PaymentMethodResponse>> paymentMethods;
 
     private final Map<String, Object> additionalProperties;
 
-    private CounterpartyResponse(
+    private EntityWithPaymentMethodResponse(
             String id,
             String name,
             String email,
@@ -79,8 +76,7 @@ public final class CounterpartyResponse implements IEntityResponse {
             boolean ownedByOrg,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
-            List<PaymentMethodResponse> paymentMethods,
-            List<CounterpartyNetworkType> counterpartyType,
+            Optional<List<PaymentMethodResponse>> paymentMethods,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.name = name;
@@ -99,7 +95,6 @@ public final class CounterpartyResponse implements IEntityResponse {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.paymentMethods = paymentMethods;
-        this.counterpartyType = counterpartyType;
         this.additionalProperties = additionalProperties;
     }
 
@@ -224,19 +219,14 @@ public final class CounterpartyResponse implements IEntityResponse {
     }
 
     @JsonProperty("paymentMethods")
-    public List<PaymentMethodResponse> getPaymentMethods() {
+    public Optional<List<PaymentMethodResponse>> getPaymentMethods() {
         return paymentMethods;
-    }
-
-    @JsonProperty("counterpartyType")
-    public List<CounterpartyNetworkType> getCounterpartyType() {
-        return counterpartyType;
     }
 
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof CounterpartyResponse && equalTo((CounterpartyResponse) other);
+        return other instanceof EntityWithPaymentMethodResponse && equalTo((EntityWithPaymentMethodResponse) other);
     }
 
     @JsonAnyGetter
@@ -244,7 +234,7 @@ public final class CounterpartyResponse implements IEntityResponse {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(CounterpartyResponse other) {
+    private boolean equalTo(EntityWithPaymentMethodResponse other) {
         return id.equals(other.id)
                 && name.equals(other.name)
                 && email.equals(other.email)
@@ -261,8 +251,7 @@ public final class CounterpartyResponse implements IEntityResponse {
                 && ownedByOrg == other.ownedByOrg
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt)
-                && paymentMethods.equals(other.paymentMethods)
-                && counterpartyType.equals(other.counterpartyType);
+                && paymentMethods.equals(other.paymentMethods);
     }
 
     @Override
@@ -284,8 +273,7 @@ public final class CounterpartyResponse implements IEntityResponse {
                 this.ownedByOrg,
                 this.createdAt,
                 this.updatedAt,
-                this.paymentMethods,
-                this.counterpartyType);
+                this.paymentMethods);
     }
 
     @Override
@@ -300,7 +288,7 @@ public final class CounterpartyResponse implements IEntityResponse {
     public interface IdStage {
         NameStage id(String id);
 
-        Builder from(CounterpartyResponse other);
+        Builder from(EntityWithPaymentMethodResponse other);
     }
 
     public interface NameStage {
@@ -352,7 +340,7 @@ public final class CounterpartyResponse implements IEntityResponse {
     }
 
     public interface _FinalStage {
-        CounterpartyResponse build();
+        EntityWithPaymentMethodResponse build();
 
         _FinalStage foreignId(Optional<String> foreignId);
 
@@ -366,17 +354,9 @@ public final class CounterpartyResponse implements IEntityResponse {
 
         _FinalStage emailToAlias(List<String> emailToAlias);
 
+        _FinalStage paymentMethods(Optional<List<PaymentMethodResponse>> paymentMethods);
+
         _FinalStage paymentMethods(List<PaymentMethodResponse> paymentMethods);
-
-        _FinalStage addPaymentMethods(PaymentMethodResponse paymentMethods);
-
-        _FinalStage addAllPaymentMethods(List<PaymentMethodResponse> paymentMethods);
-
-        _FinalStage counterpartyType(List<CounterpartyNetworkType> counterpartyType);
-
-        _FinalStage addCounterpartyType(CounterpartyNetworkType counterpartyType);
-
-        _FinalStage addAllCounterpartyType(List<CounterpartyNetworkType> counterpartyType);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -421,9 +401,7 @@ public final class CounterpartyResponse implements IEntityResponse {
 
         private OffsetDateTime updatedAt;
 
-        private List<CounterpartyNetworkType> counterpartyType = new ArrayList<>();
-
-        private List<PaymentMethodResponse> paymentMethods = new ArrayList<>();
+        private Optional<List<PaymentMethodResponse>> paymentMethods = Optional.empty();
 
         private Optional<List<String>> emailToAlias = Optional.empty();
 
@@ -437,7 +415,7 @@ public final class CounterpartyResponse implements IEntityResponse {
         private Builder() {}
 
         @Override
-        public Builder from(CounterpartyResponse other) {
+        public Builder from(EntityWithPaymentMethodResponse other) {
             id(other.getId());
             name(other.getName());
             email(other.getEmail());
@@ -455,7 +433,6 @@ public final class CounterpartyResponse implements IEntityResponse {
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             paymentMethods(other.getPaymentMethods());
-            counterpartyType(other.getCounterpartyType());
             return this;
         }
 
@@ -571,42 +548,15 @@ public final class CounterpartyResponse implements IEntityResponse {
         }
 
         @Override
-        public _FinalStage addAllCounterpartyType(List<CounterpartyNetworkType> counterpartyType) {
-            this.counterpartyType.addAll(counterpartyType);
-            return this;
-        }
-
-        @Override
-        public _FinalStage addCounterpartyType(CounterpartyNetworkType counterpartyType) {
-            this.counterpartyType.add(counterpartyType);
-            return this;
-        }
-
-        @Override
-        @JsonSetter(value = "counterpartyType", nulls = Nulls.SKIP)
-        public _FinalStage counterpartyType(List<CounterpartyNetworkType> counterpartyType) {
-            this.counterpartyType.clear();
-            this.counterpartyType.addAll(counterpartyType);
-            return this;
-        }
-
-        @Override
-        public _FinalStage addAllPaymentMethods(List<PaymentMethodResponse> paymentMethods) {
-            this.paymentMethods.addAll(paymentMethods);
-            return this;
-        }
-
-        @Override
-        public _FinalStage addPaymentMethods(PaymentMethodResponse paymentMethods) {
-            this.paymentMethods.add(paymentMethods);
+        public _FinalStage paymentMethods(List<PaymentMethodResponse> paymentMethods) {
+            this.paymentMethods = Optional.of(paymentMethods);
             return this;
         }
 
         @Override
         @JsonSetter(value = "paymentMethods", nulls = Nulls.SKIP)
-        public _FinalStage paymentMethods(List<PaymentMethodResponse> paymentMethods) {
-            this.paymentMethods.clear();
-            this.paymentMethods.addAll(paymentMethods);
+        public _FinalStage paymentMethods(Optional<List<PaymentMethodResponse>> paymentMethods) {
+            this.paymentMethods = paymentMethods;
             return this;
         }
 
@@ -662,8 +612,8 @@ public final class CounterpartyResponse implements IEntityResponse {
         }
 
         @Override
-        public CounterpartyResponse build() {
-            return new CounterpartyResponse(
+        public EntityWithPaymentMethodResponse build() {
+            return new EntityWithPaymentMethodResponse(
                     id,
                     name,
                     email,
@@ -681,7 +631,6 @@ public final class CounterpartyResponse implements IEntityResponse {
                     createdAt,
                     updatedAt,
                     paymentMethods,
-                    counterpartyType,
                     additionalProperties);
         }
     }

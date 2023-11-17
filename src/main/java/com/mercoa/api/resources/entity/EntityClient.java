@@ -78,9 +78,13 @@ public class EntityClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("entity");
-        if (request.getOwnedByOrg().isPresent()) {
+        if (request.getPaymentMethods().isPresent()) {
             httpUrl.addQueryParameter(
-                    "ownedByOrg", request.getOwnedByOrg().get().toString());
+                    "paymentMethods", request.getPaymentMethods().get().toString());
+        }
+        if (request.getIsCustomer().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "isCustomer", request.getIsCustomer().get().toString());
         }
         if (request.getForeignId().isPresent()) {
             httpUrl.addQueryParameter("foreignId", request.getForeignId().get());
@@ -103,6 +107,10 @@ public class EntityClient {
         if (request.getStartingAfter().isPresent()) {
             httpUrl.addQueryParameter(
                     "startingAfter", request.getStartingAfter().get());
+        }
+        if (request.getOwnedByOrg().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "ownedByOrg", request.getOwnedByOrg().get().toString());
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -395,7 +403,7 @@ public class EntityClient {
     }
 
     /**
-     * Generate an onboarding link for the entity. The onboarding link will be valid for 24 hours.
+     * Generate an onboarding link for the entity.
      */
     public String getOnboardingLink(String entityId, GenerateOnboardingLink request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -404,6 +412,9 @@ public class EntityClient {
                 .addPathSegment(entityId)
                 .addPathSegments("onboarding");
         httpUrl.addQueryParameter("type", request.getType().toString());
+        if (request.getExpiresIn().isPresent()) {
+            httpUrl.addQueryParameter("expiresIn", request.getExpiresIn().get());
+        }
         if (request.getConnectedEntityId().isPresent()) {
             httpUrl.addQueryParameter(
                     "connectedEntityId", request.getConnectedEntityId().get());
@@ -429,14 +440,14 @@ public class EntityClient {
     }
 
     /**
-     * Generate an onboarding link for the entity. The onboarding link will be valid for 24 hours.
+     * Generate an onboarding link for the entity.
      */
     public String getOnboardingLink(String entityId, GenerateOnboardingLink request) {
         return getOnboardingLink(entityId, request, null);
     }
 
     /**
-     * Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity. The onboarding link will be valid for 7 days.
+     * Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity.
      */
     public void sendOnboardingLink(String entityId, SendOnboardingLink request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -445,6 +456,9 @@ public class EntityClient {
                 .addPathSegment(entityId)
                 .addPathSegments("onboarding");
         httpUrl.addQueryParameter("type", request.getType().toString());
+        if (request.getExpiresIn().isPresent()) {
+            httpUrl.addQueryParameter("expiresIn", request.getExpiresIn().get());
+        }
         if (request.getConnectedEntityId().isPresent()) {
             httpUrl.addQueryParameter(
                     "connectedEntityId", request.getConnectedEntityId().get());
@@ -469,7 +483,7 @@ public class EntityClient {
     }
 
     /**
-     * Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity. The onboarding link will be valid for 7 days.
+     * Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity.
      */
     public void sendOnboardingLink(String entityId, SendOnboardingLink request) {
         sendOnboardingLink(entityId, request, null);

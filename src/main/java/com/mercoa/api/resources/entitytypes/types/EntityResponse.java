@@ -34,7 +34,7 @@ public final class EntityResponse implements IEntityResponse {
 
     private final Optional<List<String>> emailToAlias;
 
-    private final boolean ownedByOrg;
+    private final boolean isCustomer;
 
     private final AccountType accountType;
 
@@ -47,6 +47,8 @@ public final class EntityResponse implements IEntityResponse {
     private final boolean isPayor;
 
     private final boolean isPayee;
+
+    private final boolean ownedByOrg;
 
     private final OffsetDateTime createdAt;
 
@@ -61,13 +63,14 @@ public final class EntityResponse implements IEntityResponse {
             Optional<String> foreignId,
             Optional<String> emailTo,
             Optional<List<String>> emailToAlias,
-            boolean ownedByOrg,
+            boolean isCustomer,
             AccountType accountType,
             ProfileResponse profile,
             EntityStatus status,
             boolean acceptedTos,
             boolean isPayor,
             boolean isPayee,
+            boolean ownedByOrg,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Map<String, Object> additionalProperties) {
@@ -77,13 +80,14 @@ public final class EntityResponse implements IEntityResponse {
         this.foreignId = foreignId;
         this.emailTo = emailTo;
         this.emailToAlias = emailToAlias;
-        this.ownedByOrg = ownedByOrg;
+        this.isCustomer = isCustomer;
         this.accountType = accountType;
         this.profile = profile;
         this.status = status;
         this.acceptedTos = acceptedTos;
         this.isPayor = isPayor;
         this.isPayee = isPayee;
+        this.ownedByOrg = ownedByOrg;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
@@ -137,10 +141,10 @@ public final class EntityResponse implements IEntityResponse {
     /**
      * @return True if this entity has a direct relationship with your organization.
      */
-    @JsonProperty("ownedByOrg")
+    @JsonProperty("isCustomer")
     @Override
-    public boolean getOwnedByOrg() {
-        return ownedByOrg;
+    public boolean getIsCustomer() {
+        return isCustomer;
     }
 
     @JsonProperty("accountType")
@@ -188,6 +192,15 @@ public final class EntityResponse implements IEntityResponse {
         return isPayee;
     }
 
+    /**
+     * @return [DEPRECATED - use isCustomer] - True if this entity has a direct relationship with your organization.
+     */
+    @JsonProperty("ownedByOrg")
+    @Override
+    public boolean getOwnedByOrg() {
+        return ownedByOrg;
+    }
+
     @JsonProperty("createdAt")
     @Override
     public OffsetDateTime getCreatedAt() {
@@ -218,13 +231,14 @@ public final class EntityResponse implements IEntityResponse {
                 && foreignId.equals(other.foreignId)
                 && emailTo.equals(other.emailTo)
                 && emailToAlias.equals(other.emailToAlias)
-                && ownedByOrg == other.ownedByOrg
+                && isCustomer == other.isCustomer
                 && accountType.equals(other.accountType)
                 && profile.equals(other.profile)
                 && status.equals(other.status)
                 && acceptedTos == other.acceptedTos
                 && isPayor == other.isPayor
                 && isPayee == other.isPayee
+                && ownedByOrg == other.ownedByOrg
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt);
     }
@@ -238,13 +252,14 @@ public final class EntityResponse implements IEntityResponse {
                 this.foreignId,
                 this.emailTo,
                 this.emailToAlias,
-                this.ownedByOrg,
+                this.isCustomer,
                 this.accountType,
                 this.profile,
                 this.status,
                 this.acceptedTos,
                 this.isPayor,
                 this.isPayee,
+                this.ownedByOrg,
                 this.createdAt,
                 this.updatedAt);
     }
@@ -269,11 +284,11 @@ public final class EntityResponse implements IEntityResponse {
     }
 
     public interface EmailStage {
-        OwnedByOrgStage email(String email);
+        IsCustomerStage email(String email);
     }
 
-    public interface OwnedByOrgStage {
-        AccountTypeStage ownedByOrg(boolean ownedByOrg);
+    public interface IsCustomerStage {
+        AccountTypeStage isCustomer(boolean isCustomer);
     }
 
     public interface AccountTypeStage {
@@ -297,7 +312,11 @@ public final class EntityResponse implements IEntityResponse {
     }
 
     public interface IsPayeeStage {
-        CreatedAtStage isPayee(boolean isPayee);
+        OwnedByOrgStage isPayee(boolean isPayee);
+    }
+
+    public interface OwnedByOrgStage {
+        CreatedAtStage ownedByOrg(boolean ownedByOrg);
     }
 
     public interface CreatedAtStage {
@@ -329,13 +348,14 @@ public final class EntityResponse implements IEntityResponse {
             implements IdStage,
                     NameStage,
                     EmailStage,
-                    OwnedByOrgStage,
+                    IsCustomerStage,
                     AccountTypeStage,
                     ProfileStage,
                     StatusStage,
                     AcceptedTosStage,
                     IsPayorStage,
                     IsPayeeStage,
+                    OwnedByOrgStage,
                     CreatedAtStage,
                     UpdatedAtStage,
                     _FinalStage {
@@ -345,7 +365,7 @@ public final class EntityResponse implements IEntityResponse {
 
         private String email;
 
-        private boolean ownedByOrg;
+        private boolean isCustomer;
 
         private AccountType accountType;
 
@@ -358,6 +378,8 @@ public final class EntityResponse implements IEntityResponse {
         private boolean isPayor;
 
         private boolean isPayee;
+
+        private boolean ownedByOrg;
 
         private OffsetDateTime createdAt;
 
@@ -382,13 +404,14 @@ public final class EntityResponse implements IEntityResponse {
             foreignId(other.getForeignId());
             emailTo(other.getEmailTo());
             emailToAlias(other.getEmailToAlias());
-            ownedByOrg(other.getOwnedByOrg());
+            isCustomer(other.getIsCustomer());
             accountType(other.getAccountType());
             profile(other.getProfile());
             status(other.getStatus());
             acceptedTos(other.getAcceptedTos());
             isPayor(other.getIsPayor());
             isPayee(other.getIsPayee());
+            ownedByOrg(other.getOwnedByOrg());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             return this;
@@ -410,7 +433,7 @@ public final class EntityResponse implements IEntityResponse {
 
         @Override
         @JsonSetter("email")
-        public OwnedByOrgStage email(String email) {
+        public IsCustomerStage email(String email) {
             this.email = email;
             return this;
         }
@@ -420,9 +443,9 @@ public final class EntityResponse implements IEntityResponse {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @Override
-        @JsonSetter("ownedByOrg")
-        public AccountTypeStage ownedByOrg(boolean ownedByOrg) {
-            this.ownedByOrg = ownedByOrg;
+        @JsonSetter("isCustomer")
+        public AccountTypeStage isCustomer(boolean isCustomer) {
+            this.isCustomer = isCustomer;
             return this;
         }
 
@@ -475,8 +498,19 @@ public final class EntityResponse implements IEntityResponse {
          */
         @Override
         @JsonSetter("isPayee")
-        public CreatedAtStage isPayee(boolean isPayee) {
+        public OwnedByOrgStage isPayee(boolean isPayee) {
             this.isPayee = isPayee;
+            return this;
+        }
+
+        /**
+         * <p>[DEPRECATED - use isCustomer] - True if this entity has a direct relationship with your organization.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @Override
+        @JsonSetter("ownedByOrg")
+        public CreatedAtStage ownedByOrg(boolean ownedByOrg) {
+            this.ownedByOrg = ownedByOrg;
             return this;
         }
 
@@ -554,13 +588,14 @@ public final class EntityResponse implements IEntityResponse {
                     foreignId,
                     emailTo,
                     emailToAlias,
-                    ownedByOrg,
+                    isCustomer,
                     accountType,
                     profile,
                     status,
                     acceptedTos,
                     isPayor,
                     isPayee,
+                    ownedByOrg,
                     createdAt,
                     updatedAt,
                     additionalProperties);

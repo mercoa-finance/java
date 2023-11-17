@@ -27,7 +27,7 @@ public final class EntityUpdateRequest {
 
     private final Optional<List<String>> emailToAlias;
 
-    private final Optional<Boolean> ownedByOrg;
+    private final Optional<Boolean> isCustomer;
 
     private final Optional<AccountType> accountType;
 
@@ -39,28 +39,32 @@ public final class EntityUpdateRequest {
 
     private final Optional<String> logo;
 
+    private final Optional<Boolean> ownedByOrg;
+
     private final Map<String, Object> additionalProperties;
 
     private EntityUpdateRequest(
             Optional<String> foreignId,
             Optional<String> emailTo,
             Optional<List<String>> emailToAlias,
-            Optional<Boolean> ownedByOrg,
+            Optional<Boolean> isCustomer,
             Optional<AccountType> accountType,
             Optional<ProfileRequest> profile,
             Optional<Boolean> isPayor,
             Optional<Boolean> isPayee,
             Optional<String> logo,
+            Optional<Boolean> ownedByOrg,
             Map<String, Object> additionalProperties) {
         this.foreignId = foreignId;
         this.emailTo = emailTo;
         this.emailToAlias = emailToAlias;
-        this.ownedByOrg = ownedByOrg;
+        this.isCustomer = isCustomer;
         this.accountType = accountType;
         this.profile = profile;
         this.isPayor = isPayor;
         this.isPayee = isPayee;
         this.logo = logo;
+        this.ownedByOrg = ownedByOrg;
         this.additionalProperties = additionalProperties;
     }
 
@@ -89,11 +93,11 @@ public final class EntityUpdateRequest {
     }
 
     /**
-     * @return If this entity has a direct relationship with your organization, set this to true. Otherwise, set to false.
+     * @return If this entity has a direct relationship with your organization (e.g your direct customer or client), set this to true. Otherwise, set to false (e.g your customer's vendors).
      */
-    @JsonProperty("ownedByOrg")
-    public Optional<Boolean> getOwnedByOrg() {
-        return ownedByOrg;
+    @JsonProperty("isCustomer")
+    public Optional<Boolean> getIsCustomer() {
+        return isCustomer;
     }
 
     @JsonProperty("accountType")
@@ -130,6 +134,14 @@ public final class EntityUpdateRequest {
         return logo;
     }
 
+    /**
+     * @return [DEPRECATED - use isCustomer] - If this entity has a direct relationship with your organization, set this to true. Otherwise, set to false.
+     */
+    @JsonProperty("ownedByOrg")
+    public Optional<Boolean> getOwnedByOrg() {
+        return ownedByOrg;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -145,12 +157,13 @@ public final class EntityUpdateRequest {
         return foreignId.equals(other.foreignId)
                 && emailTo.equals(other.emailTo)
                 && emailToAlias.equals(other.emailToAlias)
-                && ownedByOrg.equals(other.ownedByOrg)
+                && isCustomer.equals(other.isCustomer)
                 && accountType.equals(other.accountType)
                 && profile.equals(other.profile)
                 && isPayor.equals(other.isPayor)
                 && isPayee.equals(other.isPayee)
-                && logo.equals(other.logo);
+                && logo.equals(other.logo)
+                && ownedByOrg.equals(other.ownedByOrg);
     }
 
     @Override
@@ -159,12 +172,13 @@ public final class EntityUpdateRequest {
                 this.foreignId,
                 this.emailTo,
                 this.emailToAlias,
-                this.ownedByOrg,
+                this.isCustomer,
                 this.accountType,
                 this.profile,
                 this.isPayor,
                 this.isPayee,
-                this.logo);
+                this.logo,
+                this.ownedByOrg);
     }
 
     @Override
@@ -184,7 +198,7 @@ public final class EntityUpdateRequest {
 
         private Optional<List<String>> emailToAlias = Optional.empty();
 
-        private Optional<Boolean> ownedByOrg = Optional.empty();
+        private Optional<Boolean> isCustomer = Optional.empty();
 
         private Optional<AccountType> accountType = Optional.empty();
 
@@ -196,6 +210,8 @@ public final class EntityUpdateRequest {
 
         private Optional<String> logo = Optional.empty();
 
+        private Optional<Boolean> ownedByOrg = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -205,12 +221,13 @@ public final class EntityUpdateRequest {
             foreignId(other.getForeignId());
             emailTo(other.getEmailTo());
             emailToAlias(other.getEmailToAlias());
-            ownedByOrg(other.getOwnedByOrg());
+            isCustomer(other.getIsCustomer());
             accountType(other.getAccountType());
             profile(other.getProfile());
             isPayor(other.getIsPayor());
             isPayee(other.getIsPayee());
             logo(other.getLogo());
+            ownedByOrg(other.getOwnedByOrg());
             return this;
         }
 
@@ -247,14 +264,14 @@ public final class EntityUpdateRequest {
             return this;
         }
 
-        @JsonSetter(value = "ownedByOrg", nulls = Nulls.SKIP)
-        public Builder ownedByOrg(Optional<Boolean> ownedByOrg) {
-            this.ownedByOrg = ownedByOrg;
+        @JsonSetter(value = "isCustomer", nulls = Nulls.SKIP)
+        public Builder isCustomer(Optional<Boolean> isCustomer) {
+            this.isCustomer = isCustomer;
             return this;
         }
 
-        public Builder ownedByOrg(Boolean ownedByOrg) {
-            this.ownedByOrg = Optional.of(ownedByOrg);
+        public Builder isCustomer(Boolean isCustomer) {
+            this.isCustomer = Optional.of(isCustomer);
             return this;
         }
 
@@ -313,17 +330,29 @@ public final class EntityUpdateRequest {
             return this;
         }
 
+        @JsonSetter(value = "ownedByOrg", nulls = Nulls.SKIP)
+        public Builder ownedByOrg(Optional<Boolean> ownedByOrg) {
+            this.ownedByOrg = ownedByOrg;
+            return this;
+        }
+
+        public Builder ownedByOrg(Boolean ownedByOrg) {
+            this.ownedByOrg = Optional.of(ownedByOrg);
+            return this;
+        }
+
         public EntityUpdateRequest build() {
             return new EntityUpdateRequest(
                     foreignId,
                     emailTo,
                     emailToAlias,
-                    ownedByOrg,
+                    isCustomer,
                     accountType,
                     profile,
                     isPayor,
                     isPayee,
                     logo,
+                    ownedByOrg,
                     additionalProperties);
         }
     }

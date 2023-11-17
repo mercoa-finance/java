@@ -83,7 +83,9 @@ public final class InvoiceResponse {
 
     private final Map<String, String> metadata;
 
-    private final Optional<EntityUserResponse> createdBy;
+    private final Optional<String> foreignId;
+
+    private final Optional<EntityUserResponse> creatorUser;
 
     private final Optional<InvoiceFailureType> failureType;
 
@@ -125,7 +127,8 @@ public final class InvoiceResponse {
             List<ApprovalSlot> approvers,
             List<ApprovalPolicyResponse> approvalPolicy,
             Map<String, String> metadata,
-            Optional<EntityUserResponse> createdBy,
+            Optional<String> foreignId,
+            Optional<EntityUserResponse> creatorUser,
             Optional<InvoiceFailureType> failureType,
             Optional<OffsetDateTime> processedAt,
             OffsetDateTime createdAt,
@@ -159,7 +162,8 @@ public final class InvoiceResponse {
         this.approvers = approvers;
         this.approvalPolicy = approvalPolicy;
         this.metadata = metadata;
-        this.createdBy = createdBy;
+        this.foreignId = foreignId;
+        this.creatorUser = creatorUser;
         this.failureType = failureType;
         this.processedAt = processedAt;
         this.createdAt = createdAt;
@@ -192,7 +196,7 @@ public final class InvoiceResponse {
     }
 
     /**
-     * @return Date the invoice was created.
+     * @return Date the invoice was issued.
      */
     @JsonProperty("invoiceDate")
     public Optional<OffsetDateTime> getInvoiceDate() {
@@ -328,11 +332,19 @@ public final class InvoiceResponse {
     }
 
     /**
+     * @return The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.
+     */
+    @JsonProperty("foreignId")
+    public Optional<String> getForeignId() {
+        return foreignId;
+    }
+
+    /**
      * @return Entity user who created this invoice.
      */
-    @JsonProperty("createdBy")
-    public Optional<EntityUserResponse> getCreatedBy() {
-        return createdBy;
+    @JsonProperty("creatorUser")
+    public Optional<EntityUserResponse> getCreatorUser() {
+        return creatorUser;
     }
 
     /**
@@ -405,7 +417,8 @@ public final class InvoiceResponse {
                 && approvers.equals(other.approvers)
                 && approvalPolicy.equals(other.approvalPolicy)
                 && metadata.equals(other.metadata)
-                && createdBy.equals(other.createdBy)
+                && foreignId.equals(other.foreignId)
+                && creatorUser.equals(other.creatorUser)
                 && failureType.equals(other.failureType)
                 && processedAt.equals(other.processedAt)
                 && createdAt.equals(other.createdAt)
@@ -443,7 +456,8 @@ public final class InvoiceResponse {
                 this.approvers,
                 this.approvalPolicy,
                 this.metadata,
-                this.createdBy,
+                this.foreignId,
+                this.creatorUser,
                 this.failureType,
                 this.processedAt,
                 this.createdAt,
@@ -587,9 +601,13 @@ public final class InvoiceResponse {
 
         _FinalStage metadata(String key, String value);
 
-        _FinalStage createdBy(Optional<EntityUserResponse> createdBy);
+        _FinalStage foreignId(Optional<String> foreignId);
 
-        _FinalStage createdBy(EntityUserResponse createdBy);
+        _FinalStage foreignId(String foreignId);
+
+        _FinalStage creatorUser(Optional<EntityUserResponse> creatorUser);
+
+        _FinalStage creatorUser(EntityUserResponse creatorUser);
 
         _FinalStage failureType(Optional<InvoiceFailureType> failureType);
 
@@ -631,7 +649,9 @@ public final class InvoiceResponse {
 
         private Optional<InvoiceFailureType> failureType = Optional.empty();
 
-        private Optional<EntityUserResponse> createdBy = Optional.empty();
+        private Optional<EntityUserResponse> creatorUser = Optional.empty();
+
+        private Optional<String> foreignId = Optional.empty();
 
         private Map<String, String> metadata = new LinkedHashMap<>();
 
@@ -713,7 +733,8 @@ public final class InvoiceResponse {
             approvers(other.getApprovers());
             approvalPolicy(other.getApprovalPolicy());
             metadata(other.getMetadata());
-            createdBy(other.getCreatedBy());
+            foreignId(other.getForeignId());
+            creatorUser(other.getCreatorUser());
             failureType(other.getFailureType());
             processedAt(other.getProcessedAt());
             createdAt(other.getCreatedAt());
@@ -824,15 +845,32 @@ public final class InvoiceResponse {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @Override
-        public _FinalStage createdBy(EntityUserResponse createdBy) {
-            this.createdBy = Optional.of(createdBy);
+        public _FinalStage creatorUser(EntityUserResponse creatorUser) {
+            this.creatorUser = Optional.of(creatorUser);
             return this;
         }
 
         @Override
-        @JsonSetter(value = "createdBy", nulls = Nulls.SKIP)
-        public _FinalStage createdBy(Optional<EntityUserResponse> createdBy) {
-            this.createdBy = createdBy;
+        @JsonSetter(value = "creatorUser", nulls = Nulls.SKIP)
+        public _FinalStage creatorUser(Optional<EntityUserResponse> creatorUser) {
+            this.creatorUser = creatorUser;
+            return this;
+        }
+
+        /**
+         * <p>The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @Override
+        public _FinalStage foreignId(String foreignId) {
+            this.foreignId = Optional.of(foreignId);
+            return this;
+        }
+
+        @Override
+        @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
+        public _FinalStage foreignId(Optional<String> foreignId) {
+            this.foreignId = foreignId;
             return this;
         }
 
@@ -1138,7 +1176,7 @@ public final class InvoiceResponse {
         }
 
         /**
-         * <p>Date the invoice was created.</p>
+         * <p>Date the invoice was issued.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @Override
@@ -1214,7 +1252,8 @@ public final class InvoiceResponse {
                     approvers,
                     approvalPolicy,
                     metadata,
-                    createdBy,
+                    foreignId,
+                    creatorUser,
                     failureType,
                     processedAt,
                     createdAt,

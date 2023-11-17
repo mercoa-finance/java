@@ -59,11 +59,17 @@ public final class InvoiceRequest {
 
     private final Optional<Map<String, String>> metadata;
 
+    private final Optional<String> foreignId;
+
     private final Optional<String> uploadedImage;
 
-    private final Optional<String> createdById;
+    private final Optional<String> creatorEntityId;
+
+    private final Optional<String> creatorUserId;
 
     private final Optional<String> creatorId;
+
+    private final Optional<String> createdById;
 
     private final Map<String, Object> additionalProperties;
 
@@ -86,9 +92,12 @@ public final class InvoiceRequest {
             Optional<String> paymentDestinationId,
             Optional<List<InvoiceLineItemRequest>> lineItems,
             Optional<Map<String, String>> metadata,
+            Optional<String> foreignId,
             Optional<String> uploadedImage,
-            Optional<String> createdById,
+            Optional<String> creatorEntityId,
+            Optional<String> creatorUserId,
             Optional<String> creatorId,
+            Optional<String> createdById,
             Map<String, Object> additionalProperties) {
         this.status = status;
         this.amount = amount;
@@ -108,9 +117,12 @@ public final class InvoiceRequest {
         this.paymentDestinationId = paymentDestinationId;
         this.lineItems = lineItems;
         this.metadata = metadata;
+        this.foreignId = foreignId;
         this.uploadedImage = uploadedImage;
-        this.createdById = createdById;
+        this.creatorEntityId = creatorEntityId;
+        this.creatorUserId = creatorUserId;
         this.creatorId = creatorId;
+        this.createdById = createdById;
         this.additionalProperties = additionalProperties;
     }
 
@@ -133,7 +145,7 @@ public final class InvoiceRequest {
     }
 
     /**
-     * @return Date the invoice was created.
+     * @return Date the invoice was issued.
      */
     @JsonProperty("invoiceDate")
     public Optional<OffsetDateTime> getInvoiceDate() {
@@ -235,6 +247,14 @@ public final class InvoiceRequest {
     }
 
     /**
+     * @return The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.
+     */
+    @JsonProperty("foreignId")
+    public Optional<String> getForeignId() {
+        return foreignId;
+    }
+
+    /**
      * @return Base64 encoded image or PDF of invoice. PNG, JPG, and PDF are supported. 10MB max.
      */
     @JsonProperty("uploadedImage")
@@ -243,19 +263,35 @@ public final class InvoiceRequest {
     }
 
     /**
-     * @return ID of entity user who created this invoice.
+     * @return ID of entity who created this invoice.
      */
-    @JsonProperty("createdById")
-    public Optional<String> getCreatedById() {
-        return createdById;
+    @JsonProperty("creatorEntityId")
+    public Optional<String> getCreatorEntityId() {
+        return creatorEntityId;
     }
 
     /**
-     * @return ID of entity who created this invoice. If not provided, will default to the payerId. If payerId is not provided, will default to the vendorId.
+     * @return ID of entity user who created this invoice.
+     */
+    @JsonProperty("creatorUserId")
+    public Optional<String> getCreatorUserId() {
+        return creatorUserId;
+    }
+
+    /**
+     * @return [DEPRECATED - use creatorEntityId] ID of entity who created this invoice.
      */
     @JsonProperty("creatorId")
     public Optional<String> getCreatorId() {
         return creatorId;
+    }
+
+    /**
+     * @return [DEPRECATED - use creatorUserId] ID of entity user who created this invoice.
+     */
+    @JsonProperty("createdById")
+    public Optional<String> getCreatedById() {
+        return createdById;
     }
 
     @Override
@@ -288,9 +324,12 @@ public final class InvoiceRequest {
                 && paymentDestinationId.equals(other.paymentDestinationId)
                 && lineItems.equals(other.lineItems)
                 && metadata.equals(other.metadata)
+                && foreignId.equals(other.foreignId)
                 && uploadedImage.equals(other.uploadedImage)
-                && createdById.equals(other.createdById)
-                && creatorId.equals(other.creatorId);
+                && creatorEntityId.equals(other.creatorEntityId)
+                && creatorUserId.equals(other.creatorUserId)
+                && creatorId.equals(other.creatorId)
+                && createdById.equals(other.createdById);
     }
 
     @Override
@@ -314,9 +353,12 @@ public final class InvoiceRequest {
                 this.paymentDestinationId,
                 this.lineItems,
                 this.metadata,
+                this.foreignId,
                 this.uploadedImage,
-                this.createdById,
-                this.creatorId);
+                this.creatorEntityId,
+                this.creatorUserId,
+                this.creatorId,
+                this.createdById);
     }
 
     @Override
@@ -366,11 +408,17 @@ public final class InvoiceRequest {
 
         private Optional<Map<String, String>> metadata = Optional.empty();
 
+        private Optional<String> foreignId = Optional.empty();
+
         private Optional<String> uploadedImage = Optional.empty();
 
-        private Optional<String> createdById = Optional.empty();
+        private Optional<String> creatorEntityId = Optional.empty();
+
+        private Optional<String> creatorUserId = Optional.empty();
 
         private Optional<String> creatorId = Optional.empty();
+
+        private Optional<String> createdById = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -396,9 +444,12 @@ public final class InvoiceRequest {
             paymentDestinationId(other.getPaymentDestinationId());
             lineItems(other.getLineItems());
             metadata(other.getMetadata());
+            foreignId(other.getForeignId());
             uploadedImage(other.getUploadedImage());
-            createdById(other.getCreatedById());
+            creatorEntityId(other.getCreatorEntityId());
+            creatorUserId(other.getCreatorUserId());
             creatorId(other.getCreatorId());
+            createdById(other.getCreatedById());
             return this;
         }
 
@@ -600,6 +651,17 @@ public final class InvoiceRequest {
             return this;
         }
 
+        @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
+        public Builder foreignId(Optional<String> foreignId) {
+            this.foreignId = foreignId;
+            return this;
+        }
+
+        public Builder foreignId(String foreignId) {
+            this.foreignId = Optional.of(foreignId);
+            return this;
+        }
+
         @JsonSetter(value = "uploadedImage", nulls = Nulls.SKIP)
         public Builder uploadedImage(Optional<String> uploadedImage) {
             this.uploadedImage = uploadedImage;
@@ -611,14 +673,25 @@ public final class InvoiceRequest {
             return this;
         }
 
-        @JsonSetter(value = "createdById", nulls = Nulls.SKIP)
-        public Builder createdById(Optional<String> createdById) {
-            this.createdById = createdById;
+        @JsonSetter(value = "creatorEntityId", nulls = Nulls.SKIP)
+        public Builder creatorEntityId(Optional<String> creatorEntityId) {
+            this.creatorEntityId = creatorEntityId;
             return this;
         }
 
-        public Builder createdById(String createdById) {
-            this.createdById = Optional.of(createdById);
+        public Builder creatorEntityId(String creatorEntityId) {
+            this.creatorEntityId = Optional.of(creatorEntityId);
+            return this;
+        }
+
+        @JsonSetter(value = "creatorUserId", nulls = Nulls.SKIP)
+        public Builder creatorUserId(Optional<String> creatorUserId) {
+            this.creatorUserId = creatorUserId;
+            return this;
+        }
+
+        public Builder creatorUserId(String creatorUserId) {
+            this.creatorUserId = Optional.of(creatorUserId);
             return this;
         }
 
@@ -630,6 +703,17 @@ public final class InvoiceRequest {
 
         public Builder creatorId(String creatorId) {
             this.creatorId = Optional.of(creatorId);
+            return this;
+        }
+
+        @JsonSetter(value = "createdById", nulls = Nulls.SKIP)
+        public Builder createdById(Optional<String> createdById) {
+            this.createdById = createdById;
+            return this;
+        }
+
+        public Builder createdById(String createdById) {
+            this.createdById = Optional.of(createdById);
             return this;
         }
 
@@ -653,9 +737,12 @@ public final class InvoiceRequest {
                     paymentDestinationId,
                     lineItems,
                     metadata,
+                    foreignId,
                     uploadedImage,
-                    createdById,
+                    creatorEntityId,
+                    creatorUserId,
                     creatorId,
+                    createdById,
                     additionalProperties);
         }
     }

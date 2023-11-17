@@ -23,15 +23,19 @@ import java.util.Optional;
 public final class GenerateOnboardingLink {
     private final EntityOnboardingLinkType type;
 
+    private final Optional<String> expiresIn;
+
     private final Optional<String> connectedEntityId;
 
     private final Map<String, Object> additionalProperties;
 
     private GenerateOnboardingLink(
             EntityOnboardingLinkType type,
+            Optional<String> expiresIn,
             Optional<String> connectedEntityId,
             Map<String, Object> additionalProperties) {
         this.type = type;
+        this.expiresIn = expiresIn;
         this.connectedEntityId = connectedEntityId;
         this.additionalProperties = additionalProperties;
     }
@@ -42,6 +46,14 @@ public final class GenerateOnboardingLink {
     @JsonProperty("type")
     public EntityOnboardingLinkType getType() {
         return type;
+    }
+
+    /**
+     * @return Expressed in seconds or a string describing a time span. The default is 24h.
+     */
+    @JsonProperty("expiresIn")
+    public Optional<String> getExpiresIn() {
+        return expiresIn;
     }
 
     /**
@@ -64,12 +76,14 @@ public final class GenerateOnboardingLink {
     }
 
     private boolean equalTo(GenerateOnboardingLink other) {
-        return type.equals(other.type) && connectedEntityId.equals(other.connectedEntityId);
+        return type.equals(other.type)
+                && expiresIn.equals(other.expiresIn)
+                && connectedEntityId.equals(other.connectedEntityId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.type, this.connectedEntityId);
+        return Objects.hash(this.type, this.expiresIn, this.connectedEntityId);
     }
 
     @Override
@@ -90,6 +104,10 @@ public final class GenerateOnboardingLink {
     public interface _FinalStage {
         GenerateOnboardingLink build();
 
+        _FinalStage expiresIn(Optional<String> expiresIn);
+
+        _FinalStage expiresIn(String expiresIn);
+
         _FinalStage connectedEntityId(Optional<String> connectedEntityId);
 
         _FinalStage connectedEntityId(String connectedEntityId);
@@ -101,6 +119,8 @@ public final class GenerateOnboardingLink {
 
         private Optional<String> connectedEntityId = Optional.empty();
 
+        private Optional<String> expiresIn = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -109,6 +129,7 @@ public final class GenerateOnboardingLink {
         @Override
         public Builder from(GenerateOnboardingLink other) {
             type(other.getType());
+            expiresIn(other.getExpiresIn());
             connectedEntityId(other.getConnectedEntityId());
             return this;
         }
@@ -141,9 +162,26 @@ public final class GenerateOnboardingLink {
             return this;
         }
 
+        /**
+         * <p>Expressed in seconds or a string describing a time span. The default is 24h.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @Override
+        public _FinalStage expiresIn(String expiresIn) {
+            this.expiresIn = Optional.of(expiresIn);
+            return this;
+        }
+
+        @Override
+        @JsonSetter(value = "expiresIn", nulls = Nulls.SKIP)
+        public _FinalStage expiresIn(Optional<String> expiresIn) {
+            this.expiresIn = expiresIn;
+            return this;
+        }
+
         @Override
         public GenerateOnboardingLink build() {
-            return new GenerateOnboardingLink(type, connectedEntityId, additionalProperties);
+            return new GenerateOnboardingLink(type, expiresIn, connectedEntityId, additionalProperties);
         }
     }
 }

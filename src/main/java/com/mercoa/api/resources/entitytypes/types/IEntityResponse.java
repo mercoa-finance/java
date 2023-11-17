@@ -20,7 +20,7 @@ public interface IEntityResponse {
 
     Optional<List<String>> getEmailToAlias();
 
-    boolean getOwnedByOrg();
+    boolean getIsCustomer();
 
     AccountType getAccountType();
 
@@ -33,6 +33,8 @@ public interface IEntityResponse {
     boolean getIsPayor();
 
     boolean getIsPayee();
+
+    boolean getOwnedByOrg();
 
     OffsetDateTime getCreatedAt();
 

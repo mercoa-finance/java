@@ -25,12 +25,15 @@ public final class FindEntityResponse {
 
     private final boolean hasMore;
 
-    private final List<EntityResponse> data;
+    private final List<EntityWithPaymentMethodResponse> data;
 
     private final Map<String, Object> additionalProperties;
 
     private FindEntityResponse(
-            int count, boolean hasMore, List<EntityResponse> data, Map<String, Object> additionalProperties) {
+            int count,
+            boolean hasMore,
+            List<EntityWithPaymentMethodResponse> data,
+            Map<String, Object> additionalProperties) {
         this.count = count;
         this.hasMore = hasMore;
         this.data = data;
@@ -54,7 +57,7 @@ public final class FindEntityResponse {
     }
 
     @JsonProperty("data")
-    public List<EntityResponse> getData() {
+    public List<EntityWithPaymentMethodResponse> getData() {
         return data;
     }
 
@@ -100,11 +103,11 @@ public final class FindEntityResponse {
     public interface _FinalStage {
         FindEntityResponse build();
 
-        _FinalStage data(List<EntityResponse> data);
+        _FinalStage data(List<EntityWithPaymentMethodResponse> data);
 
-        _FinalStage addData(EntityResponse data);
+        _FinalStage addData(EntityWithPaymentMethodResponse data);
 
-        _FinalStage addAllData(List<EntityResponse> data);
+        _FinalStage addAllData(List<EntityWithPaymentMethodResponse> data);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -113,7 +116,7 @@ public final class FindEntityResponse {
 
         private boolean hasMore;
 
-        private List<EntityResponse> data = new ArrayList<>();
+        private List<EntityWithPaymentMethodResponse> data = new ArrayList<>();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -151,20 +154,20 @@ public final class FindEntityResponse {
         }
 
         @Override
-        public _FinalStage addAllData(List<EntityResponse> data) {
+        public _FinalStage addAllData(List<EntityWithPaymentMethodResponse> data) {
             this.data.addAll(data);
             return this;
         }
 
         @Override
-        public _FinalStage addData(EntityResponse data) {
+        public _FinalStage addData(EntityWithPaymentMethodResponse data) {
             this.data.add(data);
             return this;
         }
 
         @Override
         @JsonSetter(value = "data", nulls = Nulls.SKIP)
-        public _FinalStage data(List<EntityResponse> data) {
+        public _FinalStage data(List<EntityWithPaymentMethodResponse> data) {
             this.data.clear();
             this.data.addAll(data);
             return this;

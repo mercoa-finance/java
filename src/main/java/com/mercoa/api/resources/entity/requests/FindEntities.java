@@ -21,7 +21,9 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = FindEntities.Builder.class)
 public final class FindEntities {
-    private final Optional<Boolean> ownedByOrg;
+    private final Optional<Boolean> paymentMethods;
+
+    private final Optional<Boolean> isCustomer;
 
     private final Optional<String> foreignId;
 
@@ -37,10 +39,13 @@ public final class FindEntities {
 
     private final Optional<String> startingAfter;
 
+    private final Optional<Boolean> ownedByOrg;
+
     private final Map<String, Object> additionalProperties;
 
     private FindEntities(
-            Optional<Boolean> ownedByOrg,
+            Optional<Boolean> paymentMethods,
+            Optional<Boolean> isCustomer,
             Optional<String> foreignId,
             Optional<EntityStatus> status,
             Optional<Boolean> isPayee,
@@ -48,8 +53,10 @@ public final class FindEntities {
             Optional<String> name,
             Optional<Integer> limit,
             Optional<String> startingAfter,
+            Optional<Boolean> ownedByOrg,
             Map<String, Object> additionalProperties) {
-        this.ownedByOrg = ownedByOrg;
+        this.paymentMethods = paymentMethods;
+        this.isCustomer = isCustomer;
         this.foreignId = foreignId;
         this.status = status;
         this.isPayee = isPayee;
@@ -57,15 +64,24 @@ public final class FindEntities {
         this.name = name;
         this.limit = limit;
         this.startingAfter = startingAfter;
+        this.ownedByOrg = ownedByOrg;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return If true, will include entity payment methods as part of the response
+     */
+    @JsonProperty("paymentMethods")
+    public Optional<Boolean> getPaymentMethods() {
+        return paymentMethods;
     }
 
     /**
      * @return If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
      */
-    @JsonProperty("ownedByOrg")
-    public Optional<Boolean> getOwnedByOrg() {
-        return ownedByOrg;
+    @JsonProperty("isCustomer")
+    public Optional<Boolean> getIsCustomer() {
+        return isCustomer;
     }
 
     /**
@@ -123,6 +139,14 @@ public final class FindEntities {
         return startingAfter;
     }
 
+    /**
+     * @return [DEPRECATED - use isCustomer] If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
+     */
+    @JsonProperty("ownedByOrg")
+    public Optional<Boolean> getOwnedByOrg() {
+        return ownedByOrg;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -135,27 +159,31 @@ public final class FindEntities {
     }
 
     private boolean equalTo(FindEntities other) {
-        return ownedByOrg.equals(other.ownedByOrg)
+        return paymentMethods.equals(other.paymentMethods)
+                && isCustomer.equals(other.isCustomer)
                 && foreignId.equals(other.foreignId)
                 && status.equals(other.status)
                 && isPayee.equals(other.isPayee)
                 && isPayor.equals(other.isPayor)
                 && name.equals(other.name)
                 && limit.equals(other.limit)
-                && startingAfter.equals(other.startingAfter);
+                && startingAfter.equals(other.startingAfter)
+                && ownedByOrg.equals(other.ownedByOrg);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-                this.ownedByOrg,
+                this.paymentMethods,
+                this.isCustomer,
                 this.foreignId,
                 this.status,
                 this.isPayee,
                 this.isPayor,
                 this.name,
                 this.limit,
-                this.startingAfter);
+                this.startingAfter,
+                this.ownedByOrg);
     }
 
     @Override
@@ -169,7 +197,9 @@ public final class FindEntities {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Boolean> ownedByOrg = Optional.empty();
+        private Optional<Boolean> paymentMethods = Optional.empty();
+
+        private Optional<Boolean> isCustomer = Optional.empty();
 
         private Optional<String> foreignId = Optional.empty();
 
@@ -185,13 +215,16 @@ public final class FindEntities {
 
         private Optional<String> startingAfter = Optional.empty();
 
+        private Optional<Boolean> ownedByOrg = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
         public Builder from(FindEntities other) {
-            ownedByOrg(other.getOwnedByOrg());
+            paymentMethods(other.getPaymentMethods());
+            isCustomer(other.getIsCustomer());
             foreignId(other.getForeignId());
             status(other.getStatus());
             isPayee(other.getIsPayee());
@@ -199,17 +232,29 @@ public final class FindEntities {
             name(other.getName());
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
+            ownedByOrg(other.getOwnedByOrg());
             return this;
         }
 
-        @JsonSetter(value = "ownedByOrg", nulls = Nulls.SKIP)
-        public Builder ownedByOrg(Optional<Boolean> ownedByOrg) {
-            this.ownedByOrg = ownedByOrg;
+        @JsonSetter(value = "paymentMethods", nulls = Nulls.SKIP)
+        public Builder paymentMethods(Optional<Boolean> paymentMethods) {
+            this.paymentMethods = paymentMethods;
             return this;
         }
 
-        public Builder ownedByOrg(Boolean ownedByOrg) {
-            this.ownedByOrg = Optional.of(ownedByOrg);
+        public Builder paymentMethods(Boolean paymentMethods) {
+            this.paymentMethods = Optional.of(paymentMethods);
+            return this;
+        }
+
+        @JsonSetter(value = "isCustomer", nulls = Nulls.SKIP)
+        public Builder isCustomer(Optional<Boolean> isCustomer) {
+            this.isCustomer = isCustomer;
+            return this;
+        }
+
+        public Builder isCustomer(Boolean isCustomer) {
+            this.isCustomer = Optional.of(isCustomer);
             return this;
         }
 
@@ -290,9 +335,30 @@ public final class FindEntities {
             return this;
         }
 
+        @JsonSetter(value = "ownedByOrg", nulls = Nulls.SKIP)
+        public Builder ownedByOrg(Optional<Boolean> ownedByOrg) {
+            this.ownedByOrg = ownedByOrg;
+            return this;
+        }
+
+        public Builder ownedByOrg(Boolean ownedByOrg) {
+            this.ownedByOrg = Optional.of(ownedByOrg);
+            return this;
+        }
+
         public FindEntities build() {
             return new FindEntities(
-                    ownedByOrg, foreignId, status, isPayee, isPayor, name, limit, startingAfter, additionalProperties);
+                    paymentMethods,
+                    isCustomer,
+                    foreignId,
+                    status,
+                    isPayee,
+                    isPayor,
+                    name,
+                    limit,
+                    startingAfter,
+                    ownedByOrg,
+                    additionalProperties);
         }
     }
 }
