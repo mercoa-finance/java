@@ -39,8 +39,6 @@ public final class EntityUpdateRequest {
 
     private final Optional<String> logo;
 
-    private final Optional<Boolean> ownedByOrg;
-
     private final Map<String, Object> additionalProperties;
 
     private EntityUpdateRequest(
@@ -53,7 +51,6 @@ public final class EntityUpdateRequest {
             Optional<Boolean> isPayor,
             Optional<Boolean> isPayee,
             Optional<String> logo,
-            Optional<Boolean> ownedByOrg,
             Map<String, Object> additionalProperties) {
         this.foreignId = foreignId;
         this.emailTo = emailTo;
@@ -64,7 +61,6 @@ public final class EntityUpdateRequest {
         this.isPayor = isPayor;
         this.isPayee = isPayee;
         this.logo = logo;
-        this.ownedByOrg = ownedByOrg;
         this.additionalProperties = additionalProperties;
     }
 
@@ -134,14 +130,6 @@ public final class EntityUpdateRequest {
         return logo;
     }
 
-    /**
-     * @return [DEPRECATED - use isCustomer] - If this entity has a direct relationship with your organization, set this to true. Otherwise, set to false.
-     */
-    @JsonProperty("ownedByOrg")
-    public Optional<Boolean> getOwnedByOrg() {
-        return ownedByOrg;
-    }
-
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -162,8 +150,7 @@ public final class EntityUpdateRequest {
                 && profile.equals(other.profile)
                 && isPayor.equals(other.isPayor)
                 && isPayee.equals(other.isPayee)
-                && logo.equals(other.logo)
-                && ownedByOrg.equals(other.ownedByOrg);
+                && logo.equals(other.logo);
     }
 
     @Override
@@ -177,8 +164,7 @@ public final class EntityUpdateRequest {
                 this.profile,
                 this.isPayor,
                 this.isPayee,
-                this.logo,
-                this.ownedByOrg);
+                this.logo);
     }
 
     @Override
@@ -210,8 +196,6 @@ public final class EntityUpdateRequest {
 
         private Optional<String> logo = Optional.empty();
 
-        private Optional<Boolean> ownedByOrg = Optional.empty();
-
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -227,7 +211,6 @@ public final class EntityUpdateRequest {
             isPayor(other.getIsPayor());
             isPayee(other.getIsPayee());
             logo(other.getLogo());
-            ownedByOrg(other.getOwnedByOrg());
             return this;
         }
 
@@ -330,17 +313,6 @@ public final class EntityUpdateRequest {
             return this;
         }
 
-        @JsonSetter(value = "ownedByOrg", nulls = Nulls.SKIP)
-        public Builder ownedByOrg(Optional<Boolean> ownedByOrg) {
-            this.ownedByOrg = ownedByOrg;
-            return this;
-        }
-
-        public Builder ownedByOrg(Boolean ownedByOrg) {
-            this.ownedByOrg = Optional.of(ownedByOrg);
-            return this;
-        }
-
         public EntityUpdateRequest build() {
             return new EntityUpdateRequest(
                     foreignId,
@@ -352,7 +324,6 @@ public final class EntityUpdateRequest {
                     isPayor,
                     isPayee,
                     logo,
-                    ownedByOrg,
                     additionalProperties);
         }
     }

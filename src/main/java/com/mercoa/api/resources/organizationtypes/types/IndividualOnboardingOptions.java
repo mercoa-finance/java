@@ -18,6 +18,8 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = IndividualOnboardingOptions.Builder.class)
 public final class IndividualOnboardingOptions {
+    private final OnboardingOption termsOfService;
+
     private final OnboardingOption email;
 
     private final OnboardingOption name;
@@ -33,6 +35,7 @@ public final class IndividualOnboardingOptions {
     private final Map<String, Object> additionalProperties;
 
     private IndividualOnboardingOptions(
+            OnboardingOption termsOfService,
             OnboardingOption email,
             OnboardingOption name,
             OnboardingOption dateOfBirth,
@@ -40,6 +43,7 @@ public final class IndividualOnboardingOptions {
             OnboardingOption address,
             OnboardingOption phone,
             Map<String, Object> additionalProperties) {
+        this.termsOfService = termsOfService;
         this.email = email;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -47,6 +51,11 @@ public final class IndividualOnboardingOptions {
         this.address = address;
         this.phone = phone;
         this.additionalProperties = additionalProperties;
+    }
+
+    @JsonProperty("termsOfService")
+    public OnboardingOption getTermsOfService() {
+        return termsOfService;
     }
 
     @JsonProperty("email")
@@ -91,7 +100,8 @@ public final class IndividualOnboardingOptions {
     }
 
     private boolean equalTo(IndividualOnboardingOptions other) {
-        return email.equals(other.email)
+        return termsOfService.equals(other.termsOfService)
+                && email.equals(other.email)
                 && name.equals(other.name)
                 && dateOfBirth.equals(other.dateOfBirth)
                 && ssnLast4.equals(other.ssnLast4)
@@ -101,7 +111,8 @@ public final class IndividualOnboardingOptions {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.email, this.name, this.dateOfBirth, this.ssnLast4, this.address, this.phone);
+        return Objects.hash(
+                this.termsOfService, this.email, this.name, this.dateOfBirth, this.ssnLast4, this.address, this.phone);
     }
 
     @Override
@@ -109,14 +120,18 @@ public final class IndividualOnboardingOptions {
         return ObjectMappers.stringify(this);
     }
 
-    public static EmailStage builder() {
+    public static TermsOfServiceStage builder() {
         return new Builder();
+    }
+
+    public interface TermsOfServiceStage {
+        EmailStage termsOfService(OnboardingOption termsOfService);
+
+        Builder from(IndividualOnboardingOptions other);
     }
 
     public interface EmailStage {
         NameStage email(OnboardingOption email);
-
-        Builder from(IndividualOnboardingOptions other);
     }
 
     public interface NameStage {
@@ -145,7 +160,16 @@ public final class IndividualOnboardingOptions {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements EmailStage, NameStage, DateOfBirthStage, SsnLast4Stage, AddressStage, PhoneStage, _FinalStage {
+            implements TermsOfServiceStage,
+                    EmailStage,
+                    NameStage,
+                    DateOfBirthStage,
+                    SsnLast4Stage,
+                    AddressStage,
+                    PhoneStage,
+                    _FinalStage {
+        private OnboardingOption termsOfService;
+
         private OnboardingOption email;
 
         private OnboardingOption name;
@@ -165,12 +189,20 @@ public final class IndividualOnboardingOptions {
 
         @Override
         public Builder from(IndividualOnboardingOptions other) {
+            termsOfService(other.getTermsOfService());
             email(other.getEmail());
             name(other.getName());
             dateOfBirth(other.getDateOfBirth());
             ssnLast4(other.getSsnLast4());
             address(other.getAddress());
             phone(other.getPhone());
+            return this;
+        }
+
+        @Override
+        @JsonSetter("termsOfService")
+        public EmailStage termsOfService(OnboardingOption termsOfService) {
+            this.termsOfService = termsOfService;
             return this;
         }
 
@@ -219,7 +251,7 @@ public final class IndividualOnboardingOptions {
         @Override
         public IndividualOnboardingOptions build() {
             return new IndividualOnboardingOptions(
-                    email, name, dateOfBirth, ssnLast4, address, phone, additionalProperties);
+                    termsOfService, email, name, dateOfBirth, ssnLast4, address, phone, additionalProperties);
         }
     }
 }

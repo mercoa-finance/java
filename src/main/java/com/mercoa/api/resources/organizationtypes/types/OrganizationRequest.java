@@ -33,6 +33,8 @@ public final class OrganizationRequest {
 
     private final Optional<EmailProviderRequest> emailProvider;
 
+    private final Optional<ExternalAccountingSystemProviderRequest> externalAccountingSystemProvider;
+
     private final Optional<ColorSchemeRequest> colorScheme;
 
     private final Optional<OnboardingOptionsRequest> payeeOnboardingOptions;
@@ -50,6 +52,7 @@ public final class OrganizationRequest {
             Optional<String> supportEmail,
             Optional<PaymentMethodsRequest> paymentMethods,
             Optional<EmailProviderRequest> emailProvider,
+            Optional<ExternalAccountingSystemProviderRequest> externalAccountingSystemProvider,
             Optional<ColorSchemeRequest> colorScheme,
             Optional<OnboardingOptionsRequest> payeeOnboardingOptions,
             Optional<OnboardingOptionsRequest> payorOnboardingOptions,
@@ -61,6 +64,7 @@ public final class OrganizationRequest {
         this.supportEmail = supportEmail;
         this.paymentMethods = paymentMethods;
         this.emailProvider = emailProvider;
+        this.externalAccountingSystemProvider = externalAccountingSystemProvider;
         this.colorScheme = colorScheme;
         this.payeeOnboardingOptions = payeeOnboardingOptions;
         this.payorOnboardingOptions = payorOnboardingOptions;
@@ -96,6 +100,11 @@ public final class OrganizationRequest {
     @JsonProperty("emailProvider")
     public Optional<EmailProviderRequest> getEmailProvider() {
         return emailProvider;
+    }
+
+    @JsonProperty("externalAccountingSystemProvider")
+    public Optional<ExternalAccountingSystemProviderRequest> getExternalAccountingSystemProvider() {
+        return externalAccountingSystemProvider;
     }
 
     @JsonProperty("colorScheme")
@@ -136,6 +145,7 @@ public final class OrganizationRequest {
                 && supportEmail.equals(other.supportEmail)
                 && paymentMethods.equals(other.paymentMethods)
                 && emailProvider.equals(other.emailProvider)
+                && externalAccountingSystemProvider.equals(other.externalAccountingSystemProvider)
                 && colorScheme.equals(other.colorScheme)
                 && payeeOnboardingOptions.equals(other.payeeOnboardingOptions)
                 && payorOnboardingOptions.equals(other.payorOnboardingOptions)
@@ -151,6 +161,7 @@ public final class OrganizationRequest {
                 this.supportEmail,
                 this.paymentMethods,
                 this.emailProvider,
+                this.externalAccountingSystemProvider,
                 this.colorScheme,
                 this.payeeOnboardingOptions,
                 this.payorOnboardingOptions,
@@ -180,6 +191,8 @@ public final class OrganizationRequest {
 
         private Optional<EmailProviderRequest> emailProvider = Optional.empty();
 
+        private Optional<ExternalAccountingSystemProviderRequest> externalAccountingSystemProvider = Optional.empty();
+
         private Optional<ColorSchemeRequest> colorScheme = Optional.empty();
 
         private Optional<OnboardingOptionsRequest> payeeOnboardingOptions = Optional.empty();
@@ -200,6 +213,7 @@ public final class OrganizationRequest {
             supportEmail(other.getSupportEmail());
             paymentMethods(other.getPaymentMethods());
             emailProvider(other.getEmailProvider());
+            externalAccountingSystemProvider(other.getExternalAccountingSystemProvider());
             colorScheme(other.getColorScheme());
             payeeOnboardingOptions(other.getPayeeOnboardingOptions());
             payorOnboardingOptions(other.getPayorOnboardingOptions());
@@ -273,6 +287,19 @@ public final class OrganizationRequest {
             return this;
         }
 
+        @JsonSetter(value = "externalAccountingSystemProvider", nulls = Nulls.SKIP)
+        public Builder externalAccountingSystemProvider(
+                Optional<ExternalAccountingSystemProviderRequest> externalAccountingSystemProvider) {
+            this.externalAccountingSystemProvider = externalAccountingSystemProvider;
+            return this;
+        }
+
+        public Builder externalAccountingSystemProvider(
+                ExternalAccountingSystemProviderRequest externalAccountingSystemProvider) {
+            this.externalAccountingSystemProvider = Optional.of(externalAccountingSystemProvider);
+            return this;
+        }
+
         @JsonSetter(value = "colorScheme", nulls = Nulls.SKIP)
         public Builder colorScheme(Optional<ColorSchemeRequest> colorScheme) {
             this.colorScheme = colorScheme;
@@ -325,6 +352,7 @@ public final class OrganizationRequest {
                     supportEmail,
                     paymentMethods,
                     emailProvider,
+                    externalAccountingSystemProvider,
                     colorScheme,
                     payeeOnboardingOptions,
                     payorOnboardingOptions,

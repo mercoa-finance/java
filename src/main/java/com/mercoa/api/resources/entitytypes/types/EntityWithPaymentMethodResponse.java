@@ -49,8 +49,6 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
 
     private final boolean isPayee;
 
-    private final boolean ownedByOrg;
-
     private final OffsetDateTime createdAt;
 
     private final OffsetDateTime updatedAt;
@@ -73,7 +71,6 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
             boolean acceptedTos,
             boolean isPayor,
             boolean isPayee,
-            boolean ownedByOrg,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Optional<List<PaymentMethodResponse>> paymentMethods,
@@ -91,7 +88,6 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
         this.acceptedTos = acceptedTos;
         this.isPayor = isPayor;
         this.isPayee = isPayee;
-        this.ownedByOrg = ownedByOrg;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.paymentMethods = paymentMethods;
@@ -197,15 +193,6 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
         return isPayee;
     }
 
-    /**
-     * @return [DEPRECATED - use isCustomer] - True if this entity has a direct relationship with your organization.
-     */
-    @JsonProperty("ownedByOrg")
-    @Override
-    public boolean getOwnedByOrg() {
-        return ownedByOrg;
-    }
-
     @JsonProperty("createdAt")
     @Override
     public OffsetDateTime getCreatedAt() {
@@ -248,7 +235,6 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
                 && acceptedTos == other.acceptedTos
                 && isPayor == other.isPayor
                 && isPayee == other.isPayee
-                && ownedByOrg == other.ownedByOrg
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt)
                 && paymentMethods.equals(other.paymentMethods);
@@ -270,7 +256,6 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
                 this.acceptedTos,
                 this.isPayor,
                 this.isPayee,
-                this.ownedByOrg,
                 this.createdAt,
                 this.updatedAt,
                 this.paymentMethods);
@@ -324,11 +309,7 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
     }
 
     public interface IsPayeeStage {
-        OwnedByOrgStage isPayee(boolean isPayee);
-    }
-
-    public interface OwnedByOrgStage {
-        CreatedAtStage ownedByOrg(boolean ownedByOrg);
+        CreatedAtStage isPayee(boolean isPayee);
     }
 
     public interface CreatedAtStage {
@@ -371,7 +352,6 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
                     AcceptedTosStage,
                     IsPayorStage,
                     IsPayeeStage,
-                    OwnedByOrgStage,
                     CreatedAtStage,
                     UpdatedAtStage,
                     _FinalStage {
@@ -394,8 +374,6 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
         private boolean isPayor;
 
         private boolean isPayee;
-
-        private boolean ownedByOrg;
 
         private OffsetDateTime createdAt;
 
@@ -429,7 +407,6 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
             acceptedTos(other.getAcceptedTos());
             isPayor(other.getIsPayor());
             isPayee(other.getIsPayee());
-            ownedByOrg(other.getOwnedByOrg());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             paymentMethods(other.getPaymentMethods());
@@ -517,19 +494,8 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
          */
         @Override
         @JsonSetter("isPayee")
-        public OwnedByOrgStage isPayee(boolean isPayee) {
+        public CreatedAtStage isPayee(boolean isPayee) {
             this.isPayee = isPayee;
-            return this;
-        }
-
-        /**
-         * <p>[DEPRECATED - use isCustomer] - True if this entity has a direct relationship with your organization.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @Override
-        @JsonSetter("ownedByOrg")
-        public CreatedAtStage ownedByOrg(boolean ownedByOrg) {
-            this.ownedByOrg = ownedByOrg;
             return this;
         }
 
@@ -627,7 +593,6 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
                     acceptedTos,
                     isPayor,
                     isPayee,
-                    ownedByOrg,
                     createdAt,
                     updatedAt,
                     paymentMethods,

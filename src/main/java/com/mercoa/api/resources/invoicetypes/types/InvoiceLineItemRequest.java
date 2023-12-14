@@ -42,6 +42,8 @@ public final class InvoiceLineItemRequest {
 
     private final Optional<Map<String, String>> metadata;
 
+    private final Optional<String> glAccountId;
+
     private final Map<String, Object> additionalProperties;
 
     private InvoiceLineItemRequest(
@@ -55,6 +57,7 @@ public final class InvoiceLineItemRequest {
             Optional<OffsetDateTime> serviceStartDate,
             Optional<OffsetDateTime> serviceEndDate,
             Optional<Map<String, String>> metadata,
+            Optional<String> glAccountId,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.amount = amount;
@@ -66,6 +69,7 @@ public final class InvoiceLineItemRequest {
         this.serviceStartDate = serviceStartDate;
         this.serviceEndDate = serviceEndDate;
         this.metadata = metadata;
+        this.glAccountId = glAccountId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -128,6 +132,14 @@ public final class InvoiceLineItemRequest {
         return metadata;
     }
 
+    /**
+     * @return ID of general ledger account associated with this line item.
+     */
+    @JsonProperty("glAccountId")
+    public Optional<String> getGlAccountId() {
+        return glAccountId;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -149,7 +161,8 @@ public final class InvoiceLineItemRequest {
                 && unitPrice.equals(other.unitPrice)
                 && serviceStartDate.equals(other.serviceStartDate)
                 && serviceEndDate.equals(other.serviceEndDate)
-                && metadata.equals(other.metadata);
+                && metadata.equals(other.metadata)
+                && glAccountId.equals(other.glAccountId);
     }
 
     @Override
@@ -164,7 +177,8 @@ public final class InvoiceLineItemRequest {
                 this.unitPrice,
                 this.serviceStartDate,
                 this.serviceEndDate,
-                this.metadata);
+                this.metadata,
+                this.glAccountId);
     }
 
     @Override
@@ -198,6 +212,8 @@ public final class InvoiceLineItemRequest {
 
         private Optional<Map<String, String>> metadata = Optional.empty();
 
+        private Optional<String> glAccountId = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -214,6 +230,7 @@ public final class InvoiceLineItemRequest {
             serviceStartDate(other.getServiceStartDate());
             serviceEndDate(other.getServiceEndDate());
             metadata(other.getMetadata());
+            glAccountId(other.getGlAccountId());
             return this;
         }
 
@@ -327,6 +344,17 @@ public final class InvoiceLineItemRequest {
             return this;
         }
 
+        @JsonSetter(value = "glAccountId", nulls = Nulls.SKIP)
+        public Builder glAccountId(Optional<String> glAccountId) {
+            this.glAccountId = glAccountId;
+            return this;
+        }
+
+        public Builder glAccountId(String glAccountId) {
+            this.glAccountId = Optional.of(glAccountId);
+            return this;
+        }
+
         public InvoiceLineItemRequest build() {
             return new InvoiceLineItemRequest(
                     id,
@@ -339,6 +367,7 @@ public final class InvoiceLineItemRequest {
                     serviceStartDate,
                     serviceEndDate,
                     metadata,
+                    glAccountId,
                     additionalProperties);
         }
     }

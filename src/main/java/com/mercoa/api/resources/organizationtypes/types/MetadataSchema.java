@@ -26,6 +26,8 @@ public final class MetadataSchema {
 
     private final Optional<String> description;
 
+    private final Optional<Boolean> lineItem;
+
     private final MetadataType type;
 
     private final Optional<Boolean> allowMultiple;
@@ -38,6 +40,7 @@ public final class MetadataSchema {
             String key,
             String displayName,
             Optional<String> description,
+            Optional<Boolean> lineItem,
             MetadataType type,
             Optional<Boolean> allowMultiple,
             Optional<MetadataShowConditions> showConditions,
@@ -45,6 +48,7 @@ public final class MetadataSchema {
         this.key = key;
         this.displayName = displayName;
         this.description = description;
+        this.lineItem = lineItem;
         this.type = type;
         this.allowMultiple = allowMultiple;
         this.showConditions = showConditions;
@@ -64,6 +68,14 @@ public final class MetadataSchema {
     @JsonProperty("description")
     public Optional<String> getDescription() {
         return description;
+    }
+
+    /**
+     * @return Whether or not this field should be shown on line items. If true, this field will be shown on each line item. If false, the field will be shown on the invoice level. Defaults to false.
+     */
+    @JsonProperty("lineItem")
+    public Optional<Boolean> getLineItem() {
+        return lineItem;
     }
 
     @JsonProperty("type")
@@ -102,6 +114,7 @@ public final class MetadataSchema {
         return key.equals(other.key)
                 && displayName.equals(other.displayName)
                 && description.equals(other.description)
+                && lineItem.equals(other.lineItem)
                 && type.equals(other.type)
                 && allowMultiple.equals(other.allowMultiple)
                 && showConditions.equals(other.showConditions);
@@ -110,7 +123,13 @@ public final class MetadataSchema {
     @Override
     public int hashCode() {
         return Objects.hash(
-                this.key, this.displayName, this.description, this.type, this.allowMultiple, this.showConditions);
+                this.key,
+                this.displayName,
+                this.description,
+                this.lineItem,
+                this.type,
+                this.allowMultiple,
+                this.showConditions);
     }
 
     @Override
@@ -143,6 +162,10 @@ public final class MetadataSchema {
 
         _FinalStage description(String description);
 
+        _FinalStage lineItem(Optional<Boolean> lineItem);
+
+        _FinalStage lineItem(Boolean lineItem);
+
         _FinalStage allowMultiple(Optional<Boolean> allowMultiple);
 
         _FinalStage allowMultiple(Boolean allowMultiple);
@@ -164,6 +187,8 @@ public final class MetadataSchema {
 
         private Optional<Boolean> allowMultiple = Optional.empty();
 
+        private Optional<Boolean> lineItem = Optional.empty();
+
         private Optional<String> description = Optional.empty();
 
         @JsonAnySetter
@@ -176,6 +201,7 @@ public final class MetadataSchema {
             key(other.getKey());
             displayName(other.getDisplayName());
             description(other.getDescription());
+            lineItem(other.getLineItem());
             type(other.getType());
             allowMultiple(other.getAllowMultiple());
             showConditions(other.getShowConditions());
@@ -237,6 +263,23 @@ public final class MetadataSchema {
             return this;
         }
 
+        /**
+         * <p>Whether or not this field should be shown on line items. If true, this field will be shown on each line item. If false, the field will be shown on the invoice level. Defaults to false.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @Override
+        public _FinalStage lineItem(Boolean lineItem) {
+            this.lineItem = Optional.of(lineItem);
+            return this;
+        }
+
+        @Override
+        @JsonSetter(value = "lineItem", nulls = Nulls.SKIP)
+        public _FinalStage lineItem(Optional<Boolean> lineItem) {
+            this.lineItem = lineItem;
+            return this;
+        }
+
         @Override
         public _FinalStage description(String description) {
             this.description = Optional.of(description);
@@ -253,7 +296,7 @@ public final class MetadataSchema {
         @Override
         public MetadataSchema build() {
             return new MetadataSchema(
-                    key, displayName, description, type, allowMultiple, showConditions, additionalProperties);
+                    key, displayName, description, lineItem, type, allowMultiple, showConditions, additionalProperties);
         }
     }
 }

@@ -67,10 +67,6 @@ public final class InvoiceRequest {
 
     private final Optional<String> creatorUserId;
 
-    private final Optional<String> creatorId;
-
-    private final Optional<String> createdById;
-
     private final Map<String, Object> additionalProperties;
 
     private InvoiceRequest(
@@ -96,8 +92,6 @@ public final class InvoiceRequest {
             Optional<String> uploadedImage,
             Optional<String> creatorEntityId,
             Optional<String> creatorUserId,
-            Optional<String> creatorId,
-            Optional<String> createdById,
             Map<String, Object> additionalProperties) {
         this.status = status;
         this.amount = amount;
@@ -121,8 +115,6 @@ public final class InvoiceRequest {
         this.uploadedImage = uploadedImage;
         this.creatorEntityId = creatorEntityId;
         this.creatorUserId = creatorUserId;
-        this.creatorId = creatorId;
-        this.createdById = createdById;
         this.additionalProperties = additionalProperties;
     }
 
@@ -278,22 +270,6 @@ public final class InvoiceRequest {
         return creatorUserId;
     }
 
-    /**
-     * @return [DEPRECATED - use creatorEntityId] ID of entity who created this invoice.
-     */
-    @JsonProperty("creatorId")
-    public Optional<String> getCreatorId() {
-        return creatorId;
-    }
-
-    /**
-     * @return [DEPRECATED - use creatorUserId] ID of entity user who created this invoice.
-     */
-    @JsonProperty("createdById")
-    public Optional<String> getCreatedById() {
-        return createdById;
-    }
-
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -327,9 +303,7 @@ public final class InvoiceRequest {
                 && foreignId.equals(other.foreignId)
                 && uploadedImage.equals(other.uploadedImage)
                 && creatorEntityId.equals(other.creatorEntityId)
-                && creatorUserId.equals(other.creatorUserId)
-                && creatorId.equals(other.creatorId)
-                && createdById.equals(other.createdById);
+                && creatorUserId.equals(other.creatorUserId);
     }
 
     @Override
@@ -356,9 +330,7 @@ public final class InvoiceRequest {
                 this.foreignId,
                 this.uploadedImage,
                 this.creatorEntityId,
-                this.creatorUserId,
-                this.creatorId,
-                this.createdById);
+                this.creatorUserId);
     }
 
     @Override
@@ -416,10 +388,6 @@ public final class InvoiceRequest {
 
         private Optional<String> creatorUserId = Optional.empty();
 
-        private Optional<String> creatorId = Optional.empty();
-
-        private Optional<String> createdById = Optional.empty();
-
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -448,8 +416,6 @@ public final class InvoiceRequest {
             uploadedImage(other.getUploadedImage());
             creatorEntityId(other.getCreatorEntityId());
             creatorUserId(other.getCreatorUserId());
-            creatorId(other.getCreatorId());
-            createdById(other.getCreatedById());
             return this;
         }
 
@@ -695,28 +661,6 @@ public final class InvoiceRequest {
             return this;
         }
 
-        @JsonSetter(value = "creatorId", nulls = Nulls.SKIP)
-        public Builder creatorId(Optional<String> creatorId) {
-            this.creatorId = creatorId;
-            return this;
-        }
-
-        public Builder creatorId(String creatorId) {
-            this.creatorId = Optional.of(creatorId);
-            return this;
-        }
-
-        @JsonSetter(value = "createdById", nulls = Nulls.SKIP)
-        public Builder createdById(Optional<String> createdById) {
-            this.createdById = createdById;
-            return this;
-        }
-
-        public Builder createdById(String createdById) {
-            this.createdById = Optional.of(createdById);
-            return this;
-        }
-
         public InvoiceRequest build() {
             return new InvoiceRequest(
                     status,
@@ -741,8 +685,6 @@ public final class InvoiceRequest {
                     uploadedImage,
                     creatorEntityId,
                     creatorUserId,
-                    creatorId,
-                    createdById,
                     additionalProperties);
         }
     }

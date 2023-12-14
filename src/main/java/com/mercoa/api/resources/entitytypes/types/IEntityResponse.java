@@ -34,8 +34,6 @@ public interface IEntityResponse {
 
     boolean getIsPayee();
 
-    boolean getOwnedByOrg();
-
     OffsetDateTime getCreatedAt();
 
     OffsetDateTime getUpdatedAt();

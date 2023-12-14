@@ -10,6 +10,7 @@ import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.entity.approvalpolicy.ApprovalPolicyClient;
 import com.mercoa.api.resources.entity.counterparty.CounterpartyClient;
+import com.mercoa.api.resources.entity.externalaccountingsystem.ExternalAccountingSystemClient;
 import com.mercoa.api.resources.entity.invoice.InvoiceClient;
 import com.mercoa.api.resources.entity.metadata.MetadataClient;
 import com.mercoa.api.resources.entity.notificationpolicy.NotificationPolicyClient;
@@ -42,6 +43,8 @@ public class EntityClient {
 
     protected final Supplier<CounterpartyClient> counterpartyClient;
 
+    protected final Supplier<ExternalAccountingSystemClient> externalAccountingSystemClient;
+
     protected final Supplier<InvoiceClient> invoiceClient;
 
     protected final Supplier<MetadataClient> metadataClient;
@@ -57,6 +60,8 @@ public class EntityClient {
         this.userClient = Suppliers.memoize(() -> new UserClient(clientOptions));
         this.approvalPolicyClient = Suppliers.memoize(() -> new ApprovalPolicyClient(clientOptions));
         this.counterpartyClient = Suppliers.memoize(() -> new CounterpartyClient(clientOptions));
+        this.externalAccountingSystemClient =
+                Suppliers.memoize(() -> new ExternalAccountingSystemClient(clientOptions));
         this.invoiceClient = Suppliers.memoize(() -> new InvoiceClient(clientOptions));
         this.metadataClient = Suppliers.memoize(() -> new MetadataClient(clientOptions));
         this.notificationPolicyClient = Suppliers.memoize(() -> new NotificationPolicyClient(clientOptions));
@@ -107,10 +112,6 @@ public class EntityClient {
         if (request.getStartingAfter().isPresent()) {
             httpUrl.addQueryParameter(
                     "startingAfter", request.getStartingAfter().get());
-        }
-        if (request.getOwnedByOrg().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "ownedByOrg", request.getOwnedByOrg().get().toString());
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -499,6 +500,10 @@ public class EntityClient {
 
     public CounterpartyClient counterparty() {
         return this.counterpartyClient.get();
+    }
+
+    public ExternalAccountingSystemClient externalAccountingSystem() {
+        return this.externalAccountingSystemClient.get();
     }
 
     public InvoiceClient invoice() {

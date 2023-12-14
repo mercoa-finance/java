@@ -42,6 +42,8 @@ public final class InvoiceLineItemResponse {
 
     private final Optional<Map<String, String>> metadata;
 
+    private final Optional<String> glAccountId;
+
     private final OffsetDateTime createdAt;
 
     private final OffsetDateTime updatedAt;
@@ -59,6 +61,7 @@ public final class InvoiceLineItemResponse {
             Optional<OffsetDateTime> serviceStartDate,
             Optional<OffsetDateTime> serviceEndDate,
             Optional<Map<String, String>> metadata,
+            Optional<String> glAccountId,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Map<String, Object> additionalProperties) {
@@ -72,6 +75,7 @@ public final class InvoiceLineItemResponse {
         this.serviceStartDate = serviceStartDate;
         this.serviceEndDate = serviceEndDate;
         this.metadata = metadata;
+        this.glAccountId = glAccountId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
@@ -133,6 +137,14 @@ public final class InvoiceLineItemResponse {
         return metadata;
     }
 
+    /**
+     * @return ID of general ledger account associated with this line item.
+     */
+    @JsonProperty("glAccountId")
+    public Optional<String> getGlAccountId() {
+        return glAccountId;
+    }
+
     @JsonProperty("createdAt")
     public OffsetDateTime getCreatedAt() {
         return createdAt;
@@ -165,6 +177,7 @@ public final class InvoiceLineItemResponse {
                 && serviceStartDate.equals(other.serviceStartDate)
                 && serviceEndDate.equals(other.serviceEndDate)
                 && metadata.equals(other.metadata)
+                && glAccountId.equals(other.glAccountId)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt);
     }
@@ -182,6 +195,7 @@ public final class InvoiceLineItemResponse {
                 this.serviceStartDate,
                 this.serviceEndDate,
                 this.metadata,
+                this.glAccountId,
                 this.createdAt,
                 this.updatedAt);
     }
@@ -247,6 +261,10 @@ public final class InvoiceLineItemResponse {
         _FinalStage metadata(Optional<Map<String, String>> metadata);
 
         _FinalStage metadata(Map<String, String> metadata);
+
+        _FinalStage glAccountId(Optional<String> glAccountId);
+
+        _FinalStage glAccountId(String glAccountId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -256,6 +274,8 @@ public final class InvoiceLineItemResponse {
         private OffsetDateTime createdAt;
 
         private OffsetDateTime updatedAt;
+
+        private Optional<String> glAccountId = Optional.empty();
 
         private Optional<Map<String, String>> metadata = Optional.empty();
 
@@ -292,6 +312,7 @@ public final class InvoiceLineItemResponse {
             serviceStartDate(other.getServiceStartDate());
             serviceEndDate(other.getServiceEndDate());
             metadata(other.getMetadata());
+            glAccountId(other.getGlAccountId());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             return this;
@@ -315,6 +336,23 @@ public final class InvoiceLineItemResponse {
         @JsonSetter("updatedAt")
         public _FinalStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = updatedAt;
+            return this;
+        }
+
+        /**
+         * <p>ID of general ledger account associated with this line item.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @Override
+        public _FinalStage glAccountId(String glAccountId) {
+            this.glAccountId = Optional.of(glAccountId);
+            return this;
+        }
+
+        @Override
+        @JsonSetter(value = "glAccountId", nulls = Nulls.SKIP)
+        public _FinalStage glAccountId(Optional<String> glAccountId) {
+            this.glAccountId = glAccountId;
             return this;
         }
 
@@ -456,6 +494,7 @@ public final class InvoiceLineItemResponse {
                     serviceStartDate,
                     serviceEndDate,
                     metadata,
+                    glAccountId,
                     createdAt,
                     updatedAt,
                     additionalProperties);

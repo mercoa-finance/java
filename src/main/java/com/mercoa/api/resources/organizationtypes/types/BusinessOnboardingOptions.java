@@ -18,6 +18,8 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = BusinessOnboardingOptions.Builder.class)
 public final class BusinessOnboardingOptions {
+    private final OnboardingOption termsOfService;
+
     private final OnboardingOption email;
 
     private final OnboardingOption name;
@@ -43,6 +45,7 @@ public final class BusinessOnboardingOptions {
     private final Map<String, Object> additionalProperties;
 
     private BusinessOnboardingOptions(
+            OnboardingOption termsOfService,
             OnboardingOption email,
             OnboardingOption name,
             OnboardingOption type,
@@ -55,6 +58,7 @@ public final class BusinessOnboardingOptions {
             OnboardingOption description,
             OnboardingOption representatives,
             Map<String, Object> additionalProperties) {
+        this.termsOfService = termsOfService;
         this.email = email;
         this.name = name;
         this.type = type;
@@ -67,6 +71,11 @@ public final class BusinessOnboardingOptions {
         this.description = description;
         this.representatives = representatives;
         this.additionalProperties = additionalProperties;
+    }
+
+    @JsonProperty("termsOfService")
+    public OnboardingOption getTermsOfService() {
+        return termsOfService;
     }
 
     @JsonProperty("email")
@@ -136,7 +145,8 @@ public final class BusinessOnboardingOptions {
     }
 
     private boolean equalTo(BusinessOnboardingOptions other) {
-        return email.equals(other.email)
+        return termsOfService.equals(other.termsOfService)
+                && email.equals(other.email)
                 && name.equals(other.name)
                 && type.equals(other.type)
                 && doingBusinessAs.equals(other.doingBusinessAs)
@@ -152,6 +162,7 @@ public final class BusinessOnboardingOptions {
     @Override
     public int hashCode() {
         return Objects.hash(
+                this.termsOfService,
                 this.email,
                 this.name,
                 this.type,
@@ -170,14 +181,18 @@ public final class BusinessOnboardingOptions {
         return ObjectMappers.stringify(this);
     }
 
-    public static EmailStage builder() {
+    public static TermsOfServiceStage builder() {
         return new Builder();
+    }
+
+    public interface TermsOfServiceStage {
+        EmailStage termsOfService(OnboardingOption termsOfService);
+
+        Builder from(BusinessOnboardingOptions other);
     }
 
     public interface EmailStage {
         NameStage email(OnboardingOption email);
-
-        Builder from(BusinessOnboardingOptions other);
     }
 
     public interface NameStage {
@@ -226,7 +241,8 @@ public final class BusinessOnboardingOptions {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements EmailStage,
+            implements TermsOfServiceStage,
+                    EmailStage,
                     NameStage,
                     TypeStage,
                     DoingBusinessAsStage,
@@ -238,6 +254,8 @@ public final class BusinessOnboardingOptions {
                     DescriptionStage,
                     RepresentativesStage,
                     _FinalStage {
+        private OnboardingOption termsOfService;
+
         private OnboardingOption email;
 
         private OnboardingOption name;
@@ -267,6 +285,7 @@ public final class BusinessOnboardingOptions {
 
         @Override
         public Builder from(BusinessOnboardingOptions other) {
+            termsOfService(other.getTermsOfService());
             email(other.getEmail());
             name(other.getName());
             type(other.getType());
@@ -278,6 +297,13 @@ public final class BusinessOnboardingOptions {
             website(other.getWebsite());
             description(other.getDescription());
             representatives(other.getRepresentatives());
+            return this;
+        }
+
+        @Override
+        @JsonSetter("termsOfService")
+        public EmailStage termsOfService(OnboardingOption termsOfService) {
+            this.termsOfService = termsOfService;
             return this;
         }
 
@@ -361,6 +387,7 @@ public final class BusinessOnboardingOptions {
         @Override
         public BusinessOnboardingOptions build() {
             return new BusinessOnboardingOptions(
+                    termsOfService,
                     email,
                     name,
                     type,

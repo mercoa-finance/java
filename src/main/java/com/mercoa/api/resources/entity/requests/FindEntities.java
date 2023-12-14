@@ -39,8 +39,6 @@ public final class FindEntities {
 
     private final Optional<String> startingAfter;
 
-    private final Optional<Boolean> ownedByOrg;
-
     private final Map<String, Object> additionalProperties;
 
     private FindEntities(
@@ -53,7 +51,6 @@ public final class FindEntities {
             Optional<String> name,
             Optional<Integer> limit,
             Optional<String> startingAfter,
-            Optional<Boolean> ownedByOrg,
             Map<String, Object> additionalProperties) {
         this.paymentMethods = paymentMethods;
         this.isCustomer = isCustomer;
@@ -64,7 +61,6 @@ public final class FindEntities {
         this.name = name;
         this.limit = limit;
         this.startingAfter = startingAfter;
-        this.ownedByOrg = ownedByOrg;
         this.additionalProperties = additionalProperties;
     }
 
@@ -139,14 +135,6 @@ public final class FindEntities {
         return startingAfter;
     }
 
-    /**
-     * @return [DEPRECATED - use isCustomer] If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
-     */
-    @JsonProperty("ownedByOrg")
-    public Optional<Boolean> getOwnedByOrg() {
-        return ownedByOrg;
-    }
-
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -167,8 +155,7 @@ public final class FindEntities {
                 && isPayor.equals(other.isPayor)
                 && name.equals(other.name)
                 && limit.equals(other.limit)
-                && startingAfter.equals(other.startingAfter)
-                && ownedByOrg.equals(other.ownedByOrg);
+                && startingAfter.equals(other.startingAfter);
     }
 
     @Override
@@ -182,8 +169,7 @@ public final class FindEntities {
                 this.isPayor,
                 this.name,
                 this.limit,
-                this.startingAfter,
-                this.ownedByOrg);
+                this.startingAfter);
     }
 
     @Override
@@ -215,8 +201,6 @@ public final class FindEntities {
 
         private Optional<String> startingAfter = Optional.empty();
 
-        private Optional<Boolean> ownedByOrg = Optional.empty();
-
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -232,7 +216,6 @@ public final class FindEntities {
             name(other.getName());
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
-            ownedByOrg(other.getOwnedByOrg());
             return this;
         }
 
@@ -335,17 +318,6 @@ public final class FindEntities {
             return this;
         }
 
-        @JsonSetter(value = "ownedByOrg", nulls = Nulls.SKIP)
-        public Builder ownedByOrg(Optional<Boolean> ownedByOrg) {
-            this.ownedByOrg = ownedByOrg;
-            return this;
-        }
-
-        public Builder ownedByOrg(Boolean ownedByOrg) {
-            this.ownedByOrg = Optional.of(ownedByOrg);
-            return this;
-        }
-
         public FindEntities build() {
             return new FindEntities(
                     paymentMethods,
@@ -357,7 +329,6 @@ public final class FindEntities {
                     name,
                     limit,
                     startingAfter,
-                    ownedByOrg,
                     additionalProperties);
         }
     }
