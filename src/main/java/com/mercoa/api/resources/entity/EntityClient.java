@@ -404,6 +404,43 @@ public class EntityClient {
     }
 
     /**
+     * Get a Plaid link token for an entity. This token can be used to add a bank account to the entity using Plaid Link.
+     */
+    public String plaidLinkToken(String entityId, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entity")
+                .addPathSegment(entityId)
+                .addPathSegments("plaidLinkToken")
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), String.class);
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Get a Plaid link token for an entity. This token can be used to add a bank account to the entity using Plaid Link.
+     */
+    public String plaidLinkToken(String entityId) {
+        return plaidLinkToken(entityId, null);
+    }
+
+    /**
      * Generate an onboarding link for the entity.
      */
     public String getOnboardingLink(String entityId, GenerateOnboardingLink request, RequestOptions requestOptions) {

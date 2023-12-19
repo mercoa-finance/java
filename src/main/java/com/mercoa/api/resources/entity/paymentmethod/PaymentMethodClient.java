@@ -187,6 +187,9 @@ public class PaymentMethodClient {
         return update(entityId, paymentMethodId, request, null);
     }
 
+    /**
+     * Mark a payment method as inactive. This will not remove the payment method from the system, but will prevent it from being used in the future.
+     */
     public void delete(String entityId, String paymentMethodId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -214,6 +217,9 @@ public class PaymentMethodClient {
         }
     }
 
+    /**
+     * Mark a payment method as inactive. This will not remove the payment method from the system, but will prevent it from being used in the future.
+     */
     public void delete(String entityId, String paymentMethodId) {
         delete(entityId, paymentMethodId, null);
     }
