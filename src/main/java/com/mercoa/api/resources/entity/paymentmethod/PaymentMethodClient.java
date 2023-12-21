@@ -10,6 +10,7 @@ import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.entity.paymentmethod.requests.CompleteMicroDepositsRequest;
 import com.mercoa.api.resources.entity.paymentmethod.requests.GetAllPaymentMethodsRequest;
+import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodBalanceResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodRequest;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodUpdateRequest;
@@ -313,5 +314,46 @@ public class PaymentMethodClient {
     public PaymentMethodResponse completeMicroDeposits(
             String entityId, String paymentMethodId, CompleteMicroDepositsRequest request) {
         return completeMicroDeposits(entityId, paymentMethodId, request, null);
+    }
+
+    /**
+     * Get the available balance of a payment method. Only bank accounts added with Plaid are supported.
+     */
+    public PaymentMethodBalanceResponse getBalance(
+            String entityId, String paymentMethodId, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entity")
+                .addPathSegment(entityId)
+                .addPathSegments("paymentMethod")
+                .addPathSegment(paymentMethodId)
+                .addPathSegments("balance")
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(
+                        response.body().string(), PaymentMethodBalanceResponse.class);
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Get the available balance of a payment method. Only bank accounts added with Plaid are supported.
+     */
+    public PaymentMethodBalanceResponse getBalance(String entityId, String paymentMethodId) {
+        return getBalance(entityId, paymentMethodId, null);
     }
 }

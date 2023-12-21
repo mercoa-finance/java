@@ -42,6 +42,10 @@ public final class PaymentMethodUpdateRequest {
         return new PaymentMethodUpdateRequest(new CheckValue(value));
     }
 
+    public static PaymentMethodUpdateRequest offPlatform(PaymentMethodBaseRequest value) {
+        return new PaymentMethodUpdateRequest(new OffPlatformValue(value));
+    }
+
     public boolean isCustom() {
         return value instanceof CustomValue;
     }
@@ -56,6 +60,10 @@ public final class PaymentMethodUpdateRequest {
 
     public boolean isCheck() {
         return value instanceof CheckValue;
+    }
+
+    public boolean isOffPlatform() {
+        return value instanceof OffPlatformValue;
     }
 
     public boolean _isUnknown() {
@@ -90,6 +98,13 @@ public final class PaymentMethodUpdateRequest {
         return Optional.empty();
     }
 
+    public Optional<PaymentMethodBaseRequest> getOffPlatform() {
+        if (isOffPlatform()) {
+            return Optional.of(((OffPlatformValue) value).value);
+        }
+        return Optional.empty();
+    }
+
     public Optional<Object> _getUnknown() {
         if (_isUnknown()) {
             return Optional.of(((_UnknownValue) value).value);
@@ -111,6 +126,8 @@ public final class PaymentMethodUpdateRequest {
 
         T visitCheck(PaymentMethodBaseRequest check);
 
+        T visitOffPlatform(PaymentMethodBaseRequest offPlatform);
+
         T _visitUnknown(Object unknownType);
     }
 
@@ -119,7 +136,8 @@ public final class PaymentMethodUpdateRequest {
         @JsonSubTypes.Type(CustomValue.class),
         @JsonSubTypes.Type(BankAccountValue.class),
         @JsonSubTypes.Type(CardValue.class),
-        @JsonSubTypes.Type(CheckValue.class)
+        @JsonSubTypes.Type(CheckValue.class),
+        @JsonSubTypes.Type(OffPlatformValue.class)
     })
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
@@ -264,6 +282,44 @@ public final class PaymentMethodUpdateRequest {
         }
 
         private boolean equalTo(CheckValue other) {
+            return value.equals(other.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @Override
+        public String toString() {
+            return "PaymentMethodUpdateRequest{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("offPlatform")
+    private static final class OffPlatformValue implements Value {
+        @JsonUnwrapped
+        private PaymentMethodBaseRequest value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private OffPlatformValue() {}
+
+        private OffPlatformValue(PaymentMethodBaseRequest value) {
+            this.value = value;
+        }
+
+        @Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitOffPlatform(value);
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof OffPlatformValue && equalTo((OffPlatformValue) other);
+        }
+
+        private boolean equalTo(OffPlatformValue other) {
             return value.equals(other.value);
         }
 

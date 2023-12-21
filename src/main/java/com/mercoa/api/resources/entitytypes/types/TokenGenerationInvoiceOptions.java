@@ -18,35 +18,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = TokenGenerationInvoiceOptions.Builder.class)
 public final class TokenGenerationInvoiceOptions {
     private final List<InvoiceStatus> status;
 
-    private final Optional<Boolean> markPaid;
-
     private final Map<String, Object> additionalProperties;
 
-    private TokenGenerationInvoiceOptions(
-            List<InvoiceStatus> status, Optional<Boolean> markPaid, Map<String, Object> additionalProperties) {
+    private TokenGenerationInvoiceOptions(List<InvoiceStatus> status, Map<String, Object> additionalProperties) {
         this.status = status;
-        this.markPaid = markPaid;
         this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("status")
     public List<InvoiceStatus> getStatus() {
         return status;
-    }
-
-    /**
-     * @return If true, the user will be able to mark invoices as paid.
-     */
-    @JsonProperty("markPaid")
-    public Optional<Boolean> getMarkPaid() {
-        return markPaid;
     }
 
     @Override
@@ -61,12 +48,12 @@ public final class TokenGenerationInvoiceOptions {
     }
 
     private boolean equalTo(TokenGenerationInvoiceOptions other) {
-        return status.equals(other.status) && markPaid.equals(other.markPaid);
+        return status.equals(other.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.status, this.markPaid);
+        return Objects.hash(this.status);
     }
 
     @Override
@@ -82,8 +69,6 @@ public final class TokenGenerationInvoiceOptions {
     public static final class Builder {
         private List<InvoiceStatus> status = new ArrayList<>();
 
-        private Optional<Boolean> markPaid = Optional.empty();
-
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -91,7 +76,6 @@ public final class TokenGenerationInvoiceOptions {
 
         public Builder from(TokenGenerationInvoiceOptions other) {
             status(other.getStatus());
-            markPaid(other.getMarkPaid());
             return this;
         }
 
@@ -112,19 +96,8 @@ public final class TokenGenerationInvoiceOptions {
             return this;
         }
 
-        @JsonSetter(value = "markPaid", nulls = Nulls.SKIP)
-        public Builder markPaid(Optional<Boolean> markPaid) {
-            this.markPaid = markPaid;
-            return this;
-        }
-
-        public Builder markPaid(Boolean markPaid) {
-            this.markPaid = Optional.of(markPaid);
-            return this;
-        }
-
         public TokenGenerationInvoiceOptions build() {
-            return new TokenGenerationInvoiceOptions(status, markPaid, additionalProperties);
+            return new TokenGenerationInvoiceOptions(status, additionalProperties);
         }
     }
 }

@@ -46,7 +46,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.mercoa'
             artifactId = 'mercoa'
-            version = 'v0.3.7'
+            version = 'v0.3.8'
             from components.java
         }
     }
