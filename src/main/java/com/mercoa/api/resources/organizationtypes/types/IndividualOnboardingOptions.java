@@ -26,7 +26,7 @@ public final class IndividualOnboardingOptions {
 
     private final OnboardingOption dateOfBirth;
 
-    private final OnboardingOption ssnLast4;
+    private final OnboardingOption ssn;
 
     private final OnboardingOption address;
 
@@ -39,7 +39,7 @@ public final class IndividualOnboardingOptions {
             OnboardingOption email,
             OnboardingOption name,
             OnboardingOption dateOfBirth,
-            OnboardingOption ssnLast4,
+            OnboardingOption ssn,
             OnboardingOption address,
             OnboardingOption phone,
             Map<String, Object> additionalProperties) {
@@ -47,7 +47,7 @@ public final class IndividualOnboardingOptions {
         this.email = email;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
-        this.ssnLast4 = ssnLast4;
+        this.ssn = ssn;
         this.address = address;
         this.phone = phone;
         this.additionalProperties = additionalProperties;
@@ -73,9 +73,9 @@ public final class IndividualOnboardingOptions {
         return dateOfBirth;
     }
 
-    @JsonProperty("ssnLast4")
-    public OnboardingOption getSsnLast4() {
-        return ssnLast4;
+    @JsonProperty("ssn")
+    public OnboardingOption getSsn() {
+        return ssn;
     }
 
     @JsonProperty("address")
@@ -104,7 +104,7 @@ public final class IndividualOnboardingOptions {
                 && email.equals(other.email)
                 && name.equals(other.name)
                 && dateOfBirth.equals(other.dateOfBirth)
-                && ssnLast4.equals(other.ssnLast4)
+                && ssn.equals(other.ssn)
                 && address.equals(other.address)
                 && phone.equals(other.phone);
     }
@@ -112,7 +112,7 @@ public final class IndividualOnboardingOptions {
     @Override
     public int hashCode() {
         return Objects.hash(
-                this.termsOfService, this.email, this.name, this.dateOfBirth, this.ssnLast4, this.address, this.phone);
+                this.termsOfService, this.email, this.name, this.dateOfBirth, this.ssn, this.address, this.phone);
     }
 
     @Override
@@ -139,11 +139,11 @@ public final class IndividualOnboardingOptions {
     }
 
     public interface DateOfBirthStage {
-        SsnLast4Stage dateOfBirth(OnboardingOption dateOfBirth);
+        SsnStage dateOfBirth(OnboardingOption dateOfBirth);
     }
 
-    public interface SsnLast4Stage {
-        AddressStage ssnLast4(OnboardingOption ssnLast4);
+    public interface SsnStage {
+        AddressStage ssn(OnboardingOption ssn);
     }
 
     public interface AddressStage {
@@ -164,7 +164,7 @@ public final class IndividualOnboardingOptions {
                     EmailStage,
                     NameStage,
                     DateOfBirthStage,
-                    SsnLast4Stage,
+                    SsnStage,
                     AddressStage,
                     PhoneStage,
                     _FinalStage {
@@ -176,7 +176,7 @@ public final class IndividualOnboardingOptions {
 
         private OnboardingOption dateOfBirth;
 
-        private OnboardingOption ssnLast4;
+        private OnboardingOption ssn;
 
         private OnboardingOption address;
 
@@ -193,7 +193,7 @@ public final class IndividualOnboardingOptions {
             email(other.getEmail());
             name(other.getName());
             dateOfBirth(other.getDateOfBirth());
-            ssnLast4(other.getSsnLast4());
+            ssn(other.getSsn());
             address(other.getAddress());
             phone(other.getPhone());
             return this;
@@ -222,15 +222,15 @@ public final class IndividualOnboardingOptions {
 
         @Override
         @JsonSetter("dateOfBirth")
-        public SsnLast4Stage dateOfBirth(OnboardingOption dateOfBirth) {
+        public SsnStage dateOfBirth(OnboardingOption dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
             return this;
         }
 
         @Override
-        @JsonSetter("ssnLast4")
-        public AddressStage ssnLast4(OnboardingOption ssnLast4) {
-            this.ssnLast4 = ssnLast4;
+        @JsonSetter("ssn")
+        public AddressStage ssn(OnboardingOption ssn) {
+            this.ssn = ssn;
             return this;
         }
 
@@ -251,7 +251,7 @@ public final class IndividualOnboardingOptions {
         @Override
         public IndividualOnboardingOptions build() {
             return new IndividualOnboardingOptions(
-                    termsOfService, email, name, dateOfBirth, ssnLast4, address, phone, additionalProperties);
+                    termsOfService, email, name, dateOfBirth, ssn, address, phone, additionalProperties);
         }
     }
 }

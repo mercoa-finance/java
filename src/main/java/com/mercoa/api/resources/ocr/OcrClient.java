@@ -8,7 +8,6 @@ import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.ocr.requests.RunOcr;
-import com.mercoa.api.resources.ocr.types.CloudMailinRequest;
 import com.mercoa.api.resources.ocr.types.OcrResponse;
 import java.io.IOException;
 import java.util.HashMap;
@@ -76,41 +75,5 @@ public class OcrClient {
      */
     public OcrResponse ocr(RunOcr request) {
         return ocr(request, null);
-    }
-
-    public void cloudMailinWebhook(CloudMailinRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("cloudMailinWebhook")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
-        try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
-            if (response.isSuccessful()) {
-                return;
-            }
-            throw new ApiError(
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void cloudMailinWebhook(CloudMailinRequest request) {
-        cloudMailinWebhook(request, null);
     }
 }
