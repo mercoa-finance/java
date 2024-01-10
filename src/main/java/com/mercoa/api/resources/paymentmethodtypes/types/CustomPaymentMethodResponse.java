@@ -44,7 +44,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
     private final String schemaId;
 
-    private final PaymentMethodSchemaResponse schema;
+    private final CustomPaymentMethodSchemaResponse schema;
 
     private final Map<String, String> data;
 
@@ -61,7 +61,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
             Optional<String> accountName,
             Optional<String> accountNumber,
             String schemaId,
-            PaymentMethodSchemaResponse schema,
+            CustomPaymentMethodSchemaResponse schema,
             Map<String, String> data,
             Map<String, Object> additionalProperties) {
         this.id = id;
@@ -148,7 +148,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
     }
 
     @JsonProperty("schema")
-    public PaymentMethodSchemaResponse getSchema() {
+    public CustomPaymentMethodSchemaResponse getSchema() {
         return schema;
     }
 
@@ -243,7 +243,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
     }
 
     public interface SchemaStage {
-        _FinalStage schema(PaymentMethodSchemaResponse schema);
+        _FinalStage schema(CustomPaymentMethodSchemaResponse schema);
     }
 
     public interface _FinalStage {
@@ -295,7 +295,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
         private String schemaId;
 
-        private PaymentMethodSchemaResponse schema;
+        private CustomPaymentMethodSchemaResponse schema;
 
         private Map<String, String> data = new LinkedHashMap<>();
 
@@ -394,7 +394,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
         @Override
         @JsonSetter("schema")
-        public _FinalStage schema(PaymentMethodSchemaResponse schema) {
+        public _FinalStage schema(CustomPaymentMethodSchemaResponse schema) {
             this.schema = schema;
             return this;
         }

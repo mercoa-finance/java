@@ -20,8 +20,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = PaymentMethodSchemaRequest.Builder.class)
-public final class PaymentMethodSchemaRequest {
+@JsonDeserialize(builder = CustomPaymentMethodSchemaRequest.Builder.class)
+public final class CustomPaymentMethodSchemaRequest {
     private final String name;
 
     private final boolean isSource;
@@ -30,16 +30,16 @@ public final class PaymentMethodSchemaRequest {
 
     private final Optional<List<CurrencyCode>> supportedCurrencies;
 
-    private final List<PaymentMethodSchemaField> fields;
+    private final List<CustomPaymentMethodSchemaField> fields;
 
     private final Map<String, Object> additionalProperties;
 
-    private PaymentMethodSchemaRequest(
+    private CustomPaymentMethodSchemaRequest(
             String name,
             boolean isSource,
             boolean isDestination,
             Optional<List<CurrencyCode>> supportedCurrencies,
-            List<PaymentMethodSchemaField> fields,
+            List<CustomPaymentMethodSchemaField> fields,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.isSource = isSource;
@@ -79,14 +79,14 @@ public final class PaymentMethodSchemaRequest {
     }
 
     @JsonProperty("fields")
-    public List<PaymentMethodSchemaField> getFields() {
+    public List<CustomPaymentMethodSchemaField> getFields() {
         return fields;
     }
 
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof PaymentMethodSchemaRequest && equalTo((PaymentMethodSchemaRequest) other);
+        return other instanceof CustomPaymentMethodSchemaRequest && equalTo((CustomPaymentMethodSchemaRequest) other);
     }
 
     @JsonAnyGetter
@@ -94,7 +94,7 @@ public final class PaymentMethodSchemaRequest {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(PaymentMethodSchemaRequest other) {
+    private boolean equalTo(CustomPaymentMethodSchemaRequest other) {
         return name.equals(other.name)
                 && isSource == other.isSource
                 && isDestination == other.isDestination
@@ -119,7 +119,7 @@ public final class PaymentMethodSchemaRequest {
     public interface NameStage {
         IsSourceStage name(String name);
 
-        Builder from(PaymentMethodSchemaRequest other);
+        Builder from(CustomPaymentMethodSchemaRequest other);
     }
 
     public interface IsSourceStage {
@@ -131,17 +131,17 @@ public final class PaymentMethodSchemaRequest {
     }
 
     public interface _FinalStage {
-        PaymentMethodSchemaRequest build();
+        CustomPaymentMethodSchemaRequest build();
 
         _FinalStage supportedCurrencies(Optional<List<CurrencyCode>> supportedCurrencies);
 
         _FinalStage supportedCurrencies(List<CurrencyCode> supportedCurrencies);
 
-        _FinalStage fields(List<PaymentMethodSchemaField> fields);
+        _FinalStage fields(List<CustomPaymentMethodSchemaField> fields);
 
-        _FinalStage addFields(PaymentMethodSchemaField fields);
+        _FinalStage addFields(CustomPaymentMethodSchemaField fields);
 
-        _FinalStage addAllFields(List<PaymentMethodSchemaField> fields);
+        _FinalStage addAllFields(List<CustomPaymentMethodSchemaField> fields);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -152,7 +152,7 @@ public final class PaymentMethodSchemaRequest {
 
         private boolean isDestination;
 
-        private List<PaymentMethodSchemaField> fields = new ArrayList<>();
+        private List<CustomPaymentMethodSchemaField> fields = new ArrayList<>();
 
         private Optional<List<CurrencyCode>> supportedCurrencies = Optional.empty();
 
@@ -162,7 +162,7 @@ public final class PaymentMethodSchemaRequest {
         private Builder() {}
 
         @Override
-        public Builder from(PaymentMethodSchemaRequest other) {
+        public Builder from(CustomPaymentMethodSchemaRequest other) {
             name(other.getName());
             isSource(other.getIsSource());
             isDestination(other.getIsDestination());
@@ -201,20 +201,20 @@ public final class PaymentMethodSchemaRequest {
         }
 
         @Override
-        public _FinalStage addAllFields(List<PaymentMethodSchemaField> fields) {
+        public _FinalStage addAllFields(List<CustomPaymentMethodSchemaField> fields) {
             this.fields.addAll(fields);
             return this;
         }
 
         @Override
-        public _FinalStage addFields(PaymentMethodSchemaField fields) {
+        public _FinalStage addFields(CustomPaymentMethodSchemaField fields) {
             this.fields.add(fields);
             return this;
         }
 
         @Override
         @JsonSetter(value = "fields", nulls = Nulls.SKIP)
-        public _FinalStage fields(List<PaymentMethodSchemaField> fields) {
+        public _FinalStage fields(List<CustomPaymentMethodSchemaField> fields) {
             this.fields.clear();
             this.fields.addAll(fields);
             return this;
@@ -238,8 +238,8 @@ public final class PaymentMethodSchemaRequest {
         }
 
         @Override
-        public PaymentMethodSchemaRequest build() {
-            return new PaymentMethodSchemaRequest(
+        public CustomPaymentMethodSchemaRequest build() {
+            return new CustomPaymentMethodSchemaRequest(
                     name, isSource, isDestination, supportedCurrencies, fields, additionalProperties);
         }
     }

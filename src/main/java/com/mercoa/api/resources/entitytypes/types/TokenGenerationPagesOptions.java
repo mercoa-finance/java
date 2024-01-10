@@ -26,16 +26,20 @@ public final class TokenGenerationPagesOptions {
 
     private final Optional<Boolean> notifications;
 
+    private final Optional<Boolean> counterparties;
+
     private final Map<String, Object> additionalProperties;
 
     private TokenGenerationPagesOptions(
             Optional<Boolean> paymentMethods,
             Optional<Boolean> representatives,
             Optional<Boolean> notifications,
+            Optional<Boolean> counterparties,
             Map<String, Object> additionalProperties) {
         this.paymentMethods = paymentMethods;
         this.representatives = representatives;
         this.notifications = notifications;
+        this.counterparties = counterparties;
         this.additionalProperties = additionalProperties;
     }
 
@@ -54,6 +58,11 @@ public final class TokenGenerationPagesOptions {
         return notifications;
     }
 
+    @JsonProperty("counterparties")
+    public Optional<Boolean> getCounterparties() {
+        return counterparties;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -68,12 +77,13 @@ public final class TokenGenerationPagesOptions {
     private boolean equalTo(TokenGenerationPagesOptions other) {
         return paymentMethods.equals(other.paymentMethods)
                 && representatives.equals(other.representatives)
-                && notifications.equals(other.notifications);
+                && notifications.equals(other.notifications)
+                && counterparties.equals(other.counterparties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.paymentMethods, this.representatives, this.notifications);
+        return Objects.hash(this.paymentMethods, this.representatives, this.notifications, this.counterparties);
     }
 
     @Override
@@ -93,6 +103,8 @@ public final class TokenGenerationPagesOptions {
 
         private Optional<Boolean> notifications = Optional.empty();
 
+        private Optional<Boolean> counterparties = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -102,6 +114,7 @@ public final class TokenGenerationPagesOptions {
             paymentMethods(other.getPaymentMethods());
             representatives(other.getRepresentatives());
             notifications(other.getNotifications());
+            counterparties(other.getCounterparties());
             return this;
         }
 
@@ -138,9 +151,20 @@ public final class TokenGenerationPagesOptions {
             return this;
         }
 
+        @JsonSetter(value = "counterparties", nulls = Nulls.SKIP)
+        public Builder counterparties(Optional<Boolean> counterparties) {
+            this.counterparties = counterparties;
+            return this;
+        }
+
+        public Builder counterparties(Boolean counterparties) {
+            this.counterparties = Optional.of(counterparties);
+            return this;
+        }
+
         public TokenGenerationPagesOptions build() {
             return new TokenGenerationPagesOptions(
-                    paymentMethods, representatives, notifications, additionalProperties);
+                    paymentMethods, representatives, notifications, counterparties, additionalProperties);
         }
     }
 }

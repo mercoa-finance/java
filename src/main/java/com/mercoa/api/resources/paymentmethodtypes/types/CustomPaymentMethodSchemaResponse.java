@@ -20,8 +20,8 @@ import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = PaymentMethodSchemaResponse.Builder.class)
-public final class PaymentMethodSchemaResponse {
+@JsonDeserialize(builder = CustomPaymentMethodSchemaResponse.Builder.class)
+public final class CustomPaymentMethodSchemaResponse {
     private final String id;
 
     private final String name;
@@ -32,7 +32,7 @@ public final class PaymentMethodSchemaResponse {
 
     private final List<CurrencyCode> supportedCurrencies;
 
-    private final List<PaymentMethodSchemaField> fields;
+    private final List<CustomPaymentMethodSchemaField> fields;
 
     private final OffsetDateTime createdAt;
 
@@ -40,13 +40,13 @@ public final class PaymentMethodSchemaResponse {
 
     private final Map<String, Object> additionalProperties;
 
-    private PaymentMethodSchemaResponse(
+    private CustomPaymentMethodSchemaResponse(
             String id,
             String name,
             boolean isSource,
             boolean isDestination,
             List<CurrencyCode> supportedCurrencies,
-            List<PaymentMethodSchemaField> fields,
+            List<CustomPaymentMethodSchemaField> fields,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Map<String, Object> additionalProperties) {
@@ -96,7 +96,7 @@ public final class PaymentMethodSchemaResponse {
     }
 
     @JsonProperty("fields")
-    public List<PaymentMethodSchemaField> getFields() {
+    public List<CustomPaymentMethodSchemaField> getFields() {
         return fields;
     }
 
@@ -113,7 +113,7 @@ public final class PaymentMethodSchemaResponse {
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof PaymentMethodSchemaResponse && equalTo((PaymentMethodSchemaResponse) other);
+        return other instanceof CustomPaymentMethodSchemaResponse && equalTo((CustomPaymentMethodSchemaResponse) other);
     }
 
     @JsonAnyGetter
@@ -121,7 +121,7 @@ public final class PaymentMethodSchemaResponse {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(PaymentMethodSchemaResponse other) {
+    private boolean equalTo(CustomPaymentMethodSchemaResponse other) {
         return id.equals(other.id)
                 && name.equals(other.name)
                 && isSource == other.isSource
@@ -157,7 +157,7 @@ public final class PaymentMethodSchemaResponse {
     public interface IdStage {
         NameStage id(String id);
 
-        Builder from(PaymentMethodSchemaResponse other);
+        Builder from(CustomPaymentMethodSchemaResponse other);
     }
 
     public interface NameStage {
@@ -181,7 +181,7 @@ public final class PaymentMethodSchemaResponse {
     }
 
     public interface _FinalStage {
-        PaymentMethodSchemaResponse build();
+        CustomPaymentMethodSchemaResponse build();
 
         _FinalStage supportedCurrencies(List<CurrencyCode> supportedCurrencies);
 
@@ -189,11 +189,11 @@ public final class PaymentMethodSchemaResponse {
 
         _FinalStage addAllSupportedCurrencies(List<CurrencyCode> supportedCurrencies);
 
-        _FinalStage fields(List<PaymentMethodSchemaField> fields);
+        _FinalStage fields(List<CustomPaymentMethodSchemaField> fields);
 
-        _FinalStage addFields(PaymentMethodSchemaField fields);
+        _FinalStage addFields(CustomPaymentMethodSchemaField fields);
 
-        _FinalStage addAllFields(List<PaymentMethodSchemaField> fields);
+        _FinalStage addAllFields(List<CustomPaymentMethodSchemaField> fields);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -217,7 +217,7 @@ public final class PaymentMethodSchemaResponse {
 
         private OffsetDateTime updatedAt;
 
-        private List<PaymentMethodSchemaField> fields = new ArrayList<>();
+        private List<CustomPaymentMethodSchemaField> fields = new ArrayList<>();
 
         private List<CurrencyCode> supportedCurrencies = new ArrayList<>();
 
@@ -227,7 +227,7 @@ public final class PaymentMethodSchemaResponse {
         private Builder() {}
 
         @Override
-        public Builder from(PaymentMethodSchemaResponse other) {
+        public Builder from(CustomPaymentMethodSchemaResponse other) {
             id(other.getId());
             name(other.getName());
             isSource(other.getIsSource());
@@ -290,20 +290,20 @@ public final class PaymentMethodSchemaResponse {
         }
 
         @Override
-        public _FinalStage addAllFields(List<PaymentMethodSchemaField> fields) {
+        public _FinalStage addAllFields(List<CustomPaymentMethodSchemaField> fields) {
             this.fields.addAll(fields);
             return this;
         }
 
         @Override
-        public _FinalStage addFields(PaymentMethodSchemaField fields) {
+        public _FinalStage addFields(CustomPaymentMethodSchemaField fields) {
             this.fields.add(fields);
             return this;
         }
 
         @Override
         @JsonSetter(value = "fields", nulls = Nulls.SKIP)
-        public _FinalStage fields(List<PaymentMethodSchemaField> fields) {
+        public _FinalStage fields(List<CustomPaymentMethodSchemaField> fields) {
             this.fields.clear();
             this.fields.addAll(fields);
             return this;
@@ -338,8 +338,8 @@ public final class PaymentMethodSchemaResponse {
         }
 
         @Override
-        public PaymentMethodSchemaResponse build() {
-            return new PaymentMethodSchemaResponse(
+        public CustomPaymentMethodSchemaResponse build() {
+            return new CustomPaymentMethodSchemaResponse(
                     id,
                     name,
                     isSource,

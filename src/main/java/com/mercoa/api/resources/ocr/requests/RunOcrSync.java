@@ -19,8 +19,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = RunOcr.Builder.class)
-public final class RunOcr {
+@JsonDeserialize(builder = RunOcrSync.Builder.class)
+public final class RunOcrSync {
     private final Optional<VendorNetwork> vendorNetwork;
 
     private final Optional<String> entityId;
@@ -31,7 +31,7 @@ public final class RunOcr {
 
     private final Map<String, Object> additionalProperties;
 
-    private RunOcr(
+    private RunOcrSync(
             Optional<VendorNetwork> vendorNetwork,
             Optional<String> entityId,
             String mimeType,
@@ -79,7 +79,7 @@ public final class RunOcr {
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof RunOcr && equalTo((RunOcr) other);
+        return other instanceof RunOcrSync && equalTo((RunOcrSync) other);
     }
 
     @JsonAnyGetter
@@ -87,7 +87,7 @@ public final class RunOcr {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(RunOcr other) {
+    private boolean equalTo(RunOcrSync other) {
         return vendorNetwork.equals(other.vendorNetwork)
                 && entityId.equals(other.entityId)
                 && mimeType.equals(other.mimeType)
@@ -111,7 +111,7 @@ public final class RunOcr {
     public interface MimeTypeStage {
         ImageStage mimeType(String mimeType);
 
-        Builder from(RunOcr other);
+        Builder from(RunOcrSync other);
     }
 
     public interface ImageStage {
@@ -119,7 +119,7 @@ public final class RunOcr {
     }
 
     public interface _FinalStage {
-        RunOcr build();
+        RunOcrSync build();
 
         _FinalStage vendorNetwork(Optional<VendorNetwork> vendorNetwork);
 
@@ -146,7 +146,7 @@ public final class RunOcr {
         private Builder() {}
 
         @Override
-        public Builder from(RunOcr other) {
+        public Builder from(RunOcrSync other) {
             vendorNetwork(other.getVendorNetwork());
             entityId(other.getEntityId());
             mimeType(other.getMimeType());
@@ -211,8 +211,8 @@ public final class RunOcr {
         }
 
         @Override
-        public RunOcr build() {
-            return new RunOcr(vendorNetwork, entityId, mimeType, image, additionalProperties);
+        public RunOcrSync build() {
+            return new RunOcrSync(vendorNetwork, entityId, mimeType, image, additionalProperties);
         }
     }
 }

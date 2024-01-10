@@ -5,7 +5,7 @@ package com.mercoa.api.resources.paymentmethodtypes.types;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum PaymentMethodSchemaFieldType {
+public enum CustomPaymentMethodSchemaFieldType {
     TEXT("text"),
 
     NUMBER("number"),
@@ -24,7 +24,7 @@ public enum PaymentMethodSchemaFieldType {
 
     private final String value;
 
-    PaymentMethodSchemaFieldType(String value) {
+    CustomPaymentMethodSchemaFieldType(String value) {
         this.value = value;
     }
 

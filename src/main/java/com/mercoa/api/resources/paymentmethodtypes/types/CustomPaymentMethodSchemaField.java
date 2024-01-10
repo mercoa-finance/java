@@ -19,13 +19,13 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = PaymentMethodSchemaField.Builder.class)
-public final class PaymentMethodSchemaField {
+@JsonDeserialize(builder = CustomPaymentMethodSchemaField.Builder.class)
+public final class CustomPaymentMethodSchemaField {
     private final String name;
 
     private final Optional<String> displayName;
 
-    private final PaymentMethodSchemaFieldType type;
+    private final CustomPaymentMethodSchemaFieldType type;
 
     private final boolean optional;
 
@@ -37,10 +37,10 @@ public final class PaymentMethodSchemaField {
 
     private final Map<String, Object> additionalProperties;
 
-    private PaymentMethodSchemaField(
+    private CustomPaymentMethodSchemaField(
             String name,
             Optional<String> displayName,
-            PaymentMethodSchemaFieldType type,
+            CustomPaymentMethodSchemaFieldType type,
             boolean optional,
             Optional<Boolean> useAsAccountName,
             Optional<Boolean> useAsAccountNumber,
@@ -67,7 +67,7 @@ public final class PaymentMethodSchemaField {
     }
 
     @JsonProperty("type")
-    public PaymentMethodSchemaFieldType getType() {
+    public CustomPaymentMethodSchemaFieldType getType() {
         return type;
     }
 
@@ -106,7 +106,7 @@ public final class PaymentMethodSchemaField {
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof PaymentMethodSchemaField && equalTo((PaymentMethodSchemaField) other);
+        return other instanceof CustomPaymentMethodSchemaField && equalTo((CustomPaymentMethodSchemaField) other);
     }
 
     @JsonAnyGetter
@@ -114,7 +114,7 @@ public final class PaymentMethodSchemaField {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(PaymentMethodSchemaField other) {
+    private boolean equalTo(CustomPaymentMethodSchemaField other) {
         return name.equals(other.name)
                 && displayName.equals(other.displayName)
                 && type.equals(other.type)
@@ -148,11 +148,11 @@ public final class PaymentMethodSchemaField {
     public interface NameStage {
         TypeStage name(String name);
 
-        Builder from(PaymentMethodSchemaField other);
+        Builder from(CustomPaymentMethodSchemaField other);
     }
 
     public interface TypeStage {
-        OptionalStage type(PaymentMethodSchemaFieldType type);
+        OptionalStage type(CustomPaymentMethodSchemaFieldType type);
     }
 
     public interface OptionalStage {
@@ -160,7 +160,7 @@ public final class PaymentMethodSchemaField {
     }
 
     public interface _FinalStage {
-        PaymentMethodSchemaField build();
+        CustomPaymentMethodSchemaField build();
 
         _FinalStage displayName(Optional<String> displayName);
 
@@ -183,7 +183,7 @@ public final class PaymentMethodSchemaField {
     public static final class Builder implements NameStage, TypeStage, OptionalStage, _FinalStage {
         private String name;
 
-        private PaymentMethodSchemaFieldType type;
+        private CustomPaymentMethodSchemaFieldType type;
 
         private boolean optional;
 
@@ -201,7 +201,7 @@ public final class PaymentMethodSchemaField {
         private Builder() {}
 
         @Override
-        public Builder from(PaymentMethodSchemaField other) {
+        public Builder from(CustomPaymentMethodSchemaField other) {
             name(other.getName());
             displayName(other.getDisplayName());
             type(other.getType());
@@ -221,7 +221,7 @@ public final class PaymentMethodSchemaField {
 
         @Override
         @JsonSetter("type")
-        public OptionalStage type(PaymentMethodSchemaFieldType type) {
+        public OptionalStage type(CustomPaymentMethodSchemaFieldType type) {
             this.type = type;
             return this;
         }
@@ -302,8 +302,8 @@ public final class PaymentMethodSchemaField {
         }
 
         @Override
-        public PaymentMethodSchemaField build() {
-            return new PaymentMethodSchemaField(
+        public CustomPaymentMethodSchemaField build() {
+            return new CustomPaymentMethodSchemaField(
                     name,
                     displayName,
                     type,

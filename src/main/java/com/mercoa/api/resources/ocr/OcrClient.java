@@ -7,7 +7,10 @@ import com.mercoa.api.core.ApiError;
 import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
-import com.mercoa.api.resources.ocr.requests.RunOcr;
+import com.mercoa.api.resources.ocr.requests.RunOcrAsync;
+import com.mercoa.api.resources.ocr.requests.RunOcrSync;
+import com.mercoa.api.resources.ocr.types.OcrAsyncResponse;
+import com.mercoa.api.resources.ocr.types.OcrJobResponse;
 import com.mercoa.api.resources.ocr.types.OcrResponse;
 import java.io.IOException;
 import java.util.HashMap;
@@ -27,9 +30,9 @@ public class OcrClient {
     }
 
     /**
-     * Run OCR on an Base64 encoded image or PDF
+     * Run OCR on an Base64 encoded image or PDF. This endpoint will block until the OCR is complete.
      */
-    public OcrResponse ocr(RunOcr request, RequestOptions requestOptions) {
+    public OcrResponse ocr(RunOcrSync request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("ocr");
@@ -71,9 +74,96 @@ public class OcrClient {
     }
 
     /**
-     * Run OCR on an Base64 encoded image or PDF
+     * Run OCR on an Base64 encoded image or PDF. This endpoint will block until the OCR is complete.
      */
-    public OcrResponse ocr(RunOcr request) {
+    public OcrResponse ocr(RunOcrSync request) {
         return ocr(request, null);
+    }
+
+    /**
+     * Run OCR on an Base64 encoded image or PDF. This endpoint will return immediately and the OCR will be processed asynchronously.
+     */
+    public OcrAsyncResponse runAsyncOcr(RunOcrAsync request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("ocr-async");
+        if (request.getVendorNetwork().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "vendorNetwork", request.getVendorNetwork().get().toString());
+        }
+        if (request.getEntityId().isPresent()) {
+            httpUrl.addQueryParameter("entityId", request.getEntityId().get());
+        }
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("mimeType", request.getMimeType());
+        properties.put("image", request.getImage());
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(properties), MediaType.parse("application/json"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        try {
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), OcrAsyncResponse.class);
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Run OCR on an Base64 encoded image or PDF. This endpoint will return immediately and the OCR will be processed asynchronously.
+     */
+    public OcrAsyncResponse runAsyncOcr(RunOcrAsync request) {
+        return runAsyncOcr(request, null);
+    }
+
+    /**
+     * Get the status and results of an asynchronous OCR job.
+     */
+    public OcrJobResponse getAsyncOcr(String jobId, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("ocr-async")
+                .addPathSegment(jobId)
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), OcrJobResponse.class);
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Get the status and results of an asynchronous OCR job.
+     */
+    public OcrJobResponse getAsyncOcr(String jobId) {
+        return getAsyncOcr(jobId, null);
     }
 }
