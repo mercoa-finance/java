@@ -22,6 +22,8 @@ public final class OnboardingOptionsResponse {
 
     private final boolean enableIndividual;
 
+    private final boolean paymentMethod;
+
     private final BusinessOnboardingOptions business;
 
     private final IndividualOnboardingOptions individual;
@@ -31,11 +33,13 @@ public final class OnboardingOptionsResponse {
     private OnboardingOptionsResponse(
             boolean enableBusiness,
             boolean enableIndividual,
+            boolean paymentMethod,
             BusinessOnboardingOptions business,
             IndividualOnboardingOptions individual,
             Map<String, Object> additionalProperties) {
         this.enableBusiness = enableBusiness;
         this.enableIndividual = enableIndividual;
+        this.paymentMethod = paymentMethod;
         this.business = business;
         this.individual = individual;
         this.additionalProperties = additionalProperties;
@@ -49,6 +53,11 @@ public final class OnboardingOptionsResponse {
     @JsonProperty("enableIndividual")
     public boolean getEnableIndividual() {
         return enableIndividual;
+    }
+
+    @JsonProperty("paymentMethod")
+    public boolean getPaymentMethod() {
+        return paymentMethod;
     }
 
     @JsonProperty("business")
@@ -75,13 +84,15 @@ public final class OnboardingOptionsResponse {
     private boolean equalTo(OnboardingOptionsResponse other) {
         return enableBusiness == other.enableBusiness
                 && enableIndividual == other.enableIndividual
+                && paymentMethod == other.paymentMethod
                 && business.equals(other.business)
                 && individual.equals(other.individual);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.enableBusiness, this.enableIndividual, this.business, this.individual);
+        return Objects.hash(
+                this.enableBusiness, this.enableIndividual, this.paymentMethod, this.business, this.individual);
     }
 
     @Override
@@ -100,7 +111,11 @@ public final class OnboardingOptionsResponse {
     }
 
     public interface EnableIndividualStage {
-        BusinessStage enableIndividual(boolean enableIndividual);
+        PaymentMethodStage enableIndividual(boolean enableIndividual);
+    }
+
+    public interface PaymentMethodStage {
+        BusinessStage paymentMethod(boolean paymentMethod);
     }
 
     public interface BusinessStage {
@@ -117,10 +132,17 @@ public final class OnboardingOptionsResponse {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements EnableBusinessStage, EnableIndividualStage, BusinessStage, IndividualStage, _FinalStage {
+            implements EnableBusinessStage,
+                    EnableIndividualStage,
+                    PaymentMethodStage,
+                    BusinessStage,
+                    IndividualStage,
+                    _FinalStage {
         private boolean enableBusiness;
 
         private boolean enableIndividual;
+
+        private boolean paymentMethod;
 
         private BusinessOnboardingOptions business;
 
@@ -135,6 +157,7 @@ public final class OnboardingOptionsResponse {
         public Builder from(OnboardingOptionsResponse other) {
             enableBusiness(other.getEnableBusiness());
             enableIndividual(other.getEnableIndividual());
+            paymentMethod(other.getPaymentMethod());
             business(other.getBusiness());
             individual(other.getIndividual());
             return this;
@@ -149,8 +172,15 @@ public final class OnboardingOptionsResponse {
 
         @Override
         @JsonSetter("enableIndividual")
-        public BusinessStage enableIndividual(boolean enableIndividual) {
+        public PaymentMethodStage enableIndividual(boolean enableIndividual) {
             this.enableIndividual = enableIndividual;
+            return this;
+        }
+
+        @Override
+        @JsonSetter("paymentMethod")
+        public BusinessStage paymentMethod(boolean paymentMethod) {
+            this.paymentMethod = paymentMethod;
             return this;
         }
 
@@ -171,7 +201,7 @@ public final class OnboardingOptionsResponse {
         @Override
         public OnboardingOptionsResponse build() {
             return new OnboardingOptionsResponse(
-                    enableBusiness, enableIndividual, business, individual, additionalProperties);
+                    enableBusiness, enableIndividual, paymentMethod, business, individual, additionalProperties);
         }
     }
 }

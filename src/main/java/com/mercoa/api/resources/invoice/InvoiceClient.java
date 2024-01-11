@@ -474,6 +474,43 @@ public class InvoiceClient {
         return generateInvoicePdf(invoiceId, null);
     }
 
+    /**
+     * Generate a printable PDF of the check. This will only work for invoices that have a check as the disbursement method.
+     */
+    public String generateCheckPdf(String invoiceId, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("invoice")
+                .addPathSegment(invoiceId)
+                .addPathSegments("check/generate")
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), String.class);
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Generate a printable PDF of the check. This will only work for invoices that have a check as the disbursement method.
+     */
+    public String generateCheckPdf(String invoiceId) {
+        return generateCheckPdf(invoiceId, null);
+    }
+
     public ApprovalClient approval() {
         return this.approvalClient.get();
     }

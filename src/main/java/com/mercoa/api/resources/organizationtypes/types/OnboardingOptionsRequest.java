@@ -24,6 +24,8 @@ public final class OnboardingOptionsRequest {
 
     private final Optional<Boolean> enableIndividual;
 
+    private final Optional<Boolean> paymentMethod;
+
     private final Optional<BusinessOnboardingOptions> business;
 
     private final Optional<IndividualOnboardingOptions> individual;
@@ -33,11 +35,13 @@ public final class OnboardingOptionsRequest {
     private OnboardingOptionsRequest(
             Optional<Boolean> enableBusiness,
             Optional<Boolean> enableIndividual,
+            Optional<Boolean> paymentMethod,
             Optional<BusinessOnboardingOptions> business,
             Optional<IndividualOnboardingOptions> individual,
             Map<String, Object> additionalProperties) {
         this.enableBusiness = enableBusiness;
         this.enableIndividual = enableIndividual;
+        this.paymentMethod = paymentMethod;
         this.business = business;
         this.individual = individual;
         this.additionalProperties = additionalProperties;
@@ -51,6 +55,11 @@ public final class OnboardingOptionsRequest {
     @JsonProperty("enableIndividual")
     public Optional<Boolean> getEnableIndividual() {
         return enableIndividual;
+    }
+
+    @JsonProperty("paymentMethod")
+    public Optional<Boolean> getPaymentMethod() {
+        return paymentMethod;
     }
 
     @JsonProperty("business")
@@ -77,13 +86,15 @@ public final class OnboardingOptionsRequest {
     private boolean equalTo(OnboardingOptionsRequest other) {
         return enableBusiness.equals(other.enableBusiness)
                 && enableIndividual.equals(other.enableIndividual)
+                && paymentMethod.equals(other.paymentMethod)
                 && business.equals(other.business)
                 && individual.equals(other.individual);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.enableBusiness, this.enableIndividual, this.business, this.individual);
+        return Objects.hash(
+                this.enableBusiness, this.enableIndividual, this.paymentMethod, this.business, this.individual);
     }
 
     @Override
@@ -101,6 +112,8 @@ public final class OnboardingOptionsRequest {
 
         private Optional<Boolean> enableIndividual = Optional.empty();
 
+        private Optional<Boolean> paymentMethod = Optional.empty();
+
         private Optional<BusinessOnboardingOptions> business = Optional.empty();
 
         private Optional<IndividualOnboardingOptions> individual = Optional.empty();
@@ -113,6 +126,7 @@ public final class OnboardingOptionsRequest {
         public Builder from(OnboardingOptionsRequest other) {
             enableBusiness(other.getEnableBusiness());
             enableIndividual(other.getEnableIndividual());
+            paymentMethod(other.getPaymentMethod());
             business(other.getBusiness());
             individual(other.getIndividual());
             return this;
@@ -140,6 +154,17 @@ public final class OnboardingOptionsRequest {
             return this;
         }
 
+        @JsonSetter(value = "paymentMethod", nulls = Nulls.SKIP)
+        public Builder paymentMethod(Optional<Boolean> paymentMethod) {
+            this.paymentMethod = paymentMethod;
+            return this;
+        }
+
+        public Builder paymentMethod(Boolean paymentMethod) {
+            this.paymentMethod = Optional.of(paymentMethod);
+            return this;
+        }
+
         @JsonSetter(value = "business", nulls = Nulls.SKIP)
         public Builder business(Optional<BusinessOnboardingOptions> business) {
             this.business = business;
@@ -164,7 +189,7 @@ public final class OnboardingOptionsRequest {
 
         public OnboardingOptionsRequest build() {
             return new OnboardingOptionsRequest(
-                    enableBusiness, enableIndividual, business, individual, additionalProperties);
+                    enableBusiness, enableIndividual, paymentMethod, business, individual, additionalProperties);
         }
     }
 }
