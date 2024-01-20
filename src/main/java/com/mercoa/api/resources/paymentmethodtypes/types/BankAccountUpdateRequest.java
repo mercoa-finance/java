@@ -26,16 +26,20 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
 
     private final Optional<String> accountName;
 
+    private final Optional<BankAccountCheckOptions> checkOptions;
+
     private final Map<String, Object> additionalProperties;
 
     private BankAccountUpdateRequest(
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
             Optional<String> accountName,
+            Optional<BankAccountCheckOptions> checkOptions,
             Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
         this.accountName = accountName;
+        this.checkOptions = checkOptions;
         this.additionalProperties = additionalProperties;
     }
 
@@ -62,6 +66,14 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
         return accountName;
     }
 
+    /**
+     * @return If this bank account supports check printing, use this to enable check printing and set the check options. Checks will be printed directly from the bank account.
+     */
+    @JsonProperty("checkOptions")
+    public Optional<BankAccountCheckOptions> getCheckOptions() {
+        return checkOptions;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -76,12 +88,13 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
     private boolean equalTo(BankAccountUpdateRequest other) {
         return defaultSource.equals(other.defaultSource)
                 && defaultDestination.equals(other.defaultDestination)
-                && accountName.equals(other.accountName);
+                && accountName.equals(other.accountName)
+                && checkOptions.equals(other.checkOptions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.defaultSource, this.defaultDestination, this.accountName);
+        return Objects.hash(this.defaultSource, this.defaultDestination, this.accountName, this.checkOptions);
     }
 
     @Override
@@ -101,6 +114,8 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
 
         private Optional<String> accountName = Optional.empty();
 
+        private Optional<BankAccountCheckOptions> checkOptions = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -110,6 +125,7 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
             accountName(other.getAccountName());
+            checkOptions(other.getCheckOptions());
             return this;
         }
 
@@ -146,8 +162,20 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
             return this;
         }
 
+        @JsonSetter(value = "checkOptions", nulls = Nulls.SKIP)
+        public Builder checkOptions(Optional<BankAccountCheckOptions> checkOptions) {
+            this.checkOptions = checkOptions;
+            return this;
+        }
+
+        public Builder checkOptions(BankAccountCheckOptions checkOptions) {
+            this.checkOptions = Optional.of(checkOptions);
+            return this;
+        }
+
         public BankAccountUpdateRequest build() {
-            return new BankAccountUpdateRequest(defaultSource, defaultDestination, accountName, additionalProperties);
+            return new BankAccountUpdateRequest(
+                    defaultSource, defaultDestination, accountName, checkOptions, additionalProperties);
         }
     }
 }

@@ -209,7 +209,7 @@ public class UserClient {
     }
 
     /**
-     * Delete entity user
+     * Delete entity user. This will also remove the user from all approval policies. If an approval policy will break as a result of this operation, this request will fail.
      */
     public void delete(String entityId, String userId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -239,7 +239,7 @@ public class UserClient {
     }
 
     /**
-     * Delete entity user
+     * Delete entity user. This will also remove the user from all approval policies. If an approval policy will break as a result of this operation, this request will fail.
      */
     public void delete(String entityId, String userId) {
         delete(entityId, userId, null);

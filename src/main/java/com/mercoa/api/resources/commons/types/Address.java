@@ -66,6 +66,9 @@ public final class Address {
         return city;
     }
 
+    /**
+     * @return State or province code. Must be in the format XX.
+     */
     @JsonProperty("stateOrProvince")
     public String getStateOrProvince() {
         return stateOrProvince;
@@ -191,6 +194,10 @@ public final class Address {
             return this;
         }
 
+        /**
+         * <p>State or province code. Must be in the format XX.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @Override
         @JsonSetter("stateOrProvince")
         public PostalCodeStage stateOrProvince(String stateOrProvince) {

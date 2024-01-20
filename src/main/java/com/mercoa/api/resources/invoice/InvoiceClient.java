@@ -14,6 +14,7 @@ import com.mercoa.api.resources.invoice.document.DocumentClient;
 import com.mercoa.api.resources.invoice.requests.GetAllInvoicesRequest;
 import com.mercoa.api.resources.invoice.requests.GetInvoice;
 import com.mercoa.api.resources.invoice.requests.SendPayerEmail;
+import com.mercoa.api.resources.invoicetypes.types.DocumentResponse;
 import com.mercoa.api.resources.invoicetypes.types.FindInvoiceResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceRequest;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
@@ -440,7 +441,7 @@ public class InvoiceClient {
     /**
      * Generate a PDF of the invoice
      */
-    public String generateInvoicePdf(String invoiceId, RequestOptions requestOptions) {
+    public DocumentResponse generateInvoicePdf(String invoiceId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("invoice")
@@ -457,7 +458,7 @@ public class InvoiceClient {
             Response response =
                     clientOptions.httpClient().newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), String.class);
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), DocumentResponse.class);
             }
             throw new ApiError(
                     response.code(),
@@ -470,14 +471,14 @@ public class InvoiceClient {
     /**
      * Generate a PDF of the invoice
      */
-    public String generateInvoicePdf(String invoiceId) {
+    public DocumentResponse generateInvoicePdf(String invoiceId) {
         return generateInvoicePdf(invoiceId, null);
     }
 
     /**
-     * Generate a printable PDF of the check. This will only work for invoices that have a check as the disbursement method.
+     * Get a printable PDF of the check. This will only work for SCHEDULED invoices that have a check as the disbursement method. Once the PDF has been generated, it will no longer be possible to mail the check. The invoice will be marked as PAID as soon as the check is generated.
      */
-    public String generateCheckPdf(String invoiceId, RequestOptions requestOptions) {
+    public DocumentResponse generateCheckPdf(String invoiceId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("invoice")
@@ -494,7 +495,7 @@ public class InvoiceClient {
             Response response =
                     clientOptions.httpClient().newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), String.class);
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), DocumentResponse.class);
             }
             throw new ApiError(
                     response.code(),
@@ -505,9 +506,9 @@ public class InvoiceClient {
     }
 
     /**
-     * Generate a printable PDF of the check. This will only work for invoices that have a check as the disbursement method.
+     * Get a printable PDF of the check. This will only work for SCHEDULED invoices that have a check as the disbursement method. Once the PDF has been generated, it will no longer be possible to mail the check. The invoice will be marked as PAID as soon as the check is generated.
      */
-    public String generateCheckPdf(String invoiceId) {
+    public DocumentResponse generateCheckPdf(String invoiceId) {
         return generateCheckPdf(invoiceId, null);
     }
 

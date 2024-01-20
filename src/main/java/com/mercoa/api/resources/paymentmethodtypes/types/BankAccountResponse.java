@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = BankAccountResponse.Builder.class)
@@ -46,6 +47,8 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
 
     private final BankStatus status;
 
+    private final Optional<BankAccountCheckOptions> checkOptions;
+
     private final Map<String, Object> additionalProperties;
 
     private BankAccountResponse(
@@ -61,6 +64,7 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
             String accountNumber,
             BankType accountType,
             BankStatus status,
+            Optional<BankAccountCheckOptions> checkOptions,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.isDefaultSource = isDefaultSource;
@@ -74,6 +78,7 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
         this.accountNumber = accountNumber;
         this.accountType = accountType;
         this.status = status;
+        this.checkOptions = checkOptions;
         this.additionalProperties = additionalProperties;
     }
 
@@ -149,6 +154,14 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
         return status;
     }
 
+    /**
+     * @return If check printing is enabled for the account, will return the check options for this bank account
+     */
+    @JsonProperty("checkOptions")
+    public Optional<BankAccountCheckOptions> getCheckOptions() {
+        return checkOptions;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -172,7 +185,8 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
                 && routingNumber.equals(other.routingNumber)
                 && accountNumber.equals(other.accountNumber)
                 && accountType.equals(other.accountType)
-                && status.equals(other.status);
+                && status.equals(other.status)
+                && checkOptions.equals(other.checkOptions);
     }
 
     @Override
@@ -189,7 +203,8 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
                 this.routingNumber,
                 this.accountNumber,
                 this.accountType,
-                this.status);
+                this.status,
+                this.checkOptions);
     }
 
     @Override
@@ -255,6 +270,10 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
         _FinalStage addSupportedCurrencies(CurrencyCode supportedCurrencies);
 
         _FinalStage addAllSupportedCurrencies(List<CurrencyCode> supportedCurrencies);
+
+        _FinalStage checkOptions(Optional<BankAccountCheckOptions> checkOptions);
+
+        _FinalStage checkOptions(BankAccountCheckOptions checkOptions);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -293,6 +312,8 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
 
         private BankStatus status;
 
+        private Optional<BankAccountCheckOptions> checkOptions = Optional.empty();
+
         private List<CurrencyCode> supportedCurrencies = new ArrayList<>();
 
         @JsonAnySetter
@@ -314,6 +335,7 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
             accountNumber(other.getAccountNumber());
             accountType(other.getAccountType());
             status(other.getStatus());
+            checkOptions(other.getCheckOptions());
             return this;
         }
 
@@ -402,6 +424,23 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
             return this;
         }
 
+        /**
+         * <p>If check printing is enabled for the account, will return the check options for this bank account</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @Override
+        public _FinalStage checkOptions(BankAccountCheckOptions checkOptions) {
+            this.checkOptions = Optional.of(checkOptions);
+            return this;
+        }
+
+        @Override
+        @JsonSetter(value = "checkOptions", nulls = Nulls.SKIP)
+        public _FinalStage checkOptions(Optional<BankAccountCheckOptions> checkOptions) {
+            this.checkOptions = checkOptions;
+            return this;
+        }
+
         @Override
         public _FinalStage addAllSupportedCurrencies(List<CurrencyCode> supportedCurrencies) {
             this.supportedCurrencies.addAll(supportedCurrencies);
@@ -437,6 +476,7 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
                     accountNumber,
                     accountType,
                     status,
+                    checkOptions,
                     additionalProperties);
         }
     }

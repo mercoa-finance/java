@@ -61,6 +61,8 @@ public final class InvoiceResponse {
 
     private final Optional<String> paymentSourceId;
 
+    private final Optional<PaymentSourceOptions> paymentSourceOptions;
+
     private final Optional<String> vendorId;
 
     private final Optional<EntityResponse> vendor;
@@ -68,6 +70,8 @@ public final class InvoiceResponse {
     private final Optional<PaymentMethodResponse> paymentDestination;
 
     private final Optional<String> paymentDestinationId;
+
+    private final Optional<PaymentDestinationOptions> paymentDestinationOptions;
 
     private final boolean paymentDestinationConfirmed;
 
@@ -116,10 +120,12 @@ public final class InvoiceResponse {
             Optional<EntityResponse> payer,
             Optional<PaymentMethodResponse> paymentSource,
             Optional<String> paymentSourceId,
+            Optional<PaymentSourceOptions> paymentSourceOptions,
             Optional<String> vendorId,
             Optional<EntityResponse> vendor,
             Optional<PaymentMethodResponse> paymentDestination,
             Optional<String> paymentDestinationId,
+            Optional<PaymentDestinationOptions> paymentDestinationOptions,
             boolean paymentDestinationConfirmed,
             boolean hasDocuments,
             Optional<List<CommentResponse>> comments,
@@ -151,10 +157,12 @@ public final class InvoiceResponse {
         this.payer = payer;
         this.paymentSource = paymentSource;
         this.paymentSourceId = paymentSourceId;
+        this.paymentSourceOptions = paymentSourceOptions;
         this.vendorId = vendorId;
         this.vendor = vendor;
         this.paymentDestination = paymentDestination;
         this.paymentDestinationId = paymentDestinationId;
+        this.paymentDestinationOptions = paymentDestinationOptions;
         this.paymentDestinationConfirmed = paymentDestinationConfirmed;
         this.hasDocuments = hasDocuments;
         this.comments = comments;
@@ -267,6 +275,11 @@ public final class InvoiceResponse {
         return paymentSourceId;
     }
 
+    @JsonProperty("paymentSourceOptions")
+    public Optional<PaymentSourceOptions> getPaymentSourceOptions() {
+        return paymentSourceOptions;
+    }
+
     @JsonProperty("vendorId")
     public Optional<String> getVendorId() {
         return vendorId;
@@ -285,6 +298,11 @@ public final class InvoiceResponse {
     @JsonProperty("paymentDestinationId")
     public Optional<String> getPaymentDestinationId() {
         return paymentDestinationId;
+    }
+
+    @JsonProperty("paymentDestinationOptions")
+    public Optional<PaymentDestinationOptions> getPaymentDestinationOptions() {
+        return paymentDestinationOptions;
     }
 
     /**
@@ -406,10 +424,12 @@ public final class InvoiceResponse {
                 && payer.equals(other.payer)
                 && paymentSource.equals(other.paymentSource)
                 && paymentSourceId.equals(other.paymentSourceId)
+                && paymentSourceOptions.equals(other.paymentSourceOptions)
                 && vendorId.equals(other.vendorId)
                 && vendor.equals(other.vendor)
                 && paymentDestination.equals(other.paymentDestination)
                 && paymentDestinationId.equals(other.paymentDestinationId)
+                && paymentDestinationOptions.equals(other.paymentDestinationOptions)
                 && paymentDestinationConfirmed == other.paymentDestinationConfirmed
                 && hasDocuments == other.hasDocuments
                 && comments.equals(other.comments)
@@ -445,10 +465,12 @@ public final class InvoiceResponse {
                 this.payer,
                 this.paymentSource,
                 this.paymentSourceId,
+                this.paymentSourceOptions,
                 this.vendorId,
                 this.vendor,
                 this.paymentDestination,
                 this.paymentDestinationId,
+                this.paymentDestinationOptions,
                 this.paymentDestinationConfirmed,
                 this.hasDocuments,
                 this.comments,
@@ -559,6 +581,10 @@ public final class InvoiceResponse {
 
         _FinalStage paymentSourceId(String paymentSourceId);
 
+        _FinalStage paymentSourceOptions(Optional<PaymentSourceOptions> paymentSourceOptions);
+
+        _FinalStage paymentSourceOptions(PaymentSourceOptions paymentSourceOptions);
+
         _FinalStage vendorId(Optional<String> vendorId);
 
         _FinalStage vendorId(String vendorId);
@@ -574,6 +600,10 @@ public final class InvoiceResponse {
         _FinalStage paymentDestinationId(Optional<String> paymentDestinationId);
 
         _FinalStage paymentDestinationId(String paymentDestinationId);
+
+        _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions);
+
+        _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions);
 
         _FinalStage comments(Optional<List<CommentResponse>> comments);
 
@@ -663,6 +693,8 @@ public final class InvoiceResponse {
 
         private Optional<List<CommentResponse>> comments = Optional.empty();
 
+        private Optional<PaymentDestinationOptions> paymentDestinationOptions = Optional.empty();
+
         private Optional<String> paymentDestinationId = Optional.empty();
 
         private Optional<PaymentMethodResponse> paymentDestination = Optional.empty();
@@ -670,6 +702,8 @@ public final class InvoiceResponse {
         private Optional<EntityResponse> vendor = Optional.empty();
 
         private Optional<String> vendorId = Optional.empty();
+
+        private Optional<PaymentSourceOptions> paymentSourceOptions = Optional.empty();
 
         private Optional<String> paymentSourceId = Optional.empty();
 
@@ -722,10 +756,12 @@ public final class InvoiceResponse {
             payer(other.getPayer());
             paymentSource(other.getPaymentSource());
             paymentSourceId(other.getPaymentSourceId());
+            paymentSourceOptions(other.getPaymentSourceOptions());
             vendorId(other.getVendorId());
             vendor(other.getVendor());
             paymentDestination(other.getPaymentDestination());
             paymentDestinationId(other.getPaymentDestinationId());
+            paymentDestinationOptions(other.getPaymentDestinationOptions());
             paymentDestinationConfirmed(other.getPaymentDestinationConfirmed());
             hasDocuments(other.getHasDocuments());
             comments(other.getComments());
@@ -969,6 +1005,19 @@ public final class InvoiceResponse {
         }
 
         @Override
+        public _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions) {
+            this.paymentDestinationOptions = Optional.of(paymentDestinationOptions);
+            return this;
+        }
+
+        @Override
+        @JsonSetter(value = "paymentDestinationOptions", nulls = Nulls.SKIP)
+        public _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions) {
+            this.paymentDestinationOptions = paymentDestinationOptions;
+            return this;
+        }
+
+        @Override
         public _FinalStage paymentDestinationId(String paymentDestinationId) {
             this.paymentDestinationId = Optional.of(paymentDestinationId);
             return this;
@@ -1017,6 +1066,19 @@ public final class InvoiceResponse {
         @JsonSetter(value = "vendorId", nulls = Nulls.SKIP)
         public _FinalStage vendorId(Optional<String> vendorId) {
             this.vendorId = vendorId;
+            return this;
+        }
+
+        @Override
+        public _FinalStage paymentSourceOptions(PaymentSourceOptions paymentSourceOptions) {
+            this.paymentSourceOptions = Optional.of(paymentSourceOptions);
+            return this;
+        }
+
+        @Override
+        @JsonSetter(value = "paymentSourceOptions", nulls = Nulls.SKIP)
+        public _FinalStage paymentSourceOptions(Optional<PaymentSourceOptions> paymentSourceOptions) {
+            this.paymentSourceOptions = paymentSourceOptions;
             return this;
         }
 
@@ -1241,10 +1303,12 @@ public final class InvoiceResponse {
                     payer,
                     paymentSource,
                     paymentSourceId,
+                    paymentSourceOptions,
                     vendorId,
                     vendor,
                     paymentDestination,
                     paymentDestinationId,
+                    paymentDestinationOptions,
                     paymentDestinationConfirmed,
                     hasDocuments,
                     comments,

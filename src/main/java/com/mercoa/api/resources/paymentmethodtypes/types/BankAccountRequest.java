@@ -36,6 +36,8 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
 
     private final Optional<PlaidLinkRequest> plaid;
 
+    private final Optional<BankAccountCheckOptions> checkOptions;
+
     private final Map<String, Object> additionalProperties;
 
     private BankAccountRequest(
@@ -47,6 +49,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             String accountNumber,
             BankType accountType,
             Optional<PlaidLinkRequest> plaid,
+            Optional<BankAccountCheckOptions> checkOptions,
             Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
@@ -56,6 +59,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         this.accountNumber = accountNumber;
         this.accountType = accountType;
         this.plaid = plaid;
+        this.checkOptions = checkOptions;
         this.additionalProperties = additionalProperties;
     }
 
@@ -110,6 +114,14 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         return plaid;
     }
 
+    /**
+     * @return If this bank account supports check printing, use this to enable check printing and set the check options. Checks will be printed directly from the bank account.
+     */
+    @JsonProperty("checkOptions")
+    public Optional<BankAccountCheckOptions> getCheckOptions() {
+        return checkOptions;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -129,7 +141,8 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
                 && routingNumber.equals(other.routingNumber)
                 && accountNumber.equals(other.accountNumber)
                 && accountType.equals(other.accountType)
-                && plaid.equals(other.plaid);
+                && plaid.equals(other.plaid)
+                && checkOptions.equals(other.checkOptions);
     }
 
     @Override
@@ -142,7 +155,8 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
                 this.routingNumber,
                 this.accountNumber,
                 this.accountType,
-                this.plaid);
+                this.plaid,
+                this.checkOptions);
     }
 
     @Override
@@ -190,6 +204,10 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         _FinalStage plaid(Optional<PlaidLinkRequest> plaid);
 
         _FinalStage plaid(PlaidLinkRequest plaid);
+
+        _FinalStage checkOptions(Optional<BankAccountCheckOptions> checkOptions);
+
+        _FinalStage checkOptions(BankAccountCheckOptions checkOptions);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -202,6 +220,8 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         private String accountNumber;
 
         private BankType accountType;
+
+        private Optional<BankAccountCheckOptions> checkOptions = Optional.empty();
 
         private Optional<PlaidLinkRequest> plaid = Optional.empty();
 
@@ -226,6 +246,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             accountNumber(other.getAccountNumber());
             accountType(other.getAccountType());
             plaid(other.getPlaid());
+            checkOptions(other.getCheckOptions());
             return this;
         }
 
@@ -254,6 +275,23 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         @JsonSetter("accountType")
         public _FinalStage accountType(BankType accountType) {
             this.accountType = accountType;
+            return this;
+        }
+
+        /**
+         * <p>If this bank account supports check printing, use this to enable check printing and set the check options. Checks will be printed directly from the bank account.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @Override
+        public _FinalStage checkOptions(BankAccountCheckOptions checkOptions) {
+            this.checkOptions = Optional.of(checkOptions);
+            return this;
+        }
+
+        @Override
+        @JsonSetter(value = "checkOptions", nulls = Nulls.SKIP)
+        public _FinalStage checkOptions(Optional<BankAccountCheckOptions> checkOptions) {
+            this.checkOptions = checkOptions;
             return this;
         }
 
@@ -332,6 +370,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
                     accountNumber,
                     accountType,
                     plaid,
+                    checkOptions,
                     additionalProperties);
         }
     }
