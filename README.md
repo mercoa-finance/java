@@ -2,7 +2,7 @@
 
 ![Maven Central](https://img.shields.io/maven-central/v/com.mercoa/mercoa) 
 ![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/com.mercoa/mercoa?server=https%3A%2F%2Fs01.oss.sonatype.org)
-[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-SDK%20generated%20by%20Fern-brightgreen)](https://github.com/fern-api/fern)
+[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-SDK%20generated%20by%20Fern-brightgreen)](https://buildwithfern.com/?utm_source=mercoa-finance/java/readme)
 
 ## Documentation
 
