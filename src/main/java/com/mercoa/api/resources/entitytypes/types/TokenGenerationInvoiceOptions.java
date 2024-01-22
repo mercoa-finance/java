@@ -18,17 +18,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = TokenGenerationInvoiceOptions.Builder.class)
 public final class TokenGenerationInvoiceOptions {
+    private final Optional<Boolean> disableLineItems;
+
     private final List<InvoiceStatus> status;
 
     private final Map<String, Object> additionalProperties;
 
-    private TokenGenerationInvoiceOptions(List<InvoiceStatus> status, Map<String, Object> additionalProperties) {
+    private TokenGenerationInvoiceOptions(
+            Optional<Boolean> disableLineItems, List<InvoiceStatus> status, Map<String, Object> additionalProperties) {
+        this.disableLineItems = disableLineItems;
         this.status = status;
         this.additionalProperties = additionalProperties;
+    }
+
+    @JsonProperty("disableLineItems")
+    public Optional<Boolean> getDisableLineItems() {
+        return disableLineItems;
     }
 
     @JsonProperty("status")
@@ -48,12 +58,12 @@ public final class TokenGenerationInvoiceOptions {
     }
 
     private boolean equalTo(TokenGenerationInvoiceOptions other) {
-        return status.equals(other.status);
+        return disableLineItems.equals(other.disableLineItems) && status.equals(other.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.status);
+        return Objects.hash(this.disableLineItems, this.status);
     }
 
     @Override
@@ -67,6 +77,8 @@ public final class TokenGenerationInvoiceOptions {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<Boolean> disableLineItems = Optional.empty();
+
         private List<InvoiceStatus> status = new ArrayList<>();
 
         @JsonAnySetter
@@ -75,7 +87,19 @@ public final class TokenGenerationInvoiceOptions {
         private Builder() {}
 
         public Builder from(TokenGenerationInvoiceOptions other) {
+            disableLineItems(other.getDisableLineItems());
             status(other.getStatus());
+            return this;
+        }
+
+        @JsonSetter(value = "disableLineItems", nulls = Nulls.SKIP)
+        public Builder disableLineItems(Optional<Boolean> disableLineItems) {
+            this.disableLineItems = disableLineItems;
+            return this;
+        }
+
+        public Builder disableLineItems(Boolean disableLineItems) {
+            this.disableLineItems = Optional.of(disableLineItems);
             return this;
         }
 
@@ -97,7 +121,7 @@ public final class TokenGenerationInvoiceOptions {
         }
 
         public TokenGenerationInvoiceOptions build() {
-            return new TokenGenerationInvoiceOptions(status, additionalProperties);
+            return new TokenGenerationInvoiceOptions(disableLineItems, status, additionalProperties);
         }
     }
 }

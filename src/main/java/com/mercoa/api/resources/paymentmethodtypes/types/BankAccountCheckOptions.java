@@ -30,6 +30,8 @@ public final class BankAccountCheckOptions {
 
     private final Optional<String> signatoryName;
 
+    private final Optional<String> signatureImage;
+
     private final Map<String, Object> additionalProperties;
 
     private BankAccountCheckOptions(
@@ -38,12 +40,14 @@ public final class BankAccountCheckOptions {
             Optional<String> routingNumberOverride,
             Optional<String> accountNumberOverride,
             Optional<String> signatoryName,
+            Optional<String> signatureImage,
             Map<String, Object> additionalProperties) {
         this.enabled = enabled;
         this.initialCheckNumber = initialCheckNumber;
         this.routingNumberOverride = routingNumberOverride;
         this.accountNumberOverride = accountNumberOverride;
         this.signatoryName = signatoryName;
+        this.signatureImage = signatureImage;
         this.additionalProperties = additionalProperties;
     }
 
@@ -87,6 +91,14 @@ public final class BankAccountCheckOptions {
         return signatoryName;
     }
 
+    /**
+     * @return Base64 encoded PNG of the signature. If provided, will print a check with the provided image as the signature. Will override signatoryName.
+     */
+    @JsonProperty("signatureImage")
+    public Optional<String> getSignatureImage() {
+        return signatureImage;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -103,7 +115,8 @@ public final class BankAccountCheckOptions {
                 && initialCheckNumber.equals(other.initialCheckNumber)
                 && routingNumberOverride.equals(other.routingNumberOverride)
                 && accountNumberOverride.equals(other.accountNumberOverride)
-                && signatoryName.equals(other.signatoryName);
+                && signatoryName.equals(other.signatoryName)
+                && signatureImage.equals(other.signatureImage);
     }
 
     @Override
@@ -113,7 +126,8 @@ public final class BankAccountCheckOptions {
                 this.initialCheckNumber,
                 this.routingNumberOverride,
                 this.accountNumberOverride,
-                this.signatoryName);
+                this.signatoryName,
+                this.signatureImage);
     }
 
     @Override
@@ -137,6 +151,8 @@ public final class BankAccountCheckOptions {
 
         private Optional<String> signatoryName = Optional.empty();
 
+        private Optional<String> signatureImage = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -148,6 +164,7 @@ public final class BankAccountCheckOptions {
             routingNumberOverride(other.getRoutingNumberOverride());
             accountNumberOverride(other.getAccountNumberOverride());
             signatoryName(other.getSignatoryName());
+            signatureImage(other.getSignatureImage());
             return this;
         }
 
@@ -206,6 +223,17 @@ public final class BankAccountCheckOptions {
             return this;
         }
 
+        @JsonSetter(value = "signatureImage", nulls = Nulls.SKIP)
+        public Builder signatureImage(Optional<String> signatureImage) {
+            this.signatureImage = signatureImage;
+            return this;
+        }
+
+        public Builder signatureImage(String signatureImage) {
+            this.signatureImage = Optional.of(signatureImage);
+            return this;
+        }
+
         public BankAccountCheckOptions build() {
             return new BankAccountCheckOptions(
                     enabled,
@@ -213,6 +241,7 @@ public final class BankAccountCheckOptions {
                     routingNumberOverride,
                     accountNumberOverride,
                     signatoryName,
+                    signatureImage,
                     additionalProperties);
         }
     }
