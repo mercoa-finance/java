@@ -23,6 +23,8 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = ApprovalSlot.Builder.class)
 public final class ApprovalSlot {
+    private final String approvalPolicyId;
+
     private final String approvalSlotId;
 
     private final Optional<String> assignedUserId;
@@ -38,6 +40,7 @@ public final class ApprovalSlot {
     private final Map<String, Object> additionalProperties;
 
     private ApprovalSlot(
+            String approvalPolicyId,
             String approvalSlotId,
             Optional<String> assignedUserId,
             ApproverAction action,
@@ -45,6 +48,7 @@ public final class ApprovalSlot {
             List<String> eligibleUserIds,
             OffsetDateTime date,
             Map<String, Object> additionalProperties) {
+        this.approvalPolicyId = approvalPolicyId;
         this.approvalSlotId = approvalSlotId;
         this.assignedUserId = assignedUserId;
         this.action = action;
@@ -52,6 +56,14 @@ public final class ApprovalSlot {
         this.eligibleUserIds = eligibleUserIds;
         this.date = date;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return The identifier for the approval policy this slot is associated with.
+     */
+    @JsonProperty("approvalPolicyId")
+    public String getApprovalPolicyId() {
+        return approvalPolicyId;
     }
 
     /**
@@ -102,7 +114,8 @@ public final class ApprovalSlot {
     }
 
     private boolean equalTo(ApprovalSlot other) {
-        return approvalSlotId.equals(other.approvalSlotId)
+        return approvalPolicyId.equals(other.approvalPolicyId)
+                && approvalSlotId.equals(other.approvalSlotId)
                 && assignedUserId.equals(other.assignedUserId)
                 && action.equals(other.action)
                 && eligibleRoles.equals(other.eligibleRoles)
@@ -113,6 +126,7 @@ public final class ApprovalSlot {
     @Override
     public int hashCode() {
         return Objects.hash(
+                this.approvalPolicyId,
                 this.approvalSlotId,
                 this.assignedUserId,
                 this.action,
@@ -126,14 +140,18 @@ public final class ApprovalSlot {
         return ObjectMappers.stringify(this);
     }
 
-    public static ApprovalSlotIdStage builder() {
+    public static ApprovalPolicyIdStage builder() {
         return new Builder();
+    }
+
+    public interface ApprovalPolicyIdStage {
+        ApprovalSlotIdStage approvalPolicyId(String approvalPolicyId);
+
+        Builder from(ApprovalSlot other);
     }
 
     public interface ApprovalSlotIdStage {
         ActionStage approvalSlotId(String approvalSlotId);
-
-        Builder from(ApprovalSlot other);
     }
 
     public interface ActionStage {
@@ -165,7 +183,10 @@ public final class ApprovalSlot {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements ApprovalSlotIdStage, ActionStage, DateStage, _FinalStage {
+    public static final class Builder
+            implements ApprovalPolicyIdStage, ApprovalSlotIdStage, ActionStage, DateStage, _FinalStage {
+        private String approvalPolicyId;
+
         private String approvalSlotId;
 
         private ApproverAction action;
@@ -185,12 +206,24 @@ public final class ApprovalSlot {
 
         @Override
         public Builder from(ApprovalSlot other) {
+            approvalPolicyId(other.getApprovalPolicyId());
             approvalSlotId(other.getApprovalSlotId());
             assignedUserId(other.getAssignedUserId());
             action(other.getAction());
             eligibleRoles(other.getEligibleRoles());
             eligibleUserIds(other.getEligibleUserIds());
             date(other.getDate());
+            return this;
+        }
+
+        /**
+         * <p>The identifier for the approval policy this slot is associated with.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @Override
+        @JsonSetter("approvalPolicyId")
+        public ApprovalSlotIdStage approvalPolicyId(String approvalPolicyId) {
+            this.approvalPolicyId = approvalPolicyId;
             return this;
         }
 
@@ -279,7 +312,14 @@ public final class ApprovalSlot {
         @Override
         public ApprovalSlot build() {
             return new ApprovalSlot(
-                    approvalSlotId, assignedUserId, action, eligibleRoles, eligibleUserIds, date, additionalProperties);
+                    approvalPolicyId,
+                    approvalSlotId,
+                    assignedUserId,
+                    action,
+                    eligibleRoles,
+                    eligibleUserIds,
+                    date,
+                    additionalProperties);
         }
     }
 }
