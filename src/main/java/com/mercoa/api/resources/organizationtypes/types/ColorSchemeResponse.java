@@ -24,12 +24,18 @@ public final class ColorSchemeResponse {
 
     private final Optional<String> secondaryColor;
 
+    private final Optional<String> logoBackgroundColor;
+
     private final Map<String, Object> additionalProperties;
 
     private ColorSchemeResponse(
-            Optional<String> primaryColor, Optional<String> secondaryColor, Map<String, Object> additionalProperties) {
+            Optional<String> primaryColor,
+            Optional<String> secondaryColor,
+            Optional<String> logoBackgroundColor,
+            Map<String, Object> additionalProperties) {
         this.primaryColor = primaryColor;
         this.secondaryColor = secondaryColor;
+        this.logoBackgroundColor = logoBackgroundColor;
         this.additionalProperties = additionalProperties;
     }
 
@@ -41,6 +47,11 @@ public final class ColorSchemeResponse {
     @JsonProperty("secondaryColor")
     public Optional<String> getSecondaryColor() {
         return secondaryColor;
+    }
+
+    @JsonProperty("logoBackgroundColor")
+    public Optional<String> getLogoBackgroundColor() {
+        return logoBackgroundColor;
     }
 
     @Override
@@ -55,12 +66,14 @@ public final class ColorSchemeResponse {
     }
 
     private boolean equalTo(ColorSchemeResponse other) {
-        return primaryColor.equals(other.primaryColor) && secondaryColor.equals(other.secondaryColor);
+        return primaryColor.equals(other.primaryColor)
+                && secondaryColor.equals(other.secondaryColor)
+                && logoBackgroundColor.equals(other.logoBackgroundColor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.primaryColor, this.secondaryColor);
+        return Objects.hash(this.primaryColor, this.secondaryColor, this.logoBackgroundColor);
     }
 
     @Override
@@ -78,6 +91,8 @@ public final class ColorSchemeResponse {
 
         private Optional<String> secondaryColor = Optional.empty();
 
+        private Optional<String> logoBackgroundColor = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -86,6 +101,7 @@ public final class ColorSchemeResponse {
         public Builder from(ColorSchemeResponse other) {
             primaryColor(other.getPrimaryColor());
             secondaryColor(other.getSecondaryColor());
+            logoBackgroundColor(other.getLogoBackgroundColor());
             return this;
         }
 
@@ -111,8 +127,19 @@ public final class ColorSchemeResponse {
             return this;
         }
 
+        @JsonSetter(value = "logoBackgroundColor", nulls = Nulls.SKIP)
+        public Builder logoBackgroundColor(Optional<String> logoBackgroundColor) {
+            this.logoBackgroundColor = logoBackgroundColor;
+            return this;
+        }
+
+        public Builder logoBackgroundColor(String logoBackgroundColor) {
+            this.logoBackgroundColor = Optional.of(logoBackgroundColor);
+            return this;
+        }
+
         public ColorSchemeResponse build() {
-            return new ColorSchemeResponse(primaryColor, secondaryColor, additionalProperties);
+            return new ColorSchemeResponse(primaryColor, secondaryColor, logoBackgroundColor, additionalProperties);
         }
     }
 }

@@ -8,8 +8,8 @@ import com.mercoa.api.core.ApiError;
 import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
-import com.mercoa.api.resources.entity.user.notificationpolicy.requests.EntityUpdateUserNotificationPolicyRequest;
 import com.mercoa.api.resources.entitytypes.types.NotificationType;
+import com.mercoa.api.resources.entitytypes.types.UserNotificationPolicyRequest;
 import com.mercoa.api.resources.entitytypes.types.UserNotificationPolicyResponse;
 import java.io.IOException;
 import java.util.List;
@@ -112,11 +112,22 @@ public class NotificationPolicyClient {
     /**
      * Update notification policy associated with this entity user
      */
+    public UserNotificationPolicyResponse update(String entityId, String userId, NotificationType notificationType) {
+        return update(
+                entityId,
+                userId,
+                notificationType,
+                UserNotificationPolicyRequest.builder().build());
+    }
+
+    /**
+     * Update notification policy associated with this entity user
+     */
     public UserNotificationPolicyResponse update(
             String entityId,
             String userId,
             NotificationType notificationType,
-            EntityUpdateUserNotificationPolicyRequest request,
+            UserNotificationPolicyRequest request,
             RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -159,10 +170,7 @@ public class NotificationPolicyClient {
      * Update notification policy associated with this entity user
      */
     public UserNotificationPolicyResponse update(
-            String entityId,
-            String userId,
-            NotificationType notificationType,
-            EntityUpdateUserNotificationPolicyRequest request) {
+            String entityId, String userId, NotificationType notificationType, UserNotificationPolicyRequest request) {
         return update(entityId, userId, notificationType, request, null);
     }
 }

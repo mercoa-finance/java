@@ -20,13 +20,16 @@ import java.util.Objects;
 public final class UserNotificationPolicyResponse {
     private final boolean disabled;
 
+    private final boolean digest;
+
     private final NotificationType type;
 
     private final Map<String, Object> additionalProperties;
 
     private UserNotificationPolicyResponse(
-            boolean disabled, NotificationType type, Map<String, Object> additionalProperties) {
+            boolean disabled, boolean digest, NotificationType type, Map<String, Object> additionalProperties) {
         this.disabled = disabled;
+        this.digest = digest;
         this.type = type;
         this.additionalProperties = additionalProperties;
     }
@@ -37,6 +40,14 @@ public final class UserNotificationPolicyResponse {
     @JsonProperty("disabled")
     public boolean getDisabled() {
         return disabled;
+    }
+
+    /**
+     * @return True if the selected notification type is sent as a digest. If false, notifications will be sent immediately.
+     */
+    @JsonProperty("digest")
+    public boolean getDigest() {
+        return digest;
     }
 
     @JsonProperty("type")
@@ -56,12 +67,12 @@ public final class UserNotificationPolicyResponse {
     }
 
     private boolean equalTo(UserNotificationPolicyResponse other) {
-        return disabled == other.disabled && type.equals(other.type);
+        return disabled == other.disabled && digest == other.digest && type.equals(other.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.disabled, this.type);
+        return Objects.hash(this.disabled, this.digest, this.type);
     }
 
     @Override
@@ -74,9 +85,13 @@ public final class UserNotificationPolicyResponse {
     }
 
     public interface DisabledStage {
-        TypeStage disabled(boolean disabled);
+        DigestStage disabled(boolean disabled);
 
         Builder from(UserNotificationPolicyResponse other);
+    }
+
+    public interface DigestStage {
+        TypeStage digest(boolean digest);
     }
 
     public interface TypeStage {
@@ -88,8 +103,10 @@ public final class UserNotificationPolicyResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements DisabledStage, TypeStage, _FinalStage {
+    public static final class Builder implements DisabledStage, DigestStage, TypeStage, _FinalStage {
         private boolean disabled;
+
+        private boolean digest;
 
         private NotificationType type;
 
@@ -101,6 +118,7 @@ public final class UserNotificationPolicyResponse {
         @Override
         public Builder from(UserNotificationPolicyResponse other) {
             disabled(other.getDisabled());
+            digest(other.getDigest());
             type(other.getType());
             return this;
         }
@@ -111,8 +129,19 @@ public final class UserNotificationPolicyResponse {
          */
         @Override
         @JsonSetter("disabled")
-        public TypeStage disabled(boolean disabled) {
+        public DigestStage disabled(boolean disabled) {
             this.disabled = disabled;
+            return this;
+        }
+
+        /**
+         * <p>True if the selected notification type is sent as a digest. If false, notifications will be sent immediately.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @Override
+        @JsonSetter("digest")
+        public TypeStage digest(boolean digest) {
+            this.digest = digest;
             return this;
         }
 
@@ -125,7 +154,7 @@ public final class UserNotificationPolicyResponse {
 
         @Override
         public UserNotificationPolicyResponse build() {
-            return new UserNotificationPolicyResponse(disabled, type, additionalProperties);
+            return new UserNotificationPolicyResponse(disabled, digest, type, additionalProperties);
         }
     }
 }
