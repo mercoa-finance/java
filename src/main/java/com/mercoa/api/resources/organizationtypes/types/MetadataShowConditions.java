@@ -26,6 +26,8 @@ public final class MetadataShowConditions {
 
     private final Optional<Boolean> hasDocument;
 
+    private final Optional<Boolean> hasNoLineItems;
+
     private final Optional<List<PaymentMethodType>> paymentSourceTypes;
 
     private final Optional<List<String>> paymentSourceCustomSchemaIds;
@@ -39,6 +41,7 @@ public final class MetadataShowConditions {
     private MetadataShowConditions(
             Optional<Boolean> hasOptions,
             Optional<Boolean> hasDocument,
+            Optional<Boolean> hasNoLineItems,
             Optional<List<PaymentMethodType>> paymentSourceTypes,
             Optional<List<String>> paymentSourceCustomSchemaIds,
             Optional<List<PaymentMethodType>> paymentDestinationTypes,
@@ -46,6 +49,7 @@ public final class MetadataShowConditions {
             Map<String, Object> additionalProperties) {
         this.hasOptions = hasOptions;
         this.hasDocument = hasDocument;
+        this.hasNoLineItems = hasNoLineItems;
         this.paymentSourceTypes = paymentSourceTypes;
         this.paymentSourceCustomSchemaIds = paymentSourceCustomSchemaIds;
         this.paymentDestinationTypes = paymentDestinationTypes;
@@ -67,6 +71,14 @@ public final class MetadataShowConditions {
     @JsonProperty("hasDocument")
     public Optional<Boolean> getHasDocument() {
         return hasDocument;
+    }
+
+    /**
+     * @return Show this field only if the invoice has no line items. Useful for showing a field that applies to the entire invoice but overridden by line items if present.
+     */
+    @JsonProperty("hasNoLineItems")
+    public Optional<Boolean> getHasNoLineItems() {
+        return hasNoLineItems;
     }
 
     /**
@@ -115,6 +127,7 @@ public final class MetadataShowConditions {
     private boolean equalTo(MetadataShowConditions other) {
         return hasOptions.equals(other.hasOptions)
                 && hasDocument.equals(other.hasDocument)
+                && hasNoLineItems.equals(other.hasNoLineItems)
                 && paymentSourceTypes.equals(other.paymentSourceTypes)
                 && paymentSourceCustomSchemaIds.equals(other.paymentSourceCustomSchemaIds)
                 && paymentDestinationTypes.equals(other.paymentDestinationTypes)
@@ -126,6 +139,7 @@ public final class MetadataShowConditions {
         return Objects.hash(
                 this.hasOptions,
                 this.hasDocument,
+                this.hasNoLineItems,
                 this.paymentSourceTypes,
                 this.paymentSourceCustomSchemaIds,
                 this.paymentDestinationTypes,
@@ -147,6 +161,8 @@ public final class MetadataShowConditions {
 
         private Optional<Boolean> hasDocument = Optional.empty();
 
+        private Optional<Boolean> hasNoLineItems = Optional.empty();
+
         private Optional<List<PaymentMethodType>> paymentSourceTypes = Optional.empty();
 
         private Optional<List<String>> paymentSourceCustomSchemaIds = Optional.empty();
@@ -163,6 +179,7 @@ public final class MetadataShowConditions {
         public Builder from(MetadataShowConditions other) {
             hasOptions(other.getHasOptions());
             hasDocument(other.getHasDocument());
+            hasNoLineItems(other.getHasNoLineItems());
             paymentSourceTypes(other.getPaymentSourceTypes());
             paymentSourceCustomSchemaIds(other.getPaymentSourceCustomSchemaIds());
             paymentDestinationTypes(other.getPaymentDestinationTypes());
@@ -189,6 +206,17 @@ public final class MetadataShowConditions {
 
         public Builder hasDocument(Boolean hasDocument) {
             this.hasDocument = Optional.of(hasDocument);
+            return this;
+        }
+
+        @JsonSetter(value = "hasNoLineItems", nulls = Nulls.SKIP)
+        public Builder hasNoLineItems(Optional<Boolean> hasNoLineItems) {
+            this.hasNoLineItems = hasNoLineItems;
+            return this;
+        }
+
+        public Builder hasNoLineItems(Boolean hasNoLineItems) {
+            this.hasNoLineItems = Optional.of(hasNoLineItems);
             return this;
         }
 
@@ -240,6 +268,7 @@ public final class MetadataShowConditions {
             return new MetadataShowConditions(
                     hasOptions,
                     hasDocument,
+                    hasNoLineItems,
                     paymentSourceTypes,
                     paymentSourceCustomSchemaIds,
                     paymentDestinationTypes,

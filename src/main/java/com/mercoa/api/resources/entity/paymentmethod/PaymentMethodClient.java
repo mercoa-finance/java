@@ -317,7 +317,7 @@ public class PaymentMethodClient {
     }
 
     /**
-     * Get the available balance of a payment method. Only bank accounts added with Plaid are supported.
+     * Get the available balance of a payment method. Only bank accounts added with Plaid are supported. This endpoint will return a cached value and will refresh the balance when called.
      */
     public PaymentMethodBalanceResponse getBalance(
             String entityId, String paymentMethodId, RequestOptions requestOptions) {
@@ -351,7 +351,7 @@ public class PaymentMethodClient {
     }
 
     /**
-     * Get the available balance of a payment method. Only bank accounts added with Plaid are supported.
+     * Get the available balance of a payment method. Only bank accounts added with Plaid are supported. This endpoint will return a cached value and will refresh the balance when called.
      */
     public PaymentMethodBalanceResponse getBalance(String entityId, String paymentMethodId) {
         return getBalance(entityId, paymentMethodId, null);

@@ -9,11 +9,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = PaymentMethodBalanceResponse.Builder.class)
@@ -22,12 +25,18 @@ public final class PaymentMethodBalanceResponse {
 
     private final CurrencyCode currency;
 
+    private final Optional<OffsetDateTime> updatedAt;
+
     private final Map<String, Object> additionalProperties;
 
     private PaymentMethodBalanceResponse(
-            double availableBalance, CurrencyCode currency, Map<String, Object> additionalProperties) {
+            double availableBalance,
+            CurrencyCode currency,
+            Optional<OffsetDateTime> updatedAt,
+            Map<String, Object> additionalProperties) {
         this.availableBalance = availableBalance;
         this.currency = currency;
+        this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
     }
 
@@ -39,6 +48,14 @@ public final class PaymentMethodBalanceResponse {
     @JsonProperty("currency")
     public CurrencyCode getCurrency() {
         return currency;
+    }
+
+    /**
+     * @return The time the balance was last updated. Will be null if the balance has never been updated.
+     */
+    @JsonProperty("updatedAt")
+    public Optional<OffsetDateTime> getUpdatedAt() {
+        return updatedAt;
     }
 
     @Override
@@ -53,12 +70,14 @@ public final class PaymentMethodBalanceResponse {
     }
 
     private boolean equalTo(PaymentMethodBalanceResponse other) {
-        return availableBalance == other.availableBalance && currency.equals(other.currency);
+        return availableBalance == other.availableBalance
+                && currency.equals(other.currency)
+                && updatedAt.equals(other.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.availableBalance, this.currency);
+        return Objects.hash(this.availableBalance, this.currency, this.updatedAt);
     }
 
     @Override
@@ -82,6 +101,10 @@ public final class PaymentMethodBalanceResponse {
 
     public interface _FinalStage {
         PaymentMethodBalanceResponse build();
+
+        _FinalStage updatedAt(Optional<OffsetDateTime> updatedAt);
+
+        _FinalStage updatedAt(OffsetDateTime updatedAt);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -89,6 +112,8 @@ public final class PaymentMethodBalanceResponse {
         private double availableBalance;
 
         private CurrencyCode currency;
+
+        private Optional<OffsetDateTime> updatedAt = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -99,6 +124,7 @@ public final class PaymentMethodBalanceResponse {
         public Builder from(PaymentMethodBalanceResponse other) {
             availableBalance(other.getAvailableBalance());
             currency(other.getCurrency());
+            updatedAt(other.getUpdatedAt());
             return this;
         }
 
@@ -116,9 +142,26 @@ public final class PaymentMethodBalanceResponse {
             return this;
         }
 
+        /**
+         * <p>The time the balance was last updated. Will be null if the balance has never been updated.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @Override
+        public _FinalStage updatedAt(OffsetDateTime updatedAt) {
+            this.updatedAt = Optional.of(updatedAt);
+            return this;
+        }
+
+        @Override
+        @JsonSetter(value = "updatedAt", nulls = Nulls.SKIP)
+        public _FinalStage updatedAt(Optional<OffsetDateTime> updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
         @Override
         public PaymentMethodBalanceResponse build() {
-            return new PaymentMethodBalanceResponse(availableBalance, currency, additionalProperties);
+            return new PaymentMethodBalanceResponse(availableBalance, currency, updatedAt, additionalProperties);
         }
     }
 }
