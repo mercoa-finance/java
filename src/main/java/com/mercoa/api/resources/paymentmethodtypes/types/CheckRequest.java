@@ -67,7 +67,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
      * @return If true, this payment method will be set as the default source. Only one payment method can be set as the default source. If another payment method is already set as the default source, it will be unset.
      */
     @JsonProperty("defaultSource")
-    @Override
+    @java.lang.Override
     public Optional<Boolean> getDefaultSource() {
         return defaultSource;
     }
@@ -76,7 +76,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
      * @return If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.
      */
     @JsonProperty("defaultDestination")
-    @Override
+    @java.lang.Override
     public Optional<Boolean> getDefaultDestination() {
         return defaultDestination;
     }
@@ -116,7 +116,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
         return country;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CheckRequest && equalTo((CheckRequest) other);
@@ -139,7 +139,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
                 && country.equals(other.country);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.defaultSource,
@@ -153,7 +153,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
                 this.country);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -236,7 +236,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(CheckRequest other) {
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
@@ -250,55 +250,55 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("payToTheOrderOf")
         public AddressLine1Stage payToTheOrderOf(String payToTheOrderOf) {
             this.payToTheOrderOf = payToTheOrderOf;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("addressLine1")
         public CityStage addressLine1(String addressLine1) {
             this.addressLine1 = addressLine1;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("city")
         public StateOrProvinceStage city(String city) {
             this.city = city;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("stateOrProvince")
         public PostalCodeStage stateOrProvince(String stateOrProvince) {
             this.stateOrProvince = stateOrProvince;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("postalCode")
         public CountryStage postalCode(String postalCode) {
             this.postalCode = postalCode;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("country")
         public _FinalStage country(String country) {
             this.country = country;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addressLine2(String addressLine2) {
             this.addressLine2 = Optional.of(addressLine2);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "addressLine2", nulls = Nulls.SKIP)
         public _FinalStage addressLine2(Optional<String> addressLine2) {
             this.addressLine2 = addressLine2;
@@ -309,13 +309,13 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
          * <p>If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage defaultDestination(Boolean defaultDestination) {
             this.defaultDestination = Optional.of(defaultDestination);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "defaultDestination", nulls = Nulls.SKIP)
         public _FinalStage defaultDestination(Optional<Boolean> defaultDestination) {
             this.defaultDestination = defaultDestination;
@@ -326,20 +326,20 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
          * <p>If true, this payment method will be set as the default source. Only one payment method can be set as the default source. If another payment method is already set as the default source, it will be unset.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage defaultSource(Boolean defaultSource) {
             this.defaultSource = Optional.of(defaultSource);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "defaultSource", nulls = Nulls.SKIP)
         public _FinalStage defaultSource(Optional<Boolean> defaultSource) {
             this.defaultSource = defaultSource;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public CheckRequest build() {
             return new CheckRequest(
                     defaultSource,

@@ -84,7 +84,7 @@ public final class TokenGenerationOptions {
         return entity;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof TokenGenerationOptions && equalTo((TokenGenerationOptions) other);
@@ -104,12 +104,12 @@ public final class TokenGenerationOptions {
                 && entity.equals(other.entity);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.expiresIn, this.invoice, this.pages, this.style, this.vendors, this.entity);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

@@ -5,6 +5,7 @@ package com.mercoa.api.resources.entity.externalaccountingsystem;
 
 import com.mercoa.api.core.ApiError;
 import com.mercoa.api.core.ClientOptions;
+import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.entity.externalaccountingsystem.types.ExternalAccountingSystemCompanyCreationRequest;
@@ -12,7 +13,7 @@ import com.mercoa.api.resources.entity.externalaccountingsystem.types.ExternalAc
 import java.io.IOException;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -22,6 +23,14 @@ public class ExternalAccountingSystemClient {
 
     public ExternalAccountingSystemClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+    }
+
+    /**
+     * Create a company/entity in the external accounting system
+     */
+    public ExternalAccountingSystemCompanyResponse create(
+            String entityId, ExternalAccountingSystemCompanyCreationRequest request) {
+        return create(entityId, request, null);
     }
 
     /**
@@ -38,7 +47,7 @@ public class ExternalAccountingSystemClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -49,8 +58,13 @@ public class ExternalAccountingSystemClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(
                         response.body().string(), ExternalAccountingSystemCompanyResponse.class);
@@ -64,11 +78,10 @@ public class ExternalAccountingSystemClient {
     }
 
     /**
-     * Create a company/entity in the external accounting system
+     * Get a link to connect an entity to an external accounting system
      */
-    public ExternalAccountingSystemCompanyResponse create(
-            String entityId, ExternalAccountingSystemCompanyCreationRequest request) {
-        return create(entityId, request, null);
+    public String connect(String entityId) {
+        return connect(entityId, null);
     }
 
     /**
@@ -88,8 +101,13 @@ public class ExternalAccountingSystemClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), String.class);
             }
@@ -102,10 +120,10 @@ public class ExternalAccountingSystemClient {
     }
 
     /**
-     * Get a link to connect an entity to an external accounting system
+     * Sync an entity with an external accounting system. Will sync customers/vendors and invoices.
      */
-    public String connect(String entityId) {
-        return connect(entityId, null);
+    public void sync(String entityId) {
+        sync(entityId, null);
     }
 
     /**
@@ -124,8 +142,13 @@ public class ExternalAccountingSystemClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -135,12 +158,5 @@ public class ExternalAccountingSystemClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Sync an entity with an external accounting system. Will sync customers/vendors and invoices.
-     */
-    public void sync(String entityId) {
-        sync(entityId, null);
     }
 }

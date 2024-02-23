@@ -38,7 +38,7 @@ public final class TokenGenerationEntityOptions {
         return enableMercoaPayments;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof TokenGenerationEntityOptions && equalTo((TokenGenerationEntityOptions) other);
@@ -53,12 +53,12 @@ public final class TokenGenerationEntityOptions {
         return enableMercoaPayments.equals(other.enableMercoaPayments);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.enableMercoaPayments);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

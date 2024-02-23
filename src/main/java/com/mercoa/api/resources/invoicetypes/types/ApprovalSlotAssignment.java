@@ -44,7 +44,7 @@ public final class ApprovalSlotAssignment {
         return assignedUserId;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ApprovalSlotAssignment && equalTo((ApprovalSlotAssignment) other);
@@ -59,12 +59,12 @@ public final class ApprovalSlotAssignment {
         return approvalSlotId.equals(other.approvalSlotId) && assignedUserId.equals(other.assignedUserId);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.approvalSlotId, this.assignedUserId);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -98,7 +98,7 @@ public final class ApprovalSlotAssignment {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ApprovalSlotAssignment other) {
             approvalSlotId(other.getApprovalSlotId());
             assignedUserId(other.getAssignedUserId());
@@ -109,21 +109,21 @@ public final class ApprovalSlotAssignment {
          * <p>The identifier for the approval slot this user is assigned to.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("approvalSlotId")
         public AssignedUserIdStage approvalSlotId(String approvalSlotId) {
             this.approvalSlotId = approvalSlotId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("assignedUserId")
         public _FinalStage assignedUserId(String assignedUserId) {
             this.assignedUserId = assignedUserId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ApprovalSlotAssignment build() {
             return new ApprovalSlotAssignment(approvalSlotId, assignedUserId, additionalProperties);
         }

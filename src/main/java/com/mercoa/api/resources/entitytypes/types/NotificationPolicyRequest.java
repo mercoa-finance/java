@@ -51,7 +51,7 @@ public final class NotificationPolicyRequest {
         return additionalRoles;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof NotificationPolicyRequest && equalTo((NotificationPolicyRequest) other);
@@ -66,12 +66,12 @@ public final class NotificationPolicyRequest {
         return disabled.equals(other.disabled) && additionalRoles.equals(other.additionalRoles);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.disabled, this.additionalRoles);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

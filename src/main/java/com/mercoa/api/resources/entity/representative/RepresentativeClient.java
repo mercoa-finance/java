@@ -6,6 +6,7 @@ package com.mercoa.api.resources.entity.representative;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.mercoa.api.core.ApiError;
 import com.mercoa.api.core.ClientOptions;
+import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.entitytypes.types.RepresentativeRequest;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -24,6 +25,13 @@ public class RepresentativeClient {
 
     public RepresentativeClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+    }
+
+    /**
+     * Get representatives for an entity
+     */
+    public List<RepresentativeResponse> getAll(String entityId) {
+        return getAll(entityId, null);
     }
 
     /**
@@ -43,8 +51,13 @@ public class RepresentativeClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(
                         response.body().string(), new TypeReference<List<RepresentativeResponse>>() {});
@@ -57,11 +70,8 @@ public class RepresentativeClient {
         }
     }
 
-    /**
-     * Get representatives for an entity
-     */
-    public List<RepresentativeResponse> getAll(String entityId) {
-        return getAll(entityId, null);
+    public RepresentativeResponse create(String entityId, RepresentativeRequest request) {
+        return create(entityId, request, null);
     }
 
     public RepresentativeResponse create(
@@ -75,7 +85,7 @@ public class RepresentativeClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -86,8 +96,13 @@ public class RepresentativeClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), RepresentativeResponse.class);
             }
@@ -99,8 +114,8 @@ public class RepresentativeClient {
         }
     }
 
-    public RepresentativeResponse create(String entityId, RepresentativeRequest request) {
-        return create(entityId, request, null);
+    public RepresentativeResponse get(String entityId, String representativeId) {
+        return get(entityId, representativeId, null);
     }
 
     public RepresentativeResponse get(String entityId, String representativeId, RequestOptions requestOptions) {
@@ -118,8 +133,13 @@ public class RepresentativeClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), RepresentativeResponse.class);
             }
@@ -131,8 +151,8 @@ public class RepresentativeClient {
         }
     }
 
-    public RepresentativeResponse get(String entityId, String representativeId) {
-        return get(entityId, representativeId, null);
+    public void delete(String entityId, String representativeId) {
+        delete(entityId, representativeId, null);
     }
 
     public void delete(String entityId, String representativeId, RequestOptions requestOptions) {
@@ -149,8 +169,13 @@ public class RepresentativeClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -160,9 +185,5 @@ public class RepresentativeClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void delete(String entityId, String representativeId) {
-        delete(entityId, representativeId, null);
     }
 }

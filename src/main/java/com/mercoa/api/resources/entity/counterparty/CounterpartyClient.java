@@ -5,6 +5,7 @@ package com.mercoa.api.resources.entity.counterparty;
 
 import com.mercoa.api.core.ApiError;
 import com.mercoa.api.core.ClientOptions;
+import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.entity.counterparty.requests.FindPayeeCounterpartiesRequest;
@@ -17,7 +18,7 @@ import com.mercoa.api.resources.entitytypes.types.FindCounterpartiesResponse;
 import java.io.IOException;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -34,6 +35,13 @@ public class CounterpartyClient {
      */
     public FindCounterpartiesResponse findPayees(String entityId) {
         return findPayees(entityId, FindPayeeCounterpartiesRequest.builder().build());
+    }
+
+    /**
+     * Find payee counterparties. This endpoint lets you find vendors linked to the entity.
+     */
+    public FindCounterpartiesResponse findPayees(String entityId, FindPayeeCounterpartiesRequest request) {
+        return findPayees(entityId, request, null);
     }
 
     /**
@@ -75,8 +83,13 @@ public class CounterpartyClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), FindCounterpartiesResponse.class);
             }
@@ -89,17 +102,17 @@ public class CounterpartyClient {
     }
 
     /**
-     * Find payee counterparties. This endpoint lets you find vendors linked to the entity.
+     * Find payor counterparties. This endpoint lets you find customers linked to the entity.
      */
-    public FindCounterpartiesResponse findPayees(String entityId, FindPayeeCounterpartiesRequest request) {
-        return findPayees(entityId, request, null);
+    public FindCounterpartiesResponse findPayors(String entityId) {
+        return findPayors(entityId, FindPayorCounterpartiesRequest.builder().build());
     }
 
     /**
      * Find payor counterparties. This endpoint lets you find customers linked to the entity.
      */
-    public FindCounterpartiesResponse findPayors(String entityId) {
-        return findPayors(entityId, FindPayorCounterpartiesRequest.builder().build());
+    public FindCounterpartiesResponse findPayors(String entityId, FindPayorCounterpartiesRequest request) {
+        return findPayors(entityId, request, null);
     }
 
     /**
@@ -141,54 +154,15 @@ public class CounterpartyClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), FindCounterpartiesResponse.class);
-            }
-            throw new ApiError(
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Find payor counterparties. This endpoint lets you find customers linked to the entity.
-     */
-    public FindCounterpartiesResponse findPayors(String entityId, FindPayorCounterpartiesRequest request) {
-        return findPayors(entityId, request, null);
-    }
-
-    /**
-     * Create association between Entity and a given list of Payees. If a Payee has previously been archived, unarchive the Payee.
-     */
-    public void addPayees(String entityId, EntityAddPayeesRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("addPayees")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
-        try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
-            if (response.isSuccessful()) {
-                return;
             }
             throw new ApiError(
                     response.code(),
@@ -206,19 +180,19 @@ public class CounterpartyClient {
     }
 
     /**
-     * Marks Payees as unsearchable by Entity via Counterparty search. Invoices associated with these Payees will still be searchable via Invoice search.
+     * Create association between Entity and a given list of Payees. If a Payee has previously been archived, unarchive the Payee.
      */
-    public void hidePayees(String entityId, EntityHidePayeesRequest request, RequestOptions requestOptions) {
+    public void addPayees(String entityId, EntityAddPayeesRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("entity")
                 .addPathSegment(entityId)
-                .addPathSegments("hidePayees")
+                .addPathSegments("addPayees")
                 .build();
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -229,8 +203,13 @@ public class CounterpartyClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -250,19 +229,19 @@ public class CounterpartyClient {
     }
 
     /**
-     * Create association between Entity and a given list of Payors. If a Payor has previously been archived, unarchive the Payor.
+     * Marks Payees as unsearchable by Entity via Counterparty search. Invoices associated with these Payees will still be searchable via Invoice search.
      */
-    public void addPayors(String entityId, EntityAddPayorsRequest request, RequestOptions requestOptions) {
+    public void hidePayees(String entityId, EntityHidePayeesRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("entity")
                 .addPathSegment(entityId)
-                .addPathSegments("addPayors")
+                .addPathSegments("hidePayees")
                 .build();
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -273,8 +252,13 @@ public class CounterpartyClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -294,19 +278,19 @@ public class CounterpartyClient {
     }
 
     /**
-     * Marks Payors as unsearchable by Entity via Counterparty search. Invoices associated with these Payors will still be searchable via Invoice search.
+     * Create association between Entity and a given list of Payors. If a Payor has previously been archived, unarchive the Payor.
      */
-    public void hidePayors(String entityId, EntityHidePayorsRequest request, RequestOptions requestOptions) {
+    public void addPayors(String entityId, EntityAddPayorsRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("entity")
                 .addPathSegment(entityId)
-                .addPathSegments("hidePayors")
+                .addPathSegments("addPayors")
                 .build();
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -317,8 +301,13 @@ public class CounterpartyClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -335,5 +324,47 @@ public class CounterpartyClient {
      */
     public void hidePayors(String entityId, EntityHidePayorsRequest request) {
         hidePayors(entityId, request, null);
+    }
+
+    /**
+     * Marks Payors as unsearchable by Entity via Counterparty search. Invoices associated with these Payors will still be searchable via Invoice search.
+     */
+    public void hidePayors(String entityId, EntityHidePayorsRequest request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entity")
+                .addPathSegment(entityId)
+                .addPathSegments("hidePayors")
+                .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return;
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

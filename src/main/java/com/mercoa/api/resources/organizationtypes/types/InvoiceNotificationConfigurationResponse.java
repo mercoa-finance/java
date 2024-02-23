@@ -33,7 +33,7 @@ public final class InvoiceNotificationConfigurationResponse implements IInvoiceN
     }
 
     @JsonProperty("url")
-    @Override
+    @java.lang.Override
     public String getUrl() {
         return url;
     }
@@ -43,7 +43,7 @@ public final class InvoiceNotificationConfigurationResponse implements IInvoiceN
         return type;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof InvoiceNotificationConfigurationResponse
@@ -59,12 +59,12 @@ public final class InvoiceNotificationConfigurationResponse implements IInvoiceN
         return url.equals(other.url) && type.equals(other.type);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.url, this.type);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -98,28 +98,28 @@ public final class InvoiceNotificationConfigurationResponse implements IInvoiceN
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(InvoiceNotificationConfigurationResponse other) {
             url(other.getUrl());
             type(other.getType());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("url")
         public TypeStage url(String url) {
             this.url = url;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("type")
         public _FinalStage type(NotificationType type) {
             this.type = type;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public InvoiceNotificationConfigurationResponse build() {
             return new InvoiceNotificationConfigurationResponse(url, type, additionalProperties);
         }

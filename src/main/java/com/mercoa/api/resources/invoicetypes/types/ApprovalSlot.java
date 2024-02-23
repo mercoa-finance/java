@@ -102,7 +102,7 @@ public final class ApprovalSlot {
         return date;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ApprovalSlot && equalTo((ApprovalSlot) other);
@@ -123,7 +123,7 @@ public final class ApprovalSlot {
                 && date.equals(other.date);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.approvalPolicyId,
@@ -135,7 +135,7 @@ public final class ApprovalSlot {
                 this.date);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -204,7 +204,7 @@ public final class ApprovalSlot {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ApprovalSlot other) {
             approvalPolicyId(other.getApprovalPolicyId());
             approvalSlotId(other.getApprovalSlotId());
@@ -220,7 +220,7 @@ public final class ApprovalSlot {
          * <p>The identifier for the approval policy this slot is associated with.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("approvalPolicyId")
         public ApprovalSlotIdStage approvalPolicyId(String approvalPolicyId) {
             this.approvalPolicyId = approvalPolicyId;
@@ -231,14 +231,14 @@ public final class ApprovalSlot {
          * <p>The identifier for this approval slot</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("approvalSlotId")
         public ActionStage approvalSlotId(String approvalSlotId) {
             this.approvalSlotId = approvalSlotId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("action")
         public DateStage action(ApproverAction action) {
             this.action = action;
@@ -249,26 +249,26 @@ public final class ApprovalSlot {
          * <p>Either the date the invoice was created, date the approver was assigned, or date of last action by approver, whichever is latest.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("date")
         public _FinalStage date(OffsetDateTime date) {
             this.date = date;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addAllEligibleUserIds(List<String> eligibleUserIds) {
             this.eligibleUserIds.addAll(eligibleUserIds);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addEligibleUserIds(String eligibleUserIds) {
             this.eligibleUserIds.add(eligibleUserIds);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "eligibleUserIds", nulls = Nulls.SKIP)
         public _FinalStage eligibleUserIds(List<String> eligibleUserIds) {
             this.eligibleUserIds.clear();
@@ -276,19 +276,19 @@ public final class ApprovalSlot {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addAllEligibleRoles(List<String> eligibleRoles) {
             this.eligibleRoles.addAll(eligibleRoles);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addEligibleRoles(String eligibleRoles) {
             this.eligibleRoles.add(eligibleRoles);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "eligibleRoles", nulls = Nulls.SKIP)
         public _FinalStage eligibleRoles(List<String> eligibleRoles) {
             this.eligibleRoles.clear();
@@ -296,20 +296,20 @@ public final class ApprovalSlot {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage assignedUserId(String assignedUserId) {
             this.assignedUserId = Optional.of(assignedUserId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "assignedUserId", nulls = Nulls.SKIP)
         public _FinalStage assignedUserId(Optional<String> assignedUserId) {
             this.assignedUserId = assignedUserId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ApprovalSlot build() {
             return new ApprovalSlot(
                     approvalPolicyId,

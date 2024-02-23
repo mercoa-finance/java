@@ -51,7 +51,7 @@ public final class ProfileResponse {
         return individual;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ProfileResponse && equalTo((ProfileResponse) other);
@@ -66,12 +66,12 @@ public final class ProfileResponse {
         return business.equals(other.business) && individual.equals(other.individual);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.business, this.individual);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

@@ -5,6 +5,7 @@ package com.mercoa.api.resources.invoice;
 
 import com.mercoa.api.core.ApiError;
 import com.mercoa.api.core.ClientOptions;
+import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
@@ -22,7 +23,7 @@ import java.io.IOException;
 import java.util.function.Supplier;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -48,6 +49,13 @@ public class InvoiceClient {
      */
     public FindInvoiceResponse find() {
         return find(GetAllInvoicesRequest.builder().build());
+    }
+
+    /**
+     * Search invoices for all entities in the organization
+     */
+    public FindInvoiceResponse find(GetAllInvoicesRequest request) {
+        return find(request, null);
     }
 
     /**
@@ -109,8 +117,13 @@ public class InvoiceClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), FindInvoiceResponse.class);
             }
@@ -122,15 +135,12 @@ public class InvoiceClient {
         }
     }
 
-    /**
-     * Search invoices for all entities in the organization
-     */
-    public FindInvoiceResponse find(GetAllInvoicesRequest request) {
-        return find(request, null);
-    }
-
     public InvoiceResponse create() {
         return create(InvoiceRequest.builder().build());
+    }
+
+    public InvoiceResponse create(InvoiceRequest request) {
+        return create(request, null);
     }
 
     public InvoiceResponse create(InvoiceRequest request, RequestOptions requestOptions) {
@@ -141,7 +151,7 @@ public class InvoiceClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -152,8 +162,13 @@ public class InvoiceClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), InvoiceResponse.class);
             }
@@ -165,12 +180,12 @@ public class InvoiceClient {
         }
     }
 
-    public InvoiceResponse create(InvoiceRequest request) {
-        return create(request, null);
-    }
-
     public InvoiceResponse get(String invoiceId) {
         return get(invoiceId, GetInvoice.builder().build());
+    }
+
+    public InvoiceResponse get(String invoiceId, GetInvoice request) {
+        return get(invoiceId, request, null);
     }
 
     public InvoiceResponse get(String invoiceId, GetInvoice request, RequestOptions requestOptions) {
@@ -189,8 +204,13 @@ public class InvoiceClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), InvoiceResponse.class);
             }
@@ -202,12 +222,12 @@ public class InvoiceClient {
         }
     }
 
-    public InvoiceResponse get(String invoiceId, GetInvoice request) {
-        return get(invoiceId, request, null);
-    }
-
     public InvoiceResponse update(String invoiceId) {
         return update(invoiceId, InvoiceRequest.builder().build());
+    }
+
+    public InvoiceResponse update(String invoiceId, InvoiceRequest request) {
+        return update(invoiceId, request, null);
     }
 
     public InvoiceResponse update(String invoiceId, InvoiceRequest request, RequestOptions requestOptions) {
@@ -219,7 +239,7 @@ public class InvoiceClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -230,8 +250,13 @@ public class InvoiceClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), InvoiceResponse.class);
             }
@@ -243,8 +268,11 @@ public class InvoiceClient {
         }
     }
 
-    public InvoiceResponse update(String invoiceId, InvoiceRequest request) {
-        return update(invoiceId, request, null);
+    /**
+     * Only invoices in the DRAFT and NEW status can be deleted.
+     */
+    public void delete(String invoiceId) {
+        delete(invoiceId, null);
     }
 
     /**
@@ -262,8 +290,13 @@ public class InvoiceClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -276,10 +309,10 @@ public class InvoiceClient {
     }
 
     /**
-     * Only invoices in the DRAFT and NEW status can be deleted.
+     * Get temporary link for payer to send payment
      */
-    public void delete(String invoiceId) {
-        delete(invoiceId, null);
+    public String getPayerLink(String invoiceId) {
+        return getPayerLink(invoiceId, null);
     }
 
     /**
@@ -299,8 +332,13 @@ public class InvoiceClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), String.class);
             }
@@ -313,17 +351,17 @@ public class InvoiceClient {
     }
 
     /**
-     * Get temporary link for payer to send payment
+     * Trigger email to payer inviting them to make payment
      */
-    public String getPayerLink(String invoiceId) {
-        return getPayerLink(invoiceId, null);
+    public void sendPayerEmail(String invoiceId) {
+        sendPayerEmail(invoiceId, SendPayerEmail.builder().build());
     }
 
     /**
      * Trigger email to payer inviting them to make payment
      */
-    public void sendPayerEmail(String invoiceId) {
-        sendPayerEmail(invoiceId, SendPayerEmail.builder().build());
+    public void sendPayerEmail(String invoiceId, SendPayerEmail request) {
+        sendPayerEmail(invoiceId, request, null);
     }
 
     /**
@@ -345,8 +383,13 @@ public class InvoiceClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)));
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -359,10 +402,10 @@ public class InvoiceClient {
     }
 
     /**
-     * Trigger email to payer inviting them to make payment
+     * Get temporary link for vendor to accept payment
      */
-    public void sendPayerEmail(String invoiceId, SendPayerEmail request) {
-        sendPayerEmail(invoiceId, request, null);
+    public String getVendorLink(String invoiceId) {
+        return getVendorLink(invoiceId, null);
     }
 
     /**
@@ -382,8 +425,13 @@ public class InvoiceClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), String.class);
             }
@@ -396,10 +444,10 @@ public class InvoiceClient {
     }
 
     /**
-     * Get temporary link for vendor to accept payment
+     * Trigger email to vendor inviting them into the vendor portal
      */
-    public String getVendorLink(String invoiceId) {
-        return getVendorLink(invoiceId, null);
+    public void sendVendorEmail(String invoiceId) {
+        sendVendorEmail(invoiceId, null);
     }
 
     /**
@@ -418,8 +466,13 @@ public class InvoiceClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -432,10 +485,10 @@ public class InvoiceClient {
     }
 
     /**
-     * Trigger email to vendor inviting them into the vendor portal
+     * Generate a PDF of the invoice
      */
-    public void sendVendorEmail(String invoiceId) {
-        sendVendorEmail(invoiceId, null);
+    public DocumentResponse generateInvoicePdf(String invoiceId) {
+        return generateInvoicePdf(invoiceId, null);
     }
 
     /**
@@ -455,8 +508,13 @@ public class InvoiceClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), DocumentResponse.class);
             }
@@ -469,10 +527,10 @@ public class InvoiceClient {
     }
 
     /**
-     * Generate a PDF of the invoice
+     * Get a printable PDF of the check. This will only work for SCHEDULED invoices that have a check as the disbursement method. Once the PDF has been generated, it will no longer be possible to mail the check. The invoice will be marked as PAID as soon as the check is generated.
      */
-    public DocumentResponse generateInvoicePdf(String invoiceId) {
-        return generateInvoicePdf(invoiceId, null);
+    public DocumentResponse generateCheckPdf(String invoiceId) {
+        return generateCheckPdf(invoiceId, null);
     }
 
     /**
@@ -492,8 +550,13 @@ public class InvoiceClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), DocumentResponse.class);
             }
@@ -503,13 +566,6 @@ public class InvoiceClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Get a printable PDF of the check. This will only work for SCHEDULED invoices that have a check as the disbursement method. Once the PDF has been generated, it will no longer be possible to mail the check. The invoice will be marked as PAID as soon as the check is generated.
-     */
-    public DocumentResponse generateCheckPdf(String invoiceId) {
-        return generateCheckPdf(invoiceId, null);
     }
 
     public ApprovalClient approval() {

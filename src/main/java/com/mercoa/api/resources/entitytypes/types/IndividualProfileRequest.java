@@ -86,7 +86,7 @@ public final class IndividualProfileRequest {
         return governmentId;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof IndividualProfileRequest && equalTo((IndividualProfileRequest) other);
@@ -106,12 +106,12 @@ public final class IndividualProfileRequest {
                 && governmentId.equals(other.governmentId);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.email, this.name, this.phone, this.address, this.birthDate, this.governmentId);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -169,7 +169,7 @@ public final class IndividualProfileRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(IndividualProfileRequest other) {
             email(other.getEmail());
             name(other.getName());
@@ -180,79 +180,79 @@ public final class IndividualProfileRequest {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("name")
         public _FinalStage name(FullName name) {
             this.name = name;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage governmentId(IndividualGovernmentId governmentId) {
             this.governmentId = Optional.of(governmentId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "governmentID", nulls = Nulls.SKIP)
         public _FinalStage governmentId(Optional<IndividualGovernmentId> governmentId) {
             this.governmentId = governmentId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage birthDate(BirthDate birthDate) {
             this.birthDate = Optional.of(birthDate);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "birthDate", nulls = Nulls.SKIP)
         public _FinalStage birthDate(Optional<BirthDate> birthDate) {
             this.birthDate = birthDate;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage address(Address address) {
             this.address = Optional.of(address);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "address", nulls = Nulls.SKIP)
         public _FinalStage address(Optional<Address> address) {
             this.address = address;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage phone(PhoneNumber phone) {
             this.phone = Optional.of(phone);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "phone", nulls = Nulls.SKIP)
         public _FinalStage phone(Optional<PhoneNumber> phone) {
             this.phone = phone;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage email(String email) {
             this.email = Optional.of(email);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "email", nulls = Nulls.SKIP)
         public _FinalStage email(Optional<String> email) {
             this.email = email;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public IndividualProfileRequest build() {
             return new IndividualProfileRequest(
                     email, name, phone, address, birthDate, governmentId, additionalProperties);

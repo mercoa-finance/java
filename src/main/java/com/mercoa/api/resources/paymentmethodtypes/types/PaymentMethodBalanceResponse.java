@@ -58,7 +58,7 @@ public final class PaymentMethodBalanceResponse {
         return updatedAt;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof PaymentMethodBalanceResponse && equalTo((PaymentMethodBalanceResponse) other);
@@ -75,12 +75,12 @@ public final class PaymentMethodBalanceResponse {
                 && updatedAt.equals(other.updatedAt);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.availableBalance, this.currency, this.updatedAt);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -120,7 +120,7 @@ public final class PaymentMethodBalanceResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(PaymentMethodBalanceResponse other) {
             availableBalance(other.getAvailableBalance());
             currency(other.getCurrency());
@@ -128,14 +128,14 @@ public final class PaymentMethodBalanceResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("availableBalance")
         public CurrencyStage availableBalance(double availableBalance) {
             this.availableBalance = availableBalance;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("currency")
         public _FinalStage currency(CurrencyCode currency) {
             this.currency = currency;
@@ -146,20 +146,20 @@ public final class PaymentMethodBalanceResponse {
          * <p>The time the balance was last updated. Will be null if the balance has never been updated.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = Optional.of(updatedAt);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "updatedAt", nulls = Nulls.SKIP)
         public _FinalStage updatedAt(Optional<OffsetDateTime> updatedAt) {
             this.updatedAt = updatedAt;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public PaymentMethodBalanceResponse build() {
             return new PaymentMethodBalanceResponse(availableBalance, currency, updatedAt, additionalProperties);
         }

@@ -99,7 +99,7 @@ public final class MetadataSchema {
         return showConditions;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof MetadataSchema && equalTo((MetadataSchema) other);
@@ -120,7 +120,7 @@ public final class MetadataSchema {
                 && showConditions.equals(other.showConditions);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.key,
@@ -132,7 +132,7 @@ public final class MetadataSchema {
                 this.showConditions);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -196,7 +196,7 @@ public final class MetadataSchema {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(MetadataSchema other) {
             key(other.getKey());
             displayName(other.getDisplayName());
@@ -208,21 +208,21 @@ public final class MetadataSchema {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("key")
         public DisplayNameStage key(String key) {
             this.key = key;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("displayName")
         public TypeStage displayName(String displayName) {
             this.displayName = displayName;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("type")
         public _FinalStage type(MetadataType type) {
             this.type = type;
@@ -233,13 +233,13 @@ public final class MetadataSchema {
          * <p>A list of conditional rules that determine whether or not this field should be shown. The field will only be shown if all of the conditions are met. If no conditions are specified, the field will always be shown.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage showConditions(MetadataShowConditions showConditions) {
             this.showConditions = Optional.of(showConditions);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "showConditions", nulls = Nulls.SKIP)
         public _FinalStage showConditions(Optional<MetadataShowConditions> showConditions) {
             this.showConditions = showConditions;
@@ -250,13 +250,13 @@ public final class MetadataSchema {
          * <p>Whether or not multiple values are allowed for this field. Defaults to false. If true, the value will be a list of the specified type.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage allowMultiple(Boolean allowMultiple) {
             this.allowMultiple = Optional.of(allowMultiple);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "allowMultiple", nulls = Nulls.SKIP)
         public _FinalStage allowMultiple(Optional<Boolean> allowMultiple) {
             this.allowMultiple = allowMultiple;
@@ -267,33 +267,33 @@ public final class MetadataSchema {
          * <p>Whether or not this field should be shown on line items. If true, this field will be shown on each line item. If false, the field will be shown on the invoice level. Defaults to false.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage lineItem(Boolean lineItem) {
             this.lineItem = Optional.of(lineItem);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "lineItem", nulls = Nulls.SKIP)
         public _FinalStage lineItem(Optional<Boolean> lineItem) {
             this.lineItem = lineItem;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage description(String description) {
             this.description = Optional.of(description);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "description", nulls = Nulls.SKIP)
         public _FinalStage description(Optional<String> description) {
             this.description = description;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public MetadataSchema build() {
             return new MetadataSchema(
                     key, displayName, description, lineItem, type, allowMultiple, showConditions, additionalProperties);

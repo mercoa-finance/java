@@ -40,7 +40,7 @@ public final class PaymentRailMarkup {
         return amount;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof PaymentRailMarkup && equalTo((PaymentRailMarkup) other);
@@ -55,12 +55,12 @@ public final class PaymentRailMarkup {
         return type.equals(other.type) && amount == other.amount;
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.type, this.amount);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -94,28 +94,28 @@ public final class PaymentRailMarkup {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(PaymentRailMarkup other) {
             type(other.getType());
             amount(other.getAmount());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("type")
         public AmountStage type(PaymentRailMarkupType type) {
             this.type = type;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("amount")
         public _FinalStage amount(double amount) {
             this.amount = amount;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public PaymentRailMarkup build() {
             return new PaymentRailMarkup(type, amount, additionalProperties);
         }

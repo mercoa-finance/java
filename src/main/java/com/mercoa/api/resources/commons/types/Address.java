@@ -84,7 +84,7 @@ public final class Address {
         return country;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof Address && equalTo((Address) other);
@@ -104,13 +104,13 @@ public final class Address {
                 && country.equals(other.country);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.addressLine1, this.addressLine2, this.city, this.stateOrProvince, this.postalCode, this.country);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -169,7 +169,7 @@ public final class Address {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(Address other) {
             addressLine1(other.getAddressLine1());
             addressLine2(other.getAddressLine2());
@@ -180,14 +180,14 @@ public final class Address {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("addressLine1")
         public CityStage addressLine1(String addressLine1) {
             this.addressLine1 = addressLine1;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("city")
         public StateOrProvinceStage city(String city) {
             this.city = city;
@@ -198,47 +198,47 @@ public final class Address {
          * <p>State or province code. Must be in the format XX.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("stateOrProvince")
         public PostalCodeStage stateOrProvince(String stateOrProvince) {
             this.stateOrProvince = stateOrProvince;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("postalCode")
         public _FinalStage postalCode(String postalCode) {
             this.postalCode = postalCode;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage country(String country) {
             this.country = Optional.of(country);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "country", nulls = Nulls.SKIP)
         public _FinalStage country(Optional<String> country) {
             this.country = country;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addressLine2(String addressLine2) {
             this.addressLine2 = Optional.of(addressLine2);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "addressLine2", nulls = Nulls.SKIP)
         public _FinalStage addressLine2(Optional<String> addressLine2) {
             this.addressLine2 = addressLine2;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public Address build() {
             return new Address(
                     addressLine1, addressLine2, city, stateOrProvince, postalCode, country, additionalProperties);

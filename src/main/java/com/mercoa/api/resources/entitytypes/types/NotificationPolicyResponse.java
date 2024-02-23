@@ -61,7 +61,7 @@ public final class NotificationPolicyResponse {
         return type;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof NotificationPolicyResponse && equalTo((NotificationPolicyResponse) other);
@@ -76,12 +76,12 @@ public final class NotificationPolicyResponse {
         return disabled == other.disabled && additionalRoles.equals(other.additionalRoles) && type.equals(other.type);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.disabled, this.additionalRoles, this.type);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -123,7 +123,7 @@ public final class NotificationPolicyResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(NotificationPolicyResponse other) {
             disabled(other.getDisabled());
             additionalRoles(other.getAdditionalRoles());
@@ -135,14 +135,14 @@ public final class NotificationPolicyResponse {
          * <p>True if the selected notification type is disabled for this entity</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("disabled")
         public TypeStage disabled(boolean disabled) {
             this.disabled = disabled;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("type")
         public _FinalStage type(NotificationType type) {
             this.type = type;
@@ -153,7 +153,7 @@ public final class NotificationPolicyResponse {
          * <p>List of user roles that should receive notifications in addition to the default users for this notification type</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addAllAdditionalRoles(List<String> additionalRoles) {
             this.additionalRoles.addAll(additionalRoles);
             return this;
@@ -163,13 +163,13 @@ public final class NotificationPolicyResponse {
          * <p>List of user roles that should receive notifications in addition to the default users for this notification type</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addAdditionalRoles(String additionalRoles) {
             this.additionalRoles.add(additionalRoles);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "additionalRoles", nulls = Nulls.SKIP)
         public _FinalStage additionalRoles(List<String> additionalRoles) {
             this.additionalRoles.clear();
@@ -177,7 +177,7 @@ public final class NotificationPolicyResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public NotificationPolicyResponse build() {
             return new NotificationPolicyResponse(disabled, additionalRoles, type, additionalProperties);
         }

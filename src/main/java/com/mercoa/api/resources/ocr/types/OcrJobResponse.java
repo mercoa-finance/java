@@ -51,7 +51,7 @@ public final class OcrJobResponse {
         return data;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof OcrJobResponse && equalTo((OcrJobResponse) other);
@@ -66,12 +66,12 @@ public final class OcrJobResponse {
         return jobId.equals(other.jobId) && status.equals(other.status) && data.equals(other.data);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.jobId, this.status, this.data);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -111,7 +111,7 @@ public final class OcrJobResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(OcrJobResponse other) {
             jobId(other.getJobId());
             status(other.getStatus());
@@ -119,34 +119,34 @@ public final class OcrJobResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("jobId")
         public StatusStage jobId(String jobId) {
             this.jobId = jobId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("status")
         public _FinalStage status(OcrJobStatus status) {
             this.status = status;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage data(OcrResponse data) {
             this.data = Optional.of(data);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "data", nulls = Nulls.SKIP)
         public _FinalStage data(Optional<OcrResponse> data) {
             this.data = data;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public OcrJobResponse build() {
             return new OcrJobResponse(jobId, status, data, additionalProperties);
         }

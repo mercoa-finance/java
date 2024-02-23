@@ -49,15 +49,13 @@ public final class InvoiceRequest {
 
     private final Optional<String> paymentSourceId;
 
-    private final Optional<PaymentSourceOptions> paymentSourceOptions;
-
-    private final Optional<List<ApprovalSlotAssignment>> approvers;
-
     private final Optional<String> vendorId;
 
     private final Optional<String> paymentDestinationId;
 
     private final Optional<PaymentDestinationOptions> paymentDestinationOptions;
+
+    private final Optional<List<ApprovalSlotAssignment>> approvers;
 
     private final Optional<List<InvoiceLineItemRequest>> lineItems;
 
@@ -87,11 +85,10 @@ public final class InvoiceRequest {
             Optional<OffsetDateTime> serviceEndDate,
             Optional<String> payerId,
             Optional<String> paymentSourceId,
-            Optional<PaymentSourceOptions> paymentSourceOptions,
-            Optional<List<ApprovalSlotAssignment>> approvers,
             Optional<String> vendorId,
             Optional<String> paymentDestinationId,
             Optional<PaymentDestinationOptions> paymentDestinationOptions,
+            Optional<List<ApprovalSlotAssignment>> approvers,
             Optional<List<InvoiceLineItemRequest>> lineItems,
             Optional<Map<String, String>> metadata,
             Optional<String> foreignId,
@@ -112,11 +109,10 @@ public final class InvoiceRequest {
         this.serviceEndDate = serviceEndDate;
         this.payerId = payerId;
         this.paymentSourceId = paymentSourceId;
-        this.paymentSourceOptions = paymentSourceOptions;
-        this.approvers = approvers;
         this.vendorId = vendorId;
         this.paymentDestinationId = paymentDestinationId;
         this.paymentDestinationOptions = paymentDestinationOptions;
+        this.approvers = approvers;
         this.lineItems = lineItems;
         this.metadata = metadata;
         this.foreignId = foreignId;
@@ -139,6 +135,9 @@ public final class InvoiceRequest {
         return amount;
     }
 
+    /**
+     * @return Currency code for the amount. Defaults to USD.
+     */
     @JsonProperty("currency")
     public Optional<CurrencyCode> getCurrency() {
         return currency;
@@ -212,22 +211,6 @@ public final class InvoiceRequest {
         return paymentSourceId;
     }
 
-    /**
-     * @return Options for the payment source. Depending on the payment source, this may include things such as ACH speed.
-     */
-    @JsonProperty("paymentSourceOptions")
-    public Optional<PaymentSourceOptions> getPaymentSourceOptions() {
-        return paymentSourceOptions;
-    }
-
-    /**
-     * @return Set approvers for this invoice.
-     */
-    @JsonProperty("approvers")
-    public Optional<List<ApprovalSlotAssignment>> getApprovers() {
-        return approvers;
-    }
-
     @JsonProperty("vendorId")
     public Optional<String> getVendorId() {
         return vendorId;
@@ -247,6 +230,14 @@ public final class InvoiceRequest {
     @JsonProperty("paymentDestinationOptions")
     public Optional<PaymentDestinationOptions> getPaymentDestinationOptions() {
         return paymentDestinationOptions;
+    }
+
+    /**
+     * @return Set approvers for this invoice.
+     */
+    @JsonProperty("approvers")
+    public Optional<List<ApprovalSlotAssignment>> getApprovers() {
+        return approvers;
     }
 
     @JsonProperty("lineItems")
@@ -294,7 +285,7 @@ public final class InvoiceRequest {
         return creatorUserId;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof InvoiceRequest && equalTo((InvoiceRequest) other);
@@ -319,11 +310,10 @@ public final class InvoiceRequest {
                 && serviceEndDate.equals(other.serviceEndDate)
                 && payerId.equals(other.payerId)
                 && paymentSourceId.equals(other.paymentSourceId)
-                && paymentSourceOptions.equals(other.paymentSourceOptions)
-                && approvers.equals(other.approvers)
                 && vendorId.equals(other.vendorId)
                 && paymentDestinationId.equals(other.paymentDestinationId)
                 && paymentDestinationOptions.equals(other.paymentDestinationOptions)
+                && approvers.equals(other.approvers)
                 && lineItems.equals(other.lineItems)
                 && metadata.equals(other.metadata)
                 && foreignId.equals(other.foreignId)
@@ -332,7 +322,7 @@ public final class InvoiceRequest {
                 && creatorUserId.equals(other.creatorUserId);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.status,
@@ -348,11 +338,10 @@ public final class InvoiceRequest {
                 this.serviceEndDate,
                 this.payerId,
                 this.paymentSourceId,
-                this.paymentSourceOptions,
-                this.approvers,
                 this.vendorId,
                 this.paymentDestinationId,
                 this.paymentDestinationOptions,
+                this.approvers,
                 this.lineItems,
                 this.metadata,
                 this.foreignId,
@@ -361,7 +350,7 @@ public final class InvoiceRequest {
                 this.creatorUserId);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -398,15 +387,13 @@ public final class InvoiceRequest {
 
         private Optional<String> paymentSourceId = Optional.empty();
 
-        private Optional<PaymentSourceOptions> paymentSourceOptions = Optional.empty();
-
-        private Optional<List<ApprovalSlotAssignment>> approvers = Optional.empty();
-
         private Optional<String> vendorId = Optional.empty();
 
         private Optional<String> paymentDestinationId = Optional.empty();
 
         private Optional<PaymentDestinationOptions> paymentDestinationOptions = Optional.empty();
+
+        private Optional<List<ApprovalSlotAssignment>> approvers = Optional.empty();
 
         private Optional<List<InvoiceLineItemRequest>> lineItems = Optional.empty();
 
@@ -439,11 +426,10 @@ public final class InvoiceRequest {
             serviceEndDate(other.getServiceEndDate());
             payerId(other.getPayerId());
             paymentSourceId(other.getPaymentSourceId());
-            paymentSourceOptions(other.getPaymentSourceOptions());
-            approvers(other.getApprovers());
             vendorId(other.getVendorId());
             paymentDestinationId(other.getPaymentDestinationId());
             paymentDestinationOptions(other.getPaymentDestinationOptions());
+            approvers(other.getApprovers());
             lineItems(other.getLineItems());
             metadata(other.getMetadata());
             foreignId(other.getForeignId());
@@ -596,28 +582,6 @@ public final class InvoiceRequest {
             return this;
         }
 
-        @JsonSetter(value = "paymentSourceOptions", nulls = Nulls.SKIP)
-        public Builder paymentSourceOptions(Optional<PaymentSourceOptions> paymentSourceOptions) {
-            this.paymentSourceOptions = paymentSourceOptions;
-            return this;
-        }
-
-        public Builder paymentSourceOptions(PaymentSourceOptions paymentSourceOptions) {
-            this.paymentSourceOptions = Optional.of(paymentSourceOptions);
-            return this;
-        }
-
-        @JsonSetter(value = "approvers", nulls = Nulls.SKIP)
-        public Builder approvers(Optional<List<ApprovalSlotAssignment>> approvers) {
-            this.approvers = approvers;
-            return this;
-        }
-
-        public Builder approvers(List<ApprovalSlotAssignment> approvers) {
-            this.approvers = Optional.of(approvers);
-            return this;
-        }
-
         @JsonSetter(value = "vendorId", nulls = Nulls.SKIP)
         public Builder vendorId(Optional<String> vendorId) {
             this.vendorId = vendorId;
@@ -648,6 +612,17 @@ public final class InvoiceRequest {
 
         public Builder paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions) {
             this.paymentDestinationOptions = Optional.of(paymentDestinationOptions);
+            return this;
+        }
+
+        @JsonSetter(value = "approvers", nulls = Nulls.SKIP)
+        public Builder approvers(Optional<List<ApprovalSlotAssignment>> approvers) {
+            this.approvers = approvers;
+            return this;
+        }
+
+        public Builder approvers(List<ApprovalSlotAssignment> approvers) {
+            this.approvers = Optional.of(approvers);
             return this;
         }
 
@@ -732,11 +707,10 @@ public final class InvoiceRequest {
                     serviceEndDate,
                     payerId,
                     paymentSourceId,
-                    paymentSourceOptions,
-                    approvers,
                     vendorId,
                     paymentDestinationId,
                     paymentDestinationOptions,
+                    approvers,
                     lineItems,
                     metadata,
                     foreignId,

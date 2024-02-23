@@ -186,7 +186,7 @@ public final class InvoiceMetricsRequest {
         return currency;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof InvoiceMetricsRequest && equalTo((InvoiceMetricsRequest) other);
@@ -213,7 +213,7 @@ public final class InvoiceMetricsRequest {
                 && currency.equals(other.currency);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.search,
@@ -231,7 +231,7 @@ public final class InvoiceMetricsRequest {
                 this.currency);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

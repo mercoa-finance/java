@@ -136,7 +136,7 @@ public final class OrganizationResponse {
         return metadataSchema;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof OrganizationResponse && equalTo((OrganizationResponse) other);
@@ -162,7 +162,7 @@ public final class OrganizationResponse {
                 && metadataSchema.equals(other.metadataSchema);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.id,
@@ -179,7 +179,7 @@ public final class OrganizationResponse {
                 this.metadataSchema);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -273,7 +273,7 @@ public final class OrganizationResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(OrganizationResponse other) {
             id(other.getId());
             sandbox(other.getSandbox());
@@ -290,145 +290,145 @@ public final class OrganizationResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public SandboxStage id(String id) {
             this.id = id;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("sandbox")
         public NameStage sandbox(boolean sandbox) {
             this.sandbox = sandbox;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("name")
         public _FinalStage name(String name) {
             this.name = name;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage metadataSchema(List<MetadataSchema> metadataSchema) {
             this.metadataSchema = Optional.of(metadataSchema);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "metadataSchema", nulls = Nulls.SKIP)
         public _FinalStage metadataSchema(Optional<List<MetadataSchema>> metadataSchema) {
             this.metadataSchema = metadataSchema;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage payorOnboardingOptions(OnboardingOptionsResponse payorOnboardingOptions) {
             this.payorOnboardingOptions = Optional.of(payorOnboardingOptions);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "payorOnboardingOptions", nulls = Nulls.SKIP)
         public _FinalStage payorOnboardingOptions(Optional<OnboardingOptionsResponse> payorOnboardingOptions) {
             this.payorOnboardingOptions = payorOnboardingOptions;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage payeeOnboardingOptions(OnboardingOptionsResponse payeeOnboardingOptions) {
             this.payeeOnboardingOptions = Optional.of(payeeOnboardingOptions);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "payeeOnboardingOptions", nulls = Nulls.SKIP)
         public _FinalStage payeeOnboardingOptions(Optional<OnboardingOptionsResponse> payeeOnboardingOptions) {
             this.payeeOnboardingOptions = payeeOnboardingOptions;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage colorScheme(ColorSchemeResponse colorScheme) {
             this.colorScheme = Optional.of(colorScheme);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "colorScheme", nulls = Nulls.SKIP)
         public _FinalStage colorScheme(Optional<ColorSchemeResponse> colorScheme) {
             this.colorScheme = colorScheme;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage emailProvider(EmailProviderResponse emailProvider) {
             this.emailProvider = Optional.of(emailProvider);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "emailProvider", nulls = Nulls.SKIP)
         public _FinalStage emailProvider(Optional<EmailProviderResponse> emailProvider) {
             this.emailProvider = emailProvider;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage paymentMethods(PaymentMethodsResponse paymentMethods) {
             this.paymentMethods = Optional.of(paymentMethods);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "paymentMethods", nulls = Nulls.SKIP)
         public _FinalStage paymentMethods(Optional<PaymentMethodsResponse> paymentMethods) {
             this.paymentMethods = paymentMethods;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage supportEmail(String supportEmail) {
             this.supportEmail = Optional.of(supportEmail);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "supportEmail", nulls = Nulls.SKIP)
         public _FinalStage supportEmail(Optional<String> supportEmail) {
             this.supportEmail = supportEmail;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage websiteUrl(String websiteUrl) {
             this.websiteUrl = Optional.of(websiteUrl);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "websiteUrl", nulls = Nulls.SKIP)
         public _FinalStage websiteUrl(Optional<String> websiteUrl) {
             this.websiteUrl = websiteUrl;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage logoUrl(String logoUrl) {
             this.logoUrl = Optional.of(logoUrl);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "logoUrl", nulls = Nulls.SKIP)
         public _FinalStage logoUrl(Optional<String> logoUrl) {
             this.logoUrl = logoUrl;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public OrganizationResponse build() {
             return new OrganizationResponse(
                     id,

@@ -97,12 +97,12 @@ public final class IdentifierList {
             this.value = value;
         }
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor.visitRolesList(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof RolesListValue && equalTo((RolesListValue) other);
@@ -112,12 +112,12 @@ public final class IdentifierList {
             return value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "IdentifierList{" + "value: " + value + "}";
         }
@@ -133,12 +133,12 @@ public final class IdentifierList {
             this.value = value;
         }
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor.visitUserList(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof UserListValue && equalTo((UserListValue) other);
@@ -148,12 +148,12 @@ public final class IdentifierList {
             return value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "IdentifierList{" + "value: " + value + "}";
         }
@@ -168,12 +168,12 @@ public final class IdentifierList {
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private _UnknownValue(@JsonProperty("value") Object value) {}
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor._visitUnknown(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof _UnknownValue && equalTo((_UnknownValue) other);
@@ -183,12 +183,12 @@ public final class IdentifierList {
             return type.equals(other.type) && value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.type, this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "IdentifierList{" + "type: " + type + ", value: " + value + "}";
         }

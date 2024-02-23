@@ -54,7 +54,7 @@ public final class BirthDate {
         return year;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof BirthDate && equalTo((BirthDate) other);
@@ -69,12 +69,12 @@ public final class BirthDate {
         return day.equals(other.day) && month.equals(other.month) && year.equals(other.year);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.day, this.month, this.year);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

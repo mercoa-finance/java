@@ -46,7 +46,7 @@ public final class MetadataTrigger {
         return value;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof MetadataTrigger && equalTo((MetadataTrigger) other);
@@ -61,12 +61,12 @@ public final class MetadataTrigger {
         return key.equals(other.key) && value.equals(other.value);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.key, this.value);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -100,7 +100,7 @@ public final class MetadataTrigger {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(MetadataTrigger other) {
             key(other.getKey());
             value(other.getValue());
@@ -111,7 +111,7 @@ public final class MetadataTrigger {
          * <p>The metadata key to match</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("key")
         public ValueStage key(String key) {
             this.key = key;
@@ -122,14 +122,14 @@ public final class MetadataTrigger {
          * <p>The metadata value the invoice must have to trigger this policy</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("value")
         public _FinalStage value(String value) {
             this.value = value;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public MetadataTrigger build() {
             return new MetadataTrigger(key, value, additionalProperties);
         }

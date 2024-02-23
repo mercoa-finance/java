@@ -32,7 +32,7 @@ public final class OcrAsyncResponse {
         return jobId;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof OcrAsyncResponse && equalTo((OcrAsyncResponse) other);
@@ -47,12 +47,12 @@ public final class OcrAsyncResponse {
         return jobId.equals(other.jobId);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.jobId);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -80,20 +80,20 @@ public final class OcrAsyncResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(OcrAsyncResponse other) {
             jobId(other.getJobId());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("jobId")
         public _FinalStage jobId(String jobId) {
             this.jobId = jobId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public OcrAsyncResponse build() {
             return new OcrAsyncResponse(jobId, additionalProperties);
         }

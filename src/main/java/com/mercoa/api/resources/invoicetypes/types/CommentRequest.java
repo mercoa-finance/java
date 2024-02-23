@@ -42,7 +42,7 @@ public final class CommentRequest {
         return userId;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CommentRequest && equalTo((CommentRequest) other);
@@ -57,12 +57,12 @@ public final class CommentRequest {
         return text.equals(other.text) && userId.equals(other.userId);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.text, this.userId);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -96,34 +96,34 @@ public final class CommentRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(CommentRequest other) {
             text(other.getText());
             userId(other.getUserId());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("text")
         public _FinalStage text(String text) {
             this.text = text;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage userId(String userId) {
             this.userId = Optional.of(userId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "userId", nulls = Nulls.SKIP)
         public _FinalStage userId(Optional<String> userId) {
             this.userId = userId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public CommentRequest build() {
             return new CommentRequest(text, userId, additionalProperties);
         }

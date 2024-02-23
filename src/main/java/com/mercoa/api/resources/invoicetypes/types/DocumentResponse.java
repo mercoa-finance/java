@@ -40,7 +40,7 @@ public final class DocumentResponse {
         return uri;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof DocumentResponse && equalTo((DocumentResponse) other);
@@ -55,12 +55,12 @@ public final class DocumentResponse {
         return mimeType.equals(other.mimeType) && uri.equals(other.uri);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.mimeType, this.uri);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -94,28 +94,28 @@ public final class DocumentResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(DocumentResponse other) {
             mimeType(other.getMimeType());
             uri(other.getUri());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("mimeType")
         public UriStage mimeType(String mimeType) {
             this.mimeType = mimeType;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("uri")
         public _FinalStage uri(String uri) {
             this.uri = uri;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public DocumentResponse build() {
             return new DocumentResponse(mimeType, uri, additionalProperties);
         }

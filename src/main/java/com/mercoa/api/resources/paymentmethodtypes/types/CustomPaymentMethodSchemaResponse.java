@@ -110,7 +110,7 @@ public final class CustomPaymentMethodSchemaResponse {
         return updatedAt;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CustomPaymentMethodSchemaResponse && equalTo((CustomPaymentMethodSchemaResponse) other);
@@ -132,7 +132,7 @@ public final class CustomPaymentMethodSchemaResponse {
                 && updatedAt.equals(other.updatedAt);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.id,
@@ -145,7 +145,7 @@ public final class CustomPaymentMethodSchemaResponse {
                 this.updatedAt);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -226,7 +226,7 @@ public final class CustomPaymentMethodSchemaResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(CustomPaymentMethodSchemaResponse other) {
             id(other.getId());
             name(other.getName());
@@ -239,14 +239,14 @@ public final class CustomPaymentMethodSchemaResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public NameStage id(String id) {
             this.id = id;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("name")
         public IsSourceStage name(String name) {
             this.name = name;
@@ -257,7 +257,7 @@ public final class CustomPaymentMethodSchemaResponse {
          * <p>This payment method can be used as a payment source for an invoice</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("isSource")
         public IsDestinationStage isSource(boolean isSource) {
             this.isSource = isSource;
@@ -268,40 +268,40 @@ public final class CustomPaymentMethodSchemaResponse {
          * <p>This payment method can be used as a payment destination for an invoice</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("isDestination")
         public CreatedAtStage isDestination(boolean isDestination) {
             this.isDestination = isDestination;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("createdAt")
         public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("updatedAt")
         public _FinalStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = updatedAt;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addAllFields(List<CustomPaymentMethodSchemaField> fields) {
             this.fields.addAll(fields);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addFields(CustomPaymentMethodSchemaField fields) {
             this.fields.add(fields);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "fields", nulls = Nulls.SKIP)
         public _FinalStage fields(List<CustomPaymentMethodSchemaField> fields) {
             this.fields.clear();
@@ -313,7 +313,7 @@ public final class CustomPaymentMethodSchemaResponse {
          * <p>List of currencies that this payment method supports.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addAllSupportedCurrencies(List<CurrencyCode> supportedCurrencies) {
             this.supportedCurrencies.addAll(supportedCurrencies);
             return this;
@@ -323,13 +323,13 @@ public final class CustomPaymentMethodSchemaResponse {
          * <p>List of currencies that this payment method supports.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addSupportedCurrencies(CurrencyCode supportedCurrencies) {
             this.supportedCurrencies.add(supportedCurrencies);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "supportedCurrencies", nulls = Nulls.SKIP)
         public _FinalStage supportedCurrencies(List<CurrencyCode> supportedCurrencies) {
             this.supportedCurrencies.clear();
@@ -337,7 +337,7 @@ public final class CustomPaymentMethodSchemaResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public CustomPaymentMethodSchemaResponse build() {
             return new CustomPaymentMethodSchemaResponse(
                     id,

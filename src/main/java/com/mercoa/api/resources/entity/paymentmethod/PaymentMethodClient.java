@@ -6,6 +6,7 @@ package com.mercoa.api.resources.entity.paymentmethod;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.mercoa.api.core.ApiError;
 import com.mercoa.api.core.ClientOptions;
+import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.entity.paymentmethod.requests.CompleteMicroDepositsRequest;
@@ -18,7 +19,7 @@ import java.io.IOException;
 import java.util.List;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -32,6 +33,10 @@ public class PaymentMethodClient {
 
     public List<PaymentMethodResponse> getAll(String entityId) {
         return getAll(entityId, GetAllPaymentMethodsRequest.builder().build());
+    }
+
+    public List<PaymentMethodResponse> getAll(String entityId, GetAllPaymentMethodsRequest request) {
+        return getAll(entityId, request, null);
     }
 
     public List<PaymentMethodResponse> getAll(
@@ -51,8 +56,13 @@ public class PaymentMethodClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(
                         response.body().string(), new TypeReference<List<PaymentMethodResponse>>() {});
@@ -65,8 +75,8 @@ public class PaymentMethodClient {
         }
     }
 
-    public List<PaymentMethodResponse> getAll(String entityId, GetAllPaymentMethodsRequest request) {
-        return getAll(entityId, request, null);
+    public PaymentMethodResponse create(String entityId, PaymentMethodRequest request) {
+        return create(entityId, request, null);
     }
 
     public PaymentMethodResponse create(String entityId, PaymentMethodRequest request, RequestOptions requestOptions) {
@@ -79,7 +89,7 @@ public class PaymentMethodClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -90,8 +100,13 @@ public class PaymentMethodClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), PaymentMethodResponse.class);
             }
@@ -103,8 +118,8 @@ public class PaymentMethodClient {
         }
     }
 
-    public PaymentMethodResponse create(String entityId, PaymentMethodRequest request) {
-        return create(entityId, request, null);
+    public PaymentMethodResponse get(String entityId, String paymentMethodId) {
+        return get(entityId, paymentMethodId, null);
     }
 
     public PaymentMethodResponse get(String entityId, String paymentMethodId, RequestOptions requestOptions) {
@@ -122,8 +137,13 @@ public class PaymentMethodClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), PaymentMethodResponse.class);
             }
@@ -135,8 +155,11 @@ public class PaymentMethodClient {
         }
     }
 
-    public PaymentMethodResponse get(String entityId, String paymentMethodId) {
-        return get(entityId, paymentMethodId, null);
+    /**
+     * Only custom payment methods can be updated.
+     */
+    public PaymentMethodResponse update(String entityId, String paymentMethodId, PaymentMethodUpdateRequest request) {
+        return update(entityId, paymentMethodId, request, null);
     }
 
     /**
@@ -157,7 +180,7 @@ public class PaymentMethodClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -168,8 +191,13 @@ public class PaymentMethodClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), PaymentMethodResponse.class);
             }
@@ -182,10 +210,10 @@ public class PaymentMethodClient {
     }
 
     /**
-     * Only custom payment methods can be updated.
+     * Mark a payment method as inactive. This will not remove the payment method from the system, but will prevent it from being used in the future.
      */
-    public PaymentMethodResponse update(String entityId, String paymentMethodId, PaymentMethodUpdateRequest request) {
-        return update(entityId, paymentMethodId, request, null);
+    public void delete(String entityId, String paymentMethodId) {
+        delete(entityId, paymentMethodId, null);
     }
 
     /**
@@ -205,8 +233,13 @@ public class PaymentMethodClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -219,10 +252,10 @@ public class PaymentMethodClient {
     }
 
     /**
-     * Mark a payment method as inactive. This will not remove the payment method from the system, but will prevent it from being used in the future.
+     * Initiate micro deposits for a bank account
      */
-    public void delete(String entityId, String paymentMethodId) {
-        delete(entityId, paymentMethodId, null);
+    public PaymentMethodResponse initiateMicroDeposits(String entityId, String paymentMethodId) {
+        return initiateMicroDeposits(entityId, paymentMethodId, null);
     }
 
     /**
@@ -245,8 +278,13 @@ public class PaymentMethodClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), PaymentMethodResponse.class);
             }
@@ -259,10 +297,11 @@ public class PaymentMethodClient {
     }
 
     /**
-     * Initiate micro deposits for a bank account
+     * Complete micro deposit verification
      */
-    public PaymentMethodResponse initiateMicroDeposits(String entityId, String paymentMethodId) {
-        return initiateMicroDeposits(entityId, paymentMethodId, null);
+    public PaymentMethodResponse completeMicroDeposits(
+            String entityId, String paymentMethodId, CompleteMicroDepositsRequest request) {
+        return completeMicroDeposits(entityId, paymentMethodId, request, null);
     }
 
     /**
@@ -284,7 +323,7 @@ public class PaymentMethodClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -295,8 +334,13 @@ public class PaymentMethodClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), PaymentMethodResponse.class);
             }
@@ -309,11 +353,10 @@ public class PaymentMethodClient {
     }
 
     /**
-     * Complete micro deposit verification
+     * Get the available balance of a payment method. Only bank accounts added with Plaid are supported. This endpoint will return a cached value and will refresh the balance when called.
      */
-    public PaymentMethodResponse completeMicroDeposits(
-            String entityId, String paymentMethodId, CompleteMicroDepositsRequest request) {
-        return completeMicroDeposits(entityId, paymentMethodId, request, null);
+    public PaymentMethodBalanceResponse getBalance(String entityId, String paymentMethodId) {
+        return getBalance(entityId, paymentMethodId, null);
     }
 
     /**
@@ -336,8 +379,13 @@ public class PaymentMethodClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(
                         response.body().string(), PaymentMethodBalanceResponse.class);
@@ -348,12 +396,5 @@ public class PaymentMethodClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Get the available balance of a payment method. Only bank accounts added with Plaid are supported. This endpoint will return a cached value and will refresh the balance when called.
-     */
-    public PaymentMethodBalanceResponse getBalance(String entityId, String paymentMethodId) {
-        return getBalance(entityId, paymentMethodId, null);
     }
 }

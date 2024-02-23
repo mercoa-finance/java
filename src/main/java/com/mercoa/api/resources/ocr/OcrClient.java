@@ -5,6 +5,7 @@ package com.mercoa.api.resources.ocr;
 
 import com.mercoa.api.core.ApiError;
 import com.mercoa.api.core.ClientOptions;
+import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.ocr.requests.RunOcrAsync;
@@ -17,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -27,6 +28,13 @@ public class OcrClient {
 
     public OcrClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+    }
+
+    /**
+     * Run OCR on an Base64 encoded image or PDF. This endpoint will block until the OCR is complete.
+     */
+    public OcrResponse ocr(RunOcrSync request) {
+        return ocr(request, null);
     }
 
     /**
@@ -49,7 +57,7 @@ public class OcrClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(properties), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(properties), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -60,8 +68,13 @@ public class OcrClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), OcrResponse.class);
             }
@@ -74,10 +87,10 @@ public class OcrClient {
     }
 
     /**
-     * Run OCR on an Base64 encoded image or PDF. This endpoint will block until the OCR is complete.
+     * Run OCR on an Base64 encoded image or PDF. This endpoint will return immediately and the OCR will be processed asynchronously.
      */
-    public OcrResponse ocr(RunOcrSync request) {
-        return ocr(request, null);
+    public OcrAsyncResponse runAsyncOcr(RunOcrAsync request) {
+        return runAsyncOcr(request, null);
     }
 
     /**
@@ -100,7 +113,7 @@ public class OcrClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(properties), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(properties), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -111,8 +124,13 @@ public class OcrClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), OcrAsyncResponse.class);
             }
@@ -125,10 +143,10 @@ public class OcrClient {
     }
 
     /**
-     * Run OCR on an Base64 encoded image or PDF. This endpoint will return immediately and the OCR will be processed asynchronously.
+     * Get the status and results of an asynchronous OCR job.
      */
-    public OcrAsyncResponse runAsyncOcr(RunOcrAsync request) {
-        return runAsyncOcr(request, null);
+    public OcrJobResponse getAsyncOcr(String jobId) {
+        return getAsyncOcr(jobId, null);
     }
 
     /**
@@ -147,8 +165,13 @@ public class OcrClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), OcrJobResponse.class);
             }
@@ -158,12 +181,5 @@ public class OcrClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Get the status and results of an asynchronous OCR job.
-     */
-    public OcrJobResponse getAsyncOcr(String jobId) {
-        return getAsyncOcr(jobId, null);
     }
 }

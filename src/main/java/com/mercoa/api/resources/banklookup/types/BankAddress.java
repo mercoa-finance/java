@@ -70,7 +70,7 @@ public final class BankAddress {
         return postalCodeExtension;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof BankAddress && equalTo((BankAddress) other);
@@ -89,12 +89,12 @@ public final class BankAddress {
                 && postalCodeExtension.equals(other.postalCodeExtension);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.address, this.city, this.state, this.postalCode, this.postalCodeExtension);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -147,7 +147,7 @@ public final class BankAddress {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(BankAddress other) {
             address(other.getAddress());
             city(other.getCity());
@@ -157,42 +157,42 @@ public final class BankAddress {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("address")
         public CityStage address(String address) {
             this.address = address;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("city")
         public StateStage city(String city) {
             this.city = city;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("state")
         public PostalCodeStage state(String state) {
             this.state = state;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("postalCode")
         public PostalCodeExtensionStage postalCode(String postalCode) {
             this.postalCode = postalCode;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("postalCodeExtension")
         public _FinalStage postalCodeExtension(String postalCodeExtension) {
             this.postalCodeExtension = postalCodeExtension;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public BankAddress build() {
             return new BankAddress(address, city, state, postalCode, postalCodeExtension, additionalProperties);
         }

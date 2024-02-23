@@ -41,7 +41,7 @@ public final class AmountTrigger {
         return currency;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof AmountTrigger && equalTo((AmountTrigger) other);
@@ -56,12 +56,12 @@ public final class AmountTrigger {
         return amount == other.amount && currency.equals(other.currency);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.amount, this.currency);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -95,28 +95,28 @@ public final class AmountTrigger {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(AmountTrigger other) {
             amount(other.getAmount());
             currency(other.getCurrency());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("amount")
         public CurrencyStage amount(double amount) {
             this.amount = amount;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("currency")
         public _FinalStage currency(CurrencyCode currency) {
             this.currency = currency;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public AmountTrigger build() {
             return new AmountTrigger(amount, currency, additionalProperties);
         }

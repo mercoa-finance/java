@@ -46,7 +46,7 @@ public final class TokenGenerationVendorOptions {
         return network;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof TokenGenerationVendorOptions && equalTo((TokenGenerationVendorOptions) other);
@@ -61,12 +61,12 @@ public final class TokenGenerationVendorOptions {
         return disableCreation.equals(other.disableCreation) && network.equals(other.network);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.disableCreation, this.network);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -100,14 +100,14 @@ public final class TokenGenerationVendorOptions {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(TokenGenerationVendorOptions other) {
             disableCreation(other.getDisableCreation());
             network(other.getNetwork());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("network")
         public _FinalStage network(VendorNetwork network) {
             this.network = network;
@@ -118,20 +118,20 @@ public final class TokenGenerationVendorOptions {
          * <p>If true, the user will not be able to create new vendors.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage disableCreation(Boolean disableCreation) {
             this.disableCreation = Optional.of(disableCreation);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "disableCreation", nulls = Nulls.SKIP)
         public _FinalStage disableCreation(Optional<Boolean> disableCreation) {
             this.disableCreation = disableCreation;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public TokenGenerationVendorOptions build() {
             return new TokenGenerationVendorOptions(disableCreation, network, additionalProperties);
         }

@@ -6,6 +6,7 @@ package com.mercoa.api.resources.custompaymentmethodschema;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.mercoa.api.core.ApiError;
 import com.mercoa.api.core.ClientOptions;
+import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.paymentmethodtypes.types.CustomPaymentMethodSchemaRequest;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -24,6 +25,13 @@ public class CustomPaymentMethodSchemaClient {
 
     public CustomPaymentMethodSchemaClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+    }
+
+    /**
+     * Get all custom payment method schemas
+     */
+    public List<CustomPaymentMethodSchemaResponse> getAll() {
+        return getAll(null);
     }
 
     /**
@@ -42,56 +50,16 @@ public class CustomPaymentMethodSchemaClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(
                         response.body().string(), new TypeReference<List<CustomPaymentMethodSchemaResponse>>() {});
-            }
-            throw new ApiError(
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Get all custom payment method schemas
-     */
-    public List<CustomPaymentMethodSchemaResponse> getAll() {
-        return getAll(null);
-    }
-
-    /**
-     * Create custom payment method schema
-     */
-    public CustomPaymentMethodSchemaResponse create(
-            CustomPaymentMethodSchemaRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("paymentMethod")
-                .addPathSegments("schema")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
-        try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(
-                        response.body().string(), CustomPaymentMethodSchemaResponse.class);
             }
             throw new ApiError(
                     response.code(),
@@ -109,20 +77,19 @@ public class CustomPaymentMethodSchemaClient {
     }
 
     /**
-     * Update custom payment method schema
+     * Create custom payment method schema
      */
-    public CustomPaymentMethodSchemaResponse update(
-            String schemaId, CustomPaymentMethodSchemaRequest request, RequestOptions requestOptions) {
+    public CustomPaymentMethodSchemaResponse create(
+            CustomPaymentMethodSchemaRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("paymentMethod")
                 .addPathSegments("schema")
-                .addPathSegment(schemaId)
                 .build();
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -133,8 +100,13 @@ public class CustomPaymentMethodSchemaClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(
                         response.body().string(), CustomPaymentMethodSchemaResponse.class);
@@ -155,24 +127,37 @@ public class CustomPaymentMethodSchemaClient {
     }
 
     /**
-     * Get custom payment method schema
+     * Update custom payment method schema
      */
-    public CustomPaymentMethodSchemaResponse get(String schemaId, RequestOptions requestOptions) {
+    public CustomPaymentMethodSchemaResponse update(
+            String schemaId, CustomPaymentMethodSchemaRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("paymentMethod")
                 .addPathSegments("schema")
                 .addPathSegment(schemaId)
                 .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
-                .method("GET", null)
+                .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(
                         response.body().string(), CustomPaymentMethodSchemaResponse.class);
@@ -193,6 +178,49 @@ public class CustomPaymentMethodSchemaClient {
     }
 
     /**
+     * Get custom payment method schema
+     */
+    public CustomPaymentMethodSchemaResponse get(String schemaId, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("paymentMethod")
+                .addPathSegments("schema")
+                .addPathSegment(schemaId)
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(
+                        response.body().string(), CustomPaymentMethodSchemaResponse.class);
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Delete custom payment method schema. Schema that have been used in an invoice cannot be deleted.
+     */
+    public void delete(String schemaId) {
+        delete(schemaId, null);
+    }
+
+    /**
      * Delete custom payment method schema. Schema that have been used in an invoice cannot be deleted.
      */
     public void delete(String schemaId, RequestOptions requestOptions) {
@@ -208,8 +236,13 @@ public class CustomPaymentMethodSchemaClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -219,12 +252,5 @@ public class CustomPaymentMethodSchemaClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Delete custom payment method schema. Schema that have been used in an invoice cannot be deleted.
-     */
-    public void delete(String schemaId) {
-        delete(schemaId, null);
     }
 }

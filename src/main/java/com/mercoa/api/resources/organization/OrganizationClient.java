@@ -3,9 +3,9 @@
  */
 package com.mercoa.api.resources.organization;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.mercoa.api.core.ApiError;
 import com.mercoa.api.core.ClientOptions;
+import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
@@ -16,11 +16,10 @@ import com.mercoa.api.resources.organizationtypes.types.EmailLogResponse;
 import com.mercoa.api.resources.organizationtypes.types.OrganizationRequest;
 import com.mercoa.api.resources.organizationtypes.types.OrganizationResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.function.Supplier;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -41,6 +40,13 @@ public class OrganizationClient {
      */
     public OrganizationResponse get() {
         return get(GetOrganizationRequest.builder().build());
+    }
+
+    /**
+     * Get current organization information
+     */
+    public OrganizationResponse get(GetOrganizationRequest request) {
+        return get(request, null);
     }
 
     /**
@@ -83,8 +89,13 @@ public class OrganizationClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), OrganizationResponse.class);
             }
@@ -97,17 +108,17 @@ public class OrganizationClient {
     }
 
     /**
-     * Get current organization information
+     * Update current organization
      */
-    public OrganizationResponse get(GetOrganizationRequest request) {
-        return get(request, null);
+    public OrganizationResponse update() {
+        return update(OrganizationRequest.builder().build());
     }
 
     /**
      * Update current organization
      */
-    public OrganizationResponse update() {
-        return update(OrganizationRequest.builder().build());
+    public OrganizationResponse update(OrganizationRequest request) {
+        return update(request, null);
     }
 
     /**
@@ -121,7 +132,7 @@ public class OrganizationClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -132,8 +143,13 @@ public class OrganizationClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), OrganizationResponse.class);
             }
@@ -146,23 +162,23 @@ public class OrganizationClient {
     }
 
     /**
-     * Update current organization
-     */
-    public OrganizationResponse update(OrganizationRequest request) {
-        return update(request, null);
-    }
-
-    /**
      * Get log of all emails sent to this organization. Content format subject to change.
      */
-    public List<EmailLogResponse> emailLog() {
+    public EmailLogResponse emailLog() {
         return emailLog(GetEmailLogRequest.builder().build());
     }
 
     /**
      * Get log of all emails sent to this organization. Content format subject to change.
      */
-    public List<EmailLogResponse> emailLog(GetEmailLogRequest request, RequestOptions requestOptions) {
+    public EmailLogResponse emailLog(GetEmailLogRequest request) {
+        return emailLog(request, null);
+    }
+
+    /**
+     * Get log of all emails sent to this organization. Content format subject to change.
+     */
+    public EmailLogResponse emailLog(GetEmailLogRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("organization/emailLog");
@@ -172,6 +188,13 @@ public class OrganizationClient {
         if (request.getEndDate().isPresent()) {
             httpUrl.addQueryParameter("endDate", request.getEndDate().get().toString());
         }
+        if (request.getLimit().isPresent()) {
+            httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
+        }
+        if (request.getStartingAfter().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "startingAfter", request.getStartingAfter().get());
+        }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
@@ -179,11 +202,15 @@ public class OrganizationClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(
-                        response.body().string(), new TypeReference<List<EmailLogResponse>>() {});
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), EmailLogResponse.class);
             }
             throw new ApiError(
                     response.code(),
@@ -191,13 +218,6 @@ public class OrganizationClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Get log of all emails sent to this organization. Content format subject to change.
-     */
-    public List<EmailLogResponse> emailLog(GetEmailLogRequest request) {
-        return emailLog(request, null);
     }
 
     public NotificationConfigurationClient notificationConfiguration() {

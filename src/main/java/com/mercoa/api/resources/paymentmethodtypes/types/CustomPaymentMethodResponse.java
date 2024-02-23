@@ -80,7 +80,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
     }
 
     @JsonProperty("id")
-    @Override
+    @java.lang.Override
     public String getId() {
         return id;
     }
@@ -89,7 +89,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
      * @return Indicates whether this payment method is the default source for the entity
      */
     @JsonProperty("isDefaultSource")
-    @Override
+    @java.lang.Override
     public boolean getIsDefaultSource() {
         return isDefaultSource;
     }
@@ -98,25 +98,25 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
      * @return Indicates whether this payment method is the default destination for the entity
      */
     @JsonProperty("isDefaultDestination")
-    @Override
+    @java.lang.Override
     public boolean getIsDefaultDestination() {
         return isDefaultDestination;
     }
 
     @JsonProperty("supportedCurrencies")
-    @Override
+    @java.lang.Override
     public List<CurrencyCode> getSupportedCurrencies() {
         return supportedCurrencies;
     }
 
     @JsonProperty("createdAt")
-    @Override
+    @java.lang.Override
     public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
     @JsonProperty("updatedAt")
-    @Override
+    @java.lang.Override
     public OffsetDateTime getUpdatedAt() {
         return updatedAt;
     }
@@ -160,7 +160,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
         return data;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CustomPaymentMethodResponse && equalTo((CustomPaymentMethodResponse) other);
@@ -186,7 +186,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
                 && data.equals(other.data);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.id,
@@ -203,7 +203,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
                 this.data);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -310,7 +310,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(CustomPaymentMethodResponse other) {
             id(other.getId());
             isDefaultSource(other.getIsDefaultSource());
@@ -327,7 +327,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public IsDefaultSourceStage id(String id) {
             this.id = id;
@@ -338,7 +338,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
          * <p>Indicates whether this payment method is the default source for the entity</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("isDefaultSource")
         public IsDefaultDestinationStage isDefaultSource(boolean isDefaultSource) {
             this.isDefaultSource = isDefaultSource;
@@ -349,21 +349,21 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
          * <p>Indicates whether this payment method is the default destination for the entity</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("isDefaultDestination")
         public CreatedAtStage isDefaultDestination(boolean isDefaultDestination) {
             this.isDefaultDestination = isDefaultDestination;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("createdAt")
         public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("updatedAt")
         public ForeignIdStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = updatedAt;
@@ -374,7 +374,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
          * <p>ID for this payment method in your system</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("foreignId")
         public SchemaIdStage foreignId(String foreignId) {
             this.foreignId = foreignId;
@@ -385,14 +385,14 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
          * <p>Payment method schema used for this payment method. Defines the fields that this payment method contains.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("schemaId")
         public SchemaStage schemaId(String schemaId) {
             this.schemaId = schemaId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("schema")
         public _FinalStage schema(CustomPaymentMethodSchemaResponse schema) {
             this.schema = schema;
@@ -403,7 +403,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
          * <p>Object of key/value pairs that matches the keys in the linked payment method schema.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage data(String key, String value) {
             this.data.put(key, value);
             return this;
@@ -413,13 +413,13 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
          * <p>Object of key/value pairs that matches the keys in the linked payment method schema.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage putAllData(Map<String, String> data) {
             this.data.putAll(data);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "data", nulls = Nulls.SKIP)
         public _FinalStage data(Map<String, String> data) {
             this.data.clear();
@@ -427,45 +427,45 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage accountNumber(String accountNumber) {
             this.accountNumber = Optional.of(accountNumber);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "accountNumber", nulls = Nulls.SKIP)
         public _FinalStage accountNumber(Optional<String> accountNumber) {
             this.accountNumber = accountNumber;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage accountName(String accountName) {
             this.accountName = Optional.of(accountName);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "accountName", nulls = Nulls.SKIP)
         public _FinalStage accountName(Optional<String> accountName) {
             this.accountName = accountName;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addAllSupportedCurrencies(List<CurrencyCode> supportedCurrencies) {
             this.supportedCurrencies.addAll(supportedCurrencies);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addSupportedCurrencies(CurrencyCode supportedCurrencies) {
             this.supportedCurrencies.add(supportedCurrencies);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "supportedCurrencies", nulls = Nulls.SKIP)
         public _FinalStage supportedCurrencies(List<CurrencyCode> supportedCurrencies) {
             this.supportedCurrencies.clear();
@@ -473,7 +473,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public CustomPaymentMethodResponse build() {
             return new CustomPaymentMethodResponse(
                     id,

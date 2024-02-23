@@ -59,7 +59,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
      * @return If true, this payment method will be set as the default source. Only one payment method can be set as the default source. If another payment method is already set as the default source, it will be unset.
      */
     @JsonProperty("defaultSource")
-    @Override
+    @java.lang.Override
     public Optional<Boolean> getDefaultSource() {
         return defaultSource;
     }
@@ -68,7 +68,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
      * @return If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.
      */
     @JsonProperty("defaultDestination")
-    @Override
+    @java.lang.Override
     public Optional<Boolean> getDefaultDestination() {
         return defaultDestination;
     }
@@ -107,7 +107,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
         return data;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CustomPaymentMethodUpdateRequest && equalTo((CustomPaymentMethodUpdateRequest) other);
@@ -128,7 +128,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
                 && data.equals(other.data);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.defaultSource,
@@ -140,7 +140,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
                 this.data);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

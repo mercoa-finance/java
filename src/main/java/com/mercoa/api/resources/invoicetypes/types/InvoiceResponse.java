@@ -61,8 +61,6 @@ public final class InvoiceResponse {
 
     private final Optional<String> paymentSourceId;
 
-    private final Optional<PaymentSourceOptions> paymentSourceOptions;
-
     private final Optional<String> vendorId;
 
     private final Optional<EntityResponse> vendor;
@@ -120,7 +118,6 @@ public final class InvoiceResponse {
             Optional<EntityResponse> payer,
             Optional<PaymentMethodResponse> paymentSource,
             Optional<String> paymentSourceId,
-            Optional<PaymentSourceOptions> paymentSourceOptions,
             Optional<String> vendorId,
             Optional<EntityResponse> vendor,
             Optional<PaymentMethodResponse> paymentDestination,
@@ -157,7 +154,6 @@ public final class InvoiceResponse {
         this.payer = payer;
         this.paymentSource = paymentSource;
         this.paymentSourceId = paymentSourceId;
-        this.paymentSourceOptions = paymentSourceOptions;
         this.vendorId = vendorId;
         this.vendor = vendor;
         this.paymentDestination = paymentDestination;
@@ -198,6 +194,9 @@ public final class InvoiceResponse {
         return amount;
     }
 
+    /**
+     * @return Currency code for the amount. Defaults to USD.
+     */
     @JsonProperty("currency")
     public Optional<CurrencyCode> getCurrency() {
         return currency;
@@ -273,11 +272,6 @@ public final class InvoiceResponse {
     @JsonProperty("paymentSourceId")
     public Optional<String> getPaymentSourceId() {
         return paymentSourceId;
-    }
-
-    @JsonProperty("paymentSourceOptions")
-    public Optional<PaymentSourceOptions> getPaymentSourceOptions() {
-        return paymentSourceOptions;
     }
 
     @JsonProperty("vendorId")
@@ -396,7 +390,7 @@ public final class InvoiceResponse {
         return fees;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof InvoiceResponse && equalTo((InvoiceResponse) other);
@@ -424,7 +418,6 @@ public final class InvoiceResponse {
                 && payer.equals(other.payer)
                 && paymentSource.equals(other.paymentSource)
                 && paymentSourceId.equals(other.paymentSourceId)
-                && paymentSourceOptions.equals(other.paymentSourceOptions)
                 && vendorId.equals(other.vendorId)
                 && vendor.equals(other.vendor)
                 && paymentDestination.equals(other.paymentDestination)
@@ -446,7 +439,7 @@ public final class InvoiceResponse {
                 && fees.equals(other.fees);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.id,
@@ -465,7 +458,6 @@ public final class InvoiceResponse {
                 this.payer,
                 this.paymentSource,
                 this.paymentSourceId,
-                this.paymentSourceOptions,
                 this.vendorId,
                 this.vendor,
                 this.paymentDestination,
@@ -487,7 +479,7 @@ public final class InvoiceResponse {
                 this.fees);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -580,10 +572,6 @@ public final class InvoiceResponse {
         _FinalStage paymentSourceId(Optional<String> paymentSourceId);
 
         _FinalStage paymentSourceId(String paymentSourceId);
-
-        _FinalStage paymentSourceOptions(Optional<PaymentSourceOptions> paymentSourceOptions);
-
-        _FinalStage paymentSourceOptions(PaymentSourceOptions paymentSourceOptions);
 
         _FinalStage vendorId(Optional<String> vendorId);
 
@@ -703,8 +691,6 @@ public final class InvoiceResponse {
 
         private Optional<String> vendorId = Optional.empty();
 
-        private Optional<PaymentSourceOptions> paymentSourceOptions = Optional.empty();
-
         private Optional<String> paymentSourceId = Optional.empty();
 
         private Optional<PaymentMethodResponse> paymentSource = Optional.empty();
@@ -738,7 +724,7 @@ public final class InvoiceResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(InvoiceResponse other) {
             id(other.getId());
             status(other.getStatus());
@@ -756,7 +742,6 @@ public final class InvoiceResponse {
             payer(other.getPayer());
             paymentSource(other.getPaymentSource());
             paymentSourceId(other.getPaymentSourceId());
-            paymentSourceOptions(other.getPaymentSourceOptions());
             vendorId(other.getVendorId());
             vendor(other.getVendor());
             paymentDestination(other.getPaymentDestination());
@@ -779,14 +764,14 @@ public final class InvoiceResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public StatusStage id(String id) {
             this.id = id;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("status")
         public PaymentDestinationConfirmedStage status(InvoiceStatus status) {
             this.status = status;
@@ -797,7 +782,7 @@ public final class InvoiceResponse {
          * <p>True if the payment destination has been confirmed by the vendor. False if the payment destination has been set (for example, a check to an address) but has not been confirmed by the vendor.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("paymentDestinationConfirmed")
         public HasDocumentsStage paymentDestinationConfirmed(boolean paymentDestinationConfirmed) {
             this.paymentDestinationConfirmed = paymentDestinationConfirmed;
@@ -808,21 +793,21 @@ public final class InvoiceResponse {
          * <p>True if the invoice has documents attached.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("hasDocuments")
         public CreatedAtStage hasDocuments(boolean hasDocuments) {
             this.hasDocuments = hasDocuments;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("createdAt")
         public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("updatedAt")
         public _FinalStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = updatedAt;
@@ -833,26 +818,26 @@ public final class InvoiceResponse {
          * <p>Fees associated with this invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage fees(InvoiceFeesResponse fees) {
             this.fees = Optional.of(fees);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "fees", nulls = Nulls.SKIP)
         public _FinalStage fees(Optional<InvoiceFeesResponse> fees) {
             this.fees = fees;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage processedAt(OffsetDateTime processedAt) {
             this.processedAt = Optional.of(processedAt);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "processedAt", nulls = Nulls.SKIP)
         public _FinalStage processedAt(Optional<OffsetDateTime> processedAt) {
             this.processedAt = processedAt;
@@ -863,13 +848,13 @@ public final class InvoiceResponse {
          * <p>If the invoice failed to be paid, this field will be populated with the type of failure.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage failureType(InvoiceFailureType failureType) {
             this.failureType = Optional.of(failureType);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "failureType", nulls = Nulls.SKIP)
         public _FinalStage failureType(Optional<InvoiceFailureType> failureType) {
             this.failureType = failureType;
@@ -880,13 +865,13 @@ public final class InvoiceResponse {
          * <p>Entity user who created this invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage creatorUser(EntityUserResponse creatorUser) {
             this.creatorUser = Optional.of(creatorUser);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "creatorUser", nulls = Nulls.SKIP)
         public _FinalStage creatorUser(Optional<EntityUserResponse> creatorUser) {
             this.creatorUser = creatorUser;
@@ -897,13 +882,13 @@ public final class InvoiceResponse {
          * <p>The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage foreignId(String foreignId) {
             this.foreignId = Optional.of(foreignId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
         public _FinalStage foreignId(Optional<String> foreignId) {
             this.foreignId = foreignId;
@@ -914,7 +899,7 @@ public final class InvoiceResponse {
          * <p>Metadata associated with this invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage metadata(String key, String value) {
             this.metadata.put(key, value);
             return this;
@@ -924,13 +909,13 @@ public final class InvoiceResponse {
          * <p>Metadata associated with this invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage putAllMetadata(Map<String, String> metadata) {
             this.metadata.putAll(metadata);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public _FinalStage metadata(Map<String, String> metadata) {
             this.metadata.clear();
@@ -938,19 +923,19 @@ public final class InvoiceResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addAllApprovalPolicy(List<ApprovalPolicyResponse> approvalPolicy) {
             this.approvalPolicy.addAll(approvalPolicy);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addApprovalPolicy(ApprovalPolicyResponse approvalPolicy) {
             this.approvalPolicy.add(approvalPolicy);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "approvalPolicy", nulls = Nulls.SKIP)
         public _FinalStage approvalPolicy(List<ApprovalPolicyResponse> approvalPolicy) {
             this.approvalPolicy.clear();
@@ -958,19 +943,19 @@ public final class InvoiceResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addAllApprovers(List<ApprovalSlot> approvers) {
             this.approvers.addAll(approvers);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addApprovers(ApprovalSlot approvers) {
             this.approvers.add(approvers);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "approvers", nulls = Nulls.SKIP)
         public _FinalStage approvers(List<ApprovalSlot> approvers) {
             this.approvers.clear();
@@ -978,208 +963,195 @@ public final class InvoiceResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage lineItems(List<InvoiceLineItemResponse> lineItems) {
             this.lineItems = Optional.of(lineItems);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
         public _FinalStage lineItems(Optional<List<InvoiceLineItemResponse>> lineItems) {
             this.lineItems = lineItems;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage comments(List<CommentResponse> comments) {
             this.comments = Optional.of(comments);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "comments", nulls = Nulls.SKIP)
         public _FinalStage comments(Optional<List<CommentResponse>> comments) {
             this.comments = comments;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions) {
             this.paymentDestinationOptions = Optional.of(paymentDestinationOptions);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "paymentDestinationOptions", nulls = Nulls.SKIP)
         public _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions) {
             this.paymentDestinationOptions = paymentDestinationOptions;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage paymentDestinationId(String paymentDestinationId) {
             this.paymentDestinationId = Optional.of(paymentDestinationId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "paymentDestinationId", nulls = Nulls.SKIP)
         public _FinalStage paymentDestinationId(Optional<String> paymentDestinationId) {
             this.paymentDestinationId = paymentDestinationId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage paymentDestination(PaymentMethodResponse paymentDestination) {
             this.paymentDestination = Optional.of(paymentDestination);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "paymentDestination", nulls = Nulls.SKIP)
         public _FinalStage paymentDestination(Optional<PaymentMethodResponse> paymentDestination) {
             this.paymentDestination = paymentDestination;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage vendor(EntityResponse vendor) {
             this.vendor = Optional.of(vendor);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "vendor", nulls = Nulls.SKIP)
         public _FinalStage vendor(Optional<EntityResponse> vendor) {
             this.vendor = vendor;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage vendorId(String vendorId) {
             this.vendorId = Optional.of(vendorId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "vendorId", nulls = Nulls.SKIP)
         public _FinalStage vendorId(Optional<String> vendorId) {
             this.vendorId = vendorId;
             return this;
         }
 
-        @Override
-        public _FinalStage paymentSourceOptions(PaymentSourceOptions paymentSourceOptions) {
-            this.paymentSourceOptions = Optional.of(paymentSourceOptions);
-            return this;
-        }
-
-        @Override
-        @JsonSetter(value = "paymentSourceOptions", nulls = Nulls.SKIP)
-        public _FinalStage paymentSourceOptions(Optional<PaymentSourceOptions> paymentSourceOptions) {
-            this.paymentSourceOptions = paymentSourceOptions;
-            return this;
-        }
-
-        @Override
+        @java.lang.Override
         public _FinalStage paymentSourceId(String paymentSourceId) {
             this.paymentSourceId = Optional.of(paymentSourceId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "paymentSourceId", nulls = Nulls.SKIP)
         public _FinalStage paymentSourceId(Optional<String> paymentSourceId) {
             this.paymentSourceId = paymentSourceId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage paymentSource(PaymentMethodResponse paymentSource) {
             this.paymentSource = Optional.of(paymentSource);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "paymentSource", nulls = Nulls.SKIP)
         public _FinalStage paymentSource(Optional<PaymentMethodResponse> paymentSource) {
             this.paymentSource = paymentSource;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage payer(EntityResponse payer) {
             this.payer = Optional.of(payer);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "payer", nulls = Nulls.SKIP)
         public _FinalStage payer(Optional<EntityResponse> payer) {
             this.payer = payer;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage payerId(String payerId) {
             this.payerId = Optional.of(payerId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "payerId", nulls = Nulls.SKIP)
         public _FinalStage payerId(Optional<String> payerId) {
             this.payerId = payerId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage serviceEndDate(OffsetDateTime serviceEndDate) {
             this.serviceEndDate = Optional.of(serviceEndDate);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "serviceEndDate", nulls = Nulls.SKIP)
         public _FinalStage serviceEndDate(Optional<OffsetDateTime> serviceEndDate) {
             this.serviceEndDate = serviceEndDate;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage serviceStartDate(OffsetDateTime serviceStartDate) {
             this.serviceStartDate = Optional.of(serviceStartDate);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "serviceStartDate", nulls = Nulls.SKIP)
         public _FinalStage serviceStartDate(Optional<OffsetDateTime> serviceStartDate) {
             this.serviceStartDate = serviceStartDate;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage noteToSelf(String noteToSelf) {
             this.noteToSelf = Optional.of(noteToSelf);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "noteToSelf", nulls = Nulls.SKIP)
         public _FinalStage noteToSelf(Optional<String> noteToSelf) {
             this.noteToSelf = noteToSelf;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage invoiceNumber(String invoiceNumber) {
             this.invoiceNumber = Optional.of(invoiceNumber);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "invoiceNumber", nulls = Nulls.SKIP)
         public _FinalStage invoiceNumber(Optional<String> invoiceNumber) {
             this.invoiceNumber = invoiceNumber;
@@ -1190,13 +1162,13 @@ public final class InvoiceResponse {
          * <p>Due date of invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage dueDate(OffsetDateTime dueDate) {
             this.dueDate = Optional.of(dueDate);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "dueDate", nulls = Nulls.SKIP)
         public _FinalStage dueDate(Optional<OffsetDateTime> dueDate) {
             this.dueDate = dueDate;
@@ -1207,13 +1179,13 @@ public final class InvoiceResponse {
          * <p>Date of funds settlement.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage settlementDate(OffsetDateTime settlementDate) {
             this.settlementDate = Optional.of(settlementDate);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "settlementDate", nulls = Nulls.SKIP)
         public _FinalStage settlementDate(Optional<OffsetDateTime> settlementDate) {
             this.settlementDate = settlementDate;
@@ -1224,13 +1196,13 @@ public final class InvoiceResponse {
          * <p>Date when funds will be deducted from payer's account.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage deductionDate(OffsetDateTime deductionDate) {
             this.deductionDate = Optional.of(deductionDate);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "deductionDate", nulls = Nulls.SKIP)
         public _FinalStage deductionDate(Optional<OffsetDateTime> deductionDate) {
             this.deductionDate = deductionDate;
@@ -1241,26 +1213,30 @@ public final class InvoiceResponse {
          * <p>Date the invoice was issued.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage invoiceDate(OffsetDateTime invoiceDate) {
             this.invoiceDate = Optional.of(invoiceDate);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "invoiceDate", nulls = Nulls.SKIP)
         public _FinalStage invoiceDate(Optional<OffsetDateTime> invoiceDate) {
             this.invoiceDate = invoiceDate;
             return this;
         }
 
-        @Override
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage currency(CurrencyCode currency) {
             this.currency = Optional.of(currency);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "currency", nulls = Nulls.SKIP)
         public _FinalStage currency(Optional<CurrencyCode> currency) {
             this.currency = currency;
@@ -1271,20 +1247,20 @@ public final class InvoiceResponse {
          * <p>Total amount of invoice in major units</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage amount(Double amount) {
             this.amount = Optional.of(amount);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "amount", nulls = Nulls.SKIP)
         public _FinalStage amount(Optional<Double> amount) {
             this.amount = amount;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public InvoiceResponse build() {
             return new InvoiceResponse(
                     id,
@@ -1303,7 +1279,6 @@ public final class InvoiceResponse {
                     payer,
                     paymentSource,
                     paymentSourceId,
-                    paymentSourceOptions,
                     vendorId,
                     vendor,
                     paymentDestination,

@@ -100,19 +100,19 @@ public final class CounterpartyResponse implements IEntityResponse {
     }
 
     @JsonProperty("id")
-    @Override
+    @java.lang.Override
     public String getId() {
         return id;
     }
 
     @JsonProperty("name")
-    @Override
+    @java.lang.Override
     public String getName() {
         return name;
     }
 
     @JsonProperty("email")
-    @Override
+    @java.lang.Override
     public String getEmail() {
         return email;
     }
@@ -121,7 +121,7 @@ public final class CounterpartyResponse implements IEntityResponse {
      * @return The ID used to identify this entity in your system
      */
     @JsonProperty("foreignId")
-    @Override
+    @java.lang.Override
     public Optional<String> getForeignId() {
         return foreignId;
     }
@@ -130,7 +130,7 @@ public final class CounterpartyResponse implements IEntityResponse {
      * @return Local-part/username of the email address to which to send invoices to be added to the Invoice Inbox.
      */
     @JsonProperty("emailTo")
-    @Override
+    @java.lang.Override
     public Optional<String> getEmailTo() {
         return emailTo;
     }
@@ -139,7 +139,7 @@ public final class CounterpartyResponse implements IEntityResponse {
      * @return Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias.
      */
     @JsonProperty("emailToAlias")
-    @Override
+    @java.lang.Override
     public Optional<List<String>> getEmailToAlias() {
         return emailToAlias;
     }
@@ -148,25 +148,25 @@ public final class CounterpartyResponse implements IEntityResponse {
      * @return True if this entity has a direct relationship with your organization.
      */
     @JsonProperty("isCustomer")
-    @Override
+    @java.lang.Override
     public boolean getIsCustomer() {
         return isCustomer;
     }
 
     @JsonProperty("accountType")
-    @Override
+    @java.lang.Override
     public AccountType getAccountType() {
         return accountType;
     }
 
     @JsonProperty("profile")
-    @Override
+    @java.lang.Override
     public ProfileResponse getProfile() {
         return profile;
     }
 
     @JsonProperty("status")
-    @Override
+    @java.lang.Override
     public EntityStatus getStatus() {
         return status;
     }
@@ -175,7 +175,7 @@ public final class CounterpartyResponse implements IEntityResponse {
      * @return True if this entity has accepted the terms of service.
      */
     @JsonProperty("acceptedTos")
-    @Override
+    @java.lang.Override
     public boolean getAcceptedTos() {
         return acceptedTos;
     }
@@ -184,7 +184,7 @@ public final class CounterpartyResponse implements IEntityResponse {
      * @return True if this entity can pay invoices.
      */
     @JsonProperty("isPayor")
-    @Override
+    @java.lang.Override
     public boolean getIsPayor() {
         return isPayor;
     }
@@ -193,19 +193,19 @@ public final class CounterpartyResponse implements IEntityResponse {
      * @return True if this entity can receive payments.
      */
     @JsonProperty("isPayee")
-    @Override
+    @java.lang.Override
     public boolean getIsPayee() {
         return isPayee;
     }
 
     @JsonProperty("createdAt")
-    @Override
+    @java.lang.Override
     public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
     @JsonProperty("updatedAt")
-    @Override
+    @java.lang.Override
     public OffsetDateTime getUpdatedAt() {
         return updatedAt;
     }
@@ -220,7 +220,7 @@ public final class CounterpartyResponse implements IEntityResponse {
         return counterpartyType;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CounterpartyResponse && equalTo((CounterpartyResponse) other);
@@ -251,7 +251,7 @@ public final class CounterpartyResponse implements IEntityResponse {
                 && counterpartyType.equals(other.counterpartyType);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.id,
@@ -273,7 +273,7 @@ public final class CounterpartyResponse implements IEntityResponse {
                 this.counterpartyType);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -414,7 +414,7 @@ public final class CounterpartyResponse implements IEntityResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(CounterpartyResponse other) {
             id(other.getId());
             name(other.getName());
@@ -436,21 +436,21 @@ public final class CounterpartyResponse implements IEntityResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public NameStage id(String id) {
             this.id = id;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("name")
         public EmailStage name(String name) {
             this.name = name;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("email")
         public IsCustomerStage email(String email) {
             this.email = email;
@@ -461,28 +461,28 @@ public final class CounterpartyResponse implements IEntityResponse {
          * <p>True if this entity has a direct relationship with your organization.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("isCustomer")
         public AccountTypeStage isCustomer(boolean isCustomer) {
             this.isCustomer = isCustomer;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("accountType")
         public ProfileStage accountType(AccountType accountType) {
             this.accountType = accountType;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("profile")
         public StatusStage profile(ProfileResponse profile) {
             this.profile = profile;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("status")
         public AcceptedTosStage status(EntityStatus status) {
             this.status = status;
@@ -493,7 +493,7 @@ public final class CounterpartyResponse implements IEntityResponse {
          * <p>True if this entity has accepted the terms of service.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("acceptedTos")
         public IsPayorStage acceptedTos(boolean acceptedTos) {
             this.acceptedTos = acceptedTos;
@@ -504,7 +504,7 @@ public final class CounterpartyResponse implements IEntityResponse {
          * <p>True if this entity can pay invoices.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("isPayor")
         public IsPayeeStage isPayor(boolean isPayor) {
             this.isPayor = isPayor;
@@ -515,40 +515,40 @@ public final class CounterpartyResponse implements IEntityResponse {
          * <p>True if this entity can receive payments.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("isPayee")
         public CreatedAtStage isPayee(boolean isPayee) {
             this.isPayee = isPayee;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("createdAt")
         public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("updatedAt")
         public _FinalStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = updatedAt;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addAllCounterpartyType(List<CounterpartyNetworkType> counterpartyType) {
             this.counterpartyType.addAll(counterpartyType);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addCounterpartyType(CounterpartyNetworkType counterpartyType) {
             this.counterpartyType.add(counterpartyType);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "counterpartyType", nulls = Nulls.SKIP)
         public _FinalStage counterpartyType(List<CounterpartyNetworkType> counterpartyType) {
             this.counterpartyType.clear();
@@ -556,19 +556,19 @@ public final class CounterpartyResponse implements IEntityResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addAllPaymentMethods(List<PaymentMethodResponse> paymentMethods) {
             this.paymentMethods.addAll(paymentMethods);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addPaymentMethods(PaymentMethodResponse paymentMethods) {
             this.paymentMethods.add(paymentMethods);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "paymentMethods", nulls = Nulls.SKIP)
         public _FinalStage paymentMethods(List<PaymentMethodResponse> paymentMethods) {
             this.paymentMethods.clear();
@@ -580,13 +580,13 @@ public final class CounterpartyResponse implements IEntityResponse {
          * <p>Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage emailToAlias(List<String> emailToAlias) {
             this.emailToAlias = Optional.of(emailToAlias);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "emailToAlias", nulls = Nulls.SKIP)
         public _FinalStage emailToAlias(Optional<List<String>> emailToAlias) {
             this.emailToAlias = emailToAlias;
@@ -597,13 +597,13 @@ public final class CounterpartyResponse implements IEntityResponse {
          * <p>Local-part/username of the email address to which to send invoices to be added to the Invoice Inbox.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage emailTo(String emailTo) {
             this.emailTo = Optional.of(emailTo);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "emailTo", nulls = Nulls.SKIP)
         public _FinalStage emailTo(Optional<String> emailTo) {
             this.emailTo = emailTo;
@@ -614,20 +614,20 @@ public final class CounterpartyResponse implements IEntityResponse {
          * <p>The ID used to identify this entity in your system</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage foreignId(String foreignId) {
             this.foreignId = Optional.of(foreignId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
         public _FinalStage foreignId(Optional<String> foreignId) {
             this.foreignId = foreignId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public CounterpartyResponse build() {
             return new CounterpartyResponse(
                     id,

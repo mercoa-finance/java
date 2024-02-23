@@ -120,12 +120,12 @@ public final class Trigger {
             this.value = value;
         }
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor.visitAmount(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof AmountValue && equalTo((AmountValue) other);
@@ -135,12 +135,12 @@ public final class Trigger {
             return value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "Trigger{" + "value: " + value + "}";
         }
@@ -158,12 +158,12 @@ public final class Trigger {
             this.value = value;
         }
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor.visitVendor(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof VendorValue && equalTo((VendorValue) other);
@@ -173,12 +173,12 @@ public final class Trigger {
             return value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "Trigger{" + "value: " + value + "}";
         }
@@ -196,12 +196,12 @@ public final class Trigger {
             this.value = value;
         }
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor.visitMetadata(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof MetadataValue && equalTo((MetadataValue) other);
@@ -211,12 +211,12 @@ public final class Trigger {
             return value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "Trigger{" + "value: " + value + "}";
         }
@@ -231,12 +231,12 @@ public final class Trigger {
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private _UnknownValue(@JsonProperty("value") Object value) {}
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor._visitUnknown(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof _UnknownValue && equalTo((_UnknownValue) other);
@@ -246,12 +246,12 @@ public final class Trigger {
             return type.equals(other.type) && value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.type, this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "Trigger{" + "type: " + type + ", value: " + value + "}";
         }

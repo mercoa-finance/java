@@ -9,69 +9,56 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
-import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = EmailLogResponse.Builder.class)
 public final class EmailLogResponse {
-    private final String from;
+    private final int count;
 
-    private final String to;
+    private final boolean hasMore;
 
-    private final String subject;
-
-    private final String rawContent;
-
-    private final OffsetDateTime createdAt;
+    private final List<EmailLog> data;
 
     private final Map<String, Object> additionalProperties;
 
     private EmailLogResponse(
-            String from,
-            String to,
-            String subject,
-            String rawContent,
-            OffsetDateTime createdAt,
-            Map<String, Object> additionalProperties) {
-        this.from = from;
-        this.to = to;
-        this.subject = subject;
-        this.rawContent = rawContent;
-        this.createdAt = createdAt;
+            int count, boolean hasMore, List<EmailLog> data, Map<String, Object> additionalProperties) {
+        this.count = count;
+        this.hasMore = hasMore;
+        this.data = data;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("from")
-    public String getFrom() {
-        return from;
+    /**
+     * @return Total number of logs for the given start and end date filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.
+     */
+    @JsonProperty("count")
+    public int getCount() {
+        return count;
     }
 
-    @JsonProperty("to")
-    public String getTo() {
-        return to;
+    /**
+     * @return True if there are more logs available for the given start and end date filters.
+     */
+    @JsonProperty("hasMore")
+    public boolean getHasMore() {
+        return hasMore;
     }
 
-    @JsonProperty("subject")
-    public String getSubject() {
-        return subject;
+    @JsonProperty("data")
+    public List<EmailLog> getData() {
+        return data;
     }
 
-    @JsonProperty("rawContent")
-    public String getRawContent() {
-        return rawContent;
-    }
-
-    @JsonProperty("createdAt")
-    public OffsetDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EmailLogResponse && equalTo((EmailLogResponse) other);
@@ -83,119 +70,109 @@ public final class EmailLogResponse {
     }
 
     private boolean equalTo(EmailLogResponse other) {
-        return from.equals(other.from)
-                && to.equals(other.to)
-                && subject.equals(other.subject)
-                && rawContent.equals(other.rawContent)
-                && createdAt.equals(other.createdAt);
+        return count == other.count && hasMore == other.hasMore && data.equals(other.data);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.from, this.to, this.subject, this.rawContent, this.createdAt);
+        return Objects.hash(this.count, this.hasMore, this.data);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
 
-    public static FromStage builder() {
+    public static CountStage builder() {
         return new Builder();
     }
 
-    public interface FromStage {
-        ToStage from(String from);
+    public interface CountStage {
+        HasMoreStage count(int count);
 
         Builder from(EmailLogResponse other);
     }
 
-    public interface ToStage {
-        SubjectStage to(String to);
-    }
-
-    public interface SubjectStage {
-        RawContentStage subject(String subject);
-    }
-
-    public interface RawContentStage {
-        CreatedAtStage rawContent(String rawContent);
-    }
-
-    public interface CreatedAtStage {
-        _FinalStage createdAt(OffsetDateTime createdAt);
+    public interface HasMoreStage {
+        _FinalStage hasMore(boolean hasMore);
     }
 
     public interface _FinalStage {
         EmailLogResponse build();
+
+        _FinalStage data(List<EmailLog> data);
+
+        _FinalStage addData(EmailLog data);
+
+        _FinalStage addAllData(List<EmailLog> data);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder
-            implements FromStage, ToStage, SubjectStage, RawContentStage, CreatedAtStage, _FinalStage {
-        private String from;
+    public static final class Builder implements CountStage, HasMoreStage, _FinalStage {
+        private int count;
 
-        private String to;
+        private boolean hasMore;
 
-        private String subject;
-
-        private String rawContent;
-
-        private OffsetDateTime createdAt;
+        private List<EmailLog> data = new ArrayList<>();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(EmailLogResponse other) {
-            from(other.getFrom());
-            to(other.getTo());
-            subject(other.getSubject());
-            rawContent(other.getRawContent());
-            createdAt(other.getCreatedAt());
+            count(other.getCount());
+            hasMore(other.getHasMore());
+            data(other.getData());
             return this;
         }
 
-        @Override
-        @JsonSetter("from")
-        public ToStage from(String from) {
-            this.from = from;
+        /**
+         * <p>Total number of logs for the given start and end date filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("count")
+        public HasMoreStage count(int count) {
+            this.count = count;
             return this;
         }
 
-        @Override
-        @JsonSetter("to")
-        public SubjectStage to(String to) {
-            this.to = to;
+        /**
+         * <p>True if there are more logs available for the given start and end date filters.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("hasMore")
+        public _FinalStage hasMore(boolean hasMore) {
+            this.hasMore = hasMore;
             return this;
         }
 
-        @Override
-        @JsonSetter("subject")
-        public RawContentStage subject(String subject) {
-            this.subject = subject;
+        @java.lang.Override
+        public _FinalStage addAllData(List<EmailLog> data) {
+            this.data.addAll(data);
             return this;
         }
 
-        @Override
-        @JsonSetter("rawContent")
-        public CreatedAtStage rawContent(String rawContent) {
-            this.rawContent = rawContent;
+        @java.lang.Override
+        public _FinalStage addData(EmailLog data) {
+            this.data.add(data);
             return this;
         }
 
-        @Override
-        @JsonSetter("createdAt")
-        public _FinalStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        @java.lang.Override
+        @JsonSetter(value = "data", nulls = Nulls.SKIP)
+        public _FinalStage data(List<EmailLog> data) {
+            this.data.clear();
+            this.data.addAll(data);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public EmailLogResponse build() {
-            return new EmailLogResponse(from, to, subject, rawContent, createdAt, additionalProperties);
+            return new EmailLogResponse(count, hasMore, data, additionalProperties);
         }
     }
 }

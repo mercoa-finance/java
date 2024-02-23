@@ -35,7 +35,7 @@ public final class CompleteMicroDepositsRequest {
         return amounts;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CompleteMicroDepositsRequest && equalTo((CompleteMicroDepositsRequest) other);
@@ -50,12 +50,12 @@ public final class CompleteMicroDepositsRequest {
         return amounts.equals(other.amounts);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.amounts);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

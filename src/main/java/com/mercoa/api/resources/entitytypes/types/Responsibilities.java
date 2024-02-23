@@ -72,7 +72,7 @@ public final class Responsibilities {
         return ownershipPercentage;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof Responsibilities && equalTo((Responsibilities) other);
@@ -90,12 +90,12 @@ public final class Responsibilities {
                 && ownershipPercentage.equals(other.ownershipPercentage);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.jobTitle, this.isController, this.isOwner, this.ownershipPercentage);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

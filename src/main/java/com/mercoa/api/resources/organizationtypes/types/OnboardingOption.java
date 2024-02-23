@@ -48,7 +48,7 @@ public final class OnboardingOption {
         return required;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof OnboardingOption && equalTo((OnboardingOption) other);
@@ -63,12 +63,12 @@ public final class OnboardingOption {
         return show == other.show && edit == other.edit && required == other.required;
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.show, this.edit, this.required);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -108,7 +108,7 @@ public final class OnboardingOption {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(OnboardingOption other) {
             show(other.getShow());
             edit(other.getEdit());
@@ -116,28 +116,28 @@ public final class OnboardingOption {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("show")
         public EditStage show(boolean show) {
             this.show = show;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("edit")
         public RequiredStage edit(boolean edit) {
             this.edit = edit;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("required")
         public _FinalStage required(boolean required) {
             this.required = required;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public OnboardingOption build() {
             return new OnboardingOption(show, edit, required, additionalProperties);
         }

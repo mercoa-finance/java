@@ -8,6 +8,7 @@ import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.banklookup.BankLookupClient;
 import com.mercoa.api.resources.custompaymentmethodschema.CustomPaymentMethodSchemaClient;
 import com.mercoa.api.resources.entity.EntityClient;
+import com.mercoa.api.resources.fees.FeesClient;
 import com.mercoa.api.resources.invoice.InvoiceClient;
 import com.mercoa.api.resources.ocr.OcrClient;
 import com.mercoa.api.resources.organization.OrganizationClient;
@@ -26,6 +27,8 @@ public class Mercoa {
 
     protected final Supplier<CustomPaymentMethodSchemaClient> customPaymentMethodSchemaClient;
 
+    protected final Supplier<FeesClient> feesClient;
+
     protected final Supplier<OcrClient> ocrClient;
 
     public Mercoa(ClientOptions clientOptions) {
@@ -36,6 +39,7 @@ public class Mercoa {
         this.bankLookupClient = Suppliers.memoize(() -> new BankLookupClient(clientOptions));
         this.customPaymentMethodSchemaClient =
                 Suppliers.memoize(() -> new CustomPaymentMethodSchemaClient(clientOptions));
+        this.feesClient = Suppliers.memoize(() -> new FeesClient(clientOptions));
         this.ocrClient = Suppliers.memoize(() -> new OcrClient(clientOptions));
     }
 
@@ -57,6 +61,10 @@ public class Mercoa {
 
     public CustomPaymentMethodSchemaClient customPaymentMethodSchema() {
         return this.customPaymentMethodSchemaClient.get();
+    }
+
+    public FeesClient fees() {
+        return this.feesClient.get();
     }
 
     public OcrClient ocr() {

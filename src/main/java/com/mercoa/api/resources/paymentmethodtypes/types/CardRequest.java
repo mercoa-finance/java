@@ -63,7 +63,7 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
      * @return If true, this payment method will be set as the default source. Only one payment method can be set as the default source. If another payment method is already set as the default source, it will be unset.
      */
     @JsonProperty("defaultSource")
-    @Override
+    @java.lang.Override
     public Optional<Boolean> getDefaultSource() {
         return defaultSource;
     }
@@ -72,7 +72,7 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
      * @return If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.
      */
     @JsonProperty("defaultDestination")
-    @Override
+    @java.lang.Override
     public Optional<Boolean> getDefaultDestination() {
         return defaultDestination;
     }
@@ -107,7 +107,7 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
         return token;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CardRequest && equalTo((CardRequest) other);
@@ -129,7 +129,7 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
                 && token.equals(other.token);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.defaultSource,
@@ -142,7 +142,7 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
                 this.token);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -219,7 +219,7 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(CardRequest other) {
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
@@ -232,42 +232,42 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("cardType")
         public CardBrandStage cardType(CardType cardType) {
             this.cardType = cardType;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("cardBrand")
         public LastFourStage cardBrand(CardBrand cardBrand) {
             this.cardBrand = cardBrand;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("lastFour")
         public ExpMonthStage lastFour(String lastFour) {
             this.lastFour = lastFour;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("expMonth")
         public ExpYearStage expMonth(String expMonth) {
             this.expMonth = expMonth;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("expYear")
         public TokenStage expYear(String expYear) {
             this.expYear = expYear;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("token")
         public _FinalStage token(String token) {
             this.token = token;
@@ -278,13 +278,13 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
          * <p>If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage defaultDestination(Boolean defaultDestination) {
             this.defaultDestination = Optional.of(defaultDestination);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "defaultDestination", nulls = Nulls.SKIP)
         public _FinalStage defaultDestination(Optional<Boolean> defaultDestination) {
             this.defaultDestination = defaultDestination;
@@ -295,20 +295,20 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
          * <p>If true, this payment method will be set as the default source. Only one payment method can be set as the default source. If another payment method is already set as the default source, it will be unset.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage defaultSource(Boolean defaultSource) {
             this.defaultSource = Optional.of(defaultSource);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "defaultSource", nulls = Nulls.SKIP)
         public _FinalStage defaultSource(Optional<Boolean> defaultSource) {
             this.defaultSource = defaultSource;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public CardRequest build() {
             return new CardRequest(
                     defaultSource,

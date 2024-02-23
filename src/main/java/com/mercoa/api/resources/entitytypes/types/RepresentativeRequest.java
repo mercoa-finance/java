@@ -93,7 +93,7 @@ public final class RepresentativeRequest {
         return responsibilities;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof RepresentativeRequest && equalTo((RepresentativeRequest) other);
@@ -114,7 +114,7 @@ public final class RepresentativeRequest {
                 && responsibilities.equals(other.responsibilities);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.name,
@@ -126,7 +126,7 @@ public final class RepresentativeRequest {
                 this.responsibilities);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -198,7 +198,7 @@ public final class RepresentativeRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(RepresentativeRequest other) {
             name(other.getName());
             phone(other.getPhone());
@@ -210,56 +210,56 @@ public final class RepresentativeRequest {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("name")
         public PhoneStage name(FullName name) {
             this.name = name;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("phone")
         public EmailStage phone(PhoneNumber phone) {
             this.phone = phone;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("email")
         public AddressStage email(String email) {
             this.email = email;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("address")
         public BirthDateStage address(Address address) {
             this.address = address;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("birthDate")
         public GovernmentIdStage birthDate(BirthDate birthDate) {
             this.birthDate = birthDate;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("governmentID")
         public ResponsibilitiesStage governmentId(IndividualGovernmentId governmentId) {
             this.governmentId = governmentId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("responsibilities")
         public _FinalStage responsibilities(Responsibilities responsibilities) {
             this.responsibilities = responsibilities;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public RepresentativeRequest build() {
             return new RepresentativeRequest(
                     name, phone, email, address, birthDate, governmentId, responsibilities, additionalProperties);

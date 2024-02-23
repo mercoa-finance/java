@@ -40,7 +40,7 @@ public final class PhoneNumber {
         return number;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof PhoneNumber && equalTo((PhoneNumber) other);
@@ -55,12 +55,12 @@ public final class PhoneNumber {
         return countryCode.equals(other.countryCode) && number.equals(other.number);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.countryCode, this.number);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -94,28 +94,28 @@ public final class PhoneNumber {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(PhoneNumber other) {
             countryCode(other.getCountryCode());
             number(other.getNumber());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("countryCode")
         public NumberStage countryCode(String countryCode) {
             this.countryCode = countryCode;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("number")
         public _FinalStage number(String number) {
             this.number = number;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public PhoneNumber build() {
             return new PhoneNumber(countryCode, number, additionalProperties);
         }

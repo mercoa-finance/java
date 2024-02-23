@@ -5,6 +5,7 @@ package com.mercoa.api.resources.entity;
 
 import com.mercoa.api.core.ApiError;
 import com.mercoa.api.core.ClientOptions;
+import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
@@ -29,7 +30,7 @@ import java.io.IOException;
 import java.util.function.Supplier;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -79,6 +80,13 @@ public class EntityClient {
     /**
      * Search all entities with the given filters. If no filters are provided, all entities will be returned.
      */
+    public FindEntityResponse find(FindEntities request) {
+        return find(request, null);
+    }
+
+    /**
+     * Search all entities with the given filters. If no filters are provided, all entities will be returned.
+     */
     public FindEntityResponse find(FindEntities request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -120,49 +128,15 @@ public class EntityClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), FindEntityResponse.class);
-            }
-            throw new ApiError(
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Search all entities with the given filters. If no filters are provided, all entities will be returned.
-     */
-    public FindEntityResponse find(FindEntities request) {
-        return find(request, null);
-    }
-
-    public EntityResponse create(EntityRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
-        try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), EntityResponse.class);
             }
             throw new ApiError(
                     response.code(),
@@ -176,21 +150,32 @@ public class EntityClient {
         return create(request, null);
     }
 
-    public EntityResponse get(String entityId, RequestOptions requestOptions) {
+    public EntityResponse create(EntityRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("entity")
-                .addPathSegment(entityId)
                 .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
-                .method("GET", null)
+                .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), EntityResponse.class);
             }
@@ -206,32 +191,26 @@ public class EntityClient {
         return get(entityId, null);
     }
 
-    public EntityResponse update(String entityId) {
-        return update(entityId, EntityUpdateRequest.builder().build());
-    }
-
-    public EntityResponse update(String entityId, EntityUpdateRequest request, RequestOptions requestOptions) {
+    public EntityResponse get(String entityId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("entity")
                 .addPathSegment(entityId)
                 .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
-                .method("POST", body)
+                .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), EntityResponse.class);
             }
@@ -243,8 +222,54 @@ public class EntityClient {
         }
     }
 
+    public EntityResponse update(String entityId) {
+        return update(entityId, EntityUpdateRequest.builder().build());
+    }
+
     public EntityResponse update(String entityId, EntityUpdateRequest request) {
         return update(entityId, request, null);
+    }
+
+    public EntityResponse update(String entityId, EntityUpdateRequest request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entity")
+                .addPathSegment(entityId)
+                .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), EntityResponse.class);
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void delete(String entityId) {
+        delete(entityId, null);
     }
 
     public void delete(String entityId, RequestOptions requestOptions) {
@@ -259,41 +284,13 @@ public class EntityClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
-            if (response.isSuccessful()) {
-                return;
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
             }
-            throw new ApiError(
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void delete(String entityId) {
-        delete(entityId, null);
-    }
-
-    /**
-     * This endpoint is used to indicate acceptance of Mercoa's terms of service for an entity. Send a request to this endpoint only after the entity has accepted the Mercoa ToS. Entities must accept Mercoa ToS before they can be send or pay invoices using Mercoa's payment rails.
-     */
-    public void acceptTermsOfService(String entityId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("accept-tos")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", RequestBody.create("", null))
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .build();
-        try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -313,16 +310,14 @@ public class EntityClient {
     }
 
     /**
-     * This endpoint is used to initiate KYB for an entity.
-     * Send a request to this endpoint only after the entity has accepted the Mercoa ToS,
-     * all representatives have been added, and all required fields have been filled out.
+     * This endpoint is used to indicate acceptance of Mercoa's terms of service for an entity. Send a request to this endpoint only after the entity has accepted the Mercoa ToS. Entities must accept Mercoa ToS before they can be send or pay invoices using Mercoa's payment rails.
      */
-    public void initiateKyb(String entityId, RequestOptions requestOptions) {
+    public void acceptTermsOfService(String entityId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("entity")
                 .addPathSegment(entityId)
-                .addPathSegments("request-kyb")
+                .addPathSegments("accept-tos")
                 .build();
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
@@ -330,8 +325,13 @@ public class EntityClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -353,10 +353,53 @@ public class EntityClient {
     }
 
     /**
+     * This endpoint is used to initiate KYB for an entity.
+     * Send a request to this endpoint only after the entity has accepted the Mercoa ToS,
+     * all representatives have been added, and all required fields have been filled out.
+     */
+    public void initiateKyb(String entityId, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entity")
+                .addPathSegment(entityId)
+                .addPathSegments("request-kyb")
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", RequestBody.create("", null))
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .build();
+        try {
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return;
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Generate a JWT token for an entity with the given options. This token can be used to authenticate the entity in the Mercoa API and iFrame.
      */
     public String getToken(String entityId) {
         return getToken(entityId, TokenGenerationOptions.builder().build());
+    }
+
+    /**
+     * Generate a JWT token for an entity with the given options. This token can be used to authenticate the entity in the Mercoa API and iFrame.
+     */
+    public String getToken(String entityId, TokenGenerationOptions request) {
+        return getToken(entityId, request, null);
     }
 
     /**
@@ -372,7 +415,7 @@ public class EntityClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -383,8 +426,13 @@ public class EntityClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), String.class);
             }
@@ -397,10 +445,10 @@ public class EntityClient {
     }
 
     /**
-     * Generate a JWT token for an entity with the given options. This token can be used to authenticate the entity in the Mercoa API and iFrame.
+     * Get a Plaid link token for an entity. This token can be used to add a bank account to the entity using Plaid Link.
      */
-    public String getToken(String entityId, TokenGenerationOptions request) {
-        return getToken(entityId, request, null);
+    public String plaidLinkToken(String entityId) {
+        return plaidLinkToken(entityId, null);
     }
 
     /**
@@ -420,8 +468,13 @@ public class EntityClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), String.class);
             }
@@ -434,10 +487,10 @@ public class EntityClient {
     }
 
     /**
-     * Get a Plaid link token for an entity. This token can be used to add a bank account to the entity using Plaid Link.
+     * Generate an onboarding link for the entity.
      */
-    public String plaidLinkToken(String entityId) {
-        return plaidLinkToken(entityId, null);
+    public String getOnboardingLink(String entityId, GenerateOnboardingLink request) {
+        return getOnboardingLink(entityId, request, null);
     }
 
     /**
@@ -464,8 +517,13 @@ public class EntityClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), String.class);
             }
@@ -478,10 +536,10 @@ public class EntityClient {
     }
 
     /**
-     * Generate an onboarding link for the entity.
+     * Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity.
      */
-    public String getOnboardingLink(String entityId, GenerateOnboardingLink request) {
-        return getOnboardingLink(entityId, request, null);
+    public void sendOnboardingLink(String entityId, SendOnboardingLink request) {
+        sendOnboardingLink(entityId, request, null);
     }
 
     /**
@@ -507,8 +565,13 @@ public class EntityClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)));
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -518,13 +581,6 @@ public class EntityClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity.
-     */
-    public void sendOnboardingLink(String entityId, SendOnboardingLink request) {
-        sendOnboardingLink(entityId, request, null);
     }
 
     public UserClient user() {

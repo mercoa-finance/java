@@ -40,7 +40,7 @@ public final class BankLookupResponse {
         return bankAddress;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof BankLookupResponse && equalTo((BankLookupResponse) other);
@@ -55,12 +55,12 @@ public final class BankLookupResponse {
         return bankName.equals(other.bankName) && bankAddress.equals(other.bankAddress);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.bankName, this.bankAddress);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -94,28 +94,28 @@ public final class BankLookupResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(BankLookupResponse other) {
             bankName(other.getBankName());
             bankAddress(other.getBankAddress());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("bankName")
         public BankAddressStage bankName(String bankName) {
             this.bankName = bankName;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("bankAddress")
         public _FinalStage bankAddress(BankAddress bankAddress) {
             this.bankAddress = bankAddress;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public BankLookupResponse build() {
             return new BankLookupResponse(bankName, bankAddress, additionalProperties);
         }

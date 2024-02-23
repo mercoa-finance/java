@@ -42,7 +42,7 @@ public final class InvoiceFeesResponse {
     }
 
     /**
-     * @return Fee charged for processing the source payment method. For example, credit card interchange and acquiring fees.
+     * @return Fee charged to the platform (C1) for processing the source payment method. For example, credit card interchange and acquiring fees.
      */
     @JsonProperty("sourcePaymentMethodFee")
     public double getSourcePaymentMethodFee() {
@@ -50,7 +50,7 @@ public final class InvoiceFeesResponse {
     }
 
     /**
-     * @return Additional fee charged to the payer.
+     * @return Fee charged to the payer (C2).
      */
     @JsonProperty("sourcePlatformMarkupFee")
     public double getSourcePlatformMarkupFee() {
@@ -58,7 +58,7 @@ public final class InvoiceFeesResponse {
     }
 
     /**
-     * @return Fee charged for processing the destination payment method. For example, postage for a check payment.
+     * @return Fee charged to the platform (C1) for processing the destination payment method. For example, postage for a check payment.
      */
     @JsonProperty("destinationPaymentMethodFee")
     public double getDestinationPaymentMethodFee() {
@@ -66,14 +66,14 @@ public final class InvoiceFeesResponse {
     }
 
     /**
-     * @return Additional fee charged to the payee.
+     * @return Fee charged to the payee (C3).
      */
     @JsonProperty("destinationPlatformMarkupFee")
     public double getDestinationPlatformMarkupFee() {
         return destinationPlatformMarkupFee;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof InvoiceFeesResponse && equalTo((InvoiceFeesResponse) other);
@@ -91,7 +91,7 @@ public final class InvoiceFeesResponse {
                 && destinationPlatformMarkupFee == other.destinationPlatformMarkupFee;
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.sourcePaymentMethodFee,
@@ -100,7 +100,7 @@ public final class InvoiceFeesResponse {
                 this.destinationPlatformMarkupFee);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -151,7 +151,7 @@ public final class InvoiceFeesResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(InvoiceFeesResponse other) {
             sourcePaymentMethodFee(other.getSourcePaymentMethodFee());
             sourcePlatformMarkupFee(other.getSourcePlatformMarkupFee());
@@ -161,10 +161,10 @@ public final class InvoiceFeesResponse {
         }
 
         /**
-         * <p>Fee charged for processing the source payment method. For example, credit card interchange and acquiring fees.</p>
+         * <p>Fee charged to the platform (C1) for processing the source payment method. For example, credit card interchange and acquiring fees.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("sourcePaymentMethodFee")
         public SourcePlatformMarkupFeeStage sourcePaymentMethodFee(double sourcePaymentMethodFee) {
             this.sourcePaymentMethodFee = sourcePaymentMethodFee;
@@ -172,10 +172,10 @@ public final class InvoiceFeesResponse {
         }
 
         /**
-         * <p>Additional fee charged to the payer.</p>
+         * <p>Fee charged to the payer (C2).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("sourcePlatformMarkupFee")
         public DestinationPaymentMethodFeeStage sourcePlatformMarkupFee(double sourcePlatformMarkupFee) {
             this.sourcePlatformMarkupFee = sourcePlatformMarkupFee;
@@ -183,10 +183,10 @@ public final class InvoiceFeesResponse {
         }
 
         /**
-         * <p>Fee charged for processing the destination payment method. For example, postage for a check payment.</p>
+         * <p>Fee charged to the platform (C1) for processing the destination payment method. For example, postage for a check payment.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("destinationPaymentMethodFee")
         public DestinationPlatformMarkupFeeStage destinationPaymentMethodFee(double destinationPaymentMethodFee) {
             this.destinationPaymentMethodFee = destinationPaymentMethodFee;
@@ -194,17 +194,17 @@ public final class InvoiceFeesResponse {
         }
 
         /**
-         * <p>Additional fee charged to the payee.</p>
+         * <p>Fee charged to the payee (C3).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("destinationPlatformMarkupFee")
         public _FinalStage destinationPlatformMarkupFee(double destinationPlatformMarkupFee) {
             this.destinationPlatformMarkupFee = destinationPlatformMarkupFee;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public InvoiceFeesResponse build() {
             return new InvoiceFeesResponse(
                     sourcePaymentMethodFee,

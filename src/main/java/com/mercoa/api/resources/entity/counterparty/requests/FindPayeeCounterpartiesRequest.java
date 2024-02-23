@@ -100,7 +100,7 @@ public final class FindPayeeCounterpartiesRequest {
         return startingAfter;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof FindPayeeCounterpartiesRequest && equalTo((FindPayeeCounterpartiesRequest) other);
@@ -120,13 +120,13 @@ public final class FindPayeeCounterpartiesRequest {
                 && startingAfter.equals(other.startingAfter);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.name, this.networkType, this.paymentMethods, this.counterpartyId, this.limit, this.startingAfter);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

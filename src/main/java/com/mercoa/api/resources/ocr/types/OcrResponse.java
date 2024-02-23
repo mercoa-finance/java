@@ -67,7 +67,7 @@ public final class OcrResponse {
         return bankAccount;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof OcrResponse && equalTo((OcrResponse) other);
@@ -85,12 +85,12 @@ public final class OcrResponse {
                 && bankAccount.equals(other.bankAccount);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.invoice, this.vendor, this.check, this.bankAccount);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -136,7 +136,7 @@ public final class OcrResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(OcrResponse other) {
             invoice(other.getInvoice());
             vendor(other.getVendor());
@@ -145,47 +145,47 @@ public final class OcrResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("invoice")
         public VendorStage invoice(InvoiceResponse invoice) {
             this.invoice = invoice;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("vendor")
         public _FinalStage vendor(EntityResponse vendor) {
             this.vendor = vendor;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage bankAccount(BankAccountResponse bankAccount) {
             this.bankAccount = Optional.of(bankAccount);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "bankAccount", nulls = Nulls.SKIP)
         public _FinalStage bankAccount(Optional<BankAccountResponse> bankAccount) {
             this.bankAccount = bankAccount;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage check(CheckResponse check) {
             this.check = Optional.of(check);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "check", nulls = Nulls.SKIP)
         public _FinalStage check(Optional<CheckResponse> check) {
             this.check = check;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public OcrResponse build() {
             return new OcrResponse(invoice, vendor, check, bankAccount, additionalProperties);
         }

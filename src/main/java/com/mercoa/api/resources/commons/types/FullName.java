@@ -63,7 +63,7 @@ public final class FullName {
         return suffix;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof FullName && equalTo((FullName) other);
@@ -81,12 +81,12 @@ public final class FullName {
                 && suffix.equals(other.suffix);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.firstName, this.middleName, this.lastName, this.suffix);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -132,7 +132,7 @@ public final class FullName {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(FullName other) {
             firstName(other.getFirstName());
             middleName(other.getMiddleName());
@@ -141,47 +141,47 @@ public final class FullName {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("firstName")
         public LastNameStage firstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("lastName")
         public _FinalStage lastName(String lastName) {
             this.lastName = lastName;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage suffix(String suffix) {
             this.suffix = Optional.of(suffix);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "suffix", nulls = Nulls.SKIP)
         public _FinalStage suffix(Optional<String> suffix) {
             this.suffix = suffix;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage middleName(String middleName) {
             this.middleName = Optional.of(middleName);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "middleName", nulls = Nulls.SKIP)
         public _FinalStage middleName(Optional<String> middleName) {
             this.middleName = middleName;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public FullName build() {
             return new FullName(firstName, middleName, lastName, suffix, additionalProperties);
         }

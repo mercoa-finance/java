@@ -64,7 +64,7 @@ public final class SendOnboardingLink {
         return connectedEntityId;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof SendOnboardingLink && equalTo((SendOnboardingLink) other);
@@ -81,12 +81,12 @@ public final class SendOnboardingLink {
                 && connectedEntityId.equals(other.connectedEntityId);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.type, this.expiresIn, this.connectedEntityId);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -126,7 +126,7 @@ public final class SendOnboardingLink {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(SendOnboardingLink other) {
             type(other.getType());
             expiresIn(other.getExpiresIn());
@@ -138,7 +138,7 @@ public final class SendOnboardingLink {
          * <p>The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("type")
         public _FinalStage type(EntityOnboardingLinkType type) {
             this.type = type;
@@ -149,13 +149,13 @@ public final class SendOnboardingLink {
          * <p>The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage connectedEntityId(String connectedEntityId) {
             this.connectedEntityId = Optional.of(connectedEntityId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "connectedEntityId", nulls = Nulls.SKIP)
         public _FinalStage connectedEntityId(Optional<String> connectedEntityId) {
             this.connectedEntityId = connectedEntityId;
@@ -166,20 +166,20 @@ public final class SendOnboardingLink {
          * <p>Expressed in seconds or a string describing a time span. The default is 7 days.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage expiresIn(String expiresIn) {
             this.expiresIn = Optional.of(expiresIn);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "expiresIn", nulls = Nulls.SKIP)
         public _FinalStage expiresIn(Optional<String> expiresIn) {
             this.expiresIn = expiresIn;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public SendOnboardingLink build() {
             return new SendOnboardingLink(type, expiresIn, connectedEntityId, additionalProperties);
         }

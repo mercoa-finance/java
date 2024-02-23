@@ -40,7 +40,7 @@ public final class ApproverRule {
         return identifierList;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ApproverRule && equalTo((ApproverRule) other);
@@ -55,12 +55,12 @@ public final class ApproverRule {
         return numApprovers == other.numApprovers && identifierList.equals(other.identifierList);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.numApprovers, this.identifierList);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -94,28 +94,28 @@ public final class ApproverRule {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ApproverRule other) {
             numApprovers(other.getNumApprovers());
             identifierList(other.getIdentifierList());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("numApprovers")
         public IdentifierListStage numApprovers(int numApprovers) {
             this.numApprovers = numApprovers;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("identifierList")
         public _FinalStage identifierList(IdentifierList identifierList) {
             this.identifierList = identifierList;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ApproverRule build() {
             return new ApproverRule(numApprovers, identifierList, additionalProperties);
         }

@@ -46,7 +46,7 @@ public final class TokenGenerationInvoiceOptions {
         return status;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof TokenGenerationInvoiceOptions && equalTo((TokenGenerationInvoiceOptions) other);
@@ -61,12 +61,12 @@ public final class TokenGenerationInvoiceOptions {
         return disableLineItems.equals(other.disableLineItems) && status.equals(other.status);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.disableLineItems, this.status);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

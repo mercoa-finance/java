@@ -96,7 +96,7 @@ public final class EntityUserResponse {
         return updatedAt;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EntityUserResponse && equalTo((EntityUserResponse) other);
@@ -117,12 +117,12 @@ public final class EntityUserResponse {
                 && updatedAt.equals(other.updatedAt);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.id, this.foreignId, this.email, this.name, this.roles, this.createdAt, this.updatedAt);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -188,7 +188,7 @@ public final class EntityUserResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(EntityUserResponse other) {
             id(other.getId());
             foreignId(other.getForeignId());
@@ -200,40 +200,40 @@ public final class EntityUserResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public CreatedAtStage id(String id) {
             this.id = id;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("createdAt")
         public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("updatedAt")
         public _FinalStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = updatedAt;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addAllRoles(List<String> roles) {
             this.roles.addAll(roles);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addRoles(String roles) {
             this.roles.add(roles);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "roles", nulls = Nulls.SKIP)
         public _FinalStage roles(List<String> roles) {
             this.roles.clear();
@@ -241,26 +241,26 @@ public final class EntityUserResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage name(String name) {
             this.name = Optional.of(name);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "name", nulls = Nulls.SKIP)
         public _FinalStage name(Optional<String> name) {
             this.name = name;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage email(String email) {
             this.email = Optional.of(email);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "email", nulls = Nulls.SKIP)
         public _FinalStage email(Optional<String> email) {
             this.email = email;
@@ -271,20 +271,20 @@ public final class EntityUserResponse {
          * <p>The ID used to identify this user in your system.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage foreignId(String foreignId) {
             this.foreignId = Optional.of(foreignId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
         public _FinalStage foreignId(Optional<String> foreignId) {
             this.foreignId = foreignId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public EntityUserResponse build() {
             return new EntityUserResponse(
                     id, foreignId, email, name, roles, createdAt, updatedAt, additionalProperties);

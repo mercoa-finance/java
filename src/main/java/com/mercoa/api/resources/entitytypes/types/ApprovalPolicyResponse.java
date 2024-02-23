@@ -64,7 +64,7 @@ public final class ApprovalPolicyResponse {
         return upstreamPolicyId;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ApprovalPolicyResponse && equalTo((ApprovalPolicyResponse) other);
@@ -82,12 +82,12 @@ public final class ApprovalPolicyResponse {
                 && upstreamPolicyId.equals(other.upstreamPolicyId);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.id, this.trigger, this.rule, this.upstreamPolicyId);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -135,7 +135,7 @@ public final class ApprovalPolicyResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ApprovalPolicyResponse other) {
             id(other.getId());
             trigger(other.getTrigger());
@@ -144,40 +144,40 @@ public final class ApprovalPolicyResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public RuleStage id(String id) {
             this.id = id;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("rule")
         public UpstreamPolicyIdStage rule(Rule rule) {
             this.rule = rule;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("upstreamPolicyId")
         public _FinalStage upstreamPolicyId(String upstreamPolicyId) {
             this.upstreamPolicyId = upstreamPolicyId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addAllTrigger(List<Trigger> trigger) {
             this.trigger.addAll(trigger);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addTrigger(Trigger trigger) {
             this.trigger.add(trigger);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "trigger", nulls = Nulls.SKIP)
         public _FinalStage trigger(List<Trigger> trigger) {
             this.trigger.clear();
@@ -185,7 +185,7 @@ public final class ApprovalPolicyResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ApprovalPolicyResponse build() {
             return new ApprovalPolicyResponse(id, trigger, rule, upstreamPolicyId, additionalProperties);
         }

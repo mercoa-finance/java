@@ -130,7 +130,7 @@ public final class EntityUpdateRequest {
         return logo;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EntityUpdateRequest && equalTo((EntityUpdateRequest) other);
@@ -153,7 +153,7 @@ public final class EntityUpdateRequest {
                 && logo.equals(other.logo);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.foreignId,
@@ -167,7 +167,7 @@ public final class EntityUpdateRequest {
                 this.logo);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

@@ -45,7 +45,7 @@ public final class ApprovalRequest {
         return userId;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ApprovalRequest && equalTo((ApprovalRequest) other);
@@ -60,12 +60,12 @@ public final class ApprovalRequest {
         return text.equals(other.text) && userId.equals(other.userId);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.text, this.userId);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -99,14 +99,14 @@ public final class ApprovalRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ApprovalRequest other) {
             text(other.getText());
             userId(other.getUserId());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("userId")
         public _FinalStage userId(String userId) {
             this.userId = userId;
@@ -117,20 +117,20 @@ public final class ApprovalRequest {
          * <p>Comment associated with this approval action.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage text(String text) {
             this.text = Optional.of(text);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "text", nulls = Nulls.SKIP)
         public _FinalStage text(Optional<String> text) {
             this.text = text;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ApprovalRequest build() {
             return new ApprovalRequest(text, userId, additionalProperties);
         }

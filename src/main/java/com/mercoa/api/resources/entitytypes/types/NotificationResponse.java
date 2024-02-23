@@ -67,7 +67,7 @@ public final class NotificationResponse {
         return createdAt;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof NotificationResponse && equalTo((NotificationResponse) other);
@@ -85,12 +85,12 @@ public final class NotificationResponse {
                 && createdAt.equals(other.createdAt);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.id, this.invoiceId, this.type, this.createdAt);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -136,7 +136,7 @@ public final class NotificationResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(NotificationResponse other) {
             id(other.getId());
             invoiceId(other.getInvoiceId());
@@ -145,21 +145,21 @@ public final class NotificationResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public TypeStage id(String id) {
             this.id = id;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("type")
         public CreatedAtStage type(NotificationType type) {
             this.type = type;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("createdAt")
         public _FinalStage createdAt(OffsetDateTime createdAt) {
             this.createdAt = createdAt;
@@ -170,20 +170,20 @@ public final class NotificationResponse {
          * <p>The invoice ID that this notification is related to. This field is only present for notifications related to invoices.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage invoiceId(String invoiceId) {
             this.invoiceId = Optional.of(invoiceId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "invoiceId", nulls = Nulls.SKIP)
         public _FinalStage invoiceId(Optional<String> invoiceId) {
             this.invoiceId = invoiceId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public NotificationResponse build() {
             return new NotificationResponse(id, invoiceId, type, createdAt, additionalProperties);
         }

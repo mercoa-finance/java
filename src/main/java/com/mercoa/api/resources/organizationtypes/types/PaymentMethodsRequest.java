@@ -64,7 +64,7 @@ public final class PaymentMethodsRequest {
         return vendorDisbursements;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof PaymentMethodsRequest && equalTo((PaymentMethodsRequest) other);
@@ -81,12 +81,12 @@ public final class PaymentMethodsRequest {
                 && vendorDisbursements.equals(other.vendorDisbursements);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.payerPayments, this.backupDisbursements, this.vendorDisbursements);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

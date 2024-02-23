@@ -6,6 +6,7 @@ package com.mercoa.api.resources.entity.approvalpolicy;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.mercoa.api.core.ApiError;
 import com.mercoa.api.core.ClientOptions;
+import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.entitytypes.types.ApprovalPolicyRequest;
@@ -15,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -25,6 +26,13 @@ public class ApprovalPolicyClient {
 
     public ApprovalPolicyClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+    }
+
+    /**
+     * Retrieve all invoice approval policies associated with an entity
+     */
+    public List<ApprovalPolicyResponse> getAll(String entityId) {
+        return getAll(entityId, null);
     }
 
     /**
@@ -44,8 +52,13 @@ public class ApprovalPolicyClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(
                         response.body().string(), new TypeReference<List<ApprovalPolicyResponse>>() {});
@@ -59,10 +72,10 @@ public class ApprovalPolicyClient {
     }
 
     /**
-     * Retrieve all invoice approval policies associated with an entity
+     * Create an invoice approval policy associated with an entity
      */
-    public List<ApprovalPolicyResponse> getAll(String entityId) {
-        return getAll(entityId, null);
+    public ApprovalPolicyResponse create(String entityId, ApprovalPolicyRequest request) {
+        return create(entityId, request, null);
     }
 
     /**
@@ -79,7 +92,7 @@ public class ApprovalPolicyClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -90,8 +103,13 @@ public class ApprovalPolicyClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), ApprovalPolicyResponse.class);
             }
@@ -104,10 +122,10 @@ public class ApprovalPolicyClient {
     }
 
     /**
-     * Create an invoice approval policy associated with an entity
+     * Retrieve an invoice approval policy associated with an entity
      */
-    public ApprovalPolicyResponse create(String entityId, ApprovalPolicyRequest request) {
-        return create(entityId, request, null);
+    public ApprovalPolicyResponse get(String entityId, String policyId) {
+        return get(entityId, policyId, null);
     }
 
     /**
@@ -128,8 +146,13 @@ public class ApprovalPolicyClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), ApprovalPolicyResponse.class);
             }
@@ -142,17 +165,17 @@ public class ApprovalPolicyClient {
     }
 
     /**
-     * Retrieve an invoice approval policy associated with an entity
+     * Update an invoice approval policy associated with an entity
      */
-    public ApprovalPolicyResponse get(String entityId, String policyId) {
-        return get(entityId, policyId, null);
+    public ApprovalPolicyResponse update(String entityId, String policyId) {
+        return update(entityId, policyId, ApprovalPolicyUpdateRequest.builder().build());
     }
 
     /**
      * Update an invoice approval policy associated with an entity
      */
-    public ApprovalPolicyResponse update(String entityId, String policyId) {
-        return update(entityId, policyId, ApprovalPolicyUpdateRequest.builder().build());
+    public ApprovalPolicyResponse update(String entityId, String policyId, ApprovalPolicyUpdateRequest request) {
+        return update(entityId, policyId, request, null);
     }
 
     /**
@@ -170,7 +193,7 @@ public class ApprovalPolicyClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -181,8 +204,13 @@ public class ApprovalPolicyClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), ApprovalPolicyResponse.class);
             }
@@ -195,10 +223,10 @@ public class ApprovalPolicyClient {
     }
 
     /**
-     * Update an invoice approval policy associated with an entity
+     * Delete an invoice approval policy associated with Entity. BEWARE: Any approval policy deletion will result in all associated downstream policies also being deleted.
      */
-    public ApprovalPolicyResponse update(String entityId, String policyId, ApprovalPolicyUpdateRequest request) {
-        return update(entityId, policyId, request, null);
+    public void delete(String entityId, String policyId) {
+        delete(entityId, policyId, null);
     }
 
     /**
@@ -218,8 +246,13 @@ public class ApprovalPolicyClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -229,12 +262,5 @@ public class ApprovalPolicyClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Delete an invoice approval policy associated with Entity. BEWARE: Any approval policy deletion will result in all associated downstream policies also being deleted.
-     */
-    public void delete(String entityId, String policyId) {
-        delete(entityId, policyId, null);
     }
 }

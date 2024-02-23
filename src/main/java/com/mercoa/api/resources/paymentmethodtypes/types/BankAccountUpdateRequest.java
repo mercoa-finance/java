@@ -47,7 +47,7 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
      * @return If true, this payment method will be set as the default source. Only one payment method can be set as the default source. If another payment method is already set as the default source, it will be unset.
      */
     @JsonProperty("defaultSource")
-    @Override
+    @java.lang.Override
     public Optional<Boolean> getDefaultSource() {
         return defaultSource;
     }
@@ -56,7 +56,7 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
      * @return If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.
      */
     @JsonProperty("defaultDestination")
-    @Override
+    @java.lang.Override
     public Optional<Boolean> getDefaultDestination() {
         return defaultDestination;
     }
@@ -74,7 +74,7 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
         return checkOptions;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof BankAccountUpdateRequest && equalTo((BankAccountUpdateRequest) other);
@@ -92,12 +92,12 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
                 && checkOptions.equals(other.checkOptions);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.defaultSource, this.defaultDestination, this.accountName, this.checkOptions);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

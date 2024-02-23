@@ -32,7 +32,7 @@ public final class CodatProviderRequest {
         return apiKey;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CodatProviderRequest && equalTo((CodatProviderRequest) other);
@@ -47,12 +47,12 @@ public final class CodatProviderRequest {
         return apiKey.equals(other.apiKey);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.apiKey);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -80,20 +80,20 @@ public final class CodatProviderRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(CodatProviderRequest other) {
             apiKey(other.getApiKey());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("apiKey")
         public _FinalStage apiKey(String apiKey) {
             this.apiKey = apiKey;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public CodatProviderRequest build() {
             return new CodatProviderRequest(apiKey, additionalProperties);
         }

@@ -86,7 +86,7 @@ public final class CommentResponse {
         return updatedAt;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CommentResponse && equalTo((CommentResponse) other);
@@ -106,13 +106,13 @@ public final class CommentResponse {
                 && updatedAt.equals(other.updatedAt);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.id, this.text, this.user, this.associatedApprovalAction, this.createdAt, this.updatedAt);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -170,7 +170,7 @@ public final class CommentResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(CommentResponse other) {
             id(other.getId());
             text(other.getText());
@@ -181,28 +181,28 @@ public final class CommentResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public TextStage id(String id) {
             this.id = id;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("text")
         public CreatedAtStage text(String text) {
             this.text = text;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("createdAt")
         public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("updatedAt")
         public _FinalStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = updatedAt;
@@ -213,33 +213,33 @@ public final class CommentResponse {
          * <p>If an approval action has triggered the generation of this comment, returns the associated approval action and actor</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage associatedApprovalAction(AssociatedApprovalAction associatedApprovalAction) {
             this.associatedApprovalAction = Optional.of(associatedApprovalAction);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "associatedApprovalAction", nulls = Nulls.SKIP)
         public _FinalStage associatedApprovalAction(Optional<AssociatedApprovalAction> associatedApprovalAction) {
             this.associatedApprovalAction = associatedApprovalAction;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage user(EntityUserResponse user) {
             this.user = Optional.of(user);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "user", nulls = Nulls.SKIP)
         public _FinalStage user(Optional<EntityUserResponse> user) {
             this.user = user;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public CommentResponse build() {
             return new CommentResponse(
                     id, text, user, associatedApprovalAction, createdAt, updatedAt, additionalProperties);

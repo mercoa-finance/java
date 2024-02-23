@@ -30,8 +30,16 @@ public final class PaymentDestinationOptions {
         return new PaymentDestinationOptions(new CheckValue(value));
     }
 
+    public static PaymentDestinationOptions bankAccount(BankAccountPaymentDestinationOptions value) {
+        return new PaymentDestinationOptions(new BankAccountValue(value));
+    }
+
     public boolean isCheck() {
         return value instanceof CheckValue;
+    }
+
+    public boolean isBankAccount() {
+        return value instanceof BankAccountValue;
     }
 
     public boolean _isUnknown() {
@@ -41,6 +49,13 @@ public final class PaymentDestinationOptions {
     public Optional<CheckPaymentDestinationOptions> getCheck() {
         if (isCheck()) {
             return Optional.of(((CheckValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<BankAccountPaymentDestinationOptions> getBankAccount() {
+        if (isBankAccount()) {
+            return Optional.of(((BankAccountValue) value).value);
         }
         return Optional.empty();
     }
@@ -60,11 +75,13 @@ public final class PaymentDestinationOptions {
     public interface Visitor<T> {
         T visitCheck(CheckPaymentDestinationOptions check);
 
+        T visitBankAccount(BankAccountPaymentDestinationOptions bankAccount);
+
         T _visitUnknown(Object unknownType);
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = _UnknownValue.class)
-    @JsonSubTypes(@JsonSubTypes.Type(CheckValue.class))
+    @JsonSubTypes({@JsonSubTypes.Type(CheckValue.class), @JsonSubTypes.Type(BankAccountValue.class)})
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
         <T> T visit(Visitor<T> visitor);
@@ -82,12 +99,12 @@ public final class PaymentDestinationOptions {
             this.value = value;
         }
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor.visitCheck(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof CheckValue && equalTo((CheckValue) other);
@@ -97,12 +114,50 @@ public final class PaymentDestinationOptions {
             return value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.value);
         }
 
-        @Override
+        @java.lang.Override
+        public String toString() {
+            return "PaymentDestinationOptions{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("bankAccount")
+    private static final class BankAccountValue implements Value {
+        @JsonUnwrapped
+        private BankAccountPaymentDestinationOptions value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private BankAccountValue() {}
+
+        private BankAccountValue(BankAccountPaymentDestinationOptions value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitBankAccount(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof BankAccountValue && equalTo((BankAccountValue) other);
+        }
+
+        private boolean equalTo(BankAccountValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
         public String toString() {
             return "PaymentDestinationOptions{" + "value: " + value + "}";
         }
@@ -117,12 +172,12 @@ public final class PaymentDestinationOptions {
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private _UnknownValue(@JsonProperty("value") Object value) {}
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor._visitUnknown(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof _UnknownValue && equalTo((_UnknownValue) other);
@@ -132,12 +187,12 @@ public final class PaymentDestinationOptions {
             return type.equals(other.type) && value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.type, this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "PaymentDestinationOptions{" + "type: " + type + ", value: " + value + "}";
         }

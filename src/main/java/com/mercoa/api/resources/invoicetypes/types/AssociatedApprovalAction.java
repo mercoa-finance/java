@@ -40,7 +40,7 @@ public final class AssociatedApprovalAction {
         return action;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof AssociatedApprovalAction && equalTo((AssociatedApprovalAction) other);
@@ -55,12 +55,12 @@ public final class AssociatedApprovalAction {
         return userId.equals(other.userId) && action.equals(other.action);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.userId, this.action);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -94,28 +94,28 @@ public final class AssociatedApprovalAction {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(AssociatedApprovalAction other) {
             userId(other.getUserId());
             action(other.getAction());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("userId")
         public ActionStage userId(String userId) {
             this.userId = userId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("action")
         public _FinalStage action(ApproverAction action) {
             this.action = action;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public AssociatedApprovalAction build() {
             return new AssociatedApprovalAction(userId, action, additionalProperties);
         }

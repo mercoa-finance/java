@@ -76,7 +76,7 @@ public final class RunOcrSync {
         return image;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof RunOcrSync && equalTo((RunOcrSync) other);
@@ -94,12 +94,12 @@ public final class RunOcrSync {
                 && image.equals(other.image);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.vendorNetwork, this.entityId, this.mimeType, this.image);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -145,7 +145,7 @@ public final class RunOcrSync {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(RunOcrSync other) {
             vendorNetwork(other.getVendorNetwork());
             entityId(other.getEntityId());
@@ -158,7 +158,7 @@ public final class RunOcrSync {
          * <p>MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("mimeType")
         public ImageStage mimeType(String mimeType) {
             this.mimeType = mimeType;
@@ -169,7 +169,7 @@ public final class RunOcrSync {
          * <p>Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("image")
         public _FinalStage image(String image) {
             this.image = image;
@@ -180,13 +180,13 @@ public final class RunOcrSync {
          * <p>When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage entityId(String entityId) {
             this.entityId = Optional.of(entityId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "entityId", nulls = Nulls.SKIP)
         public _FinalStage entityId(Optional<String> entityId) {
             this.entityId = entityId;
@@ -197,20 +197,20 @@ public final class RunOcrSync {
          * <p>Limit OCR vendor search to a specific network</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage vendorNetwork(VendorNetwork vendorNetwork) {
             this.vendorNetwork = Optional.of(vendorNetwork);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "vendorNetwork", nulls = Nulls.SKIP)
         public _FinalStage vendorNetwork(Optional<VendorNetwork> vendorNetwork) {
             this.vendorNetwork = vendorNetwork;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public RunOcrSync build() {
             return new RunOcrSync(vendorNetwork, entityId, mimeType, image, additionalProperties);
         }

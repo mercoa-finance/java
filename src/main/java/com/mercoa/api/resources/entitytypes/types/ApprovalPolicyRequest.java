@@ -58,7 +58,7 @@ public final class ApprovalPolicyRequest {
         return upstreamPolicyId;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ApprovalPolicyRequest && equalTo((ApprovalPolicyRequest) other);
@@ -75,12 +75,12 @@ public final class ApprovalPolicyRequest {
                 && upstreamPolicyId.equals(other.upstreamPolicyId);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.trigger, this.rule, this.upstreamPolicyId);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -122,7 +122,7 @@ public final class ApprovalPolicyRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(ApprovalPolicyRequest other) {
             trigger(other.getTrigger());
             rule(other.getRule());
@@ -130,7 +130,7 @@ public final class ApprovalPolicyRequest {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("rule")
         public UpstreamPolicyIdStage rule(Rule rule) {
             this.rule = rule;
@@ -141,7 +141,7 @@ public final class ApprovalPolicyRequest {
          * <p>The policy ID of the previous approval policy in the chain of policies. Use 'root' if no upstreamPolicyId is intended to be set.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("upstreamPolicyId")
         public _FinalStage upstreamPolicyId(String upstreamPolicyId) {
             this.upstreamPolicyId = upstreamPolicyId;
@@ -152,7 +152,7 @@ public final class ApprovalPolicyRequest {
          * <p>List of triggers that will cause this policy to be evaluated. If no triggers are provided, the policy will be evaluated for all invoices.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addAllTrigger(List<Trigger> trigger) {
             this.trigger.addAll(trigger);
             return this;
@@ -162,13 +162,13 @@ public final class ApprovalPolicyRequest {
          * <p>List of triggers that will cause this policy to be evaluated. If no triggers are provided, the policy will be evaluated for all invoices.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage addTrigger(Trigger trigger) {
             this.trigger.add(trigger);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "trigger", nulls = Nulls.SKIP)
         public _FinalStage trigger(List<Trigger> trigger) {
             this.trigger.clear();
@@ -176,7 +176,7 @@ public final class ApprovalPolicyRequest {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public ApprovalPolicyRequest build() {
             return new ApprovalPolicyRequest(trigger, rule, upstreamPolicyId, additionalProperties);
         }

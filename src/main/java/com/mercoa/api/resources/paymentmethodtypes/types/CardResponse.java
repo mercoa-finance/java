@@ -74,7 +74,7 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
     }
 
     @JsonProperty("id")
-    @Override
+    @java.lang.Override
     public String getId() {
         return id;
     }
@@ -83,7 +83,7 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
      * @return Indicates whether this payment method is the default source for the entity
      */
     @JsonProperty("isDefaultSource")
-    @Override
+    @java.lang.Override
     public boolean getIsDefaultSource() {
         return isDefaultSource;
     }
@@ -92,25 +92,25 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
      * @return Indicates whether this payment method is the default destination for the entity
      */
     @JsonProperty("isDefaultDestination")
-    @Override
+    @java.lang.Override
     public boolean getIsDefaultDestination() {
         return isDefaultDestination;
     }
 
     @JsonProperty("supportedCurrencies")
-    @Override
+    @java.lang.Override
     public List<CurrencyCode> getSupportedCurrencies() {
         return supportedCurrencies;
     }
 
     @JsonProperty("createdAt")
-    @Override
+    @java.lang.Override
     public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
     @JsonProperty("updatedAt")
-    @Override
+    @java.lang.Override
     public OffsetDateTime getUpdatedAt() {
         return updatedAt;
     }
@@ -140,7 +140,7 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
         return expYear;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CardResponse && equalTo((CardResponse) other);
@@ -165,7 +165,7 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
                 && expYear.equals(other.expYear);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.id,
@@ -181,7 +181,7 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
                 this.expYear);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -282,7 +282,7 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(CardResponse other) {
             id(other.getId());
             isDefaultSource(other.getIsDefaultSource());
@@ -298,7 +298,7 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public IsDefaultSourceStage id(String id) {
             this.id = id;
@@ -309,7 +309,7 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
          * <p>Indicates whether this payment method is the default source for the entity</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("isDefaultSource")
         public IsDefaultDestinationStage isDefaultSource(boolean isDefaultSource) {
             this.isDefaultSource = isDefaultSource;
@@ -320,75 +320,75 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
          * <p>Indicates whether this payment method is the default destination for the entity</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("isDefaultDestination")
         public CreatedAtStage isDefaultDestination(boolean isDefaultDestination) {
             this.isDefaultDestination = isDefaultDestination;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("createdAt")
         public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("updatedAt")
         public CardTypeStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = updatedAt;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("cardType")
         public CardBrandStage cardType(CardType cardType) {
             this.cardType = cardType;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("cardBrand")
         public LastFourStage cardBrand(CardBrand cardBrand) {
             this.cardBrand = cardBrand;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("lastFour")
         public ExpMonthStage lastFour(String lastFour) {
             this.lastFour = lastFour;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("expMonth")
         public ExpYearStage expMonth(String expMonth) {
             this.expMonth = expMonth;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("expYear")
         public _FinalStage expYear(String expYear) {
             this.expYear = expYear;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addAllSupportedCurrencies(List<CurrencyCode> supportedCurrencies) {
             this.supportedCurrencies.addAll(supportedCurrencies);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addSupportedCurrencies(CurrencyCode supportedCurrencies) {
             this.supportedCurrencies.add(supportedCurrencies);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "supportedCurrencies", nulls = Nulls.SKIP)
         public _FinalStage supportedCurrencies(List<CurrencyCode> supportedCurrencies) {
             this.supportedCurrencies.clear();
@@ -396,7 +396,7 @@ public final class CardResponse implements IPaymentMethodBaseResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public CardResponse build() {
             return new CardResponse(
                     id,

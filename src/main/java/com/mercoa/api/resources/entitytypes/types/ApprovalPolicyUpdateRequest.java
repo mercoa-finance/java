@@ -55,7 +55,7 @@ public final class ApprovalPolicyUpdateRequest {
         return upstreamPolicyId;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof ApprovalPolicyUpdateRequest && equalTo((ApprovalPolicyUpdateRequest) other);
@@ -72,12 +72,12 @@ public final class ApprovalPolicyUpdateRequest {
                 && upstreamPolicyId.equals(other.upstreamPolicyId);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.trigger, this.rule, this.upstreamPolicyId);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

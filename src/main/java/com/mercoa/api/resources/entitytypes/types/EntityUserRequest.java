@@ -70,7 +70,7 @@ public final class EntityUserRequest {
         return roles;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EntityUserRequest && equalTo((EntityUserRequest) other);
@@ -88,12 +88,12 @@ public final class EntityUserRequest {
                 && roles.equals(other.roles);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.foreignId, this.email, this.name, this.roles);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

@@ -37,7 +37,7 @@ public final class CodatCompanyCreationRequest {
         return companyId;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CodatCompanyCreationRequest && equalTo((CodatCompanyCreationRequest) other);
@@ -52,12 +52,12 @@ public final class CodatCompanyCreationRequest {
         return companyId.equals(other.companyId);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.companyId);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

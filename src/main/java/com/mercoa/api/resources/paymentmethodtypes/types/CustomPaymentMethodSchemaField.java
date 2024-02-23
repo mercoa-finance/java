@@ -103,7 +103,7 @@ public final class CustomPaymentMethodSchemaField {
         return options;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CustomPaymentMethodSchemaField && equalTo((CustomPaymentMethodSchemaField) other);
@@ -124,7 +124,7 @@ public final class CustomPaymentMethodSchemaField {
                 && options.equals(other.options);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.name,
@@ -136,7 +136,7 @@ public final class CustomPaymentMethodSchemaField {
                 this.options);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -200,7 +200,7 @@ public final class CustomPaymentMethodSchemaField {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(CustomPaymentMethodSchemaField other) {
             name(other.getName());
             displayName(other.getDisplayName());
@@ -212,14 +212,14 @@ public final class CustomPaymentMethodSchemaField {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("name")
         public TypeStage name(String name) {
             this.name = name;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("type")
         public OptionalStage type(CustomPaymentMethodSchemaFieldType type) {
             this.type = type;
@@ -230,7 +230,7 @@ public final class CustomPaymentMethodSchemaField {
          * <p>Indicates whether this field is optional</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("optional")
         public _FinalStage optional(boolean optional) {
             this.optional = optional;
@@ -241,13 +241,13 @@ public final class CustomPaymentMethodSchemaField {
          * <p>When type is 'select', provide options that can be selected</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage options(List<String> options) {
             this.options = Optional.of(options);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "options", nulls = Nulls.SKIP)
         public _FinalStage options(Optional<List<String>> options) {
             this.options = options;
@@ -258,13 +258,13 @@ public final class CustomPaymentMethodSchemaField {
          * <p>Indicates whether this field should be used as the account number of the payment method. Only one field can be used as the account number. Will set the accountNumber field of the payment method to the value of this field.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage useAsAccountNumber(Boolean useAsAccountNumber) {
             this.useAsAccountNumber = Optional.of(useAsAccountNumber);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "useAsAccountNumber", nulls = Nulls.SKIP)
         public _FinalStage useAsAccountNumber(Optional<Boolean> useAsAccountNumber) {
             this.useAsAccountNumber = useAsAccountNumber;
@@ -275,33 +275,33 @@ public final class CustomPaymentMethodSchemaField {
          * <p>Indicates whether this field should be used as the name of the payment method. Only one field can be used as the name. Will set the accountName field of the payment method to the value of this field.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage useAsAccountName(Boolean useAsAccountName) {
             this.useAsAccountName = Optional.of(useAsAccountName);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "useAsAccountName", nulls = Nulls.SKIP)
         public _FinalStage useAsAccountName(Optional<Boolean> useAsAccountName) {
             this.useAsAccountName = useAsAccountName;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage displayName(String displayName) {
             this.displayName = Optional.of(displayName);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "displayName", nulls = Nulls.SKIP)
         public _FinalStage displayName(Optional<String> displayName) {
             this.displayName = displayName;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public CustomPaymentMethodSchemaField build() {
             return new CustomPaymentMethodSchemaField(
                     name,

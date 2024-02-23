@@ -99,7 +99,7 @@ public final class BankAccountCheckOptions {
         return signatureImage;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof BankAccountCheckOptions && equalTo((BankAccountCheckOptions) other);
@@ -119,7 +119,7 @@ public final class BankAccountCheckOptions {
                 && signatureImage.equals(other.signatureImage);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.enabled,
@@ -130,7 +130,7 @@ public final class BankAccountCheckOptions {
                 this.signatureImage);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

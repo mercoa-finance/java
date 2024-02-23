@@ -122,7 +122,7 @@ public final class BusinessProfileResponse {
         return taxIdProvided;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof BusinessProfileResponse && equalTo((BusinessProfileResponse) other);
@@ -146,7 +146,7 @@ public final class BusinessProfileResponse {
                 && taxIdProvided == other.taxIdProvided;
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.email,
@@ -161,7 +161,7 @@ public final class BusinessProfileResponse {
                 this.taxIdProvided);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -243,7 +243,7 @@ public final class BusinessProfileResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(BusinessProfileResponse other) {
             email(other.getEmail());
             legalBusinessName(other.getLegalBusinessName());
@@ -258,14 +258,14 @@ public final class BusinessProfileResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("legalBusinessName")
         public TaxIdProvidedStage legalBusinessName(String legalBusinessName) {
             this.legalBusinessName = legalBusinessName;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("taxIDProvided")
         public _FinalStage taxIdProvided(boolean taxIdProvided) {
             this.taxIdProvided = taxIdProvided;
@@ -276,111 +276,111 @@ public final class BusinessProfileResponse {
          * <p>True if all representatives have been provided for this business.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage ownersProvided(Boolean ownersProvided) {
             this.ownersProvided = Optional.of(ownersProvided);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "ownersProvided", nulls = Nulls.SKIP)
         public _FinalStage ownersProvided(Optional<Boolean> ownersProvided) {
             this.ownersProvided = ownersProvided;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage address(Address address) {
             this.address = Optional.of(address);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "address", nulls = Nulls.SKIP)
         public _FinalStage address(Optional<Address> address) {
             this.address = address;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage description(String description) {
             this.description = Optional.of(description);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "description", nulls = Nulls.SKIP)
         public _FinalStage description(Optional<String> description) {
             this.description = description;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage website(String website) {
             this.website = Optional.of(website);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "website", nulls = Nulls.SKIP)
         public _FinalStage website(Optional<String> website) {
             this.website = website;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage doingBusinessAs(String doingBusinessAs) {
             this.doingBusinessAs = Optional.of(doingBusinessAs);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "doingBusinessAs", nulls = Nulls.SKIP)
         public _FinalStage doingBusinessAs(Optional<String> doingBusinessAs) {
             this.doingBusinessAs = doingBusinessAs;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage phone(PhoneNumber phone) {
             this.phone = Optional.of(phone);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "phone", nulls = Nulls.SKIP)
         public _FinalStage phone(Optional<PhoneNumber> phone) {
             this.phone = phone;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage businessType(BusinessType businessType) {
             this.businessType = Optional.of(businessType);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "businessType", nulls = Nulls.SKIP)
         public _FinalStage businessType(Optional<BusinessType> businessType) {
             this.businessType = businessType;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage email(String email) {
             this.email = Optional.of(email);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "email", nulls = Nulls.SKIP)
         public _FinalStage email(Optional<String> email) {
             this.email = email;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public BusinessProfileResponse build() {
             return new BusinessProfileResponse(
                     email,

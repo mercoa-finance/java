@@ -127,7 +127,7 @@ public final class OrganizationRequest {
         return metadataSchema;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof OrganizationRequest && equalTo((OrganizationRequest) other);
@@ -152,7 +152,7 @@ public final class OrganizationRequest {
                 && metadataSchema.equals(other.metadataSchema);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.name,
@@ -168,7 +168,7 @@ public final class OrganizationRequest {
                 this.metadataSchema);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

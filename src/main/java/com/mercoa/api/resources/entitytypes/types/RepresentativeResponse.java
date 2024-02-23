@@ -130,7 +130,7 @@ public final class RepresentativeResponse {
         return disabledOn;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof RepresentativeResponse && equalTo((RepresentativeResponse) other);
@@ -155,7 +155,7 @@ public final class RepresentativeResponse {
                 && disabledOn.equals(other.disabledOn);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.id,
@@ -171,7 +171,7 @@ public final class RepresentativeResponse {
                 this.disabledOn);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -270,7 +270,7 @@ public final class RepresentativeResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(RepresentativeResponse other) {
             id(other.getId());
             name(other.getName());
@@ -286,90 +286,90 @@ public final class RepresentativeResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("id")
         public NameStage id(String id) {
             this.id = id;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("name")
         public PhoneStage name(FullName name) {
             this.name = name;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("phone")
         public EmailStage phone(PhoneNumber phone) {
             this.phone = phone;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("email")
         public AddressStage email(String email) {
             this.email = email;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("address")
         public BirthDateProvidedStage address(Address address) {
             this.address = address;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("birthDateProvided")
         public GovernmentIdProvidedStage birthDateProvided(boolean birthDateProvided) {
             this.birthDateProvided = birthDateProvided;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("governmentIDProvided")
         public ResponsibilitiesStage governmentIdProvided(boolean governmentIdProvided) {
             this.governmentIdProvided = governmentIdProvided;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("responsibilities")
         public CreatedOnStage responsibilities(Responsibilities responsibilities) {
             this.responsibilities = responsibilities;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("createdOn")
         public UpdatedOnStage createdOn(OffsetDateTime createdOn) {
             this.createdOn = createdOn;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("updatedOn")
         public _FinalStage updatedOn(OffsetDateTime updatedOn) {
             this.updatedOn = updatedOn;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage disabledOn(OffsetDateTime disabledOn) {
             this.disabledOn = Optional.of(disabledOn);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "disabledOn", nulls = Nulls.SKIP)
         public _FinalStage disabledOn(Optional<OffsetDateTime> disabledOn) {
             this.disabledOn = disabledOn;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public RepresentativeResponse build() {
             return new RepresentativeResponse(
                     id,

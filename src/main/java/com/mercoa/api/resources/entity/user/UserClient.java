@@ -6,6 +6,7 @@ package com.mercoa.api.resources.entity.user;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.mercoa.api.core.ApiError;
 import com.mercoa.api.core.ClientOptions;
+import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -40,6 +41,13 @@ public class UserClient {
     /**
      * Get all entity users
      */
+    public List<EntityUserResponse> getAll(String entityId) {
+        return getAll(entityId, null);
+    }
+
+    /**
+     * Get all entity users
+     */
     public List<EntityUserResponse> getAll(String entityId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -54,8 +62,13 @@ public class UserClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(
                         response.body().string(), new TypeReference<List<EntityUserResponse>>() {});
@@ -68,15 +81,12 @@ public class UserClient {
         }
     }
 
-    /**
-     * Get all entity users
-     */
-    public List<EntityUserResponse> getAll(String entityId) {
-        return getAll(entityId, null);
-    }
-
     public EntityUserResponse create(String entityId) {
         return create(entityId, EntityUserRequest.builder().build());
+    }
+
+    public EntityUserResponse create(String entityId, EntityUserRequest request) {
+        return create(entityId, request, null);
     }
 
     public EntityUserResponse create(String entityId, EntityUserRequest request, RequestOptions requestOptions) {
@@ -89,7 +99,7 @@ public class UserClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -100,8 +110,13 @@ public class UserClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), EntityUserResponse.class);
             }
@@ -113,8 +128,11 @@ public class UserClient {
         }
     }
 
-    public EntityUserResponse create(String entityId, EntityUserRequest request) {
-        return create(entityId, request, null);
+    /**
+     * Get entity user
+     */
+    public EntityUserResponse get(String entityId, String userId) {
+        return get(entityId, userId, null);
     }
 
     /**
@@ -135,8 +153,13 @@ public class UserClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), EntityUserResponse.class);
             }
@@ -149,17 +172,17 @@ public class UserClient {
     }
 
     /**
-     * Get entity user
+     * Update entity user
      */
-    public EntityUserResponse get(String entityId, String userId) {
-        return get(entityId, userId, null);
+    public EntityUserResponse update(String entityId, String userId) {
+        return update(entityId, userId, EntityUserRequest.builder().build());
     }
 
     /**
      * Update entity user
      */
-    public EntityUserResponse update(String entityId, String userId) {
-        return update(entityId, userId, EntityUserRequest.builder().build());
+    public EntityUserResponse update(String entityId, String userId, EntityUserRequest request) {
+        return update(entityId, userId, request, null);
     }
 
     /**
@@ -177,7 +200,7 @@ public class UserClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -188,8 +211,13 @@ public class UserClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), EntityUserResponse.class);
             }
@@ -202,10 +230,10 @@ public class UserClient {
     }
 
     /**
-     * Update entity user
+     * Delete entity user. This will also remove the user from all approval policies. If an approval policy will break as a result of this operation, this request will fail.
      */
-    public EntityUserResponse update(String entityId, String userId, EntityUserRequest request) {
-        return update(entityId, userId, request, null);
+    public void delete(String entityId, String userId) {
+        delete(entityId, userId, null);
     }
 
     /**
@@ -225,8 +253,13 @@ public class UserClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -239,17 +272,17 @@ public class UserClient {
     }
 
     /**
-     * Delete entity user. This will also remove the user from all approval policies. If an approval policy will break as a result of this operation, this request will fail.
+     * Generate a JWT token for an entity user with the given options. This token can be used to authenticate the entity and entity user in the Mercoa API and iFrame.
      */
-    public void delete(String entityId, String userId) {
-        delete(entityId, userId, null);
+    public String getToken(String entityId, String userId) {
+        return getToken(entityId, userId, TokenGenerationOptions.builder().build());
     }
 
     /**
      * Generate a JWT token for an entity user with the given options. This token can be used to authenticate the entity and entity user in the Mercoa API and iFrame.
      */
-    public String getToken(String entityId, String userId) {
-        return getToken(entityId, userId, TokenGenerationOptions.builder().build());
+    public String getToken(String entityId, String userId, TokenGenerationOptions request) {
+        return getToken(entityId, userId, request, null);
     }
 
     /**
@@ -268,7 +301,7 @@ public class UserClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -279,8 +312,13 @@ public class UserClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), String.class);
             }
@@ -290,13 +328,6 @@ public class UserClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Generate a JWT token for an entity user with the given options. This token can be used to authenticate the entity and entity user in the Mercoa API and iFrame.
-     */
-    public String getToken(String entityId, String userId, TokenGenerationOptions request) {
-        return getToken(entityId, userId, request, null);
     }
 
     public NotificationPolicyClient notificationPolicy() {

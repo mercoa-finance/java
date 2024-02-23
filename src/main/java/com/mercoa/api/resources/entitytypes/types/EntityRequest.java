@@ -130,7 +130,7 @@ public final class EntityRequest {
         return logo;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EntityRequest && equalTo((EntityRequest) other);
@@ -153,7 +153,7 @@ public final class EntityRequest {
                 && logo.equals(other.logo);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.foreignId,
@@ -167,7 +167,7 @@ public final class EntityRequest {
                 this.logo);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -244,7 +244,7 @@ public final class EntityRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(EntityRequest other) {
             foreignId(other.getForeignId());
             emailTo(other.getEmailTo());
@@ -262,21 +262,21 @@ public final class EntityRequest {
          * <p>If this entity has a direct relationship with your organization (e.g your direct customer or client), set this to true. Otherwise, set to false (e.g your customer's vendors).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("isCustomer")
         public AccountTypeStage isCustomer(boolean isCustomer) {
             this.isCustomer = isCustomer;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("accountType")
         public ProfileStage accountType(AccountType accountType) {
             this.accountType = accountType;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("profile")
         public IsPayorStage profile(ProfileRequest profile) {
             this.profile = profile;
@@ -287,7 +287,7 @@ public final class EntityRequest {
          * <p>If this entity will be paying invoices, set this to true.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("isPayor")
         public IsPayeeStage isPayor(boolean isPayor) {
             this.isPayor = isPayor;
@@ -298,7 +298,7 @@ public final class EntityRequest {
          * <p>If this entity will be receiving payments, set this to true.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("isPayee")
         public _FinalStage isPayee(boolean isPayee) {
             this.isPayee = isPayee;
@@ -309,13 +309,13 @@ public final class EntityRequest {
          * <p>Base64 encoded PNG image data for the entity logo.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage logo(String logo) {
             this.logo = Optional.of(logo);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "logo", nulls = Nulls.SKIP)
         public _FinalStage logo(Optional<String> logo) {
             this.logo = logo;
@@ -326,13 +326,13 @@ public final class EntityRequest {
          * <p>Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias. Include the full email address.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage emailToAlias(List<String> emailToAlias) {
             this.emailToAlias = Optional.of(emailToAlias);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "emailToAlias", nulls = Nulls.SKIP)
         public _FinalStage emailToAlias(Optional<List<String>> emailToAlias) {
             this.emailToAlias = emailToAlias;
@@ -343,13 +343,13 @@ public final class EntityRequest {
          * <p>Sets the email address to which to send invoices to be added to the Invoice Inbox. Only provide the local-part/username of the email address, do not include the @domain.com</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage emailTo(String emailTo) {
             this.emailTo = Optional.of(emailTo);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "emailTo", nulls = Nulls.SKIP)
         public _FinalStage emailTo(Optional<String> emailTo) {
             this.emailTo = emailTo;
@@ -360,20 +360,20 @@ public final class EntityRequest {
          * <p>The ID used to identify this entity in your system. This ID must be unique across all entities in your system.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage foreignId(String foreignId) {
             this.foreignId = Optional.of(foreignId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
         public _FinalStage foreignId(Optional<String> foreignId) {
             this.foreignId = foreignId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public EntityRequest build() {
             return new EntityRequest(
                     foreignId,

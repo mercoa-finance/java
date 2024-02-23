@@ -133,7 +133,7 @@ public final class BusinessOnboardingOptions {
         return representatives;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof BusinessOnboardingOptions && equalTo((BusinessOnboardingOptions) other);
@@ -159,7 +159,7 @@ public final class BusinessOnboardingOptions {
                 && representatives.equals(other.representatives);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.termsOfService,
@@ -176,7 +176,7 @@ public final class BusinessOnboardingOptions {
                 this.representatives);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -283,7 +283,7 @@ public final class BusinessOnboardingOptions {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(BusinessOnboardingOptions other) {
             termsOfService(other.getTermsOfService());
             email(other.getEmail());
@@ -300,91 +300,91 @@ public final class BusinessOnboardingOptions {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("termsOfService")
         public EmailStage termsOfService(OnboardingOption termsOfService) {
             this.termsOfService = termsOfService;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("email")
         public NameStage email(OnboardingOption email) {
             this.email = email;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("name")
         public TypeStage name(OnboardingOption name) {
             this.name = name;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("type")
         public DoingBusinessAsStage type(OnboardingOption type) {
             this.type = type;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("doingBusinessAs")
         public EinStage doingBusinessAs(OnboardingOption doingBusinessAs) {
             this.doingBusinessAs = doingBusinessAs;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("ein")
         public AddressStage ein(OnboardingOption ein) {
             this.ein = ein;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("address")
         public PhoneStage address(OnboardingOption address) {
             this.address = address;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("phone")
         public FormationDateStage phone(OnboardingOption phone) {
             this.phone = phone;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("formationDate")
         public WebsiteStage formationDate(OnboardingOption formationDate) {
             this.formationDate = formationDate;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("website")
         public DescriptionStage website(OnboardingOption website) {
             this.website = website;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("description")
         public RepresentativesStage description(OnboardingOption description) {
             this.description = description;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("representatives")
         public _FinalStage representatives(OnboardingOption representatives) {
             this.representatives = representatives;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public BusinessOnboardingOptions build() {
             return new BusinessOnboardingOptions(
                     termsOfService,

@@ -18,30 +18,31 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = BankAccountPaymentSourceOptions.Builder.class)
-public final class BankAccountPaymentSourceOptions {
+@JsonDeserialize(builder = BankAccountPaymentDestinationOptions.Builder.class)
+public final class BankAccountPaymentDestinationOptions {
     private final Optional<BankDeliveryMethod> delivery;
 
     private final Map<String, Object> additionalProperties;
 
-    private BankAccountPaymentSourceOptions(
+    private BankAccountPaymentDestinationOptions(
             Optional<BankDeliveryMethod> delivery, Map<String, Object> additionalProperties) {
         this.delivery = delivery;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return Delivery method for ACH payments. Defaults to ACH_STANDARD.
+     * @return Delivery method for ACH payments. Defaults to ACH_SAME_DAY.
      */
     @JsonProperty("delivery")
     public Optional<BankDeliveryMethod> getDelivery() {
         return delivery;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof BankAccountPaymentSourceOptions && equalTo((BankAccountPaymentSourceOptions) other);
+        return other instanceof BankAccountPaymentDestinationOptions
+                && equalTo((BankAccountPaymentDestinationOptions) other);
     }
 
     @JsonAnyGetter
@@ -49,16 +50,16 @@ public final class BankAccountPaymentSourceOptions {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(BankAccountPaymentSourceOptions other) {
+    private boolean equalTo(BankAccountPaymentDestinationOptions other) {
         return delivery.equals(other.delivery);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.delivery);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -76,7 +77,7 @@ public final class BankAccountPaymentSourceOptions {
 
         private Builder() {}
 
-        public Builder from(BankAccountPaymentSourceOptions other) {
+        public Builder from(BankAccountPaymentDestinationOptions other) {
             delivery(other.getDelivery());
             return this;
         }
@@ -92,8 +93,8 @@ public final class BankAccountPaymentSourceOptions {
             return this;
         }
 
-        public BankAccountPaymentSourceOptions build() {
-            return new BankAccountPaymentSourceOptions(delivery, additionalProperties);
+        public BankAccountPaymentDestinationOptions build() {
+            return new BankAccountPaymentDestinationOptions(delivery, additionalProperties);
         }
     }
 }

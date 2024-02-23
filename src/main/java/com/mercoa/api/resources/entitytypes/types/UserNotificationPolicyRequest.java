@@ -24,12 +24,18 @@ public final class UserNotificationPolicyRequest {
 
     private final Optional<Boolean> digest;
 
+    private final Optional<Boolean> immediate;
+
     private final Map<String, Object> additionalProperties;
 
     private UserNotificationPolicyRequest(
-            Optional<Boolean> disabled, Optional<Boolean> digest, Map<String, Object> additionalProperties) {
+            Optional<Boolean> disabled,
+            Optional<Boolean> digest,
+            Optional<Boolean> immediate,
+            Map<String, Object> additionalProperties) {
         this.disabled = disabled;
         this.digest = digest;
+        this.immediate = immediate;
         this.additionalProperties = additionalProperties;
     }
 
@@ -42,14 +48,22 @@ public final class UserNotificationPolicyRequest {
     }
 
     /**
-     * @return Set to true if the selected notification type should be sent as a digest. If false, the notification will be sent immediately.
+     * @return Set to true if the selected notification type should be sent as a digest. Default is false.
      */
     @JsonProperty("digest")
     public Optional<Boolean> getDigest() {
         return digest;
     }
 
-    @Override
+    /**
+     * @return Set to true if the selected notification type should be sent immediately. Default is true.
+     */
+    @JsonProperty("immediate")
+    public Optional<Boolean> getImmediate() {
+        return immediate;
+    }
+
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof UserNotificationPolicyRequest && equalTo((UserNotificationPolicyRequest) other);
@@ -61,15 +75,15 @@ public final class UserNotificationPolicyRequest {
     }
 
     private boolean equalTo(UserNotificationPolicyRequest other) {
-        return disabled.equals(other.disabled) && digest.equals(other.digest);
+        return disabled.equals(other.disabled) && digest.equals(other.digest) && immediate.equals(other.immediate);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.disabled, this.digest);
+        return Objects.hash(this.disabled, this.digest, this.immediate);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -84,6 +98,8 @@ public final class UserNotificationPolicyRequest {
 
         private Optional<Boolean> digest = Optional.empty();
 
+        private Optional<Boolean> immediate = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -92,6 +108,7 @@ public final class UserNotificationPolicyRequest {
         public Builder from(UserNotificationPolicyRequest other) {
             disabled(other.getDisabled());
             digest(other.getDigest());
+            immediate(other.getImmediate());
             return this;
         }
 
@@ -117,8 +134,19 @@ public final class UserNotificationPolicyRequest {
             return this;
         }
 
+        @JsonSetter(value = "immediate", nulls = Nulls.SKIP)
+        public Builder immediate(Optional<Boolean> immediate) {
+            this.immediate = immediate;
+            return this;
+        }
+
+        public Builder immediate(Boolean immediate) {
+            this.immediate = Optional.of(immediate);
+            return this;
+        }
+
         public UserNotificationPolicyRequest build() {
-            return new UserNotificationPolicyRequest(disabled, digest, additionalProperties);
+            return new UserNotificationPolicyRequest(disabled, digest, immediate, additionalProperties);
         }
     }
 }

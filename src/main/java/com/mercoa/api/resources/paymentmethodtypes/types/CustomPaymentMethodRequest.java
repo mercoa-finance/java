@@ -60,7 +60,7 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
      * @return If true, this payment method will be set as the default source. Only one payment method can be set as the default source. If another payment method is already set as the default source, it will be unset.
      */
     @JsonProperty("defaultSource")
-    @Override
+    @java.lang.Override
     public Optional<Boolean> getDefaultSource() {
         return defaultSource;
     }
@@ -69,7 +69,7 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
      * @return If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.
      */
     @JsonProperty("defaultDestination")
-    @Override
+    @java.lang.Override
     public Optional<Boolean> getDefaultDestination() {
         return defaultDestination;
     }
@@ -108,7 +108,7 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
         return data;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CustomPaymentMethodRequest && equalTo((CustomPaymentMethodRequest) other);
@@ -129,7 +129,7 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
                 && data.equals(other.data);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.defaultSource,
@@ -141,7 +141,7 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
                 this.data);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -207,7 +207,7 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(CustomPaymentMethodRequest other) {
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
@@ -223,7 +223,7 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
          * <p>ID for this payment method in your system</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("foreignId")
         public SchemaIdStage foreignId(String foreignId) {
             this.foreignId = foreignId;
@@ -234,7 +234,7 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
          * <p>Payment method schema used for this payment method. Defines the fields that this payment method contains.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("schemaId")
         public _FinalStage schemaId(String schemaId) {
             this.schemaId = schemaId;
@@ -245,7 +245,7 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
          * <p>Object of key/value pairs that matches the keys in the linked payment method schema.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage data(String key, String value) {
             this.data.put(key, value);
             return this;
@@ -255,13 +255,13 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
          * <p>Object of key/value pairs that matches the keys in the linked payment method schema.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage putAllData(Map<String, String> data) {
             this.data.putAll(data);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "data", nulls = Nulls.SKIP)
         public _FinalStage data(Map<String, String> data) {
             this.data.clear();
@@ -269,26 +269,26 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage accountNumber(String accountNumber) {
             this.accountNumber = Optional.of(accountNumber);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "accountNumber", nulls = Nulls.SKIP)
         public _FinalStage accountNumber(Optional<String> accountNumber) {
             this.accountNumber = accountNumber;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage accountName(String accountName) {
             this.accountName = Optional.of(accountName);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "accountName", nulls = Nulls.SKIP)
         public _FinalStage accountName(Optional<String> accountName) {
             this.accountName = accountName;
@@ -299,13 +299,13 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
          * <p>If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage defaultDestination(Boolean defaultDestination) {
             this.defaultDestination = Optional.of(defaultDestination);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "defaultDestination", nulls = Nulls.SKIP)
         public _FinalStage defaultDestination(Optional<Boolean> defaultDestination) {
             this.defaultDestination = defaultDestination;
@@ -316,20 +316,20 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
          * <p>If true, this payment method will be set as the default source. Only one payment method can be set as the default source. If another payment method is already set as the default source, it will be unset.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage defaultSource(Boolean defaultSource) {
             this.defaultSource = Optional.of(defaultSource);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "defaultSource", nulls = Nulls.SKIP)
         public _FinalStage defaultSource(Optional<Boolean> defaultSource) {
             this.defaultSource = defaultSource;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public CustomPaymentMethodRequest build() {
             return new CustomPaymentMethodRequest(
                     defaultSource,

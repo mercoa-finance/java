@@ -82,12 +82,12 @@ public final class Rule {
             this.value = value;
         }
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor.visitApprover(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof ApproverValue && equalTo((ApproverValue) other);
@@ -97,12 +97,12 @@ public final class Rule {
             return value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "Rule{" + "value: " + value + "}";
         }
@@ -117,12 +117,12 @@ public final class Rule {
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private _UnknownValue(@JsonProperty("value") Object value) {}
 
-        @Override
+        @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
             return visitor._visitUnknown(value);
         }
 
-        @Override
+        @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
             return other instanceof _UnknownValue && equalTo((_UnknownValue) other);
@@ -132,12 +132,12 @@ public final class Rule {
             return type.equals(other.type) && value.equals(other.value);
         }
 
-        @Override
+        @java.lang.Override
         public int hashCode() {
             return Objects.hash(this.type, this.value);
         }
 
-        @Override
+        @java.lang.Override
         public String toString() {
             return "Rule{" + "type: " + type + ", value: " + value + "}";
         }

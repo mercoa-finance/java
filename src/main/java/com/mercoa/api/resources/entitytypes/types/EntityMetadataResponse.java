@@ -43,7 +43,7 @@ public final class EntityMetadataResponse {
         return value;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EntityMetadataResponse && equalTo((EntityMetadataResponse) other);
@@ -58,12 +58,12 @@ public final class EntityMetadataResponse {
         return key.equals(other.key) && value.equals(other.value);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.key, this.value);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -99,33 +99,33 @@ public final class EntityMetadataResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(EntityMetadataResponse other) {
             key(other.getKey());
             value(other.getValue());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("key")
         public _FinalStage key(String key) {
             this.key = key;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addAllValue(List<String> value) {
             this.value.addAll(value);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addValue(String value) {
             this.value.add(value);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "value", nulls = Nulls.SKIP)
         public _FinalStage value(List<String> value) {
             this.value.clear();
@@ -133,7 +133,7 @@ public final class EntityMetadataResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public EntityMetadataResponse build() {
             return new EntityMetadataResponse(key, value, additionalProperties);
         }

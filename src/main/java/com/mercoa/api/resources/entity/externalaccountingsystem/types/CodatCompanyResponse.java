@@ -32,7 +32,7 @@ public final class CodatCompanyResponse {
         return companyId;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CodatCompanyResponse && equalTo((CodatCompanyResponse) other);
@@ -47,12 +47,12 @@ public final class CodatCompanyResponse {
         return companyId.equals(other.companyId);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.companyId);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -80,20 +80,20 @@ public final class CodatCompanyResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(CodatCompanyResponse other) {
             companyId(other.getCompanyId());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("companyId")
         public _FinalStage companyId(String companyId) {
             this.companyId = companyId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public CodatCompanyResponse build() {
             return new CodatCompanyResponse(companyId, additionalProperties);
         }

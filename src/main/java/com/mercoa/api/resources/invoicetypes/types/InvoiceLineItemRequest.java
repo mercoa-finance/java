@@ -89,6 +89,9 @@ public final class InvoiceLineItemRequest {
         return amount;
     }
 
+    /**
+     * @return Currency code for the amount. Defaults to USD.
+     */
     @JsonProperty("currency")
     public Optional<CurrencyCode> getCurrency() {
         return currency;
@@ -140,7 +143,7 @@ public final class InvoiceLineItemRequest {
         return glAccountId;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof InvoiceLineItemRequest && equalTo((InvoiceLineItemRequest) other);
@@ -165,7 +168,7 @@ public final class InvoiceLineItemRequest {
                 && glAccountId.equals(other.glAccountId);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.id,
@@ -181,7 +184,7 @@ public final class InvoiceLineItemRequest {
                 this.glAccountId);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -269,7 +272,7 @@ public final class InvoiceLineItemRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(InvoiceLineItemRequest other) {
             id(other.getId());
             amount(other.getAmount());
@@ -289,14 +292,14 @@ public final class InvoiceLineItemRequest {
          * <p>Total amount of line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("amount")
         public DescriptionStage amount(double amount) {
             this.amount = amount;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("description")
         public _FinalStage description(String description) {
             this.description = description;
@@ -307,52 +310,52 @@ public final class InvoiceLineItemRequest {
          * <p>ID of general ledger account associated with this line item.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage glAccountId(String glAccountId) {
             this.glAccountId = Optional.of(glAccountId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "glAccountId", nulls = Nulls.SKIP)
         public _FinalStage glAccountId(Optional<String> glAccountId) {
             this.glAccountId = glAccountId;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage metadata(Map<String, String> metadata) {
             this.metadata = Optional.of(metadata);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public _FinalStage metadata(Optional<Map<String, String>> metadata) {
             this.metadata = metadata;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage serviceEndDate(OffsetDateTime serviceEndDate) {
             this.serviceEndDate = Optional.of(serviceEndDate);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "serviceEndDate", nulls = Nulls.SKIP)
         public _FinalStage serviceEndDate(Optional<OffsetDateTime> serviceEndDate) {
             this.serviceEndDate = serviceEndDate;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage serviceStartDate(OffsetDateTime serviceStartDate) {
             this.serviceStartDate = Optional.of(serviceStartDate);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "serviceStartDate", nulls = Nulls.SKIP)
         public _FinalStage serviceStartDate(Optional<OffsetDateTime> serviceStartDate) {
             this.serviceStartDate = serviceStartDate;
@@ -363,52 +366,56 @@ public final class InvoiceLineItemRequest {
          * <p>Unit price of the line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage unitPrice(Double unitPrice) {
             this.unitPrice = Optional.of(unitPrice);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "unitPrice", nulls = Nulls.SKIP)
         public _FinalStage unitPrice(Optional<Double> unitPrice) {
             this.unitPrice = unitPrice;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage quantity(Integer quantity) {
             this.quantity = Optional.of(quantity);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "quantity", nulls = Nulls.SKIP)
         public _FinalStage quantity(Optional<Integer> quantity) {
             this.quantity = quantity;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage name(String name) {
             this.name = Optional.of(name);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "name", nulls = Nulls.SKIP)
         public _FinalStage name(Optional<String> name) {
             this.name = name;
             return this;
         }
 
-        @Override
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage currency(CurrencyCode currency) {
             this.currency = Optional.of(currency);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "currency", nulls = Nulls.SKIP)
         public _FinalStage currency(Optional<CurrencyCode> currency) {
             this.currency = currency;
@@ -419,20 +426,20 @@ public final class InvoiceLineItemRequest {
          * <p>If provided, will overwrite line item on the invoice with this ID. If not provided, will create a new line item.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage id(String id) {
             this.id = Optional.of(id);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "id", nulls = Nulls.SKIP)
         public _FinalStage id(Optional<String> id) {
             this.id = id;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public InvoiceLineItemRequest build() {
             return new InvoiceLineItemRequest(
                     id,

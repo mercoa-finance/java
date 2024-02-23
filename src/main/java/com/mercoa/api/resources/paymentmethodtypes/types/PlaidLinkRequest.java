@@ -63,7 +63,7 @@ public final class PlaidLinkRequest {
         return accessToken;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof PlaidLinkRequest && equalTo((PlaidLinkRequest) other);
@@ -80,12 +80,12 @@ public final class PlaidLinkRequest {
                 && accessToken.equals(other.accessToken);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.accountId, this.publicToken, this.accessToken);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -125,7 +125,7 @@ public final class PlaidLinkRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(PlaidLinkRequest other) {
             accountId(other.getAccountId());
             publicToken(other.getPublicToken());
@@ -137,7 +137,7 @@ public final class PlaidLinkRequest {
          * <p>Plaid account ID</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("accountId")
         public _FinalStage accountId(String accountId) {
             this.accountId = accountId;
@@ -148,13 +148,13 @@ public final class PlaidLinkRequest {
          * <p>Plaid access token for the account. If you already have an access token for the account (for example, you have linked the account to your app already), use this instead of publicToken.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage accessToken(String accessToken) {
             this.accessToken = Optional.of(accessToken);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "accessToken", nulls = Nulls.SKIP)
         public _FinalStage accessToken(Optional<String> accessToken) {
             this.accessToken = accessToken;
@@ -165,20 +165,20 @@ public final class PlaidLinkRequest {
          * <p>Public token received from Plaid Link. Use this if linking the account using the Plaid Link frontend component.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage publicToken(String publicToken) {
             this.publicToken = Optional.of(publicToken);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "publicToken", nulls = Nulls.SKIP)
         public _FinalStage publicToken(Optional<String> publicToken) {
             this.publicToken = publicToken;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public PlaidLinkRequest build() {
             return new PlaidLinkRequest(accountId, publicToken, accessToken, additionalProperties);
         }

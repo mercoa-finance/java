@@ -32,7 +32,7 @@ public final class TokenGenerationStyleOptions {
         return primaryColor;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof TokenGenerationStyleOptions && equalTo((TokenGenerationStyleOptions) other);
@@ -47,12 +47,12 @@ public final class TokenGenerationStyleOptions {
         return primaryColor.equals(other.primaryColor);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.primaryColor);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -80,20 +80,20 @@ public final class TokenGenerationStyleOptions {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(TokenGenerationStyleOptions other) {
             primaryColor(other.getPrimaryColor());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("primaryColor")
         public _FinalStage primaryColor(String primaryColor) {
             this.primaryColor = primaryColor;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public TokenGenerationStyleOptions build() {
             return new TokenGenerationStyleOptions(primaryColor, additionalProperties);
         }

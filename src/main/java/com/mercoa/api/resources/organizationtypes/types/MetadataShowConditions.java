@@ -113,7 +113,7 @@ public final class MetadataShowConditions {
         return paymentDestinationCustomSchemaIds;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof MetadataShowConditions && equalTo((MetadataShowConditions) other);
@@ -134,7 +134,7 @@ public final class MetadataShowConditions {
                 && paymentDestinationCustomSchemaIds.equals(other.paymentDestinationCustomSchemaIds);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.hasOptions,
@@ -146,7 +146,7 @@ public final class MetadataShowConditions {
                 this.paymentDestinationCustomSchemaIds);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

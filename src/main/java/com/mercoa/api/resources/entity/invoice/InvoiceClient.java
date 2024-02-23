@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -33,6 +34,13 @@ public class InvoiceClient {
      */
     public FindInvoiceResponse find(String entityId) {
         return find(entityId, EntityGetInvoicesRequest.builder().build());
+    }
+
+    /**
+     * Get invoices for an entity with the given filters.
+     */
+    public FindInvoiceResponse find(String entityId, EntityGetInvoicesRequest request) {
+        return find(entityId, request, null);
     }
 
     /**
@@ -101,8 +109,13 @@ public class InvoiceClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), FindInvoiceResponse.class);
             }
@@ -114,15 +127,12 @@ public class InvoiceClient {
         }
     }
 
-    /**
-     * Get invoices for an entity with the given filters.
-     */
-    public FindInvoiceResponse find(String entityId, EntityGetInvoicesRequest request) {
-        return find(entityId, request, null);
-    }
-
     public InvoiceResponse get(String entityId, String invoiceId) {
         return get(entityId, invoiceId, GetInvoice.builder().build());
+    }
+
+    public InvoiceResponse get(String entityId, String invoiceId, GetInvoice request) {
+        return get(entityId, invoiceId, request, null);
     }
 
     public InvoiceResponse get(String entityId, String invoiceId, GetInvoice request, RequestOptions requestOptions) {
@@ -143,8 +153,13 @@ public class InvoiceClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), InvoiceResponse.class);
             }
@@ -156,15 +171,18 @@ public class InvoiceClient {
         }
     }
 
-    public InvoiceResponse get(String entityId, String invoiceId, GetInvoice request) {
-        return get(entityId, invoiceId, request, null);
-    }
-
     /**
      * Get invoice metrics for an entity with the given filters.
      */
     public List<InvoiceMetricsResponse> metrics(String entityId) {
         return metrics(entityId, InvoiceMetricsRequest.builder().build());
+    }
+
+    /**
+     * Get invoice metrics for an entity with the given filters.
+     */
+    public List<InvoiceMetricsResponse> metrics(String entityId, InvoiceMetricsRequest request) {
+        return metrics(entityId, request, null);
     }
 
     /**
@@ -229,8 +247,13 @@ public class InvoiceClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(
                         response.body().string(), new TypeReference<List<InvoiceMetricsResponse>>() {});
@@ -241,12 +264,5 @@ public class InvoiceClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Get invoice metrics for an entity with the given filters.
-     */
-    public List<InvoiceMetricsResponse> metrics(String entityId, InvoiceMetricsRequest request) {
-        return metrics(entityId, request, null);
     }
 }

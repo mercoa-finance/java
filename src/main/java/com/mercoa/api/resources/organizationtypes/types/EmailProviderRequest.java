@@ -41,7 +41,7 @@ public final class EmailProviderRequest {
         return inboxDomain;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EmailProviderRequest && equalTo((EmailProviderRequest) other);
@@ -56,12 +56,12 @@ public final class EmailProviderRequest {
         return sender.equals(other.sender) && inboxDomain.equals(other.inboxDomain);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.sender, this.inboxDomain);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -95,28 +95,28 @@ public final class EmailProviderRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(EmailProviderRequest other) {
             sender(other.getSender());
             inboxDomain(other.getInboxDomain());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("sender")
         public InboxDomainStage sender(EmailSenderRequest sender) {
             this.sender = sender;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("inboxDomain")
         public _FinalStage inboxDomain(String inboxDomain) {
             this.inboxDomain = inboxDomain;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public EmailProviderRequest build() {
             return new EmailProviderRequest(sender, inboxDomain, additionalProperties);
         }

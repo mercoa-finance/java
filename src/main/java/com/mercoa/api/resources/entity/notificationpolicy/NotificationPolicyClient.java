@@ -6,6 +6,7 @@ package com.mercoa.api.resources.entity.notificationpolicy;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.mercoa.api.core.ApiError;
 import com.mercoa.api.core.ClientOptions;
+import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.entitytypes.types.NotificationPolicyRequest;
@@ -15,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -25,6 +26,13 @@ public class NotificationPolicyClient {
 
     public NotificationPolicyClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+    }
+
+    /**
+     * Retrieve all notification policies associated with this entity
+     */
+    public List<NotificationPolicyResponse> getAll(String entityId) {
+        return getAll(entityId, null);
     }
 
     /**
@@ -44,8 +52,13 @@ public class NotificationPolicyClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(
                         response.body().string(), new TypeReference<List<NotificationPolicyResponse>>() {});
@@ -59,10 +72,10 @@ public class NotificationPolicyClient {
     }
 
     /**
-     * Retrieve all notification policies associated with this entity
+     * Retrieve notification policy associated with this entity
      */
-    public List<NotificationPolicyResponse> getAll(String entityId) {
-        return getAll(entityId, null);
+    public NotificationPolicyResponse get(String entityId, NotificationType notificationType) {
+        return get(entityId, notificationType, null);
     }
 
     /**
@@ -84,8 +97,13 @@ public class NotificationPolicyClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), NotificationPolicyResponse.class);
             }
@@ -98,10 +116,11 @@ public class NotificationPolicyClient {
     }
 
     /**
-     * Retrieve notification policy associated with this entity
+     * Update notification policy associated with this entity
      */
-    public NotificationPolicyResponse get(String entityId, NotificationType notificationType) {
-        return get(entityId, notificationType, null);
+    public NotificationPolicyResponse update(
+            String entityId, NotificationType notificationType, NotificationPolicyRequest request) {
+        return update(entityId, notificationType, request, null);
     }
 
     /**
@@ -122,7 +141,7 @@ public class NotificationPolicyClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaType.parse("application/json"));
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -133,8 +152,13 @@ public class NotificationPolicyClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), NotificationPolicyResponse.class);
             }
@@ -144,13 +168,5 @@ public class NotificationPolicyClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Update notification policy associated with this entity
-     */
-    public NotificationPolicyResponse update(
-            String entityId, NotificationType notificationType, NotificationPolicyRequest request) {
-        return update(entityId, notificationType, request, null);
     }
 }

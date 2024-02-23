@@ -211,7 +211,7 @@ public final class EntityGetInvoicesRequest {
         return includeFees;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EntityGetInvoicesRequest && equalTo((EntityGetInvoicesRequest) other);
@@ -240,7 +240,7 @@ public final class EntityGetInvoicesRequest {
                 && includeFees.equals(other.includeFees);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.excludePayables,
@@ -260,7 +260,7 @@ public final class EntityGetInvoicesRequest {
                 this.includeFees);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

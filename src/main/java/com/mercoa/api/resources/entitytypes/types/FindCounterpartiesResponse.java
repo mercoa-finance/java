@@ -58,7 +58,7 @@ public final class FindCounterpartiesResponse {
         return data;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof FindCounterpartiesResponse && equalTo((FindCounterpartiesResponse) other);
@@ -73,12 +73,12 @@ public final class FindCounterpartiesResponse {
         return count == other.count && hasMore == other.hasMore && data.equals(other.data);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.count, this.hasMore, this.data);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -120,7 +120,7 @@ public final class FindCounterpartiesResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(FindCounterpartiesResponse other) {
             count(other.getCount());
             hasMore(other.getHasMore());
@@ -132,7 +132,7 @@ public final class FindCounterpartiesResponse {
          * <p>Total number of counterparties for the given filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("count")
         public HasMoreStage count(int count) {
             this.count = count;
@@ -143,26 +143,26 @@ public final class FindCounterpartiesResponse {
          * <p>True if there are more counterparties available for the given filters.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("hasMore")
         public _FinalStage hasMore(boolean hasMore) {
             this.hasMore = hasMore;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addAllData(List<CounterpartyResponse> data) {
             this.data.addAll(data);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addData(CounterpartyResponse data) {
             this.data.add(data);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "data", nulls = Nulls.SKIP)
         public _FinalStage data(List<CounterpartyResponse> data) {
             this.data.clear();
@@ -170,7 +170,7 @@ public final class FindCounterpartiesResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public FindCounterpartiesResponse build() {
             return new FindCounterpartiesResponse(count, hasMore, data, additionalProperties);
         }

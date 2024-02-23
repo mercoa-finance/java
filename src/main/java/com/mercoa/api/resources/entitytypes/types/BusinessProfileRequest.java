@@ -141,7 +141,7 @@ public final class BusinessProfileRequest {
         return formationDate;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof BusinessProfileRequest && equalTo((BusinessProfileRequest) other);
@@ -165,7 +165,7 @@ public final class BusinessProfileRequest {
                 && formationDate.equals(other.formationDate);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.email,
@@ -180,7 +180,7 @@ public final class BusinessProfileRequest {
                 this.formationDate);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -262,7 +262,7 @@ public final class BusinessProfileRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(BusinessProfileRequest other) {
             email(other.getEmail());
             legalBusinessName(other.getLegalBusinessName());
@@ -277,7 +277,7 @@ public final class BusinessProfileRequest {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("legalBusinessName")
         public _FinalStage legalBusinessName(String legalBusinessName) {
             this.legalBusinessName = legalBusinessName;
@@ -288,13 +288,13 @@ public final class BusinessProfileRequest {
          * <p>Date of business formation</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage formationDate(OffsetDateTime formationDate) {
             this.formationDate = Optional.of(formationDate);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "formationDate", nulls = Nulls.SKIP)
         public _FinalStage formationDate(Optional<OffsetDateTime> formationDate) {
             this.formationDate = formationDate;
@@ -305,13 +305,13 @@ public final class BusinessProfileRequest {
          * <p>Tax ID for the business. Currently only EIN is supported. Required for KYB.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage taxId(TaxId taxId) {
             this.taxId = Optional.of(taxId);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "taxId", nulls = Nulls.SKIP)
         public _FinalStage taxId(Optional<TaxId> taxId) {
             this.taxId = taxId;
@@ -322,13 +322,13 @@ public final class BusinessProfileRequest {
          * <p>Address for the business. Required for KYB.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage address(Address address) {
             this.address = Optional.of(address);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "address", nulls = Nulls.SKIP)
         public _FinalStage address(Optional<Address> address) {
             this.address = address;
@@ -339,13 +339,13 @@ public final class BusinessProfileRequest {
          * <p>Description of the business. Required for KYB if website is not provided.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage description(String description) {
             this.description = Optional.of(description);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "description", nulls = Nulls.SKIP)
         public _FinalStage description(Optional<String> description) {
             this.description = description;
@@ -356,26 +356,26 @@ public final class BusinessProfileRequest {
          * <p>Website URL for the business. Must be in the format http://www.example.com. Required for KYB if description is not provided.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage website(String website) {
             this.website = Optional.of(website);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "website", nulls = Nulls.SKIP)
         public _FinalStage website(Optional<String> website) {
             this.website = website;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage doingBusinessAs(String doingBusinessAs) {
             this.doingBusinessAs = Optional.of(doingBusinessAs);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "doingBusinessAs", nulls = Nulls.SKIP)
         public _FinalStage doingBusinessAs(Optional<String> doingBusinessAs) {
             this.doingBusinessAs = doingBusinessAs;
@@ -386,26 +386,26 @@ public final class BusinessProfileRequest {
          * <p>Phone number for the business. Required for KYB.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage phone(PhoneNumber phone) {
             this.phone = Optional.of(phone);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "phone", nulls = Nulls.SKIP)
         public _FinalStage phone(Optional<PhoneNumber> phone) {
             this.phone = phone;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage businessType(BusinessType businessType) {
             this.businessType = Optional.of(businessType);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "businessType", nulls = Nulls.SKIP)
         public _FinalStage businessType(Optional<BusinessType> businessType) {
             this.businessType = businessType;
@@ -416,20 +416,20 @@ public final class BusinessProfileRequest {
          * <p>Email address for the business. Required for KYB.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage email(String email) {
             this.email = Optional.of(email);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "email", nulls = Nulls.SKIP)
         public _FinalStage email(Optional<String> email) {
             this.email = email;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public BusinessProfileRequest build() {
             return new BusinessProfileRequest(
                     email,

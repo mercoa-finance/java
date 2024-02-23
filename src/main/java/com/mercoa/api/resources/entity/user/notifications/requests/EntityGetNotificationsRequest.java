@@ -102,7 +102,7 @@ public final class EntityGetNotificationsRequest {
         return notificationType;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EntityGetNotificationsRequest && equalTo((EntityGetNotificationsRequest) other);
@@ -122,7 +122,7 @@ public final class EntityGetNotificationsRequest {
                 && notificationType.equals(other.notificationType);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.startDate,
@@ -133,7 +133,7 @@ public final class EntityGetNotificationsRequest {
                 this.notificationType);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

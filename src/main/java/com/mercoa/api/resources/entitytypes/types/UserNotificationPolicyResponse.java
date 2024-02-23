@@ -22,14 +22,21 @@ public final class UserNotificationPolicyResponse {
 
     private final boolean digest;
 
+    private final boolean immediate;
+
     private final NotificationType type;
 
     private final Map<String, Object> additionalProperties;
 
     private UserNotificationPolicyResponse(
-            boolean disabled, boolean digest, NotificationType type, Map<String, Object> additionalProperties) {
+            boolean disabled,
+            boolean digest,
+            boolean immediate,
+            NotificationType type,
+            Map<String, Object> additionalProperties) {
         this.disabled = disabled;
         this.digest = digest;
+        this.immediate = immediate;
         this.type = type;
         this.additionalProperties = additionalProperties;
     }
@@ -43,11 +50,19 @@ public final class UserNotificationPolicyResponse {
     }
 
     /**
-     * @return True if the selected notification type is sent as a digest. If false, notifications will be sent immediately.
+     * @return True if the selected notification type is sent as a digest.
      */
     @JsonProperty("digest")
     public boolean getDigest() {
         return digest;
+    }
+
+    /**
+     * @return True if the selected notification type is sent immediately.
+     */
+    @JsonProperty("immediate")
+    public boolean getImmediate() {
+        return immediate;
     }
 
     @JsonProperty("type")
@@ -55,7 +70,7 @@ public final class UserNotificationPolicyResponse {
         return type;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof UserNotificationPolicyResponse && equalTo((UserNotificationPolicyResponse) other);
@@ -67,15 +82,18 @@ public final class UserNotificationPolicyResponse {
     }
 
     private boolean equalTo(UserNotificationPolicyResponse other) {
-        return disabled == other.disabled && digest == other.digest && type.equals(other.type);
+        return disabled == other.disabled
+                && digest == other.digest
+                && immediate == other.immediate
+                && type.equals(other.type);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.disabled, this.digest, this.type);
+        return Objects.hash(this.disabled, this.digest, this.immediate, this.type);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -91,7 +109,11 @@ public final class UserNotificationPolicyResponse {
     }
 
     public interface DigestStage {
-        TypeStage digest(boolean digest);
+        ImmediateStage digest(boolean digest);
+    }
+
+    public interface ImmediateStage {
+        TypeStage immediate(boolean immediate);
     }
 
     public interface TypeStage {
@@ -103,10 +125,12 @@ public final class UserNotificationPolicyResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements DisabledStage, DigestStage, TypeStage, _FinalStage {
+    public static final class Builder implements DisabledStage, DigestStage, ImmediateStage, TypeStage, _FinalStage {
         private boolean disabled;
 
         private boolean digest;
+
+        private boolean immediate;
 
         private NotificationType type;
 
@@ -115,10 +139,11 @@ public final class UserNotificationPolicyResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(UserNotificationPolicyResponse other) {
             disabled(other.getDisabled());
             digest(other.getDigest());
+            immediate(other.getImmediate());
             type(other.getType());
             return this;
         }
@@ -127,7 +152,7 @@ public final class UserNotificationPolicyResponse {
          * <p>True if the selected notification type is disabled for this user</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("disabled")
         public DigestStage disabled(boolean disabled) {
             this.disabled = disabled;
@@ -135,26 +160,37 @@ public final class UserNotificationPolicyResponse {
         }
 
         /**
-         * <p>True if the selected notification type is sent as a digest. If false, notifications will be sent immediately.</p>
+         * <p>True if the selected notification type is sent as a digest.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("digest")
-        public TypeStage digest(boolean digest) {
+        public ImmediateStage digest(boolean digest) {
             this.digest = digest;
             return this;
         }
 
-        @Override
+        /**
+         * <p>True if the selected notification type is sent immediately.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("immediate")
+        public TypeStage immediate(boolean immediate) {
+            this.immediate = immediate;
+            return this;
+        }
+
+        @java.lang.Override
         @JsonSetter("type")
         public _FinalStage type(NotificationType type) {
             this.type = type;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public UserNotificationPolicyResponse build() {
-            return new UserNotificationPolicyResponse(disabled, digest, type, additionalProperties);
+            return new UserNotificationPolicyResponse(disabled, digest, immediate, type, additionalProperties);
         }
     }
 }

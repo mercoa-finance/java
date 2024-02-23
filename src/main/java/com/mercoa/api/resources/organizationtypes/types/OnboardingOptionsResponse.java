@@ -70,7 +70,7 @@ public final class OnboardingOptionsResponse {
         return individual;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof OnboardingOptionsResponse && equalTo((OnboardingOptionsResponse) other);
@@ -89,13 +89,13 @@ public final class OnboardingOptionsResponse {
                 && individual.equals(other.individual);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.enableBusiness, this.enableIndividual, this.paymentMethod, this.business, this.individual);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -153,7 +153,7 @@ public final class OnboardingOptionsResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(OnboardingOptionsResponse other) {
             enableBusiness(other.getEnableBusiness());
             enableIndividual(other.getEnableIndividual());
@@ -163,42 +163,42 @@ public final class OnboardingOptionsResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("enableBusiness")
         public EnableIndividualStage enableBusiness(boolean enableBusiness) {
             this.enableBusiness = enableBusiness;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("enableIndividual")
         public PaymentMethodStage enableIndividual(boolean enableIndividual) {
             this.enableIndividual = enableIndividual;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("paymentMethod")
         public BusinessStage paymentMethod(boolean paymentMethod) {
             this.paymentMethod = paymentMethod;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("business")
         public IndividualStage business(BusinessOnboardingOptions business) {
             this.business = business;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("individual")
         public _FinalStage individual(IndividualOnboardingOptions individual) {
             this.individual = individual;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public OnboardingOptionsResponse build() {
             return new OnboardingOptionsResponse(
                     enableBusiness, enableIndividual, paymentMethod, business, individual, additionalProperties);

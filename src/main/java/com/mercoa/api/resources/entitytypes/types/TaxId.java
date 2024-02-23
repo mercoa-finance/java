@@ -32,7 +32,7 @@ public final class TaxId {
         return ein;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof TaxId && equalTo((TaxId) other);
@@ -47,12 +47,12 @@ public final class TaxId {
         return ein.equals(other.ein);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.ein);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -80,20 +80,20 @@ public final class TaxId {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(TaxId other) {
             ein(other.getEin());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("ein")
         public _FinalStage ein(Ein ein) {
             this.ein = ein;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public TaxId build() {
             return new TaxId(ein, additionalProperties);
         }

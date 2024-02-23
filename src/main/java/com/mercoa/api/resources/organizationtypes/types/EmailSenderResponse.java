@@ -61,7 +61,7 @@ public final class EmailSenderResponse {
         return hasApiKey;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof EmailSenderResponse && equalTo((EmailSenderResponse) other);
@@ -79,12 +79,12 @@ public final class EmailSenderResponse {
                 && hasApiKey == other.hasApiKey;
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.provider, this.fromEmail, this.fromName, this.hasApiKey);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -131,7 +131,7 @@ public final class EmailSenderResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(EmailSenderResponse other) {
             provider(other.getProvider());
             fromEmail(other.getFromEmail());
@@ -140,35 +140,35 @@ public final class EmailSenderResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("provider")
         public FromEmailStage provider(EmailSenderProvider provider) {
             this.provider = provider;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("fromEmail")
         public FromNameStage fromEmail(String fromEmail) {
             this.fromEmail = fromEmail;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("fromName")
         public HasApiKeyStage fromName(String fromName) {
             this.fromName = fromName;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("hasApiKey")
         public _FinalStage hasApiKey(boolean hasApiKey) {
             this.hasApiKey = hasApiKey;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public EmailSenderResponse build() {
             return new EmailSenderResponse(provider, fromEmail, fromName, hasApiKey, additionalProperties);
         }

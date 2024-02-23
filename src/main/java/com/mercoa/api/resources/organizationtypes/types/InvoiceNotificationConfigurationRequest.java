@@ -28,12 +28,12 @@ public final class InvoiceNotificationConfigurationRequest implements IInvoiceNo
     }
 
     @JsonProperty("url")
-    @Override
+    @java.lang.Override
     public String getUrl() {
         return url;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof InvoiceNotificationConfigurationRequest
@@ -49,12 +49,12 @@ public final class InvoiceNotificationConfigurationRequest implements IInvoiceNo
         return url.equals(other.url);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.url);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -82,20 +82,20 @@ public final class InvoiceNotificationConfigurationRequest implements IInvoiceNo
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(InvoiceNotificationConfigurationRequest other) {
             url(other.getUrl());
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("url")
         public _FinalStage url(String url) {
             this.url = url;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public InvoiceNotificationConfigurationRequest build() {
             return new InvoiceNotificationConfigurationRequest(url, additionalProperties);
         }

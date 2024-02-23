@@ -13,6 +13,7 @@ import com.mercoa.api.resources.entitytypes.types.NotificationResponse;
 import java.io.IOException;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -25,6 +26,10 @@ public class NotificationsClient {
 
     public FindNotificationResponse find(String entityId, String userId) {
         return find(entityId, userId, EntityGetNotificationsRequest.builder().build());
+    }
+
+    public FindNotificationResponse find(String entityId, String userId, EntityGetNotificationsRequest request) {
+        return find(entityId, userId, request, null);
     }
 
     public FindNotificationResponse find(
@@ -64,8 +69,13 @@ public class NotificationsClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), FindNotificationResponse.class);
             }
@@ -77,8 +87,8 @@ public class NotificationsClient {
         }
     }
 
-    public FindNotificationResponse find(String entityId, String userId, EntityGetNotificationsRequest request) {
-        return find(entityId, userId, request, null);
+    public NotificationResponse get(String entityId, String userId, String notificationId) {
+        return get(entityId, userId, notificationId, null);
     }
 
     public NotificationResponse get(
@@ -99,8 +109,13 @@ public class NotificationsClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions.getTimeout().isPresent()) {
+                client = client.newBuilder()
+                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
+                        .build();
+            }
+            Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), NotificationResponse.class);
             }
@@ -110,9 +125,5 @@ public class NotificationsClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public NotificationResponse get(String entityId, String userId, String notificationId) {
-        return get(entityId, userId, notificationId, null);
     }
 }

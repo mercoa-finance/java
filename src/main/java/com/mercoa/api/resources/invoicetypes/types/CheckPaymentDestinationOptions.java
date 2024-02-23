@@ -31,14 +31,14 @@ public final class CheckPaymentDestinationOptions {
     }
 
     /**
-     * @return Delivery method for check disbursements. Defaults to PRINT.
+     * @return Delivery method for check disbursements. Defaults to MAIL.
      */
     @JsonProperty("delivery")
     public Optional<CheckDeliveryMethod> getDelivery() {
         return delivery;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CheckPaymentDestinationOptions && equalTo((CheckPaymentDestinationOptions) other);
@@ -53,12 +53,12 @@ public final class CheckPaymentDestinationOptions {
         return delivery.equals(other.delivery);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.delivery);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }

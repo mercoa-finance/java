@@ -49,7 +49,7 @@ public final class PaymentRailRequest implements IPaymentRailRequest {
     }
 
     @JsonProperty("type")
-    @Override
+    @java.lang.Override
     public PaymentMethodType getType() {
         return type;
     }
@@ -58,30 +58,30 @@ public final class PaymentRailRequest implements IPaymentRailRequest {
      * @return Name of the payment method. For custom payment methods, this is the ID of the schema.
      */
     @JsonProperty("name")
-    @Override
+    @java.lang.Override
     public String getName() {
         return name;
     }
 
     @JsonProperty("markup")
-    @Override
+    @java.lang.Override
     public Optional<PaymentRailMarkup> getMarkup() {
         return markup;
     }
 
     @JsonProperty("description")
-    @Override
+    @java.lang.Override
     public Optional<String> getDescription() {
         return description;
     }
 
     @JsonProperty("active")
-    @Override
+    @java.lang.Override
     public boolean getActive() {
         return active;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof PaymentRailRequest && equalTo((PaymentRailRequest) other);
@@ -100,12 +100,12 @@ public final class PaymentRailRequest implements IPaymentRailRequest {
                 && active == other.active;
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.type, this.name, this.markup, this.description, this.active);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -157,7 +157,7 @@ public final class PaymentRailRequest implements IPaymentRailRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(PaymentRailRequest other) {
             type(other.getType());
             name(other.getName());
@@ -167,7 +167,7 @@ public final class PaymentRailRequest implements IPaymentRailRequest {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("type")
         public NameStage type(PaymentMethodType type) {
             this.type = type;
@@ -178,47 +178,47 @@ public final class PaymentRailRequest implements IPaymentRailRequest {
          * <p>Name of the payment method. For custom payment methods, this is the ID of the schema.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("name")
         public ActiveStage name(String name) {
             this.name = name;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("active")
         public _FinalStage active(boolean active) {
             this.active = active;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage description(String description) {
             this.description = Optional.of(description);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "description", nulls = Nulls.SKIP)
         public _FinalStage description(Optional<String> description) {
             this.description = description;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage markup(PaymentRailMarkup markup) {
             this.markup = Optional.of(markup);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "markup", nulls = Nulls.SKIP)
         public _FinalStage markup(Optional<PaymentRailMarkup> markup) {
             this.markup = markup;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public PaymentRailRequest build() {
             return new PaymentRailRequest(type, name, markup, description, active, additionalProperties);
         }

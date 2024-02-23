@@ -62,7 +62,7 @@ public final class InvoiceMetricsResponse {
         return currency;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof InvoiceMetricsResponse && equalTo((InvoiceMetricsResponse) other);
@@ -80,12 +80,12 @@ public final class InvoiceMetricsResponse {
                 && currency.equals(other.currency);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.totalAmount, this.totalCount, this.averageAmount, this.currency);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -132,7 +132,7 @@ public final class InvoiceMetricsResponse {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(InvoiceMetricsResponse other) {
             totalAmount(other.getTotalAmount());
             totalCount(other.getTotalCount());
@@ -141,35 +141,35 @@ public final class InvoiceMetricsResponse {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("totalAmount")
         public TotalCountStage totalAmount(double totalAmount) {
             this.totalAmount = totalAmount;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("totalCount")
         public AverageAmountStage totalCount(int totalCount) {
             this.totalCount = totalCount;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("averageAmount")
         public CurrencyStage averageAmount(double averageAmount) {
             this.averageAmount = averageAmount;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("currency")
         public _FinalStage currency(CurrencyCode currency) {
             this.currency = currency;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public InvoiceMetricsResponse build() {
             return new InvoiceMetricsResponse(totalAmount, totalCount, averageAmount, currency, additionalProperties);
         }

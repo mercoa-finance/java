@@ -88,7 +88,7 @@ public final class IndividualOnboardingOptions {
         return phone;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof IndividualOnboardingOptions && equalTo((IndividualOnboardingOptions) other);
@@ -109,13 +109,13 @@ public final class IndividualOnboardingOptions {
                 && phone.equals(other.phone);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(
                 this.termsOfService, this.email, this.name, this.dateOfBirth, this.ssn, this.address, this.phone);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -187,7 +187,7 @@ public final class IndividualOnboardingOptions {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(IndividualOnboardingOptions other) {
             termsOfService(other.getTermsOfService());
             email(other.getEmail());
@@ -199,56 +199,56 @@ public final class IndividualOnboardingOptions {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("termsOfService")
         public EmailStage termsOfService(OnboardingOption termsOfService) {
             this.termsOfService = termsOfService;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("email")
         public NameStage email(OnboardingOption email) {
             this.email = email;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("name")
         public DateOfBirthStage name(OnboardingOption name) {
             this.name = name;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("dateOfBirth")
         public SsnStage dateOfBirth(OnboardingOption dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("ssn")
         public AddressStage ssn(OnboardingOption ssn) {
             this.ssn = ssn;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("address")
         public PhoneStage address(OnboardingOption address) {
             this.address = address;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("phone")
         public _FinalStage phone(OnboardingOption phone) {
             this.phone = phone;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public IndividualOnboardingOptions build() {
             return new IndividualOnboardingOptions(
                     termsOfService, email, name, dateOfBirth, ssn, address, phone, additionalProperties);

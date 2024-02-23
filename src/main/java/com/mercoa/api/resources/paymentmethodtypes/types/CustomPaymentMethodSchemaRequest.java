@@ -83,7 +83,7 @@ public final class CustomPaymentMethodSchemaRequest {
         return fields;
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
         return other instanceof CustomPaymentMethodSchemaRequest && equalTo((CustomPaymentMethodSchemaRequest) other);
@@ -102,12 +102,12 @@ public final class CustomPaymentMethodSchemaRequest {
                 && fields.equals(other.fields);
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Objects.hash(this.name, this.isSource, this.isDestination, this.supportedCurrencies, this.fields);
     }
 
-    @Override
+    @java.lang.Override
     public String toString() {
         return ObjectMappers.stringify(this);
     }
@@ -161,7 +161,7 @@ public final class CustomPaymentMethodSchemaRequest {
 
         private Builder() {}
 
-        @Override
+        @java.lang.Override
         public Builder from(CustomPaymentMethodSchemaRequest other) {
             name(other.getName());
             isSource(other.getIsSource());
@@ -171,7 +171,7 @@ public final class CustomPaymentMethodSchemaRequest {
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter("name")
         public IsSourceStage name(String name) {
             this.name = name;
@@ -182,7 +182,7 @@ public final class CustomPaymentMethodSchemaRequest {
          * <p>This payment method can be used as a payment source for an invoice</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("isSource")
         public IsDestinationStage isSource(boolean isSource) {
             this.isSource = isSource;
@@ -193,26 +193,26 @@ public final class CustomPaymentMethodSchemaRequest {
          * <p>This payment method can be used as a payment destination for an invoice</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         @JsonSetter("isDestination")
         public _FinalStage isDestination(boolean isDestination) {
             this.isDestination = isDestination;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addAllFields(List<CustomPaymentMethodSchemaField> fields) {
             this.fields.addAll(fields);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public _FinalStage addFields(CustomPaymentMethodSchemaField fields) {
             this.fields.add(fields);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "fields", nulls = Nulls.SKIP)
         public _FinalStage fields(List<CustomPaymentMethodSchemaField> fields) {
             this.fields.clear();
@@ -224,20 +224,20 @@ public final class CustomPaymentMethodSchemaRequest {
          * <p>List of currencies that this payment method supports. If not provided, the payment method will support only USD.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @Override
+        @java.lang.Override
         public _FinalStage supportedCurrencies(List<CurrencyCode> supportedCurrencies) {
             this.supportedCurrencies = Optional.of(supportedCurrencies);
             return this;
         }
 
-        @Override
+        @java.lang.Override
         @JsonSetter(value = "supportedCurrencies", nulls = Nulls.SKIP)
         public _FinalStage supportedCurrencies(Optional<List<CurrencyCode>> supportedCurrencies) {
             this.supportedCurrencies = supportedCurrencies;
             return this;
         }
 
-        @Override
+        @java.lang.Override
         public CustomPaymentMethodSchemaRequest build() {
             return new CustomPaymentMethodSchemaRequest(
                     name, isSource, isDestination, supportedCurrencies, fields, additionalProperties);
