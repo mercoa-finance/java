@@ -204,7 +204,7 @@ public final class EntityGetInvoicesRequest {
     }
 
     /**
-     * @return If true, will include fees as part of the response.
+     * @return DEPRECATED. Fees are now included by default in the response.
      */
     @JsonProperty("includeFees")
     public Optional<Boolean> getIncludeFees() {
