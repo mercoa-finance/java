@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.List;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -109,13 +108,8 @@ public class InvoiceClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            OkHttpClient client = clientOptions.httpClient();
-            if (requestOptions.getTimeout().isPresent()) {
-                client = client.newBuilder()
-                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
-                        .build();
-            }
-            Response response = client.newCall(okhttpRequest).execute();
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), FindInvoiceResponse.class);
             }
@@ -153,13 +147,8 @@ public class InvoiceClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            OkHttpClient client = clientOptions.httpClient();
-            if (requestOptions.getTimeout().isPresent()) {
-                client = client.newBuilder()
-                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
-                        .build();
-            }
-            Response response = client.newCall(okhttpRequest).execute();
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), InvoiceResponse.class);
             }
@@ -247,13 +236,8 @@ public class InvoiceClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            OkHttpClient client = clientOptions.httpClient();
-            if (requestOptions.getTimeout().isPresent()) {
-                client = client.newBuilder()
-                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
-                        .build();
-            }
-            Response response = client.newCall(okhttpRequest).execute();
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(
                         response.body().string(), new TypeReference<List<InvoiceMetricsResponse>>() {});

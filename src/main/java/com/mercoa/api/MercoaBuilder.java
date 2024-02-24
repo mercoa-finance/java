@@ -9,15 +9,10 @@ import com.mercoa.api.core.Environment;
 public final class MercoaBuilder {
     private ClientOptions.Builder clientOptionsBuilder = ClientOptions.builder();
 
-    private String token = null;
-
     private Environment environment = Environment.PRODUCTION;
 
-    /**
-     * Sets token
-     */
     public MercoaBuilder token(String token) {
-        this.token = token;
+        this.clientOptionsBuilder.addHeader("Authorization", "Bearer " + token);
         return this;
     }
 
@@ -32,10 +27,6 @@ public final class MercoaBuilder {
     }
 
     public Mercoa build() {
-        if (token == null) {
-            throw new RuntimeException("Please provide token");
-        }
-        this.clientOptionsBuilder.addHeader("Authorization", "Bearer " + this.token);
         clientOptionsBuilder.environment(this.environment);
         return new Mercoa(clientOptionsBuilder.build());
     }

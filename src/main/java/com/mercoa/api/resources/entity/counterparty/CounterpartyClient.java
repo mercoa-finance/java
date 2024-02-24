@@ -18,7 +18,6 @@ import com.mercoa.api.resources.entitytypes.types.FindCounterpartiesResponse;
 import java.io.IOException;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -83,13 +82,8 @@ public class CounterpartyClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            OkHttpClient client = clientOptions.httpClient();
-            if (requestOptions.getTimeout().isPresent()) {
-                client = client.newBuilder()
-                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
-                        .build();
-            }
-            Response response = client.newCall(okhttpRequest).execute();
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), FindCounterpartiesResponse.class);
             }
@@ -154,13 +148,8 @@ public class CounterpartyClient {
                 .addHeader("Content-Type", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         try {
-            OkHttpClient client = clientOptions.httpClient();
-            if (requestOptions.getTimeout().isPresent()) {
-                client = client.newBuilder()
-                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
-                        .build();
-            }
-            Response response = client.newCall(okhttpRequest).execute();
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), FindCounterpartiesResponse.class);
             }
@@ -203,13 +192,8 @@ public class CounterpartyClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            OkHttpClient client = clientOptions.httpClient();
-            if (requestOptions.getTimeout().isPresent()) {
-                client = client.newBuilder()
-                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
-                        .build();
-            }
-            Response response = client.newCall(okhttpRequest).execute();
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -252,13 +236,8 @@ public class CounterpartyClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            OkHttpClient client = clientOptions.httpClient();
-            if (requestOptions.getTimeout().isPresent()) {
-                client = client.newBuilder()
-                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
-                        .build();
-            }
-            Response response = client.newCall(okhttpRequest).execute();
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -301,13 +280,8 @@ public class CounterpartyClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            OkHttpClient client = clientOptions.httpClient();
-            if (requestOptions.getTimeout().isPresent()) {
-                client = client.newBuilder()
-                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
-                        .build();
-            }
-            Response response = client.newCall(okhttpRequest).execute();
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
@@ -350,13 +324,8 @@ public class CounterpartyClient {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            OkHttpClient client = clientOptions.httpClient();
-            if (requestOptions.getTimeout().isPresent()) {
-                client = client.newBuilder()
-                        .readTimeout(requestOptions.getTimeout().get(), requestOptions.getTimeoutTimeUnit())
-                        .build();
-            }
-            Response response = client.newCall(okhttpRequest).execute();
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return;
             }
