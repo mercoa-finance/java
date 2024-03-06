@@ -6,14 +6,17 @@ package com.mercoa.api.resources.invoice.document;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.mercoa.api.core.ApiError;
 import com.mercoa.api.core.ClientOptions;
+import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
+import com.mercoa.api.resources.invoice.document.requests.UploadDocumentRequest;
 import com.mercoa.api.resources.invoicetypes.types.DocumentResponse;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class DocumentClient {
@@ -24,14 +27,14 @@ public class DocumentClient {
     }
 
     /**
-     * Get documents (scanned/uploaded images) associated with this invoice
+     * Get attachments (scanned/uploaded PDFs and images) associated with this invoice
      */
     public List<DocumentResponse> getAll(String invoiceId) {
         return getAll(invoiceId, null);
     }
 
     /**
-     * Get documents (scanned/uploaded images) associated with this invoice
+     * Get attachments (scanned/uploaded PDFs and images) associated with this invoice
      */
     public List<DocumentResponse> getAll(String invoiceId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -52,6 +55,131 @@ public class DocumentClient {
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(
                         response.body().string(), new TypeReference<List<DocumentResponse>>() {});
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Upload documents (scanned/uploaded PDFs and images) associated with this Invoice
+     */
+    public void upload(String invoiceId) {
+        upload(invoiceId, UploadDocumentRequest.builder().build());
+    }
+
+    /**
+     * Upload documents (scanned/uploaded PDFs and images) associated with this Invoice
+     */
+    public void upload(String invoiceId, UploadDocumentRequest request) {
+        upload(invoiceId, request, null);
+    }
+
+    /**
+     * Upload documents (scanned/uploaded PDFs and images) associated with this Invoice
+     */
+    public void upload(String invoiceId, UploadDocumentRequest request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("invoice")
+                .addPathSegment(invoiceId)
+                .addPathSegments("document")
+                .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return;
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Delete an attachment (scanned/uploaded PDFs and images) associated with this invoice
+     */
+    public void delete(String invoiceId, String documentId) {
+        delete(invoiceId, documentId, null);
+    }
+
+    /**
+     * Delete an attachment (scanned/uploaded PDFs and images) associated with this invoice
+     */
+    public void delete(String invoiceId, String documentId, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("invoice")
+                .addPathSegment(invoiceId)
+                .addPathSegments("document")
+                .addPathSegment(documentId)
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("DELETE", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .build();
+        try {
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return;
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Get a PDF of the check for the invoice. If the invoice does not have check as the disbursement method, an error will be returned. If the disbursement option for the check is set to 'MAIL', a void copy of the check will be returned. If the disbursement option for the check is set to 'PRINT', a printable check will be returned. If the invoice is NOT marked as PAID, the check will be a void copy.
+     */
+    public DocumentResponse generateCheckPdf(String invoiceId) {
+        return generateCheckPdf(invoiceId, null);
+    }
+
+    /**
+     * Get a PDF of the check for the invoice. If the invoice does not have check as the disbursement method, an error will be returned. If the disbursement option for the check is set to 'MAIL', a void copy of the check will be returned. If the disbursement option for the check is set to 'PRINT', a printable check will be returned. If the invoice is NOT marked as PAID, the check will be a void copy.
+     */
+    public DocumentResponse generateCheckPdf(String invoiceId, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("invoice")
+                .addPathSegment(invoiceId)
+                .addPathSegments("check/generate")
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response =
+                    clientOptions.httpClient().newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), DocumentResponse.class);
             }
             throw new ApiError(
                     response.code(),

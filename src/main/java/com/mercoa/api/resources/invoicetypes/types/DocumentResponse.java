@@ -9,25 +9,39 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = DocumentResponse.Builder.class)
 public final class DocumentResponse {
+    private final Optional<String> id;
+
     private final String mimeType;
 
     private final String uri;
 
     private final Map<String, Object> additionalProperties;
 
-    private DocumentResponse(String mimeType, String uri, Map<String, Object> additionalProperties) {
+    private DocumentResponse(
+            Optional<String> id, String mimeType, String uri, Map<String, Object> additionalProperties) {
+        this.id = id;
         this.mimeType = mimeType;
         this.uri = uri;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return ID of the document. If not provided, this is a dynamic document that is generated on the fly.
+     */
+    @JsonProperty("id")
+    public Optional<String> getId() {
+        return id;
     }
 
     @JsonProperty("mimeType")
@@ -52,12 +66,12 @@ public final class DocumentResponse {
     }
 
     private boolean equalTo(DocumentResponse other) {
-        return mimeType.equals(other.mimeType) && uri.equals(other.uri);
+        return id.equals(other.id) && mimeType.equals(other.mimeType) && uri.equals(other.uri);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.mimeType, this.uri);
+        return Objects.hash(this.id, this.mimeType, this.uri);
     }
 
     @java.lang.Override
@@ -81,6 +95,10 @@ public final class DocumentResponse {
 
     public interface _FinalStage {
         DocumentResponse build();
+
+        _FinalStage id(Optional<String> id);
+
+        _FinalStage id(String id);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -89,6 +107,8 @@ public final class DocumentResponse {
 
         private String uri;
 
+        private Optional<String> id = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -96,6 +116,7 @@ public final class DocumentResponse {
 
         @java.lang.Override
         public Builder from(DocumentResponse other) {
+            id(other.getId());
             mimeType(other.getMimeType());
             uri(other.getUri());
             return this;
@@ -115,9 +136,26 @@ public final class DocumentResponse {
             return this;
         }
 
+        /**
+         * <p>ID of the document. If not provided, this is a dynamic document that is generated on the fly.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage id(String id) {
+            this.id = Optional.of(id);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "id", nulls = Nulls.SKIP)
+        public _FinalStage id(Optional<String> id) {
+            this.id = id;
+            return this;
+        }
+
         @java.lang.Override
         public DocumentResponse build() {
-            return new DocumentResponse(mimeType, uri, additionalProperties);
+            return new DocumentResponse(id, mimeType, uri, additionalProperties);
         }
     }
 }

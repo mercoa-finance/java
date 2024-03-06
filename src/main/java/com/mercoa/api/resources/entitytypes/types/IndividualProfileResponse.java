@@ -23,7 +23,7 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = IndividualProfileResponse.Builder.class)
 public final class IndividualProfileResponse {
-    private final String email;
+    private final Optional<String> email;
 
     private final FullName name;
 
@@ -38,7 +38,7 @@ public final class IndividualProfileResponse {
     private final Map<String, Object> additionalProperties;
 
     private IndividualProfileResponse(
-            String email,
+            Optional<String> email,
             FullName name,
             Optional<PhoneNumber> phone,
             Optional<Address> address,
@@ -55,7 +55,7 @@ public final class IndividualProfileResponse {
     }
 
     @JsonProperty("email")
-    public String getEmail() {
+    public Optional<String> getEmail() {
         return email;
     }
 
@@ -115,18 +115,14 @@ public final class IndividualProfileResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static EmailStage builder() {
+    public static NameStage builder() {
         return new Builder();
-    }
-
-    public interface EmailStage {
-        NameStage email(String email);
-
-        Builder from(IndividualProfileResponse other);
     }
 
     public interface NameStage {
         BirthDateProvidedStage name(FullName name);
+
+        Builder from(IndividualProfileResponse other);
     }
 
     public interface BirthDateProvidedStage {
@@ -140,6 +136,10 @@ public final class IndividualProfileResponse {
     public interface _FinalStage {
         IndividualProfileResponse build();
 
+        _FinalStage email(Optional<String> email);
+
+        _FinalStage email(String email);
+
         _FinalStage phone(Optional<PhoneNumber> phone);
 
         _FinalStage phone(PhoneNumber phone);
@@ -151,9 +151,7 @@ public final class IndividualProfileResponse {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements EmailStage, NameStage, BirthDateProvidedStage, GovernmentIdProvidedStage, _FinalStage {
-        private String email;
-
+            implements NameStage, BirthDateProvidedStage, GovernmentIdProvidedStage, _FinalStage {
         private FullName name;
 
         private boolean birthDateProvided;
@@ -163,6 +161,8 @@ public final class IndividualProfileResponse {
         private Optional<Address> address = Optional.empty();
 
         private Optional<PhoneNumber> phone = Optional.empty();
+
+        private Optional<String> email = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -177,13 +177,6 @@ public final class IndividualProfileResponse {
             address(other.getAddress());
             birthDateProvided(other.getBirthDateProvided());
             governmentIdProvided(other.getGovernmentIdProvided());
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("email")
-        public NameStage email(String email) {
-            this.email = email;
             return this;
         }
 
@@ -231,6 +224,19 @@ public final class IndividualProfileResponse {
         @JsonSetter(value = "phone", nulls = Nulls.SKIP)
         public _FinalStage phone(Optional<PhoneNumber> phone) {
             this.phone = phone;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage email(String email) {
+            this.email = Optional.of(email);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "email", nulls = Nulls.SKIP)
+        public _FinalStage email(Optional<String> email) {
+            this.email = email;
             return this;
         }
 

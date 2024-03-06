@@ -12,11 +12,11 @@ import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.invoice.approval.ApprovalClient;
 import com.mercoa.api.resources.invoice.comment.CommentClient;
 import com.mercoa.api.resources.invoice.document.DocumentClient;
+import com.mercoa.api.resources.invoice.paymentlinks.PaymentLinksClient;
 import com.mercoa.api.resources.invoice.requests.GetAllInvoicesRequest;
 import com.mercoa.api.resources.invoice.requests.GetInvoice;
-import com.mercoa.api.resources.invoice.requests.SendPayerEmail;
-import com.mercoa.api.resources.invoicetypes.types.DocumentResponse;
 import com.mercoa.api.resources.invoicetypes.types.FindInvoiceResponse;
+import com.mercoa.api.resources.invoicetypes.types.InvoiceCreationRequest;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceRequest;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
 import java.io.IOException;
@@ -36,11 +36,14 @@ public class InvoiceClient {
 
     protected final Supplier<DocumentClient> documentClient;
 
+    protected final Supplier<PaymentLinksClient> paymentLinksClient;
+
     public InvoiceClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.approvalClient = Suppliers.memoize(() -> new ApprovalClient(clientOptions));
         this.commentClient = Suppliers.memoize(() -> new CommentClient(clientOptions));
         this.documentClient = Suppliers.memoize(() -> new DocumentClient(clientOptions));
+        this.paymentLinksClient = Suppliers.memoize(() -> new PaymentLinksClient(clientOptions));
     }
 
     /**
@@ -130,14 +133,14 @@ public class InvoiceClient {
     }
 
     public InvoiceResponse create() {
-        return create(InvoiceRequest.builder().build());
+        return create(InvoiceCreationRequest.builder().build());
     }
 
-    public InvoiceResponse create(InvoiceRequest request) {
+    public InvoiceResponse create(InvoiceCreationRequest request) {
         return create(request, null);
     }
 
-    public InvoiceResponse create(InvoiceRequest request, RequestOptions requestOptions) {
+    public InvoiceResponse create(InvoiceCreationRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("invoice")
@@ -282,236 +285,6 @@ public class InvoiceClient {
         }
     }
 
-    /**
-     * Get temporary link for payer to send payment
-     */
-    public String getPayerLink(String invoiceId) {
-        return getPayerLink(invoiceId, null);
-    }
-
-    /**
-     * Get temporary link for payer to send payment
-     */
-    public String getPayerLink(String invoiceId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("invoice")
-                .addPathSegment(invoiceId)
-                .addPathSegments("payerLink")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
-        try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), String.class);
-            }
-            throw new ApiError(
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Trigger email to payer inviting them to make payment
-     */
-    public void sendPayerEmail(String invoiceId) {
-        sendPayerEmail(invoiceId, SendPayerEmail.builder().build());
-    }
-
-    /**
-     * Trigger email to payer inviting them to make payment
-     */
-    public void sendPayerEmail(String invoiceId, SendPayerEmail request) {
-        sendPayerEmail(invoiceId, request, null);
-    }
-
-    /**
-     * Trigger email to payer inviting them to make payment
-     */
-    public void sendPayerEmail(String invoiceId, SendPayerEmail request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("invoice")
-                .addPathSegment(invoiceId)
-                .addPathSegments("sendPayerEmail");
-        if (request.getAttachInvoice().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "attachInvoice", request.getAttachInvoice().get().toString());
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("POST", RequestBody.create("", null))
-                .headers(Headers.of(clientOptions.headers(requestOptions)));
-        Request okhttpRequest = _requestBuilder.build();
-        try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
-            if (response.isSuccessful()) {
-                return;
-            }
-            throw new ApiError(
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Get temporary link for vendor to accept payment
-     */
-    public String getVendorLink(String invoiceId) {
-        return getVendorLink(invoiceId, null);
-    }
-
-    /**
-     * Get temporary link for vendor to accept payment
-     */
-    public String getVendorLink(String invoiceId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("invoice")
-                .addPathSegment(invoiceId)
-                .addPathSegments("vendorLink")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
-        try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), String.class);
-            }
-            throw new ApiError(
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Trigger email to vendor inviting them into the vendor portal
-     */
-    public void sendVendorEmail(String invoiceId) {
-        sendVendorEmail(invoiceId, null);
-    }
-
-    /**
-     * Trigger email to vendor inviting them into the vendor portal
-     */
-    public void sendVendorEmail(String invoiceId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("invoice")
-                .addPathSegment(invoiceId)
-                .addPathSegments("sendVendorEmail")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", RequestBody.create("", null))
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .build();
-        try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
-            if (response.isSuccessful()) {
-                return;
-            }
-            throw new ApiError(
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Generate a PDF of the invoice
-     */
-    public DocumentResponse generateInvoicePdf(String invoiceId) {
-        return generateInvoicePdf(invoiceId, null);
-    }
-
-    /**
-     * Generate a PDF of the invoice
-     */
-    public DocumentResponse generateInvoicePdf(String invoiceId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("invoice")
-                .addPathSegment(invoiceId)
-                .addPathSegments("pdf/generate")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
-        try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), DocumentResponse.class);
-            }
-            throw new ApiError(
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Get a printable PDF of the check. This will only work for SCHEDULED invoices that have a check as the disbursement method. Once the PDF has been generated, it will no longer be possible to mail the check. The invoice will be marked as PAID as soon as the check is generated.
-     */
-    public DocumentResponse generateCheckPdf(String invoiceId) {
-        return generateCheckPdf(invoiceId, null);
-    }
-
-    /**
-     * Get a printable PDF of the check. This will only work for SCHEDULED invoices that have a check as the disbursement method. Once the PDF has been generated, it will no longer be possible to mail the check. The invoice will be marked as PAID as soon as the check is generated.
-     */
-    public DocumentResponse generateCheckPdf(String invoiceId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("invoice")
-                .addPathSegment(invoiceId)
-                .addPathSegments("check/generate")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
-        try {
-            Response response =
-                    clientOptions.httpClient().newCall(okhttpRequest).execute();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), DocumentResponse.class);
-            }
-            throw new ApiError(
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public ApprovalClient approval() {
         return this.approvalClient.get();
     }
@@ -522,5 +295,9 @@ public class InvoiceClient {
 
     public DocumentClient document() {
         return this.documentClient.get();
+    }
+
+    public PaymentLinksClient paymentLinks() {
+        return this.paymentLinksClient.get();
     }
 }
