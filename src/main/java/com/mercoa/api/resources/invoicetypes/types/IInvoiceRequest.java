@@ -53,4 +53,8 @@ public interface IInvoiceRequest {
     Optional<String> getDocument();
 
     Optional<String> getUploadedImage();
+
+    Optional<String> getCreatorEntityId();
+
+    Optional<String> getCreatorUserId();
 }

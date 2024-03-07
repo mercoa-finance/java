@@ -67,6 +67,10 @@ public final class InvoiceRequest implements IInvoiceRequest {
 
     private final Optional<String> uploadedImage;
 
+    private final Optional<String> creatorEntityId;
+
+    private final Optional<String> creatorUserId;
+
     private final Map<String, Object> additionalProperties;
 
     private InvoiceRequest(
@@ -92,6 +96,8 @@ public final class InvoiceRequest implements IInvoiceRequest {
             Optional<String> foreignId,
             Optional<String> document,
             Optional<String> uploadedImage,
+            Optional<String> creatorEntityId,
+            Optional<String> creatorUserId,
             Map<String, Object> additionalProperties) {
         this.status = status;
         this.amount = amount;
@@ -115,6 +121,8 @@ public final class InvoiceRequest implements IInvoiceRequest {
         this.foreignId = foreignId;
         this.document = document;
         this.uploadedImage = uploadedImage;
+        this.creatorEntityId = creatorEntityId;
+        this.creatorUserId = creatorUserId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -295,6 +303,24 @@ public final class InvoiceRequest implements IInvoiceRequest {
         return uploadedImage;
     }
 
+    /**
+     * @return ID of entity who created this invoice.
+     */
+    @JsonProperty("creatorEntityId")
+    @java.lang.Override
+    public Optional<String> getCreatorEntityId() {
+        return creatorEntityId;
+    }
+
+    /**
+     * @return ID of entity user who created this invoice.
+     */
+    @JsonProperty("creatorUserId")
+    @java.lang.Override
+    public Optional<String> getCreatorUserId() {
+        return creatorUserId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -328,7 +354,9 @@ public final class InvoiceRequest implements IInvoiceRequest {
                 && metadata.equals(other.metadata)
                 && foreignId.equals(other.foreignId)
                 && document.equals(other.document)
-                && uploadedImage.equals(other.uploadedImage);
+                && uploadedImage.equals(other.uploadedImage)
+                && creatorEntityId.equals(other.creatorEntityId)
+                && creatorUserId.equals(other.creatorUserId);
     }
 
     @java.lang.Override
@@ -355,7 +383,9 @@ public final class InvoiceRequest implements IInvoiceRequest {
                 this.metadata,
                 this.foreignId,
                 this.document,
-                this.uploadedImage);
+                this.uploadedImage,
+                this.creatorEntityId,
+                this.creatorUserId);
     }
 
     @java.lang.Override
@@ -413,6 +443,10 @@ public final class InvoiceRequest implements IInvoiceRequest {
 
         private Optional<String> uploadedImage = Optional.empty();
 
+        private Optional<String> creatorEntityId = Optional.empty();
+
+        private Optional<String> creatorUserId = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -441,6 +475,8 @@ public final class InvoiceRequest implements IInvoiceRequest {
             foreignId(other.getForeignId());
             document(other.getDocument());
             uploadedImage(other.getUploadedImage());
+            creatorEntityId(other.getCreatorEntityId());
+            creatorUserId(other.getCreatorUserId());
             return this;
         }
 
@@ -686,6 +722,28 @@ public final class InvoiceRequest implements IInvoiceRequest {
             return this;
         }
 
+        @JsonSetter(value = "creatorEntityId", nulls = Nulls.SKIP)
+        public Builder creatorEntityId(Optional<String> creatorEntityId) {
+            this.creatorEntityId = creatorEntityId;
+            return this;
+        }
+
+        public Builder creatorEntityId(String creatorEntityId) {
+            this.creatorEntityId = Optional.of(creatorEntityId);
+            return this;
+        }
+
+        @JsonSetter(value = "creatorUserId", nulls = Nulls.SKIP)
+        public Builder creatorUserId(Optional<String> creatorUserId) {
+            this.creatorUserId = creatorUserId;
+            return this;
+        }
+
+        public Builder creatorUserId(String creatorUserId) {
+            this.creatorUserId = Optional.of(creatorUserId);
+            return this;
+        }
+
         public InvoiceRequest build() {
             return new InvoiceRequest(
                     status,
@@ -710,6 +768,8 @@ public final class InvoiceRequest implements IInvoiceRequest {
                     foreignId,
                     document,
                     uploadedImage,
+                    creatorEntityId,
+                    creatorUserId,
                     additionalProperties);
         }
     }

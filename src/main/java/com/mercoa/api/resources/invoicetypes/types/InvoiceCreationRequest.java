@@ -307,6 +307,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequest {
      * @return ID of entity who created this invoice.
      */
     @JsonProperty("creatorEntityId")
+    @java.lang.Override
     public Optional<String> getCreatorEntityId() {
         return creatorEntityId;
     }
@@ -315,6 +316,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequest {
      * @return ID of entity user who created this invoice.
      */
     @JsonProperty("creatorUserId")
+    @java.lang.Override
     public Optional<String> getCreatorUserId() {
         return creatorUserId;
     }
