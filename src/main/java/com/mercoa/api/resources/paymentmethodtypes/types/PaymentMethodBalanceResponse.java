@@ -25,6 +25,8 @@ public final class PaymentMethodBalanceResponse {
 
     private final CurrencyCode currency;
 
+    private final PaymentMethodBalanceStatus status;
+
     private final Optional<OffsetDateTime> updatedAt;
 
     private final Map<String, Object> additionalProperties;
@@ -32,10 +34,12 @@ public final class PaymentMethodBalanceResponse {
     private PaymentMethodBalanceResponse(
             double availableBalance,
             CurrencyCode currency,
+            PaymentMethodBalanceStatus status,
             Optional<OffsetDateTime> updatedAt,
             Map<String, Object> additionalProperties) {
         this.availableBalance = availableBalance;
         this.currency = currency;
+        this.status = status;
         this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
     }
@@ -48,6 +52,14 @@ public final class PaymentMethodBalanceResponse {
     @JsonProperty("currency")
     public CurrencyCode getCurrency() {
         return currency;
+    }
+
+    /**
+     * @return If the status is UNAVAILABLE, the account does not support this operation. If the status is ERROR, the account may need to be re-linked with Plaid.
+     */
+    @JsonProperty("status")
+    public PaymentMethodBalanceStatus getStatus() {
+        return status;
     }
 
     /**
@@ -72,12 +84,13 @@ public final class PaymentMethodBalanceResponse {
     private boolean equalTo(PaymentMethodBalanceResponse other) {
         return availableBalance == other.availableBalance
                 && currency.equals(other.currency)
+                && status.equals(other.status)
                 && updatedAt.equals(other.updatedAt);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.availableBalance, this.currency, this.updatedAt);
+        return Objects.hash(this.availableBalance, this.currency, this.status, this.updatedAt);
     }
 
     @java.lang.Override
@@ -96,7 +109,11 @@ public final class PaymentMethodBalanceResponse {
     }
 
     public interface CurrencyStage {
-        _FinalStage currency(CurrencyCode currency);
+        StatusStage currency(CurrencyCode currency);
+    }
+
+    public interface StatusStage {
+        _FinalStage status(PaymentMethodBalanceStatus status);
     }
 
     public interface _FinalStage {
@@ -108,10 +125,12 @@ public final class PaymentMethodBalanceResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements AvailableBalanceStage, CurrencyStage, _FinalStage {
+    public static final class Builder implements AvailableBalanceStage, CurrencyStage, StatusStage, _FinalStage {
         private double availableBalance;
 
         private CurrencyCode currency;
+
+        private PaymentMethodBalanceStatus status;
 
         private Optional<OffsetDateTime> updatedAt = Optional.empty();
 
@@ -124,6 +143,7 @@ public final class PaymentMethodBalanceResponse {
         public Builder from(PaymentMethodBalanceResponse other) {
             availableBalance(other.getAvailableBalance());
             currency(other.getCurrency());
+            status(other.getStatus());
             updatedAt(other.getUpdatedAt());
             return this;
         }
@@ -137,8 +157,19 @@ public final class PaymentMethodBalanceResponse {
 
         @java.lang.Override
         @JsonSetter("currency")
-        public _FinalStage currency(CurrencyCode currency) {
+        public StatusStage currency(CurrencyCode currency) {
             this.currency = currency;
+            return this;
+        }
+
+        /**
+         * <p>If the status is UNAVAILABLE, the account does not support this operation. If the status is ERROR, the account may need to be re-linked with Plaid.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("status")
+        public _FinalStage status(PaymentMethodBalanceStatus status) {
+            this.status = status;
             return this;
         }
 
@@ -161,7 +192,8 @@ public final class PaymentMethodBalanceResponse {
 
         @java.lang.Override
         public PaymentMethodBalanceResponse build() {
-            return new PaymentMethodBalanceResponse(availableBalance, currency, updatedAt, additionalProperties);
+            return new PaymentMethodBalanceResponse(
+                    availableBalance, currency, status, updatedAt, additionalProperties);
         }
     }
 }

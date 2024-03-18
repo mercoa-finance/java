@@ -26,6 +26,8 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
 
     private final Optional<String> accountName;
 
+    private final Optional<PlaidLinkRequest> plaid;
+
     private final Optional<BankAccountCheckOptions> checkOptions;
 
     private final Map<String, Object> additionalProperties;
@@ -34,11 +36,13 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
             Optional<String> accountName,
+            Optional<PlaidLinkRequest> plaid,
             Optional<BankAccountCheckOptions> checkOptions,
             Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
         this.accountName = accountName;
+        this.plaid = plaid;
         this.checkOptions = checkOptions;
         this.additionalProperties = additionalProperties;
     }
@@ -67,6 +71,14 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
     }
 
     /**
+     * @return If provided, will update a bank account using Plaid Link
+     */
+    @JsonProperty("plaid")
+    public Optional<PlaidLinkRequest> getPlaid() {
+        return plaid;
+    }
+
+    /**
      * @return If this bank account supports check printing, use this to enable check printing and set the check options. Checks will be printed directly from the bank account.
      */
     @JsonProperty("checkOptions")
@@ -89,12 +101,14 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
         return defaultSource.equals(other.defaultSource)
                 && defaultDestination.equals(other.defaultDestination)
                 && accountName.equals(other.accountName)
+                && plaid.equals(other.plaid)
                 && checkOptions.equals(other.checkOptions);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.defaultSource, this.defaultDestination, this.accountName, this.checkOptions);
+        return Objects.hash(
+                this.defaultSource, this.defaultDestination, this.accountName, this.plaid, this.checkOptions);
     }
 
     @java.lang.Override
@@ -114,6 +128,8 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
 
         private Optional<String> accountName = Optional.empty();
 
+        private Optional<PlaidLinkRequest> plaid = Optional.empty();
+
         private Optional<BankAccountCheckOptions> checkOptions = Optional.empty();
 
         @JsonAnySetter
@@ -125,6 +141,7 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
             accountName(other.getAccountName());
+            plaid(other.getPlaid());
             checkOptions(other.getCheckOptions());
             return this;
         }
@@ -162,6 +179,17 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
             return this;
         }
 
+        @JsonSetter(value = "plaid", nulls = Nulls.SKIP)
+        public Builder plaid(Optional<PlaidLinkRequest> plaid) {
+            this.plaid = plaid;
+            return this;
+        }
+
+        public Builder plaid(PlaidLinkRequest plaid) {
+            this.plaid = Optional.of(plaid);
+            return this;
+        }
+
         @JsonSetter(value = "checkOptions", nulls = Nulls.SKIP)
         public Builder checkOptions(Optional<BankAccountCheckOptions> checkOptions) {
             this.checkOptions = checkOptions;
@@ -175,7 +203,7 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
 
         public BankAccountUpdateRequest build() {
             return new BankAccountUpdateRequest(
-                    defaultSource, defaultDestination, accountName, checkOptions, additionalProperties);
+                    defaultSource, defaultDestination, accountName, plaid, checkOptions, additionalProperties);
         }
     }
 }
