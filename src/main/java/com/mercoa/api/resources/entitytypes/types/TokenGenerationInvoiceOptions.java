@@ -23,6 +23,8 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = TokenGenerationInvoiceOptions.Builder.class)
 public final class TokenGenerationInvoiceOptions {
+    private final Optional<LineItemAvailabilities> lineItems;
+
     private final Optional<Boolean> disableLineItems;
 
     private final List<InvoiceStatus> status;
@@ -30,12 +32,27 @@ public final class TokenGenerationInvoiceOptions {
     private final Map<String, Object> additionalProperties;
 
     private TokenGenerationInvoiceOptions(
-            Optional<Boolean> disableLineItems, List<InvoiceStatus> status, Map<String, Object> additionalProperties) {
+            Optional<LineItemAvailabilities> lineItems,
+            Optional<Boolean> disableLineItems,
+            List<InvoiceStatus> status,
+            Map<String, Object> additionalProperties) {
+        this.lineItems = lineItems;
         this.disableLineItems = disableLineItems;
         this.status = status;
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return Defaults to OPTIONAL. If set to REQUIRED, the user will be required to provide at least one line item when creating an invoice. If set to DISABLED, the user will not be able to provide line items when creating an invoice.
+     */
+    @JsonProperty("lineItems")
+    public Optional<LineItemAvailabilities> getLineItems() {
+        return lineItems;
+    }
+
+    /**
+     * @return DEPRECATED. Use lineItems instead.
+     */
     @JsonProperty("disableLineItems")
     public Optional<Boolean> getDisableLineItems() {
         return disableLineItems;
@@ -58,12 +75,14 @@ public final class TokenGenerationInvoiceOptions {
     }
 
     private boolean equalTo(TokenGenerationInvoiceOptions other) {
-        return disableLineItems.equals(other.disableLineItems) && status.equals(other.status);
+        return lineItems.equals(other.lineItems)
+                && disableLineItems.equals(other.disableLineItems)
+                && status.equals(other.status);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.disableLineItems, this.status);
+        return Objects.hash(this.lineItems, this.disableLineItems, this.status);
     }
 
     @java.lang.Override
@@ -77,6 +96,8 @@ public final class TokenGenerationInvoiceOptions {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<LineItemAvailabilities> lineItems = Optional.empty();
+
         private Optional<Boolean> disableLineItems = Optional.empty();
 
         private List<InvoiceStatus> status = new ArrayList<>();
@@ -87,8 +108,20 @@ public final class TokenGenerationInvoiceOptions {
         private Builder() {}
 
         public Builder from(TokenGenerationInvoiceOptions other) {
+            lineItems(other.getLineItems());
             disableLineItems(other.getDisableLineItems());
             status(other.getStatus());
+            return this;
+        }
+
+        @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
+        public Builder lineItems(Optional<LineItemAvailabilities> lineItems) {
+            this.lineItems = lineItems;
+            return this;
+        }
+
+        public Builder lineItems(LineItemAvailabilities lineItems) {
+            this.lineItems = Optional.of(lineItems);
             return this;
         }
 
@@ -121,7 +154,7 @@ public final class TokenGenerationInvoiceOptions {
         }
 
         public TokenGenerationInvoiceOptions build() {
-            return new TokenGenerationInvoiceOptions(disableLineItems, status, additionalProperties);
+            return new TokenGenerationInvoiceOptions(lineItems, disableLineItems, status, additionalProperties);
         }
     }
 }
