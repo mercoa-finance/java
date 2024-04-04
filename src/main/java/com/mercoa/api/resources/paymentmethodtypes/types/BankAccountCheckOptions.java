@@ -28,9 +28,11 @@ public final class BankAccountCheckOptions {
 
     private final Optional<String> accountNumberOverride;
 
-    private final Optional<String> signatoryName;
+    private final String signatoryName;
 
     private final Optional<String> signatureImage;
+
+    private final Optional<Boolean> useSignatureImage;
 
     private final Map<String, Object> additionalProperties;
 
@@ -39,8 +41,9 @@ public final class BankAccountCheckOptions {
             Optional<Integer> initialCheckNumber,
             Optional<String> routingNumberOverride,
             Optional<String> accountNumberOverride,
-            Optional<String> signatoryName,
+            String signatoryName,
             Optional<String> signatureImage,
+            Optional<Boolean> useSignatureImage,
             Map<String, Object> additionalProperties) {
         this.enabled = enabled;
         this.initialCheckNumber = initialCheckNumber;
@@ -48,6 +51,7 @@ public final class BankAccountCheckOptions {
         this.accountNumberOverride = accountNumberOverride;
         this.signatoryName = signatoryName;
         this.signatureImage = signatureImage;
+        this.useSignatureImage = useSignatureImage;
         this.additionalProperties = additionalProperties;
     }
 
@@ -84,19 +88,27 @@ public final class BankAccountCheckOptions {
     }
 
     /**
-     * @return If provided, will print a check with a generated signature from the provided name
+     * @return Name of the person who's signature will be printed on the check.
      */
     @JsonProperty("signatoryName")
-    public Optional<String> getSignatoryName() {
+    public String getSignatoryName() {
         return signatoryName;
     }
 
     /**
-     * @return Base64 encoded PNG of the signature. If provided, will print a check with the provided image as the signature. Will override signatoryName.
+     * @return Base64 encoded PNG of the signature. If not provided, will use the signatoryName to generate a signature.
      */
     @JsonProperty("signatureImage")
     public Optional<String> getSignatureImage() {
         return signatureImage;
+    }
+
+    /**
+     * @return If true, will print checks with the provided signatureImage. If false, will print checks with a generated signature from the signatoryName. If this parameter is not set the default behavior is to use the signatureImage if provided.
+     */
+    @JsonProperty("useSignatureImage")
+    public Optional<Boolean> getUseSignatureImage() {
+        return useSignatureImage;
     }
 
     @java.lang.Override
@@ -116,7 +128,8 @@ public final class BankAccountCheckOptions {
                 && routingNumberOverride.equals(other.routingNumberOverride)
                 && accountNumberOverride.equals(other.accountNumberOverride)
                 && signatoryName.equals(other.signatoryName)
-                && signatureImage.equals(other.signatureImage);
+                && signatureImage.equals(other.signatureImage)
+                && useSignatureImage.equals(other.useSignatureImage);
     }
 
     @java.lang.Override
@@ -127,7 +140,8 @@ public final class BankAccountCheckOptions {
                 this.routingNumberOverride,
                 this.accountNumberOverride,
                 this.signatoryName,
-                this.signatureImage);
+                this.signatureImage,
+                this.useSignatureImage);
     }
 
     @java.lang.Override
@@ -135,29 +149,66 @@ public final class BankAccountCheckOptions {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static SignatoryNameStage builder() {
         return new Builder();
     }
 
+    public interface SignatoryNameStage {
+        _FinalStage signatoryName(String signatoryName);
+
+        Builder from(BankAccountCheckOptions other);
+    }
+
+    public interface _FinalStage {
+        BankAccountCheckOptions build();
+
+        _FinalStage enabled(Optional<Boolean> enabled);
+
+        _FinalStage enabled(Boolean enabled);
+
+        _FinalStage initialCheckNumber(Optional<Integer> initialCheckNumber);
+
+        _FinalStage initialCheckNumber(Integer initialCheckNumber);
+
+        _FinalStage routingNumberOverride(Optional<String> routingNumberOverride);
+
+        _FinalStage routingNumberOverride(String routingNumberOverride);
+
+        _FinalStage accountNumberOverride(Optional<String> accountNumberOverride);
+
+        _FinalStage accountNumberOverride(String accountNumberOverride);
+
+        _FinalStage signatureImage(Optional<String> signatureImage);
+
+        _FinalStage signatureImage(String signatureImage);
+
+        _FinalStage useSignatureImage(Optional<Boolean> useSignatureImage);
+
+        _FinalStage useSignatureImage(Boolean useSignatureImage);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<Boolean> enabled = Optional.empty();
+    public static final class Builder implements SignatoryNameStage, _FinalStage {
+        private String signatoryName;
 
-        private Optional<Integer> initialCheckNumber = Optional.empty();
+        private Optional<Boolean> useSignatureImage = Optional.empty();
 
-        private Optional<String> routingNumberOverride = Optional.empty();
+        private Optional<String> signatureImage = Optional.empty();
 
         private Optional<String> accountNumberOverride = Optional.empty();
 
-        private Optional<String> signatoryName = Optional.empty();
+        private Optional<String> routingNumberOverride = Optional.empty();
 
-        private Optional<String> signatureImage = Optional.empty();
+        private Optional<Integer> initialCheckNumber = Optional.empty();
+
+        private Optional<Boolean> enabled = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(BankAccountCheckOptions other) {
             enabled(other.getEnabled());
             initialCheckNumber(other.getInitialCheckNumber());
@@ -165,75 +216,124 @@ public final class BankAccountCheckOptions {
             accountNumberOverride(other.getAccountNumberOverride());
             signatoryName(other.getSignatoryName());
             signatureImage(other.getSignatureImage());
+            useSignatureImage(other.getUseSignatureImage());
             return this;
         }
 
-        @JsonSetter(value = "enabled", nulls = Nulls.SKIP)
-        public Builder enabled(Optional<Boolean> enabled) {
-            this.enabled = enabled;
-            return this;
-        }
-
-        public Builder enabled(Boolean enabled) {
-            this.enabled = Optional.of(enabled);
-            return this;
-        }
-
-        @JsonSetter(value = "initialCheckNumber", nulls = Nulls.SKIP)
-        public Builder initialCheckNumber(Optional<Integer> initialCheckNumber) {
-            this.initialCheckNumber = initialCheckNumber;
-            return this;
-        }
-
-        public Builder initialCheckNumber(Integer initialCheckNumber) {
-            this.initialCheckNumber = Optional.of(initialCheckNumber);
-            return this;
-        }
-
-        @JsonSetter(value = "routingNumberOverride", nulls = Nulls.SKIP)
-        public Builder routingNumberOverride(Optional<String> routingNumberOverride) {
-            this.routingNumberOverride = routingNumberOverride;
-            return this;
-        }
-
-        public Builder routingNumberOverride(String routingNumberOverride) {
-            this.routingNumberOverride = Optional.of(routingNumberOverride);
-            return this;
-        }
-
-        @JsonSetter(value = "accountNumberOverride", nulls = Nulls.SKIP)
-        public Builder accountNumberOverride(Optional<String> accountNumberOverride) {
-            this.accountNumberOverride = accountNumberOverride;
-            return this;
-        }
-
-        public Builder accountNumberOverride(String accountNumberOverride) {
-            this.accountNumberOverride = Optional.of(accountNumberOverride);
-            return this;
-        }
-
-        @JsonSetter(value = "signatoryName", nulls = Nulls.SKIP)
-        public Builder signatoryName(Optional<String> signatoryName) {
+        /**
+         * <p>Name of the person who's signature will be printed on the check.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("signatoryName")
+        public _FinalStage signatoryName(String signatoryName) {
             this.signatoryName = signatoryName;
             return this;
         }
 
-        public Builder signatoryName(String signatoryName) {
-            this.signatoryName = Optional.of(signatoryName);
+        /**
+         * <p>If true, will print checks with the provided signatureImage. If false, will print checks with a generated signature from the signatoryName. If this parameter is not set the default behavior is to use the signatureImage if provided.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage useSignatureImage(Boolean useSignatureImage) {
+            this.useSignatureImage = Optional.of(useSignatureImage);
             return this;
         }
 
-        @JsonSetter(value = "signatureImage", nulls = Nulls.SKIP)
-        public Builder signatureImage(Optional<String> signatureImage) {
-            this.signatureImage = signatureImage;
+        @java.lang.Override
+        @JsonSetter(value = "useSignatureImage", nulls = Nulls.SKIP)
+        public _FinalStage useSignatureImage(Optional<Boolean> useSignatureImage) {
+            this.useSignatureImage = useSignatureImage;
             return this;
         }
 
-        public Builder signatureImage(String signatureImage) {
+        /**
+         * <p>Base64 encoded PNG of the signature. If not provided, will use the signatoryName to generate a signature.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage signatureImage(String signatureImage) {
             this.signatureImage = Optional.of(signatureImage);
             return this;
         }
 
+        @java.lang.Override
+        @JsonSetter(value = "signatureImage", nulls = Nulls.SKIP)
+        public _FinalStage signatureImage(Optional<String> signatureImage) {
+            this.signatureImage = signatureImage;
+            return this;
+        }
+
+        /**
+         * <p>If provided, will print a check with the provided account number instead of the one from the bank account</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage accountNumberOverride(String accountNumberOverride) {
+            this.accountNumberOverride = Optional.of(accountNumberOverride);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "accountNumberOverride", nulls = Nulls.SKIP)
+        public _FinalStage accountNumberOverride(Optional<String> accountNumberOverride) {
+            this.accountNumberOverride = accountNumberOverride;
+            return this;
+        }
+
+        /**
+         * <p>If provided, will print a check with the provided routing number instead of the one from the bank account</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage routingNumberOverride(String routingNumberOverride) {
+            this.routingNumberOverride = Optional.of(routingNumberOverride);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "routingNumberOverride", nulls = Nulls.SKIP)
+        public _FinalStage routingNumberOverride(Optional<String> routingNumberOverride) {
+            this.routingNumberOverride = routingNumberOverride;
+            return this;
+        }
+
+        /**
+         * <p>If provided, will start the check number sequence at the provided number. If not provided, will start at 5000.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage initialCheckNumber(Integer initialCheckNumber) {
+            this.initialCheckNumber = Optional.of(initialCheckNumber);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "initialCheckNumber", nulls = Nulls.SKIP)
+        public _FinalStage initialCheckNumber(Optional<Integer> initialCheckNumber) {
+            this.initialCheckNumber = initialCheckNumber;
+            return this;
+        }
+
+        /**
+         * <p>If true, will allow the user to print checks from this bank account</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage enabled(Boolean enabled) {
+            this.enabled = Optional.of(enabled);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "enabled", nulls = Nulls.SKIP)
+        public _FinalStage enabled(Optional<Boolean> enabled) {
+            this.enabled = enabled;
+            return this;
+        }
+
+        @java.lang.Override
         public BankAccountCheckOptions build() {
             return new BankAccountCheckOptions(
                     enabled,
@@ -242,6 +342,7 @@ public final class BankAccountCheckOptions {
                     accountNumberOverride,
                     signatoryName,
                     signatureImage,
+                    useSignatureImage,
                     additionalProperties);
         }
     }

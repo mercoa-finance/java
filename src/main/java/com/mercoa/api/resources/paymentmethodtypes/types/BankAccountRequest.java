@@ -26,7 +26,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
 
     private final Optional<String> accountName;
 
-    private final String bankName;
+    private final Optional<String> bankName;
 
     private final String routingNumber;
 
@@ -44,7 +44,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
             Optional<String> accountName,
-            String bankName,
+            Optional<String> bankName,
             String routingNumber,
             String accountNumber,
             BankType accountType,
@@ -81,13 +81,19 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         return defaultDestination;
     }
 
+    /**
+     * @return The name of the account. For example &quot;My Checking Account&quot; or &quot;Property XYZ Checking&quot;
+     */
     @JsonProperty("accountName")
     public Optional<String> getAccountName() {
         return accountName;
     }
 
+    /**
+     * @return The name of the bank. This is now automatically set when the bank account is linked.
+     */
     @JsonProperty("bankName")
-    public String getBankName() {
+    public Optional<String> getBankName() {
         return bankName;
     }
 
@@ -164,18 +170,14 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         return ObjectMappers.stringify(this);
     }
 
-    public static BankNameStage builder() {
+    public static RoutingNumberStage builder() {
         return new Builder();
-    }
-
-    public interface BankNameStage {
-        RoutingNumberStage bankName(String bankName);
-
-        Builder from(BankAccountRequest other);
     }
 
     public interface RoutingNumberStage {
         AccountNumberStage routingNumber(String routingNumber);
+
+        Builder from(BankAccountRequest other);
     }
 
     public interface AccountNumberStage {
@@ -201,6 +203,10 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
 
         _FinalStage accountName(String accountName);
 
+        _FinalStage bankName(Optional<String> bankName);
+
+        _FinalStage bankName(String bankName);
+
         _FinalStage plaid(Optional<PlaidLinkRequest> plaid);
 
         _FinalStage plaid(PlaidLinkRequest plaid);
@@ -211,10 +217,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder
-            implements BankNameStage, RoutingNumberStage, AccountNumberStage, AccountTypeStage, _FinalStage {
-        private String bankName;
-
+    public static final class Builder implements RoutingNumberStage, AccountNumberStage, AccountTypeStage, _FinalStage {
         private String routingNumber;
 
         private String accountNumber;
@@ -224,6 +227,8 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         private Optional<BankAccountCheckOptions> checkOptions = Optional.empty();
 
         private Optional<PlaidLinkRequest> plaid = Optional.empty();
+
+        private Optional<String> bankName = Optional.empty();
 
         private Optional<String> accountName = Optional.empty();
 
@@ -247,13 +252,6 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             accountType(other.getAccountType());
             plaid(other.getPlaid());
             checkOptions(other.getCheckOptions());
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("bankName")
-        public RoutingNumberStage bankName(String bankName) {
-            this.bankName = bankName;
             return this;
         }
 
@@ -312,6 +310,27 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
+        /**
+         * <p>The name of the bank. This is now automatically set when the bank account is linked.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage bankName(String bankName) {
+            this.bankName = Optional.of(bankName);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "bankName", nulls = Nulls.SKIP)
+        public _FinalStage bankName(Optional<String> bankName) {
+            this.bankName = bankName;
+            return this;
+        }
+
+        /**
+         * <p>The name of the account. For example &quot;My Checking Account&quot; or &quot;Property XYZ Checking&quot;</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage accountName(String accountName) {
             this.accountName = Optional.of(accountName);
