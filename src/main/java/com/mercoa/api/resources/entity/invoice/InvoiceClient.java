@@ -91,6 +91,10 @@ public class InvoiceClient {
         if (request.getApproverId().isPresent()) {
             httpUrl.addQueryParameter("approverId", request.getApproverId().get());
         }
+        if (request.getApproverAction().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "approverAction", request.getApproverAction().get().toString());
+        }
         if (request.getInvoiceId().isPresent()) {
             httpUrl.addQueryParameter("invoiceId", request.getInvoiceId().get());
         }
@@ -161,21 +165,21 @@ public class InvoiceClient {
     }
 
     /**
-     * Get invoice metrics for an entity with the given filters.
+     * Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency.
      */
     public List<InvoiceMetricsResponse> metrics(String entityId) {
         return metrics(entityId, InvoiceMetricsRequest.builder().build());
     }
 
     /**
-     * Get invoice metrics for an entity with the given filters.
+     * Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency.
      */
     public List<InvoiceMetricsResponse> metrics(String entityId, InvoiceMetricsRequest request) {
         return metrics(entityId, request, null);
     }
 
     /**
-     * Get invoice metrics for an entity with the given filters.
+     * Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency.
      */
     public List<InvoiceMetricsResponse> metrics(
             String entityId, InvoiceMetricsRequest request, RequestOptions requestOptions) {
@@ -194,6 +198,10 @@ public class InvoiceClient {
         if (request.getExcludeReceivables().isPresent()) {
             httpUrl.addQueryParameter(
                     "excludeReceivables", request.getExcludeReceivables().get().toString());
+        }
+        if (request.getReturnByDate().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "returnByDate", request.getReturnByDate().get().toString());
         }
         if (request.getPayerId().isPresent()) {
             httpUrl.addQueryParameter("payerId", request.getPayerId().get());

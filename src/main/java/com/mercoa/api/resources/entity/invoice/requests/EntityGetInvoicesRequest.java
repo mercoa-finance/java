@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.commons.types.OrderDirection;
+import com.mercoa.api.resources.invoicetypes.types.ApproverAction;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceOrderByField;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
 import java.time.OffsetDateTime;
@@ -48,6 +49,8 @@ public final class EntityGetInvoicesRequest {
 
     private final Optional<String> approverId;
 
+    private final Optional<ApproverAction> approverAction;
+
     private final Optional<String> invoiceId;
 
     private final Optional<InvoiceStatus> status;
@@ -69,6 +72,7 @@ public final class EntityGetInvoicesRequest {
             Optional<String> payerId,
             Optional<String> vendorId,
             Optional<String> approverId,
+            Optional<ApproverAction> approverAction,
             Optional<String> invoiceId,
             Optional<InvoiceStatus> status,
             Optional<Boolean> includeFees,
@@ -85,6 +89,7 @@ public final class EntityGetInvoicesRequest {
         this.payerId = payerId;
         this.vendorId = vendorId;
         this.approverId = approverId;
+        this.approverAction = approverAction;
         this.invoiceId = invoiceId;
         this.status = status;
         this.includeFees = includeFees;
@@ -188,6 +193,14 @@ public final class EntityGetInvoicesRequest {
     }
 
     /**
+     * @return Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+     */
+    @JsonProperty("approverAction")
+    public Optional<ApproverAction> getApproverAction() {
+        return approverAction;
+    }
+
+    /**
      * @return Filter invoices by invoice ID.
      */
     @JsonProperty("invoiceId")
@@ -235,6 +248,7 @@ public final class EntityGetInvoicesRequest {
                 && payerId.equals(other.payerId)
                 && vendorId.equals(other.vendorId)
                 && approverId.equals(other.approverId)
+                && approverAction.equals(other.approverAction)
                 && invoiceId.equals(other.invoiceId)
                 && status.equals(other.status)
                 && includeFees.equals(other.includeFees);
@@ -255,6 +269,7 @@ public final class EntityGetInvoicesRequest {
                 this.payerId,
                 this.vendorId,
                 this.approverId,
+                this.approverAction,
                 this.invoiceId,
                 this.status,
                 this.includeFees);
@@ -295,6 +310,8 @@ public final class EntityGetInvoicesRequest {
 
         private Optional<String> approverId = Optional.empty();
 
+        private Optional<ApproverAction> approverAction = Optional.empty();
+
         private Optional<String> invoiceId = Optional.empty();
 
         private Optional<InvoiceStatus> status = Optional.empty();
@@ -319,6 +336,7 @@ public final class EntityGetInvoicesRequest {
             payerId(other.getPayerId());
             vendorId(other.getVendorId());
             approverId(other.getApproverId());
+            approverAction(other.getApproverAction());
             invoiceId(other.getInvoiceId());
             status(other.getStatus());
             includeFees(other.getIncludeFees());
@@ -457,6 +475,17 @@ public final class EntityGetInvoicesRequest {
             return this;
         }
 
+        @JsonSetter(value = "approverAction", nulls = Nulls.SKIP)
+        public Builder approverAction(Optional<ApproverAction> approverAction) {
+            this.approverAction = approverAction;
+            return this;
+        }
+
+        public Builder approverAction(ApproverAction approverAction) {
+            this.approverAction = Optional.of(approverAction);
+            return this;
+        }
+
         @JsonSetter(value = "invoiceId", nulls = Nulls.SKIP)
         public Builder invoiceId(Optional<String> invoiceId) {
             this.invoiceId = invoiceId;
@@ -504,6 +533,7 @@ public final class EntityGetInvoicesRequest {
                     payerId,
                     vendorId,
                     approverId,
+                    approverAction,
                     invoiceId,
                     status,
                     includeFees,

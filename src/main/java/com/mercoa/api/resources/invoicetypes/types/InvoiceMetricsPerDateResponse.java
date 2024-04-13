@@ -9,18 +9,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = InvoiceMetricsResponse.Builder.class)
-public final class InvoiceMetricsResponse {
+@JsonDeserialize(builder = InvoiceMetricsPerDateResponse.Builder.class)
+public final class InvoiceMetricsPerDateResponse {
+    private final OffsetDateTime date;
+
     private final double totalAmount;
 
     private final int totalCount;
@@ -29,23 +30,26 @@ public final class InvoiceMetricsResponse {
 
     private final CurrencyCode currency;
 
-    private final Optional<Map<String, InvoiceMetricsPerDateResponse>> dates;
-
     private final Map<String, Object> additionalProperties;
 
-    private InvoiceMetricsResponse(
+    private InvoiceMetricsPerDateResponse(
+            OffsetDateTime date,
             double totalAmount,
             int totalCount,
             double averageAmount,
             CurrencyCode currency,
-            Optional<Map<String, InvoiceMetricsPerDateResponse>> dates,
             Map<String, Object> additionalProperties) {
+        this.date = date;
         this.totalAmount = totalAmount;
         this.totalCount = totalCount;
         this.averageAmount = averageAmount;
         this.currency = currency;
-        this.dates = dates;
         this.additionalProperties = additionalProperties;
+    }
+
+    @JsonProperty("date")
+    public OffsetDateTime getDate() {
+        return date;
     }
 
     @JsonProperty("totalAmount")
@@ -68,15 +72,10 @@ public final class InvoiceMetricsResponse {
         return currency;
     }
 
-    @JsonProperty("dates")
-    public Optional<Map<String, InvoiceMetricsPerDateResponse>> getDates() {
-        return dates;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof InvoiceMetricsResponse && equalTo((InvoiceMetricsResponse) other);
+        return other instanceof InvoiceMetricsPerDateResponse && equalTo((InvoiceMetricsPerDateResponse) other);
     }
 
     @JsonAnyGetter
@@ -84,17 +83,17 @@ public final class InvoiceMetricsResponse {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(InvoiceMetricsResponse other) {
-        return totalAmount == other.totalAmount
+    private boolean equalTo(InvoiceMetricsPerDateResponse other) {
+        return date.equals(other.date)
+                && totalAmount == other.totalAmount
                 && totalCount == other.totalCount
                 && averageAmount == other.averageAmount
-                && currency.equals(other.currency)
-                && dates.equals(other.dates);
+                && currency.equals(other.currency);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.totalAmount, this.totalCount, this.averageAmount, this.currency, this.dates);
+        return Objects.hash(this.date, this.totalAmount, this.totalCount, this.averageAmount, this.currency);
     }
 
     @java.lang.Override
@@ -102,14 +101,18 @@ public final class InvoiceMetricsResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static TotalAmountStage builder() {
+    public static DateStage builder() {
         return new Builder();
+    }
+
+    public interface DateStage {
+        TotalAmountStage date(OffsetDateTime date);
+
+        Builder from(InvoiceMetricsPerDateResponse other);
     }
 
     public interface TotalAmountStage {
         TotalCountStage totalAmount(double totalAmount);
-
-        Builder from(InvoiceMetricsResponse other);
     }
 
     public interface TotalCountStage {
@@ -125,16 +128,14 @@ public final class InvoiceMetricsResponse {
     }
 
     public interface _FinalStage {
-        InvoiceMetricsResponse build();
-
-        _FinalStage dates(Optional<Map<String, InvoiceMetricsPerDateResponse>> dates);
-
-        _FinalStage dates(Map<String, InvoiceMetricsPerDateResponse> dates);
+        InvoiceMetricsPerDateResponse build();
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements TotalAmountStage, TotalCountStage, AverageAmountStage, CurrencyStage, _FinalStage {
+            implements DateStage, TotalAmountStage, TotalCountStage, AverageAmountStage, CurrencyStage, _FinalStage {
+        private OffsetDateTime date;
+
         private double totalAmount;
 
         private int totalCount;
@@ -143,20 +144,25 @@ public final class InvoiceMetricsResponse {
 
         private CurrencyCode currency;
 
-        private Optional<Map<String, InvoiceMetricsPerDateResponse>> dates = Optional.empty();
-
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(InvoiceMetricsResponse other) {
+        public Builder from(InvoiceMetricsPerDateResponse other) {
+            date(other.getDate());
             totalAmount(other.getTotalAmount());
             totalCount(other.getTotalCount());
             averageAmount(other.getAverageAmount());
             currency(other.getCurrency());
-            dates(other.getDates());
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("date")
+        public TotalAmountStage date(OffsetDateTime date) {
+            this.date = date;
             return this;
         }
 
@@ -189,22 +195,9 @@ public final class InvoiceMetricsResponse {
         }
 
         @java.lang.Override
-        public _FinalStage dates(Map<String, InvoiceMetricsPerDateResponse> dates) {
-            this.dates = Optional.of(dates);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "dates", nulls = Nulls.SKIP)
-        public _FinalStage dates(Optional<Map<String, InvoiceMetricsPerDateResponse>> dates) {
-            this.dates = dates;
-            return this;
-        }
-
-        @java.lang.Override
-        public InvoiceMetricsResponse build() {
-            return new InvoiceMetricsResponse(
-                    totalAmount, totalCount, averageAmount, currency, dates, additionalProperties);
+        public InvoiceMetricsPerDateResponse build() {
+            return new InvoiceMetricsPerDateResponse(
+                    date, totalAmount, totalCount, averageAmount, currency, additionalProperties);
         }
     }
 }

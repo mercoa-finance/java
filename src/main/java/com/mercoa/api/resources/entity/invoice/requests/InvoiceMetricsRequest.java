@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.resources.invoicetypes.types.InvoiceMetricsPerDateGroupBy;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
 import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
 import java.time.OffsetDateTime;
@@ -28,6 +29,8 @@ public final class InvoiceMetricsRequest {
     private final Optional<Boolean> excludePayables;
 
     private final Optional<Boolean> excludeReceivables;
+
+    private final Optional<InvoiceMetricsPerDateGroupBy> returnByDate;
 
     private final Optional<String> payerId;
 
@@ -55,6 +58,7 @@ public final class InvoiceMetricsRequest {
             Optional<String> search,
             Optional<Boolean> excludePayables,
             Optional<Boolean> excludeReceivables,
+            Optional<InvoiceMetricsPerDateGroupBy> returnByDate,
             Optional<String> payerId,
             Optional<String> vendorId,
             Optional<String> approverId,
@@ -69,6 +73,7 @@ public final class InvoiceMetricsRequest {
         this.search = search;
         this.excludePayables = excludePayables;
         this.excludeReceivables = excludeReceivables;
+        this.returnByDate = returnByDate;
         this.payerId = payerId;
         this.vendorId = vendorId;
         this.approverId = approverId;
@@ -104,6 +109,14 @@ public final class InvoiceMetricsRequest {
     @JsonProperty("excludeReceivables")
     public Optional<Boolean> getExcludeReceivables() {
         return excludeReceivables;
+    }
+
+    /**
+     * @return Return invoice metrics grouped by date.
+     */
+    @JsonProperty("returnByDate")
+    public Optional<InvoiceMetricsPerDateGroupBy> getReturnByDate() {
+        return returnByDate;
     }
 
     /**
@@ -201,6 +214,7 @@ public final class InvoiceMetricsRequest {
         return search.equals(other.search)
                 && excludePayables.equals(other.excludePayables)
                 && excludeReceivables.equals(other.excludeReceivables)
+                && returnByDate.equals(other.returnByDate)
                 && payerId.equals(other.payerId)
                 && vendorId.equals(other.vendorId)
                 && approverId.equals(other.approverId)
@@ -219,6 +233,7 @@ public final class InvoiceMetricsRequest {
                 this.search,
                 this.excludePayables,
                 this.excludeReceivables,
+                this.returnByDate,
                 this.payerId,
                 this.vendorId,
                 this.approverId,
@@ -247,6 +262,8 @@ public final class InvoiceMetricsRequest {
         private Optional<Boolean> excludePayables = Optional.empty();
 
         private Optional<Boolean> excludeReceivables = Optional.empty();
+
+        private Optional<InvoiceMetricsPerDateGroupBy> returnByDate = Optional.empty();
 
         private Optional<String> payerId = Optional.empty();
 
@@ -277,6 +294,7 @@ public final class InvoiceMetricsRequest {
             search(other.getSearch());
             excludePayables(other.getExcludePayables());
             excludeReceivables(other.getExcludeReceivables());
+            returnByDate(other.getReturnByDate());
             payerId(other.getPayerId());
             vendorId(other.getVendorId());
             approverId(other.getApproverId());
@@ -320,6 +338,17 @@ public final class InvoiceMetricsRequest {
 
         public Builder excludeReceivables(Boolean excludeReceivables) {
             this.excludeReceivables = Optional.of(excludeReceivables);
+            return this;
+        }
+
+        @JsonSetter(value = "returnByDate", nulls = Nulls.SKIP)
+        public Builder returnByDate(Optional<InvoiceMetricsPerDateGroupBy> returnByDate) {
+            this.returnByDate = returnByDate;
+            return this;
+        }
+
+        public Builder returnByDate(InvoiceMetricsPerDateGroupBy returnByDate) {
+            this.returnByDate = Optional.of(returnByDate);
             return this;
         }
 
@@ -438,6 +467,7 @@ public final class InvoiceMetricsRequest {
                     search,
                     excludePayables,
                     excludeReceivables,
+                    returnByDate,
                     payerId,
                     vendorId,
                     approverId,

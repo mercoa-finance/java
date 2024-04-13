@@ -96,7 +96,7 @@ public final class BankAccountCheckOptions {
     }
 
     /**
-     * @return Base64 encoded PNG of the signature. If not provided, will use the signatoryName to generate a signature.
+     * @return Base64 encoded image of the signature. If not provided, will use the signatoryName to generate a signature. Mercoa will automatically grayscale, resize, and convert the image to a PNG the image to fit on the check.
      */
     @JsonProperty("signatureImage")
     public Optional<String> getSignatureImage() {
@@ -249,7 +249,7 @@ public final class BankAccountCheckOptions {
         }
 
         /**
-         * <p>Base64 encoded PNG of the signature. If not provided, will use the signatoryName to generate a signature.</p>
+         * <p>Base64 encoded image of the signature. If not provided, will use the signatoryName to generate a signature. Mercoa will automatically grayscale, resize, and convert the image to a PNG the image to fit on the check.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
