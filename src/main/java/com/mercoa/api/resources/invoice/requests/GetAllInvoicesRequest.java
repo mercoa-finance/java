@@ -41,6 +41,8 @@ public final class GetAllInvoicesRequest {
 
     private final Optional<String> search;
 
+    private final Optional<String> metadata;
+
     private final Optional<String> payerId;
 
     private final Optional<String> vendorId;
@@ -66,6 +68,7 @@ public final class GetAllInvoicesRequest {
             Optional<Integer> limit,
             Optional<String> startingAfter,
             Optional<String> search,
+            Optional<String> metadata,
             Optional<String> payerId,
             Optional<String> vendorId,
             Optional<String> approverId,
@@ -82,6 +85,7 @@ public final class GetAllInvoicesRequest {
         this.limit = limit;
         this.startingAfter = startingAfter;
         this.search = search;
+        this.metadata = metadata;
         this.payerId = payerId;
         this.vendorId = vendorId;
         this.approverId = approverId;
@@ -149,11 +153,19 @@ public final class GetAllInvoicesRequest {
     }
 
     /**
-     * @return Filter vendors by name. Partial matches are supported.
+     * @return Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
      */
     @JsonProperty("search")
     public Optional<String> getSearch() {
         return search;
+    }
+
+    /**
+     * @return Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+     */
+    @JsonProperty("metadata")
+    public Optional<String> getMetadata() {
+        return metadata;
     }
 
     /**
@@ -232,6 +244,7 @@ public final class GetAllInvoicesRequest {
                 && limit.equals(other.limit)
                 && startingAfter.equals(other.startingAfter)
                 && search.equals(other.search)
+                && metadata.equals(other.metadata)
                 && payerId.equals(other.payerId)
                 && vendorId.equals(other.vendorId)
                 && approverId.equals(other.approverId)
@@ -252,6 +265,7 @@ public final class GetAllInvoicesRequest {
                 this.limit,
                 this.startingAfter,
                 this.search,
+                this.metadata,
                 this.payerId,
                 this.vendorId,
                 this.approverId,
@@ -288,6 +302,8 @@ public final class GetAllInvoicesRequest {
 
         private Optional<String> search = Optional.empty();
 
+        private Optional<String> metadata = Optional.empty();
+
         private Optional<String> payerId = Optional.empty();
 
         private Optional<String> vendorId = Optional.empty();
@@ -316,6 +332,7 @@ public final class GetAllInvoicesRequest {
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
             search(other.getSearch());
+            metadata(other.getMetadata());
             payerId(other.getPayerId());
             vendorId(other.getVendorId());
             approverId(other.getApproverId());
@@ -414,6 +431,17 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public Builder metadata(Optional<String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        public Builder metadata(String metadata) {
+            this.metadata = Optional.of(metadata);
+            return this;
+        }
+
         @JsonSetter(value = "payerId", nulls = Nulls.SKIP)
         public Builder payerId(Optional<String> payerId) {
             this.payerId = payerId;
@@ -501,6 +529,7 @@ public final class GetAllInvoicesRequest {
                     limit,
                     startingAfter,
                     search,
+                    metadata,
                     payerId,
                     vendorId,
                     approverId,

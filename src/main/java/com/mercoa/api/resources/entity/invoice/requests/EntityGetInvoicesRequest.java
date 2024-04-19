@@ -41,6 +41,8 @@ public final class EntityGetInvoicesRequest {
 
     private final Optional<String> startingAfter;
 
+    private final Optional<String> metadata;
+
     private final Optional<String> search;
 
     private final Optional<String> payerId;
@@ -68,6 +70,7 @@ public final class EntityGetInvoicesRequest {
             Optional<OrderDirection> orderDirection,
             Optional<Integer> limit,
             Optional<String> startingAfter,
+            Optional<String> metadata,
             Optional<String> search,
             Optional<String> payerId,
             Optional<String> vendorId,
@@ -85,6 +88,7 @@ public final class EntityGetInvoicesRequest {
         this.orderDirection = orderDirection;
         this.limit = limit;
         this.startingAfter = startingAfter;
+        this.metadata = metadata;
         this.search = search;
         this.payerId = payerId;
         this.vendorId = vendorId;
@@ -161,7 +165,15 @@ public final class EntityGetInvoicesRequest {
     }
 
     /**
-     * @return Filter vendors by name. Partial matches are supported.
+     * @return Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+     */
+    @JsonProperty("metadata")
+    public Optional<String> getMetadata() {
+        return metadata;
+    }
+
+    /**
+     * @return Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
      */
     @JsonProperty("search")
     public Optional<String> getSearch() {
@@ -244,6 +256,7 @@ public final class EntityGetInvoicesRequest {
                 && orderDirection.equals(other.orderDirection)
                 && limit.equals(other.limit)
                 && startingAfter.equals(other.startingAfter)
+                && metadata.equals(other.metadata)
                 && search.equals(other.search)
                 && payerId.equals(other.payerId)
                 && vendorId.equals(other.vendorId)
@@ -265,6 +278,7 @@ public final class EntityGetInvoicesRequest {
                 this.orderDirection,
                 this.limit,
                 this.startingAfter,
+                this.metadata,
                 this.search,
                 this.payerId,
                 this.vendorId,
@@ -302,6 +316,8 @@ public final class EntityGetInvoicesRequest {
 
         private Optional<String> startingAfter = Optional.empty();
 
+        private Optional<String> metadata = Optional.empty();
+
         private Optional<String> search = Optional.empty();
 
         private Optional<String> payerId = Optional.empty();
@@ -332,6 +348,7 @@ public final class EntityGetInvoicesRequest {
             orderDirection(other.getOrderDirection());
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
+            metadata(other.getMetadata());
             search(other.getSearch());
             payerId(other.getPayerId());
             vendorId(other.getVendorId());
@@ -428,6 +445,17 @@ public final class EntityGetInvoicesRequest {
 
         public Builder startingAfter(String startingAfter) {
             this.startingAfter = Optional.of(startingAfter);
+            return this;
+        }
+
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public Builder metadata(Optional<String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        public Builder metadata(String metadata) {
+            this.metadata = Optional.of(metadata);
             return this;
         }
 
@@ -529,6 +557,7 @@ public final class EntityGetInvoicesRequest {
                     orderDirection,
                     limit,
                     startingAfter,
+                    metadata,
                     search,
                     payerId,
                     vendorId,
