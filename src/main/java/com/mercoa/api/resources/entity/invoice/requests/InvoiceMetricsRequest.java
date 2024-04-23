@@ -88,7 +88,7 @@ public final class InvoiceMetricsRequest {
     }
 
     /**
-     * @return Filter vendors by name. Partial matches are supported.
+     * @return Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
      */
     @JsonProperty("search")
     public Optional<String> getSearch() {
