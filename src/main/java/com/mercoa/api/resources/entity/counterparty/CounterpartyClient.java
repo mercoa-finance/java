@@ -65,6 +65,10 @@ public class CounterpartyClient {
             httpUrl.addQueryParameter(
                     "paymentMethods", request.getPaymentMethods().get().toString());
         }
+        if (request.getInvoiceMetrics().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "invoiceMetrics", request.getInvoiceMetrics().get().toString());
+        }
         if (request.getCounterpartyId().isPresent()) {
             httpUrl.addQueryParameter(
                     "counterpartyId", request.getCounterpartyId().get());
@@ -133,6 +137,10 @@ public class CounterpartyClient {
         if (request.getPaymentMethods().isPresent()) {
             httpUrl.addQueryParameter(
                     "paymentMethods", request.getPaymentMethods().get().toString());
+        }
+        if (request.getInvoiceMetrics().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "invoiceMetrics", request.getInvoiceMetrics().get().toString());
         }
         if (request.getCounterpartyId().isPresent()) {
             httpUrl.addQueryParameter(

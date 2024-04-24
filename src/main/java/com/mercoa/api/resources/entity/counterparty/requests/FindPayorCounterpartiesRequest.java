@@ -27,6 +27,8 @@ public final class FindPayorCounterpartiesRequest {
 
     private final Optional<Boolean> paymentMethods;
 
+    private final Optional<Boolean> invoiceMetrics;
+
     private final Optional<String> counterpartyId;
 
     private final Optional<Integer> limit;
@@ -39,6 +41,7 @@ public final class FindPayorCounterpartiesRequest {
             Optional<String> name,
             Optional<CounterpartyNetworkType> networkType,
             Optional<Boolean> paymentMethods,
+            Optional<Boolean> invoiceMetrics,
             Optional<String> counterpartyId,
             Optional<Integer> limit,
             Optional<String> startingAfter,
@@ -46,6 +49,7 @@ public final class FindPayorCounterpartiesRequest {
         this.name = name;
         this.networkType = networkType;
         this.paymentMethods = paymentMethods;
+        this.invoiceMetrics = invoiceMetrics;
         this.counterpartyId = counterpartyId;
         this.limit = limit;
         this.startingAfter = startingAfter;
@@ -74,6 +78,14 @@ public final class FindPayorCounterpartiesRequest {
     @JsonProperty("paymentMethods")
     public Optional<Boolean> getPaymentMethods() {
         return paymentMethods;
+    }
+
+    /**
+     * @return If true, will include counterparty invoice metrics as part of the response
+     */
+    @JsonProperty("invoiceMetrics")
+    public Optional<Boolean> getInvoiceMetrics() {
+        return invoiceMetrics;
     }
 
     /**
@@ -115,6 +127,7 @@ public final class FindPayorCounterpartiesRequest {
         return name.equals(other.name)
                 && networkType.equals(other.networkType)
                 && paymentMethods.equals(other.paymentMethods)
+                && invoiceMetrics.equals(other.invoiceMetrics)
                 && counterpartyId.equals(other.counterpartyId)
                 && limit.equals(other.limit)
                 && startingAfter.equals(other.startingAfter);
@@ -123,7 +136,13 @@ public final class FindPayorCounterpartiesRequest {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.name, this.networkType, this.paymentMethods, this.counterpartyId, this.limit, this.startingAfter);
+                this.name,
+                this.networkType,
+                this.paymentMethods,
+                this.invoiceMetrics,
+                this.counterpartyId,
+                this.limit,
+                this.startingAfter);
     }
 
     @java.lang.Override
@@ -143,6 +162,8 @@ public final class FindPayorCounterpartiesRequest {
 
         private Optional<Boolean> paymentMethods = Optional.empty();
 
+        private Optional<Boolean> invoiceMetrics = Optional.empty();
+
         private Optional<String> counterpartyId = Optional.empty();
 
         private Optional<Integer> limit = Optional.empty();
@@ -158,6 +179,7 @@ public final class FindPayorCounterpartiesRequest {
             name(other.getName());
             networkType(other.getNetworkType());
             paymentMethods(other.getPaymentMethods());
+            invoiceMetrics(other.getInvoiceMetrics());
             counterpartyId(other.getCounterpartyId());
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
@@ -197,6 +219,17 @@ public final class FindPayorCounterpartiesRequest {
             return this;
         }
 
+        @JsonSetter(value = "invoiceMetrics", nulls = Nulls.SKIP)
+        public Builder invoiceMetrics(Optional<Boolean> invoiceMetrics) {
+            this.invoiceMetrics = invoiceMetrics;
+            return this;
+        }
+
+        public Builder invoiceMetrics(Boolean invoiceMetrics) {
+            this.invoiceMetrics = Optional.of(invoiceMetrics);
+            return this;
+        }
+
         @JsonSetter(value = "counterpartyId", nulls = Nulls.SKIP)
         public Builder counterpartyId(Optional<String> counterpartyId) {
             this.counterpartyId = counterpartyId;
@@ -232,7 +265,14 @@ public final class FindPayorCounterpartiesRequest {
 
         public FindPayorCounterpartiesRequest build() {
             return new FindPayorCounterpartiesRequest(
-                    name, networkType, paymentMethods, counterpartyId, limit, startingAfter, additionalProperties);
+                    name,
+                    networkType,
+                    paymentMethods,
+                    invoiceMetrics,
+                    counterpartyId,
+                    limit,
+                    startingAfter,
+                    additionalProperties);
         }
     }
 }

@@ -58,6 +58,8 @@ public final class CounterpartyResponse implements IEntityResponse {
 
     private final List<CounterpartyNetworkType> counterpartyType;
 
+    private final Optional<CounterpartyInvoiceMetricsResponse> invoiceMetrics;
+
     private final Map<String, Object> additionalProperties;
 
     private CounterpartyResponse(
@@ -78,6 +80,7 @@ public final class CounterpartyResponse implements IEntityResponse {
             OffsetDateTime updatedAt,
             List<PaymentMethodResponse> paymentMethods,
             List<CounterpartyNetworkType> counterpartyType,
+            Optional<CounterpartyInvoiceMetricsResponse> invoiceMetrics,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.name = name;
@@ -96,6 +99,7 @@ public final class CounterpartyResponse implements IEntityResponse {
         this.updatedAt = updatedAt;
         this.paymentMethods = paymentMethods;
         this.counterpartyType = counterpartyType;
+        this.invoiceMetrics = invoiceMetrics;
         this.additionalProperties = additionalProperties;
     }
 
@@ -220,6 +224,11 @@ public final class CounterpartyResponse implements IEntityResponse {
         return counterpartyType;
     }
 
+    @JsonProperty("invoiceMetrics")
+    public Optional<CounterpartyInvoiceMetricsResponse> getInvoiceMetrics() {
+        return invoiceMetrics;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -248,7 +257,8 @@ public final class CounterpartyResponse implements IEntityResponse {
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt)
                 && paymentMethods.equals(other.paymentMethods)
-                && counterpartyType.equals(other.counterpartyType);
+                && counterpartyType.equals(other.counterpartyType)
+                && invoiceMetrics.equals(other.invoiceMetrics);
     }
 
     @java.lang.Override
@@ -270,7 +280,8 @@ public final class CounterpartyResponse implements IEntityResponse {
                 this.createdAt,
                 this.updatedAt,
                 this.paymentMethods,
-                this.counterpartyType);
+                this.counterpartyType,
+                this.invoiceMetrics);
     }
 
     @java.lang.Override
@@ -358,6 +369,10 @@ public final class CounterpartyResponse implements IEntityResponse {
         _FinalStage addCounterpartyType(CounterpartyNetworkType counterpartyType);
 
         _FinalStage addAllCounterpartyType(List<CounterpartyNetworkType> counterpartyType);
+
+        _FinalStage invoiceMetrics(Optional<CounterpartyInvoiceMetricsResponse> invoiceMetrics);
+
+        _FinalStage invoiceMetrics(CounterpartyInvoiceMetricsResponse invoiceMetrics);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -399,6 +414,8 @@ public final class CounterpartyResponse implements IEntityResponse {
 
         private OffsetDateTime updatedAt;
 
+        private Optional<CounterpartyInvoiceMetricsResponse> invoiceMetrics = Optional.empty();
+
         private List<CounterpartyNetworkType> counterpartyType = new ArrayList<>();
 
         private List<PaymentMethodResponse> paymentMethods = new ArrayList<>();
@@ -433,6 +450,7 @@ public final class CounterpartyResponse implements IEntityResponse {
             updatedAt(other.getUpdatedAt());
             paymentMethods(other.getPaymentMethods());
             counterpartyType(other.getCounterpartyType());
+            invoiceMetrics(other.getInvoiceMetrics());
             return this;
         }
 
@@ -533,6 +551,19 @@ public final class CounterpartyResponse implements IEntityResponse {
         @JsonSetter("updatedAt")
         public _FinalStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = updatedAt;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage invoiceMetrics(CounterpartyInvoiceMetricsResponse invoiceMetrics) {
+            this.invoiceMetrics = Optional.of(invoiceMetrics);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "invoiceMetrics", nulls = Nulls.SKIP)
+        public _FinalStage invoiceMetrics(Optional<CounterpartyInvoiceMetricsResponse> invoiceMetrics) {
+            this.invoiceMetrics = invoiceMetrics;
             return this;
         }
 
@@ -647,6 +678,7 @@ public final class CounterpartyResponse implements IEntityResponse {
                     updatedAt,
                     paymentMethods,
                     counterpartyType,
+                    invoiceMetrics,
                     additionalProperties);
         }
     }
