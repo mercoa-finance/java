@@ -11,6 +11,7 @@ import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.invoice.document.requests.UploadDocumentRequest;
 import com.mercoa.api.resources.invoicetypes.types.DocumentResponse;
+import com.mercoa.api.resources.invoicetypes.types.SourceEmailResponse;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.Headers;
@@ -163,6 +164,46 @@ public class DocumentClient {
     }
 
     /**
+     * Generate a PDF of the invoice. This PDF is generated from the data in the invoice, not from the uploaded documents.
+     */
+    public DocumentResponse generateInvoicePdf(String invoiceId) {
+        return generateInvoicePdf(invoiceId, null);
+    }
+
+    /**
+     * Generate a PDF of the invoice. This PDF is generated from the data in the invoice, not from the uploaded documents.
+     */
+    public DocumentResponse generateInvoicePdf(String invoiceId, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("invoice")
+                .addPathSegment(invoiceId)
+                .addPathSegments("pdf/generate")
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), DocumentResponse.class);
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Get a PDF of the check for the invoice. If the invoice does not have check as the disbursement method, an error will be returned. If the disbursement option for the check is set to 'MAIL', a void copy of the check will be returned. If the disbursement option for the check is set to 'PRINT', a printable check will be returned. If the invoice is NOT marked as PAID, the check will be a void copy.
      */
     public DocumentResponse generateCheckPdf(String invoiceId) {
@@ -193,6 +234,46 @@ public class DocumentClient {
             Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), DocumentResponse.class);
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Get the email subject and body that was used to create this invoice.
+     */
+    public SourceEmailResponse getSourceEmail(String invoiceId) {
+        return getSourceEmail(invoiceId, null);
+    }
+
+    /**
+     * Get the email subject and body that was used to create this invoice.
+     */
+    public SourceEmailResponse getSourceEmail(String invoiceId, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("invoice")
+                .addPathSegment(invoiceId)
+                .addPathSegments("source-email")
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), SourceEmailResponse.class);
             }
             throw new ApiError(
                     response.code(),

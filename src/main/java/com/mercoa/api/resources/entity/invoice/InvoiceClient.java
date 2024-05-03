@@ -175,21 +175,21 @@ public class InvoiceClient {
     }
 
     /**
-     * Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency.
+     * Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
      */
     public List<InvoiceMetricsResponse> metrics(String entityId) {
         return metrics(entityId, InvoiceMetricsRequest.builder().build());
     }
 
     /**
-     * Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency.
+     * Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
      */
     public List<InvoiceMetricsResponse> metrics(String entityId, InvoiceMetricsRequest request) {
         return metrics(entityId, request, null);
     }
 
     /**
-     * Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency.
+     * Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
      */
     public List<InvoiceMetricsResponse> metrics(
             String entityId, InvoiceMetricsRequest request, RequestOptions requestOptions) {

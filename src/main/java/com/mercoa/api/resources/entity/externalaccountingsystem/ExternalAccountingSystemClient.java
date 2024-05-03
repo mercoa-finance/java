@@ -26,7 +26,7 @@ public class ExternalAccountingSystemClient {
     }
 
     /**
-     * Create a company/entity in the external accounting system
+     * Create/Link an entity to an external accounting system like Codat or Rutter
      */
     public ExternalAccountingSystemCompanyResponse create(
             String entityId, ExternalAccountingSystemCompanyCreationRequest request) {
@@ -34,7 +34,7 @@ public class ExternalAccountingSystemClient {
     }
 
     /**
-     * Create a company/entity in the external accounting system
+     * Create/Link an entity to an external accounting system like Codat or Rutter
      */
     public ExternalAccountingSystemCompanyResponse create(
             String entityId, ExternalAccountingSystemCompanyCreationRequest request, RequestOptions requestOptions) {
@@ -76,14 +76,14 @@ public class ExternalAccountingSystemClient {
     }
 
     /**
-     * Get a link to connect an entity to an external accounting system
+     * Get a link to connect an entity to an external accounting system like Quickbooks or Xero
      */
     public String connect(String entityId) {
         return connect(entityId, null);
     }
 
     /**
-     * Get a link to connect an entity to an external accounting system
+     * Get a link to connect an entity to an external accounting system like Quickbooks or Xero
      */
     public String connect(String entityId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())

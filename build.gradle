@@ -2,13 +2,12 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'com.diffplug.spotless' version '6.11.0'
-    id 'signing'
 }
 
 repositories {
     mavenCentral()
     maven {
-        url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+        url 'https://s01.oss.sonatype.org/content/repositories/releases/'
     }
 }
 
@@ -36,9 +35,6 @@ java {
     withJavadocJar()
 }
 
-signing {
-    sign(publishing.publications)
-}
 test {
     useJUnitPlatform()
     testLogging {
@@ -50,18 +46,9 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.mercoa'
             artifactId = 'mercoa'
-            version = 'v0.3.32'
+            version = 'v0.3.33'
             from components.java
             pom {
-                name = 'mercoa'
-                description = 'The official SDK of mercoa'
-                url = 'https://buildwithfern.com'
-                developers {
-                    developer {
-                        name = 'mercoa'
-                        email = 'developers@mercoa.com'
-                    }
-                }
                 scm {
                     connection = 'scm:git:git://github.com/mercoa-finance/java.git'
                     developerConnection = 'scm:git:git://github.com/mercoa-finance/java.git'

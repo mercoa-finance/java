@@ -75,6 +75,8 @@ public final class InvoiceResponse {
 
     private final boolean hasDocuments;
 
+    private final boolean hasSourceEmail;
+
     private final Optional<List<CommentResponse>> comments;
 
     private final Optional<List<InvoiceLineItemResponse>> lineItems;
@@ -125,6 +127,7 @@ public final class InvoiceResponse {
             Optional<PaymentDestinationOptions> paymentDestinationOptions,
             boolean paymentDestinationConfirmed,
             boolean hasDocuments,
+            boolean hasSourceEmail,
             Optional<List<CommentResponse>> comments,
             Optional<List<InvoiceLineItemResponse>> lineItems,
             List<ApprovalSlot> approvers,
@@ -161,6 +164,7 @@ public final class InvoiceResponse {
         this.paymentDestinationOptions = paymentDestinationOptions;
         this.paymentDestinationConfirmed = paymentDestinationConfirmed;
         this.hasDocuments = hasDocuments;
+        this.hasSourceEmail = hasSourceEmail;
         this.comments = comments;
         this.lineItems = lineItems;
         this.approvers = approvers;
@@ -315,6 +319,14 @@ public final class InvoiceResponse {
         return hasDocuments;
     }
 
+    /**
+     * @return True if the invoice was created by an incoming email.
+     */
+    @JsonProperty("hasSourceEmail")
+    public boolean getHasSourceEmail() {
+        return hasSourceEmail;
+    }
+
     @JsonProperty("comments")
     public Optional<List<CommentResponse>> getComments() {
         return comments;
@@ -425,6 +437,7 @@ public final class InvoiceResponse {
                 && paymentDestinationOptions.equals(other.paymentDestinationOptions)
                 && paymentDestinationConfirmed == other.paymentDestinationConfirmed
                 && hasDocuments == other.hasDocuments
+                && hasSourceEmail == other.hasSourceEmail
                 && comments.equals(other.comments)
                 && lineItems.equals(other.lineItems)
                 && approvers.equals(other.approvers)
@@ -465,6 +478,7 @@ public final class InvoiceResponse {
                 this.paymentDestinationOptions,
                 this.paymentDestinationConfirmed,
                 this.hasDocuments,
+                this.hasSourceEmail,
                 this.comments,
                 this.lineItems,
                 this.approvers,
@@ -503,7 +517,11 @@ public final class InvoiceResponse {
     }
 
     public interface HasDocumentsStage {
-        CreatedAtStage hasDocuments(boolean hasDocuments);
+        HasSourceEmailStage hasDocuments(boolean hasDocuments);
+    }
+
+    public interface HasSourceEmailStage {
+        CreatedAtStage hasSourceEmail(boolean hasSourceEmail);
     }
 
     public interface CreatedAtStage {
@@ -646,6 +664,7 @@ public final class InvoiceResponse {
                     StatusStage,
                     PaymentDestinationConfirmedStage,
                     HasDocumentsStage,
+                    HasSourceEmailStage,
                     CreatedAtStage,
                     UpdatedAtStage,
                     _FinalStage {
@@ -656,6 +675,8 @@ public final class InvoiceResponse {
         private boolean paymentDestinationConfirmed;
 
         private boolean hasDocuments;
+
+        private boolean hasSourceEmail;
 
         private OffsetDateTime createdAt;
 
@@ -749,6 +770,7 @@ public final class InvoiceResponse {
             paymentDestinationOptions(other.getPaymentDestinationOptions());
             paymentDestinationConfirmed(other.getPaymentDestinationConfirmed());
             hasDocuments(other.getHasDocuments());
+            hasSourceEmail(other.getHasSourceEmail());
             comments(other.getComments());
             lineItems(other.getLineItems());
             approvers(other.getApprovers());
@@ -795,8 +817,19 @@ public final class InvoiceResponse {
          */
         @java.lang.Override
         @JsonSetter("hasDocuments")
-        public CreatedAtStage hasDocuments(boolean hasDocuments) {
+        public HasSourceEmailStage hasDocuments(boolean hasDocuments) {
             this.hasDocuments = hasDocuments;
+            return this;
+        }
+
+        /**
+         * <p>True if the invoice was created by an incoming email.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("hasSourceEmail")
+        public CreatedAtStage hasSourceEmail(boolean hasSourceEmail) {
+            this.hasSourceEmail = hasSourceEmail;
             return this;
         }
 
@@ -1286,6 +1319,7 @@ public final class InvoiceResponse {
                     paymentDestinationOptions,
                     paymentDestinationConfirmed,
                     hasDocuments,
+                    hasSourceEmail,
                     comments,
                     lineItems,
                     approvers,

@@ -64,6 +64,11 @@ public class OrganizationClient {
             httpUrl.addQueryParameter(
                     "emailProvider", request.getEmailProvider().get().toString());
         }
+        if (request.getExternalAccountingSystemProvider().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "externalAccountingSystemProvider",
+                    request.getExternalAccountingSystemProvider().get().toString());
+        }
         if (request.getColorScheme().isPresent()) {
             httpUrl.addQueryParameter(
                     "colorScheme", request.getColorScheme().get().toString());

@@ -24,6 +24,8 @@ public final class GetOrganizationRequest {
 
     private final Optional<Boolean> emailProvider;
 
+    private final Optional<Boolean> externalAccountingSystemProvider;
+
     private final Optional<Boolean> colorScheme;
 
     private final Optional<Boolean> payeeOnboardingOptions;
@@ -37,6 +39,7 @@ public final class GetOrganizationRequest {
     private GetOrganizationRequest(
             Optional<Boolean> paymentMethods,
             Optional<Boolean> emailProvider,
+            Optional<Boolean> externalAccountingSystemProvider,
             Optional<Boolean> colorScheme,
             Optional<Boolean> payeeOnboardingOptions,
             Optional<Boolean> payorOnboardingOptions,
@@ -44,6 +47,7 @@ public final class GetOrganizationRequest {
             Map<String, Object> additionalProperties) {
         this.paymentMethods = paymentMethods;
         this.emailProvider = emailProvider;
+        this.externalAccountingSystemProvider = externalAccountingSystemProvider;
         this.colorScheme = colorScheme;
         this.payeeOnboardingOptions = payeeOnboardingOptions;
         this.payorOnboardingOptions = payorOnboardingOptions;
@@ -65,6 +69,14 @@ public final class GetOrganizationRequest {
     @JsonProperty("emailProvider")
     public Optional<Boolean> getEmailProvider() {
         return emailProvider;
+    }
+
+    /**
+     * @return include external accounting system provider info in response
+     */
+    @JsonProperty("externalAccountingSystemProvider")
+    public Optional<Boolean> getExternalAccountingSystemProvider() {
+        return externalAccountingSystemProvider;
     }
 
     /**
@@ -113,6 +125,7 @@ public final class GetOrganizationRequest {
     private boolean equalTo(GetOrganizationRequest other) {
         return paymentMethods.equals(other.paymentMethods)
                 && emailProvider.equals(other.emailProvider)
+                && externalAccountingSystemProvider.equals(other.externalAccountingSystemProvider)
                 && colorScheme.equals(other.colorScheme)
                 && payeeOnboardingOptions.equals(other.payeeOnboardingOptions)
                 && payorOnboardingOptions.equals(other.payorOnboardingOptions)
@@ -124,6 +137,7 @@ public final class GetOrganizationRequest {
         return Objects.hash(
                 this.paymentMethods,
                 this.emailProvider,
+                this.externalAccountingSystemProvider,
                 this.colorScheme,
                 this.payeeOnboardingOptions,
                 this.payorOnboardingOptions,
@@ -145,6 +159,8 @@ public final class GetOrganizationRequest {
 
         private Optional<Boolean> emailProvider = Optional.empty();
 
+        private Optional<Boolean> externalAccountingSystemProvider = Optional.empty();
+
         private Optional<Boolean> colorScheme = Optional.empty();
 
         private Optional<Boolean> payeeOnboardingOptions = Optional.empty();
@@ -161,6 +177,7 @@ public final class GetOrganizationRequest {
         public Builder from(GetOrganizationRequest other) {
             paymentMethods(other.getPaymentMethods());
             emailProvider(other.getEmailProvider());
+            externalAccountingSystemProvider(other.getExternalAccountingSystemProvider());
             colorScheme(other.getColorScheme());
             payeeOnboardingOptions(other.getPayeeOnboardingOptions());
             payorOnboardingOptions(other.getPayorOnboardingOptions());
@@ -187,6 +204,17 @@ public final class GetOrganizationRequest {
 
         public Builder emailProvider(Boolean emailProvider) {
             this.emailProvider = Optional.of(emailProvider);
+            return this;
+        }
+
+        @JsonSetter(value = "externalAccountingSystemProvider", nulls = Nulls.SKIP)
+        public Builder externalAccountingSystemProvider(Optional<Boolean> externalAccountingSystemProvider) {
+            this.externalAccountingSystemProvider = externalAccountingSystemProvider;
+            return this;
+        }
+
+        public Builder externalAccountingSystemProvider(Boolean externalAccountingSystemProvider) {
+            this.externalAccountingSystemProvider = Optional.of(externalAccountingSystemProvider);
             return this;
         }
 
@@ -238,6 +266,7 @@ public final class GetOrganizationRequest {
             return new GetOrganizationRequest(
                     paymentMethods,
                     emailProvider,
+                    externalAccountingSystemProvider,
                     colorScheme,
                     payeeOnboardingOptions,
                     payorOnboardingOptions,
