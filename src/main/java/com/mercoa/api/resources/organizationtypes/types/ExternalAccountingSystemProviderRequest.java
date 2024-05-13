@@ -26,21 +26,51 @@ public final class ExternalAccountingSystemProviderRequest {
         return value.visit(visitor);
     }
 
+    public static ExternalAccountingSystemProviderRequest none(CodatProviderRequest value) {
+        return new ExternalAccountingSystemProviderRequest(new NoneValue(value));
+    }
+
     public static ExternalAccountingSystemProviderRequest codat(CodatProviderRequest value) {
         return new ExternalAccountingSystemProviderRequest(new CodatValue(value));
+    }
+
+    public static ExternalAccountingSystemProviderRequest rutter(RutterProviderRequest value) {
+        return new ExternalAccountingSystemProviderRequest(new RutterValue(value));
+    }
+
+    public boolean isNone() {
+        return value instanceof NoneValue;
     }
 
     public boolean isCodat() {
         return value instanceof CodatValue;
     }
 
+    public boolean isRutter() {
+        return value instanceof RutterValue;
+    }
+
     public boolean _isUnknown() {
         return value instanceof _UnknownValue;
+    }
+
+    public Optional<CodatProviderRequest> getNone() {
+        if (isNone()) {
+            return Optional.of(((NoneValue) value).value);
+        }
+        return Optional.empty();
     }
 
     public Optional<CodatProviderRequest> getCodat() {
         if (isCodat()) {
             return Optional.of(((CodatValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<RutterProviderRequest> getRutter() {
+        if (isRutter()) {
+            return Optional.of(((RutterValue) value).value);
         }
         return Optional.empty();
     }
@@ -58,16 +88,62 @@ public final class ExternalAccountingSystemProviderRequest {
     }
 
     public interface Visitor<T> {
+        T visitNone(CodatProviderRequest none);
+
         T visitCodat(CodatProviderRequest codat);
+
+        T visitRutter(RutterProviderRequest rutter);
 
         T _visitUnknown(Object unknownType);
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = _UnknownValue.class)
-    @JsonSubTypes(@JsonSubTypes.Type(CodatValue.class))
+    @JsonSubTypes({
+        @JsonSubTypes.Type(NoneValue.class),
+        @JsonSubTypes.Type(CodatValue.class),
+        @JsonSubTypes.Type(RutterValue.class)
+    })
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
         <T> T visit(Visitor<T> visitor);
+    }
+
+    @JsonTypeName("none")
+    private static final class NoneValue implements Value {
+        @JsonUnwrapped
+        private CodatProviderRequest value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private NoneValue() {}
+
+        private NoneValue(CodatProviderRequest value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitNone(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof NoneValue && equalTo((NoneValue) other);
+        }
+
+        private boolean equalTo(NoneValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "ExternalAccountingSystemProviderRequest{" + "value: " + value + "}";
+        }
     }
 
     @JsonTypeName("codat")
@@ -94,6 +170,44 @@ public final class ExternalAccountingSystemProviderRequest {
         }
 
         private boolean equalTo(CodatValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "ExternalAccountingSystemProviderRequest{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("rutter")
+    private static final class RutterValue implements Value {
+        @JsonUnwrapped
+        private RutterProviderRequest value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private RutterValue() {}
+
+        private RutterValue(RutterProviderRequest value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitRutter(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof RutterValue && equalTo((RutterValue) other);
+        }
+
+        private boolean equalTo(RutterValue other) {
             return value.equals(other.value);
         }
 

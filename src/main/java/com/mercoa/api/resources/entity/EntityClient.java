@@ -11,6 +11,7 @@ import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.entity.approvalpolicy.ApprovalPolicyClient;
 import com.mercoa.api.resources.entity.counterparty.CounterpartyClient;
+import com.mercoa.api.resources.entity.emaillog.EmailLogClient;
 import com.mercoa.api.resources.entity.externalaccountingsystem.ExternalAccountingSystemClient;
 import com.mercoa.api.resources.entity.invoice.InvoiceClient;
 import com.mercoa.api.resources.entity.metadata.MetadataClient;
@@ -39,6 +40,8 @@ import okhttp3.Response;
 public class EntityClient {
     protected final ClientOptions clientOptions;
 
+    protected final Supplier<EmailLogClient> emailLogClient;
+
     protected final Supplier<UserClient> userClient;
 
     protected final Supplier<ApprovalPolicyClient> approvalPolicyClient;
@@ -59,6 +62,7 @@ public class EntityClient {
 
     public EntityClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.emailLogClient = Suppliers.memoize(() -> new EmailLogClient(clientOptions));
         this.userClient = Suppliers.memoize(() -> new UserClient(clientOptions));
         this.approvalPolicyClient = Suppliers.memoize(() -> new ApprovalPolicyClient(clientOptions));
         this.counterpartyClient = Suppliers.memoize(() -> new CounterpartyClient(clientOptions));
@@ -570,6 +574,10 @@ public class EntityClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public EmailLogClient emailLog() {
+        return this.emailLogClient.get();
     }
 
     public UserClient user() {

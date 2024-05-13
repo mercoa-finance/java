@@ -30,6 +30,8 @@ public final class TokenGenerationPagesOptions {
 
     private final Optional<Boolean> approvals;
 
+    private final Optional<Boolean> emailLog;
+
     private final Map<String, Object> additionalProperties;
 
     private TokenGenerationPagesOptions(
@@ -38,12 +40,14 @@ public final class TokenGenerationPagesOptions {
             Optional<Boolean> notifications,
             Optional<Boolean> counterparties,
             Optional<Boolean> approvals,
+            Optional<Boolean> emailLog,
             Map<String, Object> additionalProperties) {
         this.paymentMethods = paymentMethods;
         this.representatives = representatives;
         this.notifications = notifications;
         this.counterparties = counterparties;
         this.approvals = approvals;
+        this.emailLog = emailLog;
         this.additionalProperties = additionalProperties;
     }
 
@@ -72,6 +76,11 @@ public final class TokenGenerationPagesOptions {
         return approvals;
     }
 
+    @JsonProperty("emailLog")
+    public Optional<Boolean> getEmailLog() {
+        return emailLog;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -88,13 +97,19 @@ public final class TokenGenerationPagesOptions {
                 && representatives.equals(other.representatives)
                 && notifications.equals(other.notifications)
                 && counterparties.equals(other.counterparties)
-                && approvals.equals(other.approvals);
+                && approvals.equals(other.approvals)
+                && emailLog.equals(other.emailLog);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.paymentMethods, this.representatives, this.notifications, this.counterparties, this.approvals);
+                this.paymentMethods,
+                this.representatives,
+                this.notifications,
+                this.counterparties,
+                this.approvals,
+                this.emailLog);
     }
 
     @java.lang.Override
@@ -118,6 +133,8 @@ public final class TokenGenerationPagesOptions {
 
         private Optional<Boolean> approvals = Optional.empty();
 
+        private Optional<Boolean> emailLog = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -129,6 +146,7 @@ public final class TokenGenerationPagesOptions {
             notifications(other.getNotifications());
             counterparties(other.getCounterparties());
             approvals(other.getApprovals());
+            emailLog(other.getEmailLog());
             return this;
         }
 
@@ -187,9 +205,26 @@ public final class TokenGenerationPagesOptions {
             return this;
         }
 
+        @JsonSetter(value = "emailLog", nulls = Nulls.SKIP)
+        public Builder emailLog(Optional<Boolean> emailLog) {
+            this.emailLog = emailLog;
+            return this;
+        }
+
+        public Builder emailLog(Boolean emailLog) {
+            this.emailLog = Optional.of(emailLog);
+            return this;
+        }
+
         public TokenGenerationPagesOptions build() {
             return new TokenGenerationPagesOptions(
-                    paymentMethods, representatives, notifications, counterparties, approvals, additionalProperties);
+                    paymentMethods,
+                    representatives,
+                    notifications,
+                    counterparties,
+                    approvals,
+                    emailLog,
+                    additionalProperties);
         }
     }
 }

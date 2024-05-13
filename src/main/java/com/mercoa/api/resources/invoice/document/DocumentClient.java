@@ -9,9 +9,9 @@ import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
+import com.mercoa.api.resources.emaillogtypes.types.EmailLogResponse;
 import com.mercoa.api.resources.invoice.document.requests.UploadDocumentRequest;
 import com.mercoa.api.resources.invoicetypes.types.DocumentResponse;
-import com.mercoa.api.resources.invoicetypes.types.SourceEmailResponse;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.Headers;
@@ -246,14 +246,14 @@ public class DocumentClient {
     /**
      * Get the email subject and body that was used to create this invoice.
      */
-    public SourceEmailResponse getSourceEmail(String invoiceId) {
+    public EmailLogResponse getSourceEmail(String invoiceId) {
         return getSourceEmail(invoiceId, null);
     }
 
     /**
      * Get the email subject and body that was used to create this invoice.
      */
-    public SourceEmailResponse getSourceEmail(String invoiceId, RequestOptions requestOptions) {
+    public EmailLogResponse getSourceEmail(String invoiceId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("invoice")
@@ -273,7 +273,7 @@ public class DocumentClient {
             }
             Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), SourceEmailResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), EmailLogResponse.class);
             }
             throw new ApiError(
                     response.code(),

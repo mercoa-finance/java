@@ -304,7 +304,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequest {
     }
 
     /**
-     * @return ID of entity who created this invoice.
+     * @return ID of entity who created this invoice. If creating a payable invoice (AP), this must be the same as the payerId. If creating a receivable invoice (AR), this must be the same as the vendorId.
      */
     @JsonProperty("creatorEntityId")
     @java.lang.Override
