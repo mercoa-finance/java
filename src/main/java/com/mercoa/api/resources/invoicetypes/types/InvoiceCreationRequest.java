@@ -22,7 +22,7 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = InvoiceCreationRequest.Builder.class)
-public final class InvoiceCreationRequest implements IInvoiceRequest {
+public final class InvoiceCreationRequest implements IInvoiceRequestBase {
     private final Optional<InvoiceStatus> status;
 
     private final Optional<Double> amount;
@@ -67,9 +67,9 @@ public final class InvoiceCreationRequest implements IInvoiceRequest {
 
     private final Optional<String> uploadedImage;
 
-    private final Optional<String> creatorEntityId;
-
     private final Optional<String> creatorUserId;
+
+    private final String creatorEntityId;
 
     private final Map<String, Object> additionalProperties;
 
@@ -96,8 +96,8 @@ public final class InvoiceCreationRequest implements IInvoiceRequest {
             Optional<String> foreignId,
             Optional<String> document,
             Optional<String> uploadedImage,
-            Optional<String> creatorEntityId,
             Optional<String> creatorUserId,
+            String creatorEntityId,
             Map<String, Object> additionalProperties) {
         this.status = status;
         this.amount = amount;
@@ -121,8 +121,8 @@ public final class InvoiceCreationRequest implements IInvoiceRequest {
         this.foreignId = foreignId;
         this.document = document;
         this.uploadedImage = uploadedImage;
-        this.creatorEntityId = creatorEntityId;
         this.creatorUserId = creatorUserId;
+        this.creatorEntityId = creatorEntityId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -304,21 +304,20 @@ public final class InvoiceCreationRequest implements IInvoiceRequest {
     }
 
     /**
-     * @return ID of entity who created this invoice. If creating a payable invoice (AP), this must be the same as the payerId. If creating a receivable invoice (AR), this must be the same as the vendorId.
-     */
-    @JsonProperty("creatorEntityId")
-    @java.lang.Override
-    public Optional<String> getCreatorEntityId() {
-        return creatorEntityId;
-    }
-
-    /**
      * @return ID of entity user who created this invoice.
      */
     @JsonProperty("creatorUserId")
     @java.lang.Override
     public Optional<String> getCreatorUserId() {
         return creatorUserId;
+    }
+
+    /**
+     * @return ID of entity who created this invoice.
+     */
+    @JsonProperty("creatorEntityId")
+    public String getCreatorEntityId() {
+        return creatorEntityId;
     }
 
     @java.lang.Override
@@ -355,8 +354,8 @@ public final class InvoiceCreationRequest implements IInvoiceRequest {
                 && foreignId.equals(other.foreignId)
                 && document.equals(other.document)
                 && uploadedImage.equals(other.uploadedImage)
-                && creatorEntityId.equals(other.creatorEntityId)
-                && creatorUserId.equals(other.creatorUserId);
+                && creatorUserId.equals(other.creatorUserId)
+                && creatorEntityId.equals(other.creatorEntityId);
     }
 
     @java.lang.Override
@@ -384,8 +383,8 @@ public final class InvoiceCreationRequest implements IInvoiceRequest {
                 this.foreignId,
                 this.document,
                 this.uploadedImage,
-                this.creatorEntityId,
-                this.creatorUserId);
+                this.creatorUserId,
+                this.creatorEntityId);
     }
 
     @java.lang.Override
@@ -393,65 +392,168 @@ public final class InvoiceCreationRequest implements IInvoiceRequest {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static CreatorEntityIdStage builder() {
         return new Builder();
     }
 
+    public interface CreatorEntityIdStage {
+        _FinalStage creatorEntityId(String creatorEntityId);
+
+        Builder from(InvoiceCreationRequest other);
+    }
+
+    public interface _FinalStage {
+        InvoiceCreationRequest build();
+
+        _FinalStage status(Optional<InvoiceStatus> status);
+
+        _FinalStage status(InvoiceStatus status);
+
+        _FinalStage amount(Optional<Double> amount);
+
+        _FinalStage amount(Double amount);
+
+        _FinalStage currency(Optional<CurrencyCode> currency);
+
+        _FinalStage currency(CurrencyCode currency);
+
+        _FinalStage invoiceDate(Optional<OffsetDateTime> invoiceDate);
+
+        _FinalStage invoiceDate(OffsetDateTime invoiceDate);
+
+        _FinalStage deductionDate(Optional<OffsetDateTime> deductionDate);
+
+        _FinalStage deductionDate(OffsetDateTime deductionDate);
+
+        _FinalStage settlementDate(Optional<OffsetDateTime> settlementDate);
+
+        _FinalStage settlementDate(OffsetDateTime settlementDate);
+
+        _FinalStage dueDate(Optional<OffsetDateTime> dueDate);
+
+        _FinalStage dueDate(OffsetDateTime dueDate);
+
+        _FinalStage invoiceNumber(Optional<String> invoiceNumber);
+
+        _FinalStage invoiceNumber(String invoiceNumber);
+
+        _FinalStage noteToSelf(Optional<String> noteToSelf);
+
+        _FinalStage noteToSelf(String noteToSelf);
+
+        _FinalStage serviceStartDate(Optional<OffsetDateTime> serviceStartDate);
+
+        _FinalStage serviceStartDate(OffsetDateTime serviceStartDate);
+
+        _FinalStage serviceEndDate(Optional<OffsetDateTime> serviceEndDate);
+
+        _FinalStage serviceEndDate(OffsetDateTime serviceEndDate);
+
+        _FinalStage payerId(Optional<String> payerId);
+
+        _FinalStage payerId(String payerId);
+
+        _FinalStage paymentSourceId(Optional<String> paymentSourceId);
+
+        _FinalStage paymentSourceId(String paymentSourceId);
+
+        _FinalStage vendorId(Optional<String> vendorId);
+
+        _FinalStage vendorId(String vendorId);
+
+        _FinalStage paymentDestinationId(Optional<String> paymentDestinationId);
+
+        _FinalStage paymentDestinationId(String paymentDestinationId);
+
+        _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions);
+
+        _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions);
+
+        _FinalStage approvers(Optional<List<ApprovalSlotAssignment>> approvers);
+
+        _FinalStage approvers(List<ApprovalSlotAssignment> approvers);
+
+        _FinalStage lineItems(Optional<List<InvoiceLineItemRequest>> lineItems);
+
+        _FinalStage lineItems(List<InvoiceLineItemRequest> lineItems);
+
+        _FinalStage metadata(Optional<Map<String, String>> metadata);
+
+        _FinalStage metadata(Map<String, String> metadata);
+
+        _FinalStage foreignId(Optional<String> foreignId);
+
+        _FinalStage foreignId(String foreignId);
+
+        _FinalStage document(Optional<String> document);
+
+        _FinalStage document(String document);
+
+        _FinalStage uploadedImage(Optional<String> uploadedImage);
+
+        _FinalStage uploadedImage(String uploadedImage);
+
+        _FinalStage creatorUserId(Optional<String> creatorUserId);
+
+        _FinalStage creatorUserId(String creatorUserId);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<InvoiceStatus> status = Optional.empty();
+    public static final class Builder implements CreatorEntityIdStage, _FinalStage {
+        private String creatorEntityId;
 
-        private Optional<Double> amount = Optional.empty();
-
-        private Optional<CurrencyCode> currency = Optional.empty();
-
-        private Optional<OffsetDateTime> invoiceDate = Optional.empty();
-
-        private Optional<OffsetDateTime> deductionDate = Optional.empty();
-
-        private Optional<OffsetDateTime> settlementDate = Optional.empty();
-
-        private Optional<OffsetDateTime> dueDate = Optional.empty();
-
-        private Optional<String> invoiceNumber = Optional.empty();
-
-        private Optional<String> noteToSelf = Optional.empty();
-
-        private Optional<OffsetDateTime> serviceStartDate = Optional.empty();
-
-        private Optional<OffsetDateTime> serviceEndDate = Optional.empty();
-
-        private Optional<String> payerId = Optional.empty();
-
-        private Optional<String> paymentSourceId = Optional.empty();
-
-        private Optional<String> vendorId = Optional.empty();
-
-        private Optional<String> paymentDestinationId = Optional.empty();
-
-        private Optional<PaymentDestinationOptions> paymentDestinationOptions = Optional.empty();
-
-        private Optional<List<ApprovalSlotAssignment>> approvers = Optional.empty();
-
-        private Optional<List<InvoiceLineItemRequest>> lineItems = Optional.empty();
-
-        private Optional<Map<String, String>> metadata = Optional.empty();
-
-        private Optional<String> foreignId = Optional.empty();
-
-        private Optional<String> document = Optional.empty();
+        private Optional<String> creatorUserId = Optional.empty();
 
         private Optional<String> uploadedImage = Optional.empty();
 
-        private Optional<String> creatorEntityId = Optional.empty();
+        private Optional<String> document = Optional.empty();
 
-        private Optional<String> creatorUserId = Optional.empty();
+        private Optional<String> foreignId = Optional.empty();
+
+        private Optional<Map<String, String>> metadata = Optional.empty();
+
+        private Optional<List<InvoiceLineItemRequest>> lineItems = Optional.empty();
+
+        private Optional<List<ApprovalSlotAssignment>> approvers = Optional.empty();
+
+        private Optional<PaymentDestinationOptions> paymentDestinationOptions = Optional.empty();
+
+        private Optional<String> paymentDestinationId = Optional.empty();
+
+        private Optional<String> vendorId = Optional.empty();
+
+        private Optional<String> paymentSourceId = Optional.empty();
+
+        private Optional<String> payerId = Optional.empty();
+
+        private Optional<OffsetDateTime> serviceEndDate = Optional.empty();
+
+        private Optional<OffsetDateTime> serviceStartDate = Optional.empty();
+
+        private Optional<String> noteToSelf = Optional.empty();
+
+        private Optional<String> invoiceNumber = Optional.empty();
+
+        private Optional<OffsetDateTime> dueDate = Optional.empty();
+
+        private Optional<OffsetDateTime> settlementDate = Optional.empty();
+
+        private Optional<OffsetDateTime> deductionDate = Optional.empty();
+
+        private Optional<OffsetDateTime> invoiceDate = Optional.empty();
+
+        private Optional<CurrencyCode> currency = Optional.empty();
+
+        private Optional<Double> amount = Optional.empty();
+
+        private Optional<InvoiceStatus> status = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(InvoiceCreationRequest other) {
             status(other.getStatus());
             amount(other.getAmount());
@@ -475,275 +577,386 @@ public final class InvoiceCreationRequest implements IInvoiceRequest {
             foreignId(other.getForeignId());
             document(other.getDocument());
             uploadedImage(other.getUploadedImage());
-            creatorEntityId(other.getCreatorEntityId());
             creatorUserId(other.getCreatorUserId());
+            creatorEntityId(other.getCreatorEntityId());
             return this;
         }
 
-        @JsonSetter(value = "status", nulls = Nulls.SKIP)
-        public Builder status(Optional<InvoiceStatus> status) {
-            this.status = status;
-            return this;
-        }
-
-        public Builder status(InvoiceStatus status) {
-            this.status = Optional.of(status);
-            return this;
-        }
-
-        @JsonSetter(value = "amount", nulls = Nulls.SKIP)
-        public Builder amount(Optional<Double> amount) {
-            this.amount = amount;
-            return this;
-        }
-
-        public Builder amount(Double amount) {
-            this.amount = Optional.of(amount);
-            return this;
-        }
-
-        @JsonSetter(value = "currency", nulls = Nulls.SKIP)
-        public Builder currency(Optional<CurrencyCode> currency) {
-            this.currency = currency;
-            return this;
-        }
-
-        public Builder currency(CurrencyCode currency) {
-            this.currency = Optional.of(currency);
-            return this;
-        }
-
-        @JsonSetter(value = "invoiceDate", nulls = Nulls.SKIP)
-        public Builder invoiceDate(Optional<OffsetDateTime> invoiceDate) {
-            this.invoiceDate = invoiceDate;
-            return this;
-        }
-
-        public Builder invoiceDate(OffsetDateTime invoiceDate) {
-            this.invoiceDate = Optional.of(invoiceDate);
-            return this;
-        }
-
-        @JsonSetter(value = "deductionDate", nulls = Nulls.SKIP)
-        public Builder deductionDate(Optional<OffsetDateTime> deductionDate) {
-            this.deductionDate = deductionDate;
-            return this;
-        }
-
-        public Builder deductionDate(OffsetDateTime deductionDate) {
-            this.deductionDate = Optional.of(deductionDate);
-            return this;
-        }
-
-        @JsonSetter(value = "settlementDate", nulls = Nulls.SKIP)
-        public Builder settlementDate(Optional<OffsetDateTime> settlementDate) {
-            this.settlementDate = settlementDate;
-            return this;
-        }
-
-        public Builder settlementDate(OffsetDateTime settlementDate) {
-            this.settlementDate = Optional.of(settlementDate);
-            return this;
-        }
-
-        @JsonSetter(value = "dueDate", nulls = Nulls.SKIP)
-        public Builder dueDate(Optional<OffsetDateTime> dueDate) {
-            this.dueDate = dueDate;
-            return this;
-        }
-
-        public Builder dueDate(OffsetDateTime dueDate) {
-            this.dueDate = Optional.of(dueDate);
-            return this;
-        }
-
-        @JsonSetter(value = "invoiceNumber", nulls = Nulls.SKIP)
-        public Builder invoiceNumber(Optional<String> invoiceNumber) {
-            this.invoiceNumber = invoiceNumber;
-            return this;
-        }
-
-        public Builder invoiceNumber(String invoiceNumber) {
-            this.invoiceNumber = Optional.of(invoiceNumber);
-            return this;
-        }
-
-        @JsonSetter(value = "noteToSelf", nulls = Nulls.SKIP)
-        public Builder noteToSelf(Optional<String> noteToSelf) {
-            this.noteToSelf = noteToSelf;
-            return this;
-        }
-
-        public Builder noteToSelf(String noteToSelf) {
-            this.noteToSelf = Optional.of(noteToSelf);
-            return this;
-        }
-
-        @JsonSetter(value = "serviceStartDate", nulls = Nulls.SKIP)
-        public Builder serviceStartDate(Optional<OffsetDateTime> serviceStartDate) {
-            this.serviceStartDate = serviceStartDate;
-            return this;
-        }
-
-        public Builder serviceStartDate(OffsetDateTime serviceStartDate) {
-            this.serviceStartDate = Optional.of(serviceStartDate);
-            return this;
-        }
-
-        @JsonSetter(value = "serviceEndDate", nulls = Nulls.SKIP)
-        public Builder serviceEndDate(Optional<OffsetDateTime> serviceEndDate) {
-            this.serviceEndDate = serviceEndDate;
-            return this;
-        }
-
-        public Builder serviceEndDate(OffsetDateTime serviceEndDate) {
-            this.serviceEndDate = Optional.of(serviceEndDate);
-            return this;
-        }
-
-        @JsonSetter(value = "payerId", nulls = Nulls.SKIP)
-        public Builder payerId(Optional<String> payerId) {
-            this.payerId = payerId;
-            return this;
-        }
-
-        public Builder payerId(String payerId) {
-            this.payerId = Optional.of(payerId);
-            return this;
-        }
-
-        @JsonSetter(value = "paymentSourceId", nulls = Nulls.SKIP)
-        public Builder paymentSourceId(Optional<String> paymentSourceId) {
-            this.paymentSourceId = paymentSourceId;
-            return this;
-        }
-
-        public Builder paymentSourceId(String paymentSourceId) {
-            this.paymentSourceId = Optional.of(paymentSourceId);
-            return this;
-        }
-
-        @JsonSetter(value = "vendorId", nulls = Nulls.SKIP)
-        public Builder vendorId(Optional<String> vendorId) {
-            this.vendorId = vendorId;
-            return this;
-        }
-
-        public Builder vendorId(String vendorId) {
-            this.vendorId = Optional.of(vendorId);
-            return this;
-        }
-
-        @JsonSetter(value = "paymentDestinationId", nulls = Nulls.SKIP)
-        public Builder paymentDestinationId(Optional<String> paymentDestinationId) {
-            this.paymentDestinationId = paymentDestinationId;
-            return this;
-        }
-
-        public Builder paymentDestinationId(String paymentDestinationId) {
-            this.paymentDestinationId = Optional.of(paymentDestinationId);
-            return this;
-        }
-
-        @JsonSetter(value = "paymentDestinationOptions", nulls = Nulls.SKIP)
-        public Builder paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions) {
-            this.paymentDestinationOptions = paymentDestinationOptions;
-            return this;
-        }
-
-        public Builder paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions) {
-            this.paymentDestinationOptions = Optional.of(paymentDestinationOptions);
-            return this;
-        }
-
-        @JsonSetter(value = "approvers", nulls = Nulls.SKIP)
-        public Builder approvers(Optional<List<ApprovalSlotAssignment>> approvers) {
-            this.approvers = approvers;
-            return this;
-        }
-
-        public Builder approvers(List<ApprovalSlotAssignment> approvers) {
-            this.approvers = Optional.of(approvers);
-            return this;
-        }
-
-        @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
-        public Builder lineItems(Optional<List<InvoiceLineItemRequest>> lineItems) {
-            this.lineItems = lineItems;
-            return this;
-        }
-
-        public Builder lineItems(List<InvoiceLineItemRequest> lineItems) {
-            this.lineItems = Optional.of(lineItems);
-            return this;
-        }
-
-        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
-        public Builder metadata(Optional<Map<String, String>> metadata) {
-            this.metadata = metadata;
-            return this;
-        }
-
-        public Builder metadata(Map<String, String> metadata) {
-            this.metadata = Optional.of(metadata);
-            return this;
-        }
-
-        @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
-        public Builder foreignId(Optional<String> foreignId) {
-            this.foreignId = foreignId;
-            return this;
-        }
-
-        public Builder foreignId(String foreignId) {
-            this.foreignId = Optional.of(foreignId);
-            return this;
-        }
-
-        @JsonSetter(value = "document", nulls = Nulls.SKIP)
-        public Builder document(Optional<String> document) {
-            this.document = document;
-            return this;
-        }
-
-        public Builder document(String document) {
-            this.document = Optional.of(document);
-            return this;
-        }
-
-        @JsonSetter(value = "uploadedImage", nulls = Nulls.SKIP)
-        public Builder uploadedImage(Optional<String> uploadedImage) {
-            this.uploadedImage = uploadedImage;
-            return this;
-        }
-
-        public Builder uploadedImage(String uploadedImage) {
-            this.uploadedImage = Optional.of(uploadedImage);
-            return this;
-        }
-
-        @JsonSetter(value = "creatorEntityId", nulls = Nulls.SKIP)
-        public Builder creatorEntityId(Optional<String> creatorEntityId) {
+        /**
+         * <p>ID of entity who created this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("creatorEntityId")
+        public _FinalStage creatorEntityId(String creatorEntityId) {
             this.creatorEntityId = creatorEntityId;
             return this;
         }
 
-        public Builder creatorEntityId(String creatorEntityId) {
-            this.creatorEntityId = Optional.of(creatorEntityId);
-            return this;
-        }
-
-        @JsonSetter(value = "creatorUserId", nulls = Nulls.SKIP)
-        public Builder creatorUserId(Optional<String> creatorUserId) {
-            this.creatorUserId = creatorUserId;
-            return this;
-        }
-
-        public Builder creatorUserId(String creatorUserId) {
+        /**
+         * <p>ID of entity user who created this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage creatorUserId(String creatorUserId) {
             this.creatorUserId = Optional.of(creatorUserId);
             return this;
         }
 
+        @java.lang.Override
+        @JsonSetter(value = "creatorUserId", nulls = Nulls.SKIP)
+        public _FinalStage creatorUserId(Optional<String> creatorUserId) {
+            this.creatorUserId = creatorUserId;
+            return this;
+        }
+
+        /**
+         * <p>DEPRECATED. Use document field instead.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage uploadedImage(String uploadedImage) {
+            this.uploadedImage = Optional.of(uploadedImage);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "uploadedImage", nulls = Nulls.SKIP)
+        public _FinalStage uploadedImage(Optional<String> uploadedImage) {
+            this.uploadedImage = uploadedImage;
+            return this;
+        }
+
+        /**
+         * <p>Base64 encoded image or PDF of invoice document. PNG, JPG, and PDF are supported. 10MB max. If the invoice already has a document, this will add a new document to the invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage document(String document) {
+            this.document = Optional.of(document);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "document", nulls = Nulls.SKIP)
+        public _FinalStage document(Optional<String> document) {
+            this.document = document;
+            return this;
+        }
+
+        /**
+         * <p>The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage foreignId(String foreignId) {
+            this.foreignId = Optional.of(foreignId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
+        public _FinalStage foreignId(Optional<String> foreignId) {
+            this.foreignId = foreignId;
+            return this;
+        }
+
+        /**
+         * <p>Metadata associated with this invoice. You can specify up to 10 keys, with key names up to 40 characters long and values up to 200 characters long.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage metadata(Map<String, String> metadata) {
+            this.metadata = Optional.of(metadata);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public _FinalStage metadata(Optional<Map<String, String>> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage lineItems(List<InvoiceLineItemRequest> lineItems) {
+            this.lineItems = Optional.of(lineItems);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
+        public _FinalStage lineItems(Optional<List<InvoiceLineItemRequest>> lineItems) {
+            this.lineItems = lineItems;
+            return this;
+        }
+
+        /**
+         * <p>Set approvers for this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage approvers(List<ApprovalSlotAssignment> approvers) {
+            this.approvers = Optional.of(approvers);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "approvers", nulls = Nulls.SKIP)
+        public _FinalStage approvers(Optional<List<ApprovalSlotAssignment>> approvers) {
+            this.approvers = approvers;
+            return this;
+        }
+
+        /**
+         * <p>Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions) {
+            this.paymentDestinationOptions = Optional.of(paymentDestinationOptions);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "paymentDestinationOptions", nulls = Nulls.SKIP)
+        public _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions) {
+            this.paymentDestinationOptions = paymentDestinationOptions;
+            return this;
+        }
+
+        /**
+         * <p>ID of payment destination for this invoice. If not provided, will attempt to use the default payment destination for the vendor when creating an invoice if a default payment destination exists for the vendor.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paymentDestinationId(String paymentDestinationId) {
+            this.paymentDestinationId = Optional.of(paymentDestinationId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "paymentDestinationId", nulls = Nulls.SKIP)
+        public _FinalStage paymentDestinationId(Optional<String> paymentDestinationId) {
+            this.paymentDestinationId = paymentDestinationId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage vendorId(String vendorId) {
+            this.vendorId = Optional.of(vendorId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "vendorId", nulls = Nulls.SKIP)
+        public _FinalStage vendorId(Optional<String> vendorId) {
+            this.vendorId = vendorId;
+            return this;
+        }
+
+        /**
+         * <p>ID of payment source for this invoice. If not provided, will attempt to use the default payment source for the payer when creating an invoice if a default payment source exists for the payer.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paymentSourceId(String paymentSourceId) {
+            this.paymentSourceId = Optional.of(paymentSourceId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "paymentSourceId", nulls = Nulls.SKIP)
+        public _FinalStage paymentSourceId(Optional<String> paymentSourceId) {
+            this.paymentSourceId = paymentSourceId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage payerId(String payerId) {
+            this.payerId = Optional.of(payerId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "payerId", nulls = Nulls.SKIP)
+        public _FinalStage payerId(Optional<String> payerId) {
+            this.payerId = payerId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage serviceEndDate(OffsetDateTime serviceEndDate) {
+            this.serviceEndDate = Optional.of(serviceEndDate);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "serviceEndDate", nulls = Nulls.SKIP)
+        public _FinalStage serviceEndDate(Optional<OffsetDateTime> serviceEndDate) {
+            this.serviceEndDate = serviceEndDate;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage serviceStartDate(OffsetDateTime serviceStartDate) {
+            this.serviceStartDate = Optional.of(serviceStartDate);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "serviceStartDate", nulls = Nulls.SKIP)
+        public _FinalStage serviceStartDate(Optional<OffsetDateTime> serviceStartDate) {
+            this.serviceStartDate = serviceStartDate;
+            return this;
+        }
+
+        /**
+         * <p>Note to self or memo on invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage noteToSelf(String noteToSelf) {
+            this.noteToSelf = Optional.of(noteToSelf);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "noteToSelf", nulls = Nulls.SKIP)
+        public _FinalStage noteToSelf(Optional<String> noteToSelf) {
+            this.noteToSelf = noteToSelf;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage invoiceNumber(String invoiceNumber) {
+            this.invoiceNumber = Optional.of(invoiceNumber);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "invoiceNumber", nulls = Nulls.SKIP)
+        public _FinalStage invoiceNumber(Optional<String> invoiceNumber) {
+            this.invoiceNumber = invoiceNumber;
+            return this;
+        }
+
+        /**
+         * <p>Due date of invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage dueDate(OffsetDateTime dueDate) {
+            this.dueDate = Optional.of(dueDate);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "dueDate", nulls = Nulls.SKIP)
+        public _FinalStage dueDate(Optional<OffsetDateTime> dueDate) {
+            this.dueDate = dueDate;
+            return this;
+        }
+
+        /**
+         * <p>Date of funds settlement.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage settlementDate(OffsetDateTime settlementDate) {
+            this.settlementDate = Optional.of(settlementDate);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "settlementDate", nulls = Nulls.SKIP)
+        public _FinalStage settlementDate(Optional<OffsetDateTime> settlementDate) {
+            this.settlementDate = settlementDate;
+            return this;
+        }
+
+        /**
+         * <p>Date when funds will be deducted from payer's account.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage deductionDate(OffsetDateTime deductionDate) {
+            this.deductionDate = Optional.of(deductionDate);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "deductionDate", nulls = Nulls.SKIP)
+        public _FinalStage deductionDate(Optional<OffsetDateTime> deductionDate) {
+            this.deductionDate = deductionDate;
+            return this;
+        }
+
+        /**
+         * <p>Date the invoice was issued.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage invoiceDate(OffsetDateTime invoiceDate) {
+            this.invoiceDate = Optional.of(invoiceDate);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "invoiceDate", nulls = Nulls.SKIP)
+        public _FinalStage invoiceDate(Optional<OffsetDateTime> invoiceDate) {
+            this.invoiceDate = invoiceDate;
+            return this;
+        }
+
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage currency(CurrencyCode currency) {
+            this.currency = Optional.of(currency);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "currency", nulls = Nulls.SKIP)
+        public _FinalStage currency(Optional<CurrencyCode> currency) {
+            this.currency = currency;
+            return this;
+        }
+
+        /**
+         * <p>Total amount of invoice in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage amount(Double amount) {
+            this.amount = Optional.of(amount);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "amount", nulls = Nulls.SKIP)
+        public _FinalStage amount(Optional<Double> amount) {
+            this.amount = amount;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage status(InvoiceStatus status) {
+            this.status = Optional.of(status);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "status", nulls = Nulls.SKIP)
+        public _FinalStage status(Optional<InvoiceStatus> status) {
+            this.status = status;
+            return this;
+        }
+
+        @java.lang.Override
         public InvoiceCreationRequest build() {
             return new InvoiceCreationRequest(
                     status,
@@ -768,8 +981,8 @@ public final class InvoiceCreationRequest implements IInvoiceRequest {
                     foreignId,
                     document,
                     uploadedImage,
-                    creatorEntityId,
                     creatorUserId,
+                    creatorEntityId,
                     additionalProperties);
         }
     }

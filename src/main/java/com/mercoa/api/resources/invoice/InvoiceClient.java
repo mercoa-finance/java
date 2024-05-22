@@ -17,8 +17,8 @@ import com.mercoa.api.resources.invoice.requests.GetAllInvoicesRequest;
 import com.mercoa.api.resources.invoice.requests.GetInvoice;
 import com.mercoa.api.resources.invoicetypes.types.FindInvoiceResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceCreationRequest;
-import com.mercoa.api.resources.invoicetypes.types.InvoiceRequest;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
+import com.mercoa.api.resources.invoicetypes.types.InvoiceUpdateRequest;
 import java.io.IOException;
 import java.util.function.Supplier;
 import okhttp3.Headers;
@@ -143,10 +143,6 @@ public class InvoiceClient {
         }
     }
 
-    public InvoiceResponse create() {
-        return create(InvoiceCreationRequest.builder().build());
-    }
-
     public InvoiceResponse create(InvoiceCreationRequest request) {
         return create(request, null);
     }
@@ -227,14 +223,14 @@ public class InvoiceClient {
     }
 
     public InvoiceResponse update(String invoiceId) {
-        return update(invoiceId, InvoiceRequest.builder().build());
+        return update(invoiceId, InvoiceUpdateRequest.builder().build());
     }
 
-    public InvoiceResponse update(String invoiceId, InvoiceRequest request) {
+    public InvoiceResponse update(String invoiceId, InvoiceUpdateRequest request) {
         return update(invoiceId, request, null);
     }
 
-    public InvoiceResponse update(String invoiceId, InvoiceRequest request, RequestOptions requestOptions) {
+    public InvoiceResponse update(String invoiceId, InvoiceUpdateRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("invoice")

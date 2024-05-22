@@ -21,8 +21,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = InvoiceRequest.Builder.class)
-public final class InvoiceRequest implements IInvoiceRequest {
+@JsonDeserialize(builder = InvoiceRequestBase.Builder.class)
+public final class InvoiceRequestBase implements IInvoiceRequestBase {
     private final Optional<InvoiceStatus> status;
 
     private final Optional<Double> amount;
@@ -67,13 +67,11 @@ public final class InvoiceRequest implements IInvoiceRequest {
 
     private final Optional<String> uploadedImage;
 
-    private final Optional<String> creatorEntityId;
-
     private final Optional<String> creatorUserId;
 
     private final Map<String, Object> additionalProperties;
 
-    private InvoiceRequest(
+    private InvoiceRequestBase(
             Optional<InvoiceStatus> status,
             Optional<Double> amount,
             Optional<CurrencyCode> currency,
@@ -96,7 +94,6 @@ public final class InvoiceRequest implements IInvoiceRequest {
             Optional<String> foreignId,
             Optional<String> document,
             Optional<String> uploadedImage,
-            Optional<String> creatorEntityId,
             Optional<String> creatorUserId,
             Map<String, Object> additionalProperties) {
         this.status = status;
@@ -121,7 +118,6 @@ public final class InvoiceRequest implements IInvoiceRequest {
         this.foreignId = foreignId;
         this.document = document;
         this.uploadedImage = uploadedImage;
-        this.creatorEntityId = creatorEntityId;
         this.creatorUserId = creatorUserId;
         this.additionalProperties = additionalProperties;
     }
@@ -304,15 +300,6 @@ public final class InvoiceRequest implements IInvoiceRequest {
     }
 
     /**
-     * @return ID of entity who created this invoice. If creating a payable invoice (AP), this must be the same as the payerId. If creating a receivable invoice (AR), this must be the same as the vendorId.
-     */
-    @JsonProperty("creatorEntityId")
-    @java.lang.Override
-    public Optional<String> getCreatorEntityId() {
-        return creatorEntityId;
-    }
-
-    /**
      * @return ID of entity user who created this invoice.
      */
     @JsonProperty("creatorUserId")
@@ -324,7 +311,7 @@ public final class InvoiceRequest implements IInvoiceRequest {
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof InvoiceRequest && equalTo((InvoiceRequest) other);
+        return other instanceof InvoiceRequestBase && equalTo((InvoiceRequestBase) other);
     }
 
     @JsonAnyGetter
@@ -332,7 +319,7 @@ public final class InvoiceRequest implements IInvoiceRequest {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(InvoiceRequest other) {
+    private boolean equalTo(InvoiceRequestBase other) {
         return status.equals(other.status)
                 && amount.equals(other.amount)
                 && currency.equals(other.currency)
@@ -355,7 +342,6 @@ public final class InvoiceRequest implements IInvoiceRequest {
                 && foreignId.equals(other.foreignId)
                 && document.equals(other.document)
                 && uploadedImage.equals(other.uploadedImage)
-                && creatorEntityId.equals(other.creatorEntityId)
                 && creatorUserId.equals(other.creatorUserId);
     }
 
@@ -384,7 +370,6 @@ public final class InvoiceRequest implements IInvoiceRequest {
                 this.foreignId,
                 this.document,
                 this.uploadedImage,
-                this.creatorEntityId,
                 this.creatorUserId);
     }
 
@@ -443,8 +428,6 @@ public final class InvoiceRequest implements IInvoiceRequest {
 
         private Optional<String> uploadedImage = Optional.empty();
 
-        private Optional<String> creatorEntityId = Optional.empty();
-
         private Optional<String> creatorUserId = Optional.empty();
 
         @JsonAnySetter
@@ -452,7 +435,7 @@ public final class InvoiceRequest implements IInvoiceRequest {
 
         private Builder() {}
 
-        public Builder from(InvoiceRequest other) {
+        public Builder from(InvoiceRequestBase other) {
             status(other.getStatus());
             amount(other.getAmount());
             currency(other.getCurrency());
@@ -475,7 +458,6 @@ public final class InvoiceRequest implements IInvoiceRequest {
             foreignId(other.getForeignId());
             document(other.getDocument());
             uploadedImage(other.getUploadedImage());
-            creatorEntityId(other.getCreatorEntityId());
             creatorUserId(other.getCreatorUserId());
             return this;
         }
@@ -722,17 +704,6 @@ public final class InvoiceRequest implements IInvoiceRequest {
             return this;
         }
 
-        @JsonSetter(value = "creatorEntityId", nulls = Nulls.SKIP)
-        public Builder creatorEntityId(Optional<String> creatorEntityId) {
-            this.creatorEntityId = creatorEntityId;
-            return this;
-        }
-
-        public Builder creatorEntityId(String creatorEntityId) {
-            this.creatorEntityId = Optional.of(creatorEntityId);
-            return this;
-        }
-
         @JsonSetter(value = "creatorUserId", nulls = Nulls.SKIP)
         public Builder creatorUserId(Optional<String> creatorUserId) {
             this.creatorUserId = creatorUserId;
@@ -744,8 +715,8 @@ public final class InvoiceRequest implements IInvoiceRequest {
             return this;
         }
 
-        public InvoiceRequest build() {
-            return new InvoiceRequest(
+        public InvoiceRequestBase build() {
+            return new InvoiceRequestBase(
                     status,
                     amount,
                     currency,
@@ -768,7 +739,6 @@ public final class InvoiceRequest implements IInvoiceRequest {
                     foreignId,
                     document,
                     uploadedImage,
-                    creatorEntityId,
                     creatorUserId,
                     additionalProperties);
         }

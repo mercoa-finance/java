@@ -74,6 +74,9 @@ public final class Address {
         return stateOrProvince;
     }
 
+    /**
+     * @return Postal code. Must be in the format XXXXX or XXXXX-XXXX.
+     */
     @JsonProperty("postalCode")
     public String getPostalCode() {
         return postalCode;
@@ -205,6 +208,10 @@ public final class Address {
             return this;
         }
 
+        /**
+         * <p>Postal code. Must be in the format XXXXX or XXXXX-XXXX.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("postalCode")
         public _FinalStage postalCode(String postalCode) {

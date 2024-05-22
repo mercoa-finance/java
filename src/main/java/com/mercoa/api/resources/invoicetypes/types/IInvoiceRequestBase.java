@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public interface IInvoiceRequest {
+public interface IInvoiceRequestBase {
     Optional<InvoiceStatus> getStatus();
 
     Optional<Double> getAmount();
@@ -53,8 +53,6 @@ public interface IInvoiceRequest {
     Optional<String> getDocument();
 
     Optional<String> getUploadedImage();
-
-    Optional<String> getCreatorEntityId();
 
     Optional<String> getCreatorUserId();
 }

@@ -8,6 +8,7 @@ import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
+import com.mercoa.api.resources.entity.externalaccountingsystem.requests.SyncExternalSystemRequest;
 import com.mercoa.api.resources.entity.externalaccountingsystem.types.ExternalAccountingSystemCompanyCreationRequest;
 import com.mercoa.api.resources.entity.externalaccountingsystem.types.ExternalAccountingSystemCompanyResponse;
 import java.io.IOException;
@@ -119,24 +120,40 @@ public class ExternalAccountingSystemClient {
      * Sync an entity with an external accounting system. Will sync customers/vendors and invoices.
      */
     public void sync(String entityId) {
-        sync(entityId, null);
+        sync(entityId, SyncExternalSystemRequest.builder().build());
     }
 
     /**
      * Sync an entity with an external accounting system. Will sync customers/vendors and invoices.
      */
-    public void sync(String entityId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+    public void sync(String entityId, SyncExternalSystemRequest request) {
+        sync(entityId, request, null);
+    }
+
+    /**
+     * Sync an entity with an external accounting system. Will sync customers/vendors and invoices.
+     */
+    public void sync(String entityId, SyncExternalSystemRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("entity")
                 .addPathSegment(entityId)
-                .addPathSegments("external-accounting-system/sync")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .addPathSegments("external-accounting-system/sync");
+        if (request.getVendors().isPresent()) {
+            httpUrl.addQueryParameter("vendors", request.getVendors().get().toString());
+        }
+        if (request.getBills().isPresent()) {
+            httpUrl.addQueryParameter("bills", request.getBills().get().toString());
+        }
+        if (request.getGlAccounts().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "glAccounts", request.getGlAccounts().get().toString());
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
                 .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .build();
+                .headers(Headers.of(clientOptions.headers(requestOptions)));
+        Request okhttpRequest = _requestBuilder.build();
         try {
             OkHttpClient client = clientOptions.httpClient();
             if (requestOptions != null && requestOptions.getTimeout().isPresent()) {

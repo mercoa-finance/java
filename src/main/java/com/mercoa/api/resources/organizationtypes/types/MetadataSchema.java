@@ -32,6 +32,8 @@ public final class MetadataSchema {
 
     private final Optional<Boolean> allowMultiple;
 
+    private final Optional<MetadataValidationRule> validationRules;
+
     private final Optional<MetadataShowConditions> showConditions;
 
     private final Map<String, Object> additionalProperties;
@@ -43,6 +45,7 @@ public final class MetadataSchema {
             Optional<Boolean> lineItem,
             MetadataType type,
             Optional<Boolean> allowMultiple,
+            Optional<MetadataValidationRule> validationRules,
             Optional<MetadataShowConditions> showConditions,
             Map<String, Object> additionalProperties) {
         this.key = key;
@@ -51,6 +54,7 @@ public final class MetadataSchema {
         this.lineItem = lineItem;
         this.type = type;
         this.allowMultiple = allowMultiple;
+        this.validationRules = validationRules;
         this.showConditions = showConditions;
         this.additionalProperties = additionalProperties;
     }
@@ -92,6 +96,14 @@ public final class MetadataSchema {
     }
 
     /**
+     * @return Validation rules are currently only supported for STRING types.
+     */
+    @JsonProperty("validationRules")
+    public Optional<MetadataValidationRule> getValidationRules() {
+        return validationRules;
+    }
+
+    /**
      * @return A list of conditional rules that determine whether or not this field should be shown. The field will only be shown if all of the conditions are met. If no conditions are specified, the field will always be shown.
      */
     @JsonProperty("showConditions")
@@ -117,6 +129,7 @@ public final class MetadataSchema {
                 && lineItem.equals(other.lineItem)
                 && type.equals(other.type)
                 && allowMultiple.equals(other.allowMultiple)
+                && validationRules.equals(other.validationRules)
                 && showConditions.equals(other.showConditions);
     }
 
@@ -129,6 +142,7 @@ public final class MetadataSchema {
                 this.lineItem,
                 this.type,
                 this.allowMultiple,
+                this.validationRules,
                 this.showConditions);
     }
 
@@ -170,6 +184,10 @@ public final class MetadataSchema {
 
         _FinalStage allowMultiple(Boolean allowMultiple);
 
+        _FinalStage validationRules(Optional<MetadataValidationRule> validationRules);
+
+        _FinalStage validationRules(MetadataValidationRule validationRules);
+
         _FinalStage showConditions(Optional<MetadataShowConditions> showConditions);
 
         _FinalStage showConditions(MetadataShowConditions showConditions);
@@ -184,6 +202,8 @@ public final class MetadataSchema {
         private MetadataType type;
 
         private Optional<MetadataShowConditions> showConditions = Optional.empty();
+
+        private Optional<MetadataValidationRule> validationRules = Optional.empty();
 
         private Optional<Boolean> allowMultiple = Optional.empty();
 
@@ -204,6 +224,7 @@ public final class MetadataSchema {
             lineItem(other.getLineItem());
             type(other.getType());
             allowMultiple(other.getAllowMultiple());
+            validationRules(other.getValidationRules());
             showConditions(other.getShowConditions());
             return this;
         }
@@ -243,6 +264,23 @@ public final class MetadataSchema {
         @JsonSetter(value = "showConditions", nulls = Nulls.SKIP)
         public _FinalStage showConditions(Optional<MetadataShowConditions> showConditions) {
             this.showConditions = showConditions;
+            return this;
+        }
+
+        /**
+         * <p>Validation rules are currently only supported for STRING types.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage validationRules(MetadataValidationRule validationRules) {
+            this.validationRules = Optional.of(validationRules);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "validationRules", nulls = Nulls.SKIP)
+        public _FinalStage validationRules(Optional<MetadataValidationRule> validationRules) {
+            this.validationRules = validationRules;
             return this;
         }
 
@@ -296,7 +334,15 @@ public final class MetadataSchema {
         @java.lang.Override
         public MetadataSchema build() {
             return new MetadataSchema(
-                    key, displayName, description, lineItem, type, allowMultiple, showConditions, additionalProperties);
+                    key,
+                    displayName,
+                    description,
+                    lineItem,
+                    type,
+                    allowMultiple,
+                    validationRules,
+                    showConditions,
+                    additionalProperties);
         }
     }
 }
