@@ -9,11 +9,9 @@ import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.entity.invoice.requests.EntityGetInvoicesRequest;
-import com.mercoa.api.resources.entity.invoice.requests.GetInvoice;
 import com.mercoa.api.resources.entity.invoice.requests.InvoiceMetricsRequest;
 import com.mercoa.api.resources.invoicetypes.types.FindInvoiceResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceMetricsResponse;
-import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.Headers;
@@ -123,48 +121,6 @@ public class InvoiceClient {
             Response response = client.newCall(okhttpRequest).execute();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), FindInvoiceResponse.class);
-            }
-            throw new ApiError(
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public InvoiceResponse get(String entityId, String invoiceId) {
-        return get(entityId, invoiceId, GetInvoice.builder().build());
-    }
-
-    public InvoiceResponse get(String entityId, String invoiceId, GetInvoice request) {
-        return get(entityId, invoiceId, request, null);
-    }
-
-    public InvoiceResponse get(String entityId, String invoiceId, GetInvoice request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("invoice")
-                .addPathSegment(invoiceId);
-        if (request.getIncludeFees().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "includeFees", request.getIncludeFees().get().toString());
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        try {
-            OkHttpClient client = clientOptions.httpClient();
-            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-                client = clientOptions.httpClientWithTimeout(requestOptions);
-            }
-            Response response = client.newCall(okhttpRequest).execute();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), InvoiceResponse.class);
             }
             throw new ApiError(
                     response.code(),

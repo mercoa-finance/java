@@ -25,21 +25,21 @@ public class EmailLogClient {
     }
 
     /**
-     * Get entity users
+     * Get all incoming invoice emails for an entity.
      */
     public EmailLogResponse find(String entityId) {
         return find(entityId, EntityEmailLogRequest.builder().build());
     }
 
     /**
-     * Get entity users
+     * Get all incoming invoice emails for an entity.
      */
     public EmailLogResponse find(String entityId, EntityEmailLogRequest request) {
         return find(entityId, request, null);
     }
 
     /**
-     * Get entity users
+     * Get all incoming invoice emails for an entity.
      */
     public EmailLogResponse find(String entityId, EntityEmailLogRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -87,14 +87,14 @@ public class EmailLogClient {
     }
 
     /**
-     * Get email log
+     * Get an email log by ID
      */
     public EmailLog get(String entityId, String logId) {
         return get(entityId, logId, null);
     }
 
     /**
-     * Get email log
+     * Get an email log by ID
      */
     public EmailLog get(String entityId, String logId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())

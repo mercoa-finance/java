@@ -8,14 +8,11 @@ import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
-import com.mercoa.api.resources.ocr.requests.RunOcrAsync;
-import com.mercoa.api.resources.ocr.requests.RunOcrSync;
 import com.mercoa.api.resources.ocr.types.OcrAsyncResponse;
 import com.mercoa.api.resources.ocr.types.OcrJobResponse;
+import com.mercoa.api.resources.ocr.types.OcrRequest;
 import com.mercoa.api.resources.ocr.types.OcrResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -33,40 +30,31 @@ public class OcrClient {
     /**
      * Run OCR on an Base64 encoded image or PDF. This endpoint will block until the OCR is complete.
      */
-    public OcrResponse ocr(RunOcrSync request) {
+    public OcrResponse ocr(OcrRequest request) {
         return ocr(request, null);
     }
 
     /**
      * Run OCR on an Base64 encoded image or PDF. This endpoint will block until the OCR is complete.
      */
-    public OcrResponse ocr(RunOcrSync request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+    public OcrResponse ocr(OcrRequest request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("ocr");
-        if (request.getVendorNetwork().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "vendorNetwork", request.getVendorNetwork().get().toString());
-        }
-        if (request.getEntityId().isPresent()) {
-            httpUrl.addQueryParameter("entityId", request.getEntityId().get());
-        }
-        Map<String, Object> properties = new HashMap<>();
-        properties.put("mimeType", request.getMimeType());
-        properties.put("image", request.getImage());
+                .addPathSegments("ocr")
+                .build();
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(properties), MediaTypes.APPLICATION_JSON);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
+                .addHeader("Content-Type", "application/json")
+                .build();
         try {
             OkHttpClient client = clientOptions.httpClient();
             if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -87,40 +75,31 @@ public class OcrClient {
     /**
      * Run OCR on an Base64 encoded image or PDF. This endpoint will return immediately and the OCR will be processed asynchronously.
      */
-    public OcrAsyncResponse runAsyncOcr(RunOcrAsync request) {
+    public OcrAsyncResponse runAsyncOcr(OcrRequest request) {
         return runAsyncOcr(request, null);
     }
 
     /**
      * Run OCR on an Base64 encoded image or PDF. This endpoint will return immediately and the OCR will be processed asynchronously.
      */
-    public OcrAsyncResponse runAsyncOcr(RunOcrAsync request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+    public OcrAsyncResponse runAsyncOcr(OcrRequest request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("ocr-async");
-        if (request.getVendorNetwork().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "vendorNetwork", request.getVendorNetwork().get().toString());
-        }
-        if (request.getEntityId().isPresent()) {
-            httpUrl.addQueryParameter("entityId", request.getEntityId().get());
-        }
-        Map<String, Object> properties = new HashMap<>();
-        properties.put("mimeType", request.getMimeType());
-        properties.put("image", request.getImage());
+                .addPathSegments("ocr-async")
+                .build();
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(properties), MediaTypes.APPLICATION_JSON);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
+                .addHeader("Content-Type", "application/json")
+                .build();
         try {
             OkHttpClient client = clientOptions.httpClient();
             if (requestOptions != null && requestOptions.getTimeout().isPresent()) {

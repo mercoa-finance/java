@@ -381,6 +381,7 @@ public class EntityClient {
 
     /**
      * Generate a JWT token for an entity with the given options. This token can be used to authenticate the entity in the Mercoa API and iFrame.
+     * <p>&lt;Warning&gt;We recommend using <a href="/api-reference/entity/user/get-token">this endpoint</a>. This will enable features such as approvals and comments.&lt;/Warning&gt;</p>
      */
     public String getToken(String entityId) {
         return getToken(entityId, TokenGenerationOptions.builder().build());
@@ -388,6 +389,7 @@ public class EntityClient {
 
     /**
      * Generate a JWT token for an entity with the given options. This token can be used to authenticate the entity in the Mercoa API and iFrame.
+     * <p>&lt;Warning&gt;We recommend using <a href="/api-reference/entity/user/get-token">this endpoint</a>. This will enable features such as approvals and comments.&lt;/Warning&gt;</p>
      */
     public String getToken(String entityId, TokenGenerationOptions request) {
         return getToken(entityId, request, null);
@@ -395,6 +397,7 @@ public class EntityClient {
 
     /**
      * Generate a JWT token for an entity with the given options. This token can be used to authenticate the entity in the Mercoa API and iFrame.
+     * <p>&lt;Warning&gt;We recommend using <a href="/api-reference/entity/user/get-token">this endpoint</a>. This will enable features such as approvals and comments.&lt;/Warning&gt;</p>
      */
     public String getToken(String entityId, TokenGenerationOptions request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
