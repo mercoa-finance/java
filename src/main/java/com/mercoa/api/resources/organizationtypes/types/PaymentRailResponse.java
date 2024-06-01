@@ -9,85 +9,48 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = PaymentRailResponse.Builder.class)
-public final class PaymentRailResponse implements IPaymentRailRequest {
+public final class PaymentRailResponse {
     private final PaymentMethodType type;
 
     private final String name;
 
-    private final Optional<PaymentRailMarkup> markup;
-
-    private final Optional<String> description;
-
     private final boolean active;
-
-    private final boolean available;
 
     private final Map<String, Object> additionalProperties;
 
     private PaymentRailResponse(
-            PaymentMethodType type,
-            String name,
-            Optional<PaymentRailMarkup> markup,
-            Optional<String> description,
-            boolean active,
-            boolean available,
-            Map<String, Object> additionalProperties) {
+            PaymentMethodType type, String name, boolean active, Map<String, Object> additionalProperties) {
         this.type = type;
         this.name = name;
-        this.markup = markup;
-        this.description = description;
         this.active = active;
-        this.available = available;
         this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("type")
-    @java.lang.Override
     public PaymentMethodType getType() {
         return type;
     }
 
     /**
-     * @return Name of the payment method. For custom payment methods, this is the ID of the schema.
+     * @return For custom payment methods, this is the ID of the schema.
      */
     @JsonProperty("name")
-    @java.lang.Override
     public String getName() {
         return name;
     }
 
-    @JsonProperty("markup")
-    @java.lang.Override
-    public Optional<PaymentRailMarkup> getMarkup() {
-        return markup;
-    }
-
-    @JsonProperty("description")
-    @java.lang.Override
-    public Optional<String> getDescription() {
-        return description;
-    }
-
     @JsonProperty("active")
-    @java.lang.Override
     public boolean getActive() {
         return active;
-    }
-
-    @JsonProperty("available")
-    public boolean getAvailable() {
-        return available;
     }
 
     @java.lang.Override
@@ -102,17 +65,12 @@ public final class PaymentRailResponse implements IPaymentRailRequest {
     }
 
     private boolean equalTo(PaymentRailResponse other) {
-        return type.equals(other.type)
-                && name.equals(other.name)
-                && markup.equals(other.markup)
-                && description.equals(other.description)
-                && active == other.active
-                && available == other.available;
+        return type.equals(other.type) && name.equals(other.name) && active == other.active;
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.type, this.name, this.markup, this.description, this.active, this.available);
+        return Objects.hash(this.type, this.name, this.active);
     }
 
     @java.lang.Override
@@ -135,38 +93,20 @@ public final class PaymentRailResponse implements IPaymentRailRequest {
     }
 
     public interface ActiveStage {
-        AvailableStage active(boolean active);
-    }
-
-    public interface AvailableStage {
-        _FinalStage available(boolean available);
+        _FinalStage active(boolean active);
     }
 
     public interface _FinalStage {
         PaymentRailResponse build();
-
-        _FinalStage markup(Optional<PaymentRailMarkup> markup);
-
-        _FinalStage markup(PaymentRailMarkup markup);
-
-        _FinalStage description(Optional<String> description);
-
-        _FinalStage description(String description);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements TypeStage, NameStage, ActiveStage, AvailableStage, _FinalStage {
+    public static final class Builder implements TypeStage, NameStage, ActiveStage, _FinalStage {
         private PaymentMethodType type;
 
         private String name;
 
         private boolean active;
-
-        private boolean available;
-
-        private Optional<String> description = Optional.empty();
-
-        private Optional<PaymentRailMarkup> markup = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -177,10 +117,7 @@ public final class PaymentRailResponse implements IPaymentRailRequest {
         public Builder from(PaymentRailResponse other) {
             type(other.getType());
             name(other.getName());
-            markup(other.getMarkup());
-            description(other.getDescription());
             active(other.getActive());
-            available(other.getAvailable());
             return this;
         }
 
@@ -192,7 +129,7 @@ public final class PaymentRailResponse implements IPaymentRailRequest {
         }
 
         /**
-         * <p>Name of the payment method. For custom payment methods, this is the ID of the schema.</p>
+         * <p>For custom payment methods, this is the ID of the schema.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -204,47 +141,14 @@ public final class PaymentRailResponse implements IPaymentRailRequest {
 
         @java.lang.Override
         @JsonSetter("active")
-        public AvailableStage active(boolean active) {
+        public _FinalStage active(boolean active) {
             this.active = active;
             return this;
         }
 
         @java.lang.Override
-        @JsonSetter("available")
-        public _FinalStage available(boolean available) {
-            this.available = available;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage description(String description) {
-            this.description = Optional.of(description);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "description", nulls = Nulls.SKIP)
-        public _FinalStage description(Optional<String> description) {
-            this.description = description;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage markup(PaymentRailMarkup markup) {
-            this.markup = Optional.of(markup);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "markup", nulls = Nulls.SKIP)
-        public _FinalStage markup(Optional<PaymentRailMarkup> markup) {
-            this.markup = markup;
-            return this;
-        }
-
-        @java.lang.Override
         public PaymentRailResponse build() {
-            return new PaymentRailResponse(type, name, markup, description, active, available, additionalProperties);
+            return new PaymentRailResponse(type, name, active, additionalProperties);
         }
     }
 }

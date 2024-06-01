@@ -22,11 +22,16 @@ import java.util.Optional;
 public final class BankAccountPaymentDestinationOptions {
     private final Optional<BankDeliveryMethod> delivery;
 
+    private final Optional<String> description;
+
     private final Map<String, Object> additionalProperties;
 
     private BankAccountPaymentDestinationOptions(
-            Optional<BankDeliveryMethod> delivery, Map<String, Object> additionalProperties) {
+            Optional<BankDeliveryMethod> delivery,
+            Optional<String> description,
+            Map<String, Object> additionalProperties) {
         this.delivery = delivery;
+        this.description = description;
         this.additionalProperties = additionalProperties;
     }
 
@@ -36,6 +41,14 @@ public final class BankAccountPaymentDestinationOptions {
     @JsonProperty("delivery")
     public Optional<BankDeliveryMethod> getDelivery() {
         return delivery;
+    }
+
+    /**
+     * @return ACH Statement Description. By default, this will be 'AP' followed by the first 8 characters of the invoice ID. Must be at least 4 characters and no more than 10 characters, and follow this regex pattern ^[a-zA-Z0-9-#.$&amp;*]{4,10}$
+     */
+    @JsonProperty("description")
+    public Optional<String> getDescription() {
+        return description;
     }
 
     @java.lang.Override
@@ -51,12 +64,12 @@ public final class BankAccountPaymentDestinationOptions {
     }
 
     private boolean equalTo(BankAccountPaymentDestinationOptions other) {
-        return delivery.equals(other.delivery);
+        return delivery.equals(other.delivery) && description.equals(other.description);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.delivery);
+        return Objects.hash(this.delivery, this.description);
     }
 
     @java.lang.Override
@@ -72,6 +85,8 @@ public final class BankAccountPaymentDestinationOptions {
     public static final class Builder {
         private Optional<BankDeliveryMethod> delivery = Optional.empty();
 
+        private Optional<String> description = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -79,6 +94,7 @@ public final class BankAccountPaymentDestinationOptions {
 
         public Builder from(BankAccountPaymentDestinationOptions other) {
             delivery(other.getDelivery());
+            description(other.getDescription());
             return this;
         }
 
@@ -93,8 +109,19 @@ public final class BankAccountPaymentDestinationOptions {
             return this;
         }
 
+        @JsonSetter(value = "description", nulls = Nulls.SKIP)
+        public Builder description(Optional<String> description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = Optional.of(description);
+            return this;
+        }
+
         public BankAccountPaymentDestinationOptions build() {
-            return new BankAccountPaymentDestinationOptions(delivery, additionalProperties);
+            return new BankAccountPaymentDestinationOptions(delivery, description, additionalProperties);
         }
     }
 }

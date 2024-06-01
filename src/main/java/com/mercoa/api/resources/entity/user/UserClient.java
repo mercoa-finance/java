@@ -12,8 +12,10 @@ import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.entity.user.notificationpolicy.NotificationPolicyClient;
 import com.mercoa.api.resources.entity.user.notifications.NotificationsClient;
+import com.mercoa.api.resources.entity.user.requests.EntityFindEntityRequest;
 import com.mercoa.api.resources.entitytypes.types.EntityUserRequest;
 import com.mercoa.api.resources.entitytypes.types.EntityUserResponse;
+import com.mercoa.api.resources.entitytypes.types.FindEntityUserResponse;
 import com.mercoa.api.resources.entitytypes.types.TokenGenerationOptions;
 import java.io.IOException;
 import java.util.List;
@@ -70,6 +72,72 @@ public class UserClient {
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(
                         response.body().string(), new TypeReference<List<EntityUserResponse>>() {});
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Get all entity users
+     */
+    public FindEntityUserResponse find(String entityId) {
+        return find(entityId, EntityFindEntityRequest.builder().build());
+    }
+
+    /**
+     * Get all entity users
+     */
+    public FindEntityUserResponse find(String entityId, EntityFindEntityRequest request) {
+        return find(entityId, request, null);
+    }
+
+    /**
+     * Get all entity users
+     */
+    public FindEntityUserResponse find(
+            String entityId, EntityFindEntityRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entity")
+                .addPathSegment(entityId)
+                .addPathSegments("users");
+        if (request.getForeignId().isPresent()) {
+            httpUrl.addQueryParameter("foreignId", request.getForeignId().get());
+        }
+        if (request.getRole().isPresent()) {
+            httpUrl.addQueryParameter("role", request.getRole().get());
+        }
+        if (request.getName().isPresent()) {
+            httpUrl.addQueryParameter("name", request.getName().get());
+        }
+        if (request.getEmail().isPresent()) {
+            httpUrl.addQueryParameter("email", request.getEmail().get());
+        }
+        if (request.getLimit().isPresent()) {
+            httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
+        }
+        if (request.getStartingAfter().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "startingAfter", request.getStartingAfter().get());
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("PUT", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        try {
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), FindEntityUserResponse.class);
             }
             throw new ApiError(
                     response.code(),

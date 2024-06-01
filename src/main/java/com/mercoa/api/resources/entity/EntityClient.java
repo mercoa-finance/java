@@ -11,6 +11,7 @@ import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.entity.approvalpolicy.ApprovalPolicyClient;
 import com.mercoa.api.resources.entity.counterparty.CounterpartyClient;
+import com.mercoa.api.resources.entity.customization.CustomizationClient;
 import com.mercoa.api.resources.entity.emaillog.EmailLogClient;
 import com.mercoa.api.resources.entity.externalaccountingsystem.ExternalAccountingSystemClient;
 import com.mercoa.api.resources.entity.invoice.InvoiceClient;
@@ -48,6 +49,8 @@ public class EntityClient {
 
     protected final Supplier<CounterpartyClient> counterpartyClient;
 
+    protected final Supplier<CustomizationClient> customizationClient;
+
     protected final Supplier<ExternalAccountingSystemClient> externalAccountingSystemClient;
 
     protected final Supplier<InvoiceClient> invoiceClient;
@@ -66,6 +69,7 @@ public class EntityClient {
         this.userClient = Suppliers.memoize(() -> new UserClient(clientOptions));
         this.approvalPolicyClient = Suppliers.memoize(() -> new ApprovalPolicyClient(clientOptions));
         this.counterpartyClient = Suppliers.memoize(() -> new CounterpartyClient(clientOptions));
+        this.customizationClient = Suppliers.memoize(() -> new CustomizationClient(clientOptions));
         this.externalAccountingSystemClient =
                 Suppliers.memoize(() -> new ExternalAccountingSystemClient(clientOptions));
         this.invoiceClient = Suppliers.memoize(() -> new InvoiceClient(clientOptions));
@@ -593,6 +597,10 @@ public class EntityClient {
 
     public CounterpartyClient counterparty() {
         return this.counterpartyClient.get();
+    }
+
+    public CustomizationClient customization() {
+        return this.customizationClient.get();
     }
 
     public ExternalAccountingSystemClient externalAccountingSystem() {
