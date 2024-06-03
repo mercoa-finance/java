@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.commons.types.OrderDirection;
 import com.mercoa.api.resources.invoicetypes.types.ApproverAction;
+import com.mercoa.api.resources.invoicetypes.types.InvoiceMetadataFilter;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceOrderByField;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
 import java.time.OffsetDateTime;
@@ -41,7 +42,7 @@ public final class EntityGetInvoicesRequest {
 
     private final Optional<String> startingAfter;
 
-    private final Optional<String> metadata;
+    private final Optional<InvoiceMetadataFilter> metadata;
 
     private final Optional<String> search;
 
@@ -70,7 +71,7 @@ public final class EntityGetInvoicesRequest {
             Optional<OrderDirection> orderDirection,
             Optional<Integer> limit,
             Optional<String> startingAfter,
-            Optional<String> metadata,
+            Optional<InvoiceMetadataFilter> metadata,
             Optional<String> search,
             Optional<String> payerId,
             Optional<String> vendorId,
@@ -168,7 +169,7 @@ public final class EntityGetInvoicesRequest {
      * @return Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
      */
     @JsonProperty("metadata")
-    public Optional<String> getMetadata() {
+    public Optional<InvoiceMetadataFilter> getMetadata() {
         return metadata;
     }
 
@@ -316,7 +317,7 @@ public final class EntityGetInvoicesRequest {
 
         private Optional<String> startingAfter = Optional.empty();
 
-        private Optional<String> metadata = Optional.empty();
+        private Optional<InvoiceMetadataFilter> metadata = Optional.empty();
 
         private Optional<String> search = Optional.empty();
 
@@ -449,12 +450,12 @@ public final class EntityGetInvoicesRequest {
         }
 
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
-        public Builder metadata(Optional<String> metadata) {
+        public Builder metadata(Optional<InvoiceMetadataFilter> metadata) {
             this.metadata = metadata;
             return this;
         }
 
-        public Builder metadata(String metadata) {
+        public Builder metadata(InvoiceMetadataFilter metadata) {
             this.metadata = Optional.of(metadata);
             return this;
         }

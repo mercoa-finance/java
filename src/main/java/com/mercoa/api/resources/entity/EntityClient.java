@@ -37,6 +37,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class EntityClient {
     protected final ClientOptions clientOptions;
@@ -142,12 +143,14 @@ public class EntityClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), FindEntityResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), FindEntityResponse.class);
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -181,12 +184,14 @@ public class EntityClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), EntityResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityResponse.class);
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -214,12 +219,14 @@ public class EntityClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), EntityResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityResponse.class);
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -258,12 +265,14 @@ public class EntityClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), EntityResponse.class);
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityResponse.class);
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -290,12 +299,14 @@ public class EntityClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return;
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -329,12 +340,14 @@ public class EntityClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return;
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -372,12 +385,14 @@ public class EntityClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return;
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -429,12 +444,14 @@ public class EntityClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), String.class);
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class);
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -479,12 +496,14 @@ public class EntityClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), String.class);
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class);
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -526,12 +545,14 @@ public class EntityClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(response.body().string(), String.class);
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class);
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -572,12 +593,14 @@ public class EntityClient {
                 client = clientOptions.httpClientWithTimeout(requestOptions);
             }
             Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return;
             }
             throw new ApiError(
                     response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(response.body().string(), Object.class));
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

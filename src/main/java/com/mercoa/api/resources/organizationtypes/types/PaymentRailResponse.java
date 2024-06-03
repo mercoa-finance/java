@@ -9,12 +9,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = PaymentRailResponse.Builder.class)
@@ -25,13 +27,20 @@ public final class PaymentRailResponse {
 
     private final boolean active;
 
+    private final Optional<Boolean> available;
+
     private final Map<String, Object> additionalProperties;
 
     private PaymentRailResponse(
-            PaymentMethodType type, String name, boolean active, Map<String, Object> additionalProperties) {
+            PaymentMethodType type,
+            String name,
+            boolean active,
+            Optional<Boolean> available,
+            Map<String, Object> additionalProperties) {
         this.type = type;
         this.name = name;
         this.active = active;
+        this.available = available;
         this.additionalProperties = additionalProperties;
     }
 
@@ -53,6 +62,14 @@ public final class PaymentRailResponse {
         return active;
     }
 
+    /**
+     * @return unused
+     */
+    @JsonProperty("available")
+    public Optional<Boolean> getAvailable() {
+        return available;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -65,12 +82,15 @@ public final class PaymentRailResponse {
     }
 
     private boolean equalTo(PaymentRailResponse other) {
-        return type.equals(other.type) && name.equals(other.name) && active == other.active;
+        return type.equals(other.type)
+                && name.equals(other.name)
+                && active == other.active
+                && available.equals(other.available);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.type, this.name, this.active);
+        return Objects.hash(this.type, this.name, this.active, this.available);
     }
 
     @java.lang.Override
@@ -98,6 +118,10 @@ public final class PaymentRailResponse {
 
     public interface _FinalStage {
         PaymentRailResponse build();
+
+        _FinalStage available(Optional<Boolean> available);
+
+        _FinalStage available(Boolean available);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -107,6 +131,8 @@ public final class PaymentRailResponse {
         private String name;
 
         private boolean active;
+
+        private Optional<Boolean> available = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -118,6 +144,7 @@ public final class PaymentRailResponse {
             type(other.getType());
             name(other.getName());
             active(other.getActive());
+            available(other.getAvailable());
             return this;
         }
 
@@ -146,9 +173,26 @@ public final class PaymentRailResponse {
             return this;
         }
 
+        /**
+         * <p>unused</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage available(Boolean available) {
+            this.available = Optional.of(available);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "available", nulls = Nulls.SKIP)
+        public _FinalStage available(Optional<Boolean> available) {
+            this.available = available;
+            return this;
+        }
+
         @java.lang.Override
         public PaymentRailResponse build() {
-            return new PaymentRailResponse(type, name, active, additionalProperties);
+            return new PaymentRailResponse(type, name, active, available, additionalProperties);
         }
     }
 }
