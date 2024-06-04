@@ -49,7 +49,7 @@ public final class SyncExternalSystemRequest {
     }
 
     /**
-     * @return Sync bills from external accounting system. Default is to not sync bills.
+     * @return Sync bills from external accounting system. Default is to not sync bills. Invoices that already exist in both systems will not be updated, only new invoices not present in the other system will be created.
      */
     @JsonProperty("bills")
     public Optional<SyncType> getBills() {

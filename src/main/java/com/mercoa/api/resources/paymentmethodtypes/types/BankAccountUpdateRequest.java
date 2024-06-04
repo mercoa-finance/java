@@ -24,6 +24,8 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
 
     private final Optional<Boolean> defaultDestination;
 
+    private final Optional<String> externalAccountingSystemId;
+
     private final Optional<String> accountName;
 
     private final Optional<PlaidLinkRequest> plaid;
@@ -35,12 +37,14 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
     private BankAccountUpdateRequest(
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
+            Optional<String> externalAccountingSystemId,
             Optional<String> accountName,
             Optional<PlaidLinkRequest> plaid,
             Optional<BankAccountCheckOptions> checkOptions,
             Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
+        this.externalAccountingSystemId = externalAccountingSystemId;
         this.accountName = accountName;
         this.plaid = plaid;
         this.checkOptions = checkOptions;
@@ -63,6 +67,15 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
     @java.lang.Override
     public Optional<Boolean> getDefaultDestination() {
         return defaultDestination;
+    }
+
+    /**
+     * @return ID for this payment method in the external accounting system (e.g Rutter or Codat)
+     */
+    @JsonProperty("externalAccountingSystemId")
+    @java.lang.Override
+    public Optional<String> getExternalAccountingSystemId() {
+        return externalAccountingSystemId;
     }
 
     @JsonProperty("accountName")
@@ -100,6 +113,7 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
     private boolean equalTo(BankAccountUpdateRequest other) {
         return defaultSource.equals(other.defaultSource)
                 && defaultDestination.equals(other.defaultDestination)
+                && externalAccountingSystemId.equals(other.externalAccountingSystemId)
                 && accountName.equals(other.accountName)
                 && plaid.equals(other.plaid)
                 && checkOptions.equals(other.checkOptions);
@@ -108,7 +122,12 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.defaultSource, this.defaultDestination, this.accountName, this.plaid, this.checkOptions);
+                this.defaultSource,
+                this.defaultDestination,
+                this.externalAccountingSystemId,
+                this.accountName,
+                this.plaid,
+                this.checkOptions);
     }
 
     @java.lang.Override
@@ -126,6 +145,8 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
 
         private Optional<Boolean> defaultDestination = Optional.empty();
 
+        private Optional<String> externalAccountingSystemId = Optional.empty();
+
         private Optional<String> accountName = Optional.empty();
 
         private Optional<PlaidLinkRequest> plaid = Optional.empty();
@@ -140,6 +161,7 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
         public Builder from(BankAccountUpdateRequest other) {
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
+            externalAccountingSystemId(other.getExternalAccountingSystemId());
             accountName(other.getAccountName());
             plaid(other.getPlaid());
             checkOptions(other.getCheckOptions());
@@ -165,6 +187,17 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
 
         public Builder defaultDestination(Boolean defaultDestination) {
             this.defaultDestination = Optional.of(defaultDestination);
+            return this;
+        }
+
+        @JsonSetter(value = "externalAccountingSystemId", nulls = Nulls.SKIP)
+        public Builder externalAccountingSystemId(Optional<String> externalAccountingSystemId) {
+            this.externalAccountingSystemId = externalAccountingSystemId;
+            return this;
+        }
+
+        public Builder externalAccountingSystemId(String externalAccountingSystemId) {
+            this.externalAccountingSystemId = Optional.of(externalAccountingSystemId);
             return this;
         }
 
@@ -203,7 +236,13 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
 
         public BankAccountUpdateRequest build() {
             return new BankAccountUpdateRequest(
-                    defaultSource, defaultDestination, accountName, plaid, checkOptions, additionalProperties);
+                    defaultSource,
+                    defaultDestination,
+                    externalAccountingSystemId,
+                    accountName,
+                    plaid,
+                    checkOptions,
+                    additionalProperties);
         }
     }
 }

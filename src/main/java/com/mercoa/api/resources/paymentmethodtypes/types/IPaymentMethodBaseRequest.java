@@ -9,4 +9,6 @@ public interface IPaymentMethodBaseRequest {
     Optional<Boolean> getDefaultSource();
 
     Optional<Boolean> getDefaultDestination();
+
+    Optional<String> getExternalAccountingSystemId();
 }

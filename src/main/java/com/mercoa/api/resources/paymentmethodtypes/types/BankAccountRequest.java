@@ -24,6 +24,8 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
 
     private final Optional<Boolean> defaultDestination;
 
+    private final Optional<String> externalAccountingSystemId;
+
     private final Optional<String> accountName;
 
     private final Optional<String> bankName;
@@ -43,6 +45,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
     private BankAccountRequest(
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
+            Optional<String> externalAccountingSystemId,
             Optional<String> accountName,
             Optional<String> bankName,
             String routingNumber,
@@ -53,6 +56,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
+        this.externalAccountingSystemId = externalAccountingSystemId;
         this.accountName = accountName;
         this.bankName = bankName;
         this.routingNumber = routingNumber;
@@ -79,6 +83,15 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
     @java.lang.Override
     public Optional<Boolean> getDefaultDestination() {
         return defaultDestination;
+    }
+
+    /**
+     * @return ID for this payment method in the external accounting system (e.g Rutter or Codat)
+     */
+    @JsonProperty("externalAccountingSystemId")
+    @java.lang.Override
+    public Optional<String> getExternalAccountingSystemId() {
+        return externalAccountingSystemId;
     }
 
     /**
@@ -142,6 +155,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
     private boolean equalTo(BankAccountRequest other) {
         return defaultSource.equals(other.defaultSource)
                 && defaultDestination.equals(other.defaultDestination)
+                && externalAccountingSystemId.equals(other.externalAccountingSystemId)
                 && accountName.equals(other.accountName)
                 && bankName.equals(other.bankName)
                 && routingNumber.equals(other.routingNumber)
@@ -156,6 +170,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         return Objects.hash(
                 this.defaultSource,
                 this.defaultDestination,
+                this.externalAccountingSystemId,
                 this.accountName,
                 this.bankName,
                 this.routingNumber,
@@ -199,6 +214,10 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
 
         _FinalStage defaultDestination(Boolean defaultDestination);
 
+        _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId);
+
+        _FinalStage externalAccountingSystemId(String externalAccountingSystemId);
+
         _FinalStage accountName(Optional<String> accountName);
 
         _FinalStage accountName(String accountName);
@@ -232,6 +251,8 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
 
         private Optional<String> accountName = Optional.empty();
 
+        private Optional<String> externalAccountingSystemId = Optional.empty();
+
         private Optional<Boolean> defaultDestination = Optional.empty();
 
         private Optional<Boolean> defaultSource = Optional.empty();
@@ -245,6 +266,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         public Builder from(BankAccountRequest other) {
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
+            externalAccountingSystemId(other.getExternalAccountingSystemId());
             accountName(other.getAccountName());
             bankName(other.getBankName());
             routingNumber(other.getRoutingNumber());
@@ -345,6 +367,23 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         }
 
         /**
+         * <p>ID for this payment method in the external accounting system (e.g Rutter or Codat)</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage externalAccountingSystemId(String externalAccountingSystemId) {
+            this.externalAccountingSystemId = Optional.of(externalAccountingSystemId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "externalAccountingSystemId", nulls = Nulls.SKIP)
+        public _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId) {
+            this.externalAccountingSystemId = externalAccountingSystemId;
+            return this;
+        }
+
+        /**
          * <p>If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -383,6 +422,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             return new BankAccountRequest(
                     defaultSource,
                     defaultDestination,
+                    externalAccountingSystemId,
                     accountName,
                     bankName,
                     routingNumber,

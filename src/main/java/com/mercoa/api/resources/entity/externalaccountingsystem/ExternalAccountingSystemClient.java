@@ -28,7 +28,50 @@ public class ExternalAccountingSystemClient {
     }
 
     /**
-     * Create/Link an entity to an external accounting system like Codat or Rutter
+     * Get the external accounting system connected to an entity
+     */
+    public ExternalAccountingSystemCompanyResponse get(String entityId) {
+        return get(entityId, null);
+    }
+
+    /**
+     * Get the external accounting system connected to an entity
+     */
+    public ExternalAccountingSystemCompanyResponse get(String entityId, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entity")
+                .addPathSegment(entityId)
+                .addPathSegments("external-accounting-system")
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            OkHttpClient client = clientOptions.httpClient();
+            if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+                client = clientOptions.httpClientWithTimeout(requestOptions);
+            }
+            Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(
+                        responseBody.string(), ExternalAccountingSystemCompanyResponse.class);
+            }
+            throw new ApiError(
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(
+                            responseBody != null ? responseBody.string() : "{}", Object.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Create/Link an entity to an external accounting system like Codat or Rutter. If the entity is already linked to an external accounting system, this will return the existing connection.
      */
     public ExternalAccountingSystemCompanyResponse create(
             String entityId, ExternalAccountingSystemCompanyCreationRequest request) {
@@ -36,7 +79,7 @@ public class ExternalAccountingSystemClient {
     }
 
     /**
-     * Create/Link an entity to an external accounting system like Codat or Rutter
+     * Create/Link an entity to an external accounting system like Codat or Rutter. If the entity is already linked to an external accounting system, this will return the existing connection.
      */
     public ExternalAccountingSystemCompanyResponse create(
             String entityId, ExternalAccountingSystemCompanyCreationRequest request, RequestOptions requestOptions) {

@@ -24,6 +24,8 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
 
     private final Optional<Boolean> defaultDestination;
 
+    private final Optional<String> externalAccountingSystemId;
+
     private final CardType cardType;
 
     private final CardBrand cardBrand;
@@ -41,6 +43,7 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
     private CardRequest(
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
+            Optional<String> externalAccountingSystemId,
             CardType cardType,
             CardBrand cardBrand,
             String lastFour,
@@ -50,6 +53,7 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
             Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
+        this.externalAccountingSystemId = externalAccountingSystemId;
         this.cardType = cardType;
         this.cardBrand = cardBrand;
         this.lastFour = lastFour;
@@ -75,6 +79,15 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
     @java.lang.Override
     public Optional<Boolean> getDefaultDestination() {
         return defaultDestination;
+    }
+
+    /**
+     * @return ID for this payment method in the external accounting system (e.g Rutter or Codat)
+     */
+    @JsonProperty("externalAccountingSystemId")
+    @java.lang.Override
+    public Optional<String> getExternalAccountingSystemId() {
+        return externalAccountingSystemId;
     }
 
     @JsonProperty("cardType")
@@ -121,6 +134,7 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
     private boolean equalTo(CardRequest other) {
         return defaultSource.equals(other.defaultSource)
                 && defaultDestination.equals(other.defaultDestination)
+                && externalAccountingSystemId.equals(other.externalAccountingSystemId)
                 && cardType.equals(other.cardType)
                 && cardBrand.equals(other.cardBrand)
                 && lastFour.equals(other.lastFour)
@@ -134,6 +148,7 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
         return Objects.hash(
                 this.defaultSource,
                 this.defaultDestination,
+                this.externalAccountingSystemId,
                 this.cardType,
                 this.cardBrand,
                 this.lastFour,
@@ -187,6 +202,10 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
         _FinalStage defaultDestination(Optional<Boolean> defaultDestination);
 
         _FinalStage defaultDestination(Boolean defaultDestination);
+
+        _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId);
+
+        _FinalStage externalAccountingSystemId(String externalAccountingSystemId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -210,6 +229,8 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
 
         private String token;
 
+        private Optional<String> externalAccountingSystemId = Optional.empty();
+
         private Optional<Boolean> defaultDestination = Optional.empty();
 
         private Optional<Boolean> defaultSource = Optional.empty();
@@ -223,6 +244,7 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
         public Builder from(CardRequest other) {
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
+            externalAccountingSystemId(other.getExternalAccountingSystemId());
             cardType(other.getCardType());
             cardBrand(other.getCardBrand());
             lastFour(other.getLastFour());
@@ -275,6 +297,23 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
         }
 
         /**
+         * <p>ID for this payment method in the external accounting system (e.g Rutter or Codat)</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage externalAccountingSystemId(String externalAccountingSystemId) {
+            this.externalAccountingSystemId = Optional.of(externalAccountingSystemId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "externalAccountingSystemId", nulls = Nulls.SKIP)
+        public _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId) {
+            this.externalAccountingSystemId = externalAccountingSystemId;
+            return this;
+        }
+
+        /**
          * <p>If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -313,6 +352,7 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
             return new CardRequest(
                     defaultSource,
                     defaultDestination,
+                    externalAccountingSystemId,
                     cardType,
                     cardBrand,
                     lastFour,

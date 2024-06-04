@@ -34,12 +34,20 @@ public final class ExternalAccountingSystemCompanyResponse {
         return new ExternalAccountingSystemCompanyResponse(new RutterValue(value));
     }
 
+    public static ExternalAccountingSystemCompanyResponse none(CodatCompanyResponse value) {
+        return new ExternalAccountingSystemCompanyResponse(new NoneValue(value));
+    }
+
     public boolean isCodat() {
         return value instanceof CodatValue;
     }
 
     public boolean isRutter() {
         return value instanceof RutterValue;
+    }
+
+    public boolean isNone() {
+        return value instanceof NoneValue;
     }
 
     public boolean _isUnknown() {
@@ -56,6 +64,13 @@ public final class ExternalAccountingSystemCompanyResponse {
     public Optional<RutterCompanyResponse> getRutter() {
         if (isRutter()) {
             return Optional.of(((RutterValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<CodatCompanyResponse> getNone() {
+        if (isNone()) {
+            return Optional.of(((NoneValue) value).value);
         }
         return Optional.empty();
     }
@@ -77,11 +92,17 @@ public final class ExternalAccountingSystemCompanyResponse {
 
         T visitRutter(RutterCompanyResponse rutter);
 
+        T visitNone(CodatCompanyResponse none);
+
         T _visitUnknown(Object unknownType);
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = _UnknownValue.class)
-    @JsonSubTypes({@JsonSubTypes.Type(CodatValue.class), @JsonSubTypes.Type(RutterValue.class)})
+    @JsonSubTypes({
+        @JsonSubTypes.Type(CodatValue.class),
+        @JsonSubTypes.Type(RutterValue.class),
+        @JsonSubTypes.Type(NoneValue.class)
+    })
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
         <T> T visit(Visitor<T> visitor);
@@ -149,6 +170,44 @@ public final class ExternalAccountingSystemCompanyResponse {
         }
 
         private boolean equalTo(RutterValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "ExternalAccountingSystemCompanyResponse{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("none")
+    private static final class NoneValue implements Value {
+        @JsonUnwrapped
+        private CodatCompanyResponse value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private NoneValue() {}
+
+        private NoneValue(CodatCompanyResponse value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitNone(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof NoneValue && equalTo((NoneValue) other);
+        }
+
+        private boolean equalTo(NoneValue other) {
             return value.equals(other.value);
         }
 

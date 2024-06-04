@@ -24,6 +24,8 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
 
     private final Optional<Boolean> defaultDestination;
 
+    private final Optional<String> externalAccountingSystemId;
+
     private final String payToTheOrderOf;
 
     private final String addressLine1;
@@ -43,6 +45,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
     private CheckRequest(
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
+            Optional<String> externalAccountingSystemId,
             String payToTheOrderOf,
             String addressLine1,
             Optional<String> addressLine2,
@@ -53,6 +56,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
             Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
+        this.externalAccountingSystemId = externalAccountingSystemId;
         this.payToTheOrderOf = payToTheOrderOf;
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
@@ -79,6 +83,15 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
     @java.lang.Override
     public Optional<Boolean> getDefaultDestination() {
         return defaultDestination;
+    }
+
+    /**
+     * @return ID for this payment method in the external accounting system (e.g Rutter or Codat)
+     */
+    @JsonProperty("externalAccountingSystemId")
+    @java.lang.Override
+    public Optional<String> getExternalAccountingSystemId() {
+        return externalAccountingSystemId;
     }
 
     @JsonProperty("payToTheOrderOf")
@@ -130,6 +143,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
     private boolean equalTo(CheckRequest other) {
         return defaultSource.equals(other.defaultSource)
                 && defaultDestination.equals(other.defaultDestination)
+                && externalAccountingSystemId.equals(other.externalAccountingSystemId)
                 && payToTheOrderOf.equals(other.payToTheOrderOf)
                 && addressLine1.equals(other.addressLine1)
                 && addressLine2.equals(other.addressLine2)
@@ -144,6 +158,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
         return Objects.hash(
                 this.defaultSource,
                 this.defaultDestination,
+                this.externalAccountingSystemId,
                 this.payToTheOrderOf,
                 this.addressLine1,
                 this.addressLine2,
@@ -199,6 +214,10 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
 
         _FinalStage defaultDestination(Boolean defaultDestination);
 
+        _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId);
+
+        _FinalStage externalAccountingSystemId(String externalAccountingSystemId);
+
         _FinalStage addressLine2(Optional<String> addressLine2);
 
         _FinalStage addressLine2(String addressLine2);
@@ -227,6 +246,8 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
 
         private Optional<String> addressLine2 = Optional.empty();
 
+        private Optional<String> externalAccountingSystemId = Optional.empty();
+
         private Optional<Boolean> defaultDestination = Optional.empty();
 
         private Optional<Boolean> defaultSource = Optional.empty();
@@ -240,6 +261,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
         public Builder from(CheckRequest other) {
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
+            externalAccountingSystemId(other.getExternalAccountingSystemId());
             payToTheOrderOf(other.getPayToTheOrderOf());
             addressLine1(other.getAddressLine1());
             addressLine2(other.getAddressLine2());
@@ -306,6 +328,23 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
         }
 
         /**
+         * <p>ID for this payment method in the external accounting system (e.g Rutter or Codat)</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage externalAccountingSystemId(String externalAccountingSystemId) {
+            this.externalAccountingSystemId = Optional.of(externalAccountingSystemId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "externalAccountingSystemId", nulls = Nulls.SKIP)
+        public _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId) {
+            this.externalAccountingSystemId = externalAccountingSystemId;
+            return this;
+        }
+
+        /**
          * <p>If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -344,6 +383,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
             return new CheckRequest(
                     defaultSource,
                     defaultDestination,
+                    externalAccountingSystemId,
                     payToTheOrderOf,
                     addressLine1,
                     addressLine2,

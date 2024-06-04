@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = PaymentMethodBaseResponse.Builder.class)
@@ -30,6 +31,8 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
 
     private final List<CurrencyCode> supportedCurrencies;
 
+    private final Optional<String> externalAccountingSystemId;
+
     private final OffsetDateTime createdAt;
 
     private final OffsetDateTime updatedAt;
@@ -41,6 +44,7 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
             boolean isDefaultSource,
             boolean isDefaultDestination,
             List<CurrencyCode> supportedCurrencies,
+            Optional<String> externalAccountingSystemId,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Map<String, Object> additionalProperties) {
@@ -48,6 +52,7 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
         this.isDefaultSource = isDefaultSource;
         this.isDefaultDestination = isDefaultDestination;
         this.supportedCurrencies = supportedCurrencies;
+        this.externalAccountingSystemId = externalAccountingSystemId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
@@ -83,6 +88,15 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
         return supportedCurrencies;
     }
 
+    /**
+     * @return ID for this payment method in the external accounting system (e.g Rutter or Codat)
+     */
+    @JsonProperty("externalAccountingSystemId")
+    @java.lang.Override
+    public Optional<String> getExternalAccountingSystemId() {
+        return externalAccountingSystemId;
+    }
+
     @JsonProperty("createdAt")
     @java.lang.Override
     public OffsetDateTime getCreatedAt() {
@@ -111,6 +125,7 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
                 && isDefaultSource == other.isDefaultSource
                 && isDefaultDestination == other.isDefaultDestination
                 && supportedCurrencies.equals(other.supportedCurrencies)
+                && externalAccountingSystemId.equals(other.externalAccountingSystemId)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt);
     }
@@ -122,6 +137,7 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
                 this.isDefaultSource,
                 this.isDefaultDestination,
                 this.supportedCurrencies,
+                this.externalAccountingSystemId,
                 this.createdAt,
                 this.updatedAt);
     }
@@ -165,6 +181,10 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
         _FinalStage addSupportedCurrencies(CurrencyCode supportedCurrencies);
 
         _FinalStage addAllSupportedCurrencies(List<CurrencyCode> supportedCurrencies);
+
+        _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId);
+
+        _FinalStage externalAccountingSystemId(String externalAccountingSystemId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -185,6 +205,8 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
 
         private OffsetDateTime updatedAt;
 
+        private Optional<String> externalAccountingSystemId = Optional.empty();
+
         private List<CurrencyCode> supportedCurrencies = new ArrayList<>();
 
         @JsonAnySetter
@@ -198,6 +220,7 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
             isDefaultSource(other.getIsDefaultSource());
             isDefaultDestination(other.getIsDefaultDestination());
             supportedCurrencies(other.getSupportedCurrencies());
+            externalAccountingSystemId(other.getExternalAccountingSystemId());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             return this;
@@ -246,6 +269,23 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
             return this;
         }
 
+        /**
+         * <p>ID for this payment method in the external accounting system (e.g Rutter or Codat)</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage externalAccountingSystemId(String externalAccountingSystemId) {
+            this.externalAccountingSystemId = Optional.of(externalAccountingSystemId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "externalAccountingSystemId", nulls = Nulls.SKIP)
+        public _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId) {
+            this.externalAccountingSystemId = externalAccountingSystemId;
+            return this;
+        }
+
         @java.lang.Override
         public _FinalStage addAllSupportedCurrencies(List<CurrencyCode> supportedCurrencies) {
             this.supportedCurrencies.addAll(supportedCurrencies);
@@ -273,6 +313,7 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
                     isDefaultSource,
                     isDefaultDestination,
                     supportedCurrencies,
+                    externalAccountingSystemId,
                     createdAt,
                     updatedAt,
                     additionalProperties);

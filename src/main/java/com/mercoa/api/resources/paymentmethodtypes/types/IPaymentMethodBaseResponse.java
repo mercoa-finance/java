@@ -5,6 +5,7 @@ package com.mercoa.api.resources.paymentmethodtypes.types;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface IPaymentMethodBaseResponse {
     String getId();
@@ -14,6 +15,8 @@ public interface IPaymentMethodBaseResponse {
     boolean getIsDefaultDestination();
 
     List<CurrencyCode> getSupportedCurrencies();
+
+    Optional<String> getExternalAccountingSystemId();
 
     OffsetDateTime getCreatedAt();
 

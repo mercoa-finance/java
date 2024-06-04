@@ -24,14 +24,18 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
 
     private final Optional<Boolean> defaultDestination;
 
+    private final Optional<String> externalAccountingSystemId;
+
     private final Map<String, Object> additionalProperties;
 
     private PaymentMethodBaseRequest(
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
+            Optional<String> externalAccountingSystemId,
             Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
+        this.externalAccountingSystemId = externalAccountingSystemId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -53,6 +57,15 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
         return defaultDestination;
     }
 
+    /**
+     * @return ID for this payment method in the external accounting system (e.g Rutter or Codat)
+     */
+    @JsonProperty("externalAccountingSystemId")
+    @java.lang.Override
+    public Optional<String> getExternalAccountingSystemId() {
+        return externalAccountingSystemId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -65,12 +78,14 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
     }
 
     private boolean equalTo(PaymentMethodBaseRequest other) {
-        return defaultSource.equals(other.defaultSource) && defaultDestination.equals(other.defaultDestination);
+        return defaultSource.equals(other.defaultSource)
+                && defaultDestination.equals(other.defaultDestination)
+                && externalAccountingSystemId.equals(other.externalAccountingSystemId);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.defaultSource, this.defaultDestination);
+        return Objects.hash(this.defaultSource, this.defaultDestination, this.externalAccountingSystemId);
     }
 
     @java.lang.Override
@@ -88,6 +103,8 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
 
         private Optional<Boolean> defaultDestination = Optional.empty();
 
+        private Optional<String> externalAccountingSystemId = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -96,6 +113,7 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
         public Builder from(PaymentMethodBaseRequest other) {
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
+            externalAccountingSystemId(other.getExternalAccountingSystemId());
             return this;
         }
 
@@ -121,8 +139,20 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
             return this;
         }
 
+        @JsonSetter(value = "externalAccountingSystemId", nulls = Nulls.SKIP)
+        public Builder externalAccountingSystemId(Optional<String> externalAccountingSystemId) {
+            this.externalAccountingSystemId = externalAccountingSystemId;
+            return this;
+        }
+
+        public Builder externalAccountingSystemId(String externalAccountingSystemId) {
+            this.externalAccountingSystemId = Optional.of(externalAccountingSystemId);
+            return this;
+        }
+
         public PaymentMethodBaseRequest build() {
-            return new PaymentMethodBaseRequest(defaultSource, defaultDestination, additionalProperties);
+            return new PaymentMethodBaseRequest(
+                    defaultSource, defaultDestination, externalAccountingSystemId, additionalProperties);
         }
     }
 }
