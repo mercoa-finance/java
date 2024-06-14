@@ -17,16 +17,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = EntityAddPayeesRequest.Builder.class)
 public final class EntityAddPayeesRequest {
     private final List<String> payees;
 
+    private final Optional<List<CounterpartyCustomizationRequest>> customizations;
+
     private final Map<String, Object> additionalProperties;
 
-    private EntityAddPayeesRequest(List<String> payees, Map<String, Object> additionalProperties) {
+    private EntityAddPayeesRequest(
+            List<String> payees,
+            Optional<List<CounterpartyCustomizationRequest>> customizations,
+            Map<String, Object> additionalProperties) {
         this.payees = payees;
+        this.customizations = customizations;
         this.additionalProperties = additionalProperties;
     }
 
@@ -36,6 +43,14 @@ public final class EntityAddPayeesRequest {
     @JsonProperty("payees")
     public List<String> getPayees() {
         return payees;
+    }
+
+    /**
+     * @return List of customizations to apply to the payees. If the payee is not currently a counterparty of the entity, the counterparty will be created with the provided customizations.
+     */
+    @JsonProperty("customizations")
+    public Optional<List<CounterpartyCustomizationRequest>> getCustomizations() {
+        return customizations;
     }
 
     @java.lang.Override
@@ -50,12 +65,12 @@ public final class EntityAddPayeesRequest {
     }
 
     private boolean equalTo(EntityAddPayeesRequest other) {
-        return payees.equals(other.payees);
+        return payees.equals(other.payees) && customizations.equals(other.customizations);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.payees);
+        return Objects.hash(this.payees, this.customizations);
     }
 
     @java.lang.Override
@@ -71,6 +86,8 @@ public final class EntityAddPayeesRequest {
     public static final class Builder {
         private List<String> payees = new ArrayList<>();
 
+        private Optional<List<CounterpartyCustomizationRequest>> customizations = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -78,6 +95,7 @@ public final class EntityAddPayeesRequest {
 
         public Builder from(EntityAddPayeesRequest other) {
             payees(other.getPayees());
+            customizations(other.getCustomizations());
             return this;
         }
 
@@ -98,8 +116,19 @@ public final class EntityAddPayeesRequest {
             return this;
         }
 
+        @JsonSetter(value = "customizations", nulls = Nulls.SKIP)
+        public Builder customizations(Optional<List<CounterpartyCustomizationRequest>> customizations) {
+            this.customizations = customizations;
+            return this;
+        }
+
+        public Builder customizations(List<CounterpartyCustomizationRequest> customizations) {
+            this.customizations = Optional.of(customizations);
+            return this;
+        }
+
         public EntityAddPayeesRequest build() {
-            return new EntityAddPayeesRequest(payees, additionalProperties);
+            return new EntityAddPayeesRequest(payees, customizations, additionalProperties);
         }
     }
 }

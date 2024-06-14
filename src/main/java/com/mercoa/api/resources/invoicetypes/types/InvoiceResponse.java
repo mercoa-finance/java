@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.ApprovalPolicyResponse;
-import com.mercoa.api.resources.entitytypes.types.EntityResponse;
+import com.mercoa.api.resources.entitytypes.types.CounterpartyResponse;
 import com.mercoa.api.resources.entitytypes.types.EntityUserResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
@@ -55,7 +55,7 @@ public final class InvoiceResponse {
 
     private final Optional<String> payerId;
 
-    private final Optional<EntityResponse> payer;
+    private final Optional<CounterpartyResponse> payer;
 
     private final Optional<PaymentMethodResponse> paymentSource;
 
@@ -63,7 +63,7 @@ public final class InvoiceResponse {
 
     private final Optional<String> vendorId;
 
-    private final Optional<EntityResponse> vendor;
+    private final Optional<CounterpartyResponse> vendor;
 
     private final Optional<PaymentMethodResponse> paymentDestination;
 
@@ -117,11 +117,11 @@ public final class InvoiceResponse {
             Optional<OffsetDateTime> serviceStartDate,
             Optional<OffsetDateTime> serviceEndDate,
             Optional<String> payerId,
-            Optional<EntityResponse> payer,
+            Optional<CounterpartyResponse> payer,
             Optional<PaymentMethodResponse> paymentSource,
             Optional<String> paymentSourceId,
             Optional<String> vendorId,
-            Optional<EntityResponse> vendor,
+            Optional<CounterpartyResponse> vendor,
             Optional<PaymentMethodResponse> paymentDestination,
             Optional<String> paymentDestinationId,
             Optional<PaymentDestinationOptions> paymentDestinationOptions,
@@ -264,7 +264,7 @@ public final class InvoiceResponse {
     }
 
     @JsonProperty("payer")
-    public Optional<EntityResponse> getPayer() {
+    public Optional<CounterpartyResponse> getPayer() {
         return payer;
     }
 
@@ -284,7 +284,7 @@ public final class InvoiceResponse {
     }
 
     @JsonProperty("vendor")
-    public Optional<EntityResponse> getVendor() {
+    public Optional<CounterpartyResponse> getVendor() {
         return vendor;
     }
 
@@ -579,9 +579,9 @@ public final class InvoiceResponse {
 
         _FinalStage payerId(String payerId);
 
-        _FinalStage payer(Optional<EntityResponse> payer);
+        _FinalStage payer(Optional<CounterpartyResponse> payer);
 
-        _FinalStage payer(EntityResponse payer);
+        _FinalStage payer(CounterpartyResponse payer);
 
         _FinalStage paymentSource(Optional<PaymentMethodResponse> paymentSource);
 
@@ -595,9 +595,9 @@ public final class InvoiceResponse {
 
         _FinalStage vendorId(String vendorId);
 
-        _FinalStage vendor(Optional<EntityResponse> vendor);
+        _FinalStage vendor(Optional<CounterpartyResponse> vendor);
 
-        _FinalStage vendor(EntityResponse vendor);
+        _FinalStage vendor(CounterpartyResponse vendor);
 
         _FinalStage paymentDestination(Optional<PaymentMethodResponse> paymentDestination);
 
@@ -708,7 +708,7 @@ public final class InvoiceResponse {
 
         private Optional<PaymentMethodResponse> paymentDestination = Optional.empty();
 
-        private Optional<EntityResponse> vendor = Optional.empty();
+        private Optional<CounterpartyResponse> vendor = Optional.empty();
 
         private Optional<String> vendorId = Optional.empty();
 
@@ -716,7 +716,7 @@ public final class InvoiceResponse {
 
         private Optional<PaymentMethodResponse> paymentSource = Optional.empty();
 
-        private Optional<EntityResponse> payer = Optional.empty();
+        private Optional<CounterpartyResponse> payer = Optional.empty();
 
         private Optional<String> payerId = Optional.empty();
 
@@ -1062,14 +1062,14 @@ public final class InvoiceResponse {
         }
 
         @java.lang.Override
-        public _FinalStage vendor(EntityResponse vendor) {
+        public _FinalStage vendor(CounterpartyResponse vendor) {
             this.vendor = Optional.of(vendor);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "vendor", nulls = Nulls.SKIP)
-        public _FinalStage vendor(Optional<EntityResponse> vendor) {
+        public _FinalStage vendor(Optional<CounterpartyResponse> vendor) {
             this.vendor = vendor;
             return this;
         }
@@ -1114,14 +1114,14 @@ public final class InvoiceResponse {
         }
 
         @java.lang.Override
-        public _FinalStage payer(EntityResponse payer) {
+        public _FinalStage payer(CounterpartyResponse payer) {
             this.payer = Optional.of(payer);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "payer", nulls = Nulls.SKIP)
-        public _FinalStage payer(Optional<EntityResponse> payer) {
+        public _FinalStage payer(Optional<CounterpartyResponse> payer) {
             this.payer = payer;
             return this;
         }

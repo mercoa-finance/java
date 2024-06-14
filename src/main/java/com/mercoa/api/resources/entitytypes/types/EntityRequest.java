@@ -37,6 +37,10 @@ public final class EntityRequest {
 
     private final boolean isPayee;
 
+    private final Optional<Boolean> isNetworkPayor;
+
+    private final Optional<Boolean> isNetworkPayee;
+
     private final Optional<String> logo;
 
     private final Map<String, Object> additionalProperties;
@@ -50,6 +54,8 @@ public final class EntityRequest {
             ProfileRequest profile,
             boolean isPayor,
             boolean isPayee,
+            Optional<Boolean> isNetworkPayor,
+            Optional<Boolean> isNetworkPayee,
             Optional<String> logo,
             Map<String, Object> additionalProperties) {
         this.foreignId = foreignId;
@@ -60,6 +66,8 @@ public final class EntityRequest {
         this.profile = profile;
         this.isPayor = isPayor;
         this.isPayee = isPayee;
+        this.isNetworkPayor = isNetworkPayor;
+        this.isNetworkPayee = isNetworkPayee;
         this.logo = logo;
         this.additionalProperties = additionalProperties;
     }
@@ -123,6 +131,22 @@ public final class EntityRequest {
     }
 
     /**
+     * @return Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.
+     */
+    @JsonProperty("isNetworkPayor")
+    public Optional<Boolean> getIsNetworkPayor() {
+        return isNetworkPayor;
+    }
+
+    /**
+     * @return Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.
+     */
+    @JsonProperty("isNetworkPayee")
+    public Optional<Boolean> getIsNetworkPayee() {
+        return isNetworkPayee;
+    }
+
+    /**
      * @return Base64 encoded PNG image data for the entity logo.
      */
     @JsonProperty("logo")
@@ -150,6 +174,8 @@ public final class EntityRequest {
                 && profile.equals(other.profile)
                 && isPayor == other.isPayor
                 && isPayee == other.isPayee
+                && isNetworkPayor.equals(other.isNetworkPayor)
+                && isNetworkPayee.equals(other.isNetworkPayee)
                 && logo.equals(other.logo);
     }
 
@@ -164,6 +190,8 @@ public final class EntityRequest {
                 this.profile,
                 this.isPayor,
                 this.isPayee,
+                this.isNetworkPayor,
+                this.isNetworkPayee,
                 this.logo);
     }
 
@@ -213,6 +241,14 @@ public final class EntityRequest {
 
         _FinalStage emailToAlias(List<String> emailToAlias);
 
+        _FinalStage isNetworkPayor(Optional<Boolean> isNetworkPayor);
+
+        _FinalStage isNetworkPayor(Boolean isNetworkPayor);
+
+        _FinalStage isNetworkPayee(Optional<Boolean> isNetworkPayee);
+
+        _FinalStage isNetworkPayee(Boolean isNetworkPayee);
+
         _FinalStage logo(Optional<String> logo);
 
         _FinalStage logo(String logo);
@@ -232,6 +268,10 @@ public final class EntityRequest {
         private boolean isPayee;
 
         private Optional<String> logo = Optional.empty();
+
+        private Optional<Boolean> isNetworkPayee = Optional.empty();
+
+        private Optional<Boolean> isNetworkPayor = Optional.empty();
 
         private Optional<List<String>> emailToAlias = Optional.empty();
 
@@ -254,6 +294,8 @@ public final class EntityRequest {
             profile(other.getProfile());
             isPayor(other.getIsPayor());
             isPayee(other.getIsPayee());
+            isNetworkPayor(other.getIsNetworkPayor());
+            isNetworkPayee(other.getIsNetworkPayee());
             logo(other.getLogo());
             return this;
         }
@@ -323,6 +365,40 @@ public final class EntityRequest {
         }
 
         /**
+         * <p>Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage isNetworkPayee(Boolean isNetworkPayee) {
+            this.isNetworkPayee = Optional.of(isNetworkPayee);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "isNetworkPayee", nulls = Nulls.SKIP)
+        public _FinalStage isNetworkPayee(Optional<Boolean> isNetworkPayee) {
+            this.isNetworkPayee = isNetworkPayee;
+            return this;
+        }
+
+        /**
+         * <p>Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage isNetworkPayor(Boolean isNetworkPayor) {
+            this.isNetworkPayor = Optional.of(isNetworkPayor);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "isNetworkPayor", nulls = Nulls.SKIP)
+        public _FinalStage isNetworkPayor(Optional<Boolean> isNetworkPayor) {
+            this.isNetworkPayor = isNetworkPayor;
+            return this;
+        }
+
+        /**
          * <p>Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias. Include the full email address.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -384,6 +460,8 @@ public final class EntityRequest {
                     profile,
                     isPayor,
                     isPayee,
+                    isNetworkPayor,
+                    isNetworkPayee,
                     logo,
                     additionalProperties);
         }

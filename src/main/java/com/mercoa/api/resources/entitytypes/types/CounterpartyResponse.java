@@ -14,7 +14,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,13 +49,21 @@ public final class CounterpartyResponse implements IEntityResponse {
 
     private final boolean isPayee;
 
+    private final boolean isNetworkPayor;
+
+    private final boolean isNetworkPayee;
+
     private final OffsetDateTime createdAt;
 
     private final OffsetDateTime updatedAt;
 
-    private final List<PaymentMethodResponse> paymentMethods;
+    private final Optional<String> accountId;
 
-    private final List<CounterpartyNetworkType> counterpartyType;
+    private final Optional<String> logo;
+
+    private final Optional<List<PaymentMethodResponse>> paymentMethods;
+
+    private final Optional<List<CounterpartyNetworkType>> counterpartyType;
 
     private final Optional<CounterpartyInvoiceMetricsResponse> invoiceMetrics;
 
@@ -76,10 +83,14 @@ public final class CounterpartyResponse implements IEntityResponse {
             boolean acceptedTos,
             boolean isPayor,
             boolean isPayee,
+            boolean isNetworkPayor,
+            boolean isNetworkPayee,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
-            List<PaymentMethodResponse> paymentMethods,
-            List<CounterpartyNetworkType> counterpartyType,
+            Optional<String> accountId,
+            Optional<String> logo,
+            Optional<List<PaymentMethodResponse>> paymentMethods,
+            Optional<List<CounterpartyNetworkType>> counterpartyType,
             Optional<CounterpartyInvoiceMetricsResponse> invoiceMetrics,
             Map<String, Object> additionalProperties) {
         this.id = id;
@@ -95,8 +106,12 @@ public final class CounterpartyResponse implements IEntityResponse {
         this.acceptedTos = acceptedTos;
         this.isPayor = isPayor;
         this.isPayee = isPayee;
+        this.isNetworkPayor = isNetworkPayor;
+        this.isNetworkPayee = isNetworkPayee;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.accountId = accountId;
+        this.logo = logo;
         this.paymentMethods = paymentMethods;
         this.counterpartyType = counterpartyType;
         this.invoiceMetrics = invoiceMetrics;
@@ -202,6 +217,24 @@ public final class CounterpartyResponse implements IEntityResponse {
         return isPayee;
     }
 
+    /**
+     * @return True if this entity is available as a payor to any entity on your platform. Otherwise this entity will only be available as a payor to entities that have a direct relationship with this entity.
+     */
+    @JsonProperty("isNetworkPayor")
+    @java.lang.Override
+    public boolean getIsNetworkPayor() {
+        return isNetworkPayor;
+    }
+
+    /**
+     * @return True if this entity is available as a payee to any entity on your platform. Otherwise this entity will only be available as a payee to entities that have a direct relationship with this entity.
+     */
+    @JsonProperty("isNetworkPayee")
+    @java.lang.Override
+    public boolean getIsNetworkPayee() {
+        return isNetworkPayee;
+    }
+
     @JsonProperty("createdAt")
     @java.lang.Override
     public OffsetDateTime getCreatedAt() {
@@ -214,13 +247,29 @@ public final class CounterpartyResponse implements IEntityResponse {
         return updatedAt;
     }
 
+    /**
+     * @return If the entity searching for counterparties has an Account ID configured in the Payee/Payor relationship, it will be returned
+     */
+    @JsonProperty("accountId")
+    public Optional<String> getAccountId() {
+        return accountId;
+    }
+
+    /**
+     * @return URL to the entity logo
+     */
+    @JsonProperty("logo")
+    public Optional<String> getLogo() {
+        return logo;
+    }
+
     @JsonProperty("paymentMethods")
-    public List<PaymentMethodResponse> getPaymentMethods() {
+    public Optional<List<PaymentMethodResponse>> getPaymentMethods() {
         return paymentMethods;
     }
 
     @JsonProperty("counterpartyType")
-    public List<CounterpartyNetworkType> getCounterpartyType() {
+    public Optional<List<CounterpartyNetworkType>> getCounterpartyType() {
         return counterpartyType;
     }
 
@@ -254,8 +303,12 @@ public final class CounterpartyResponse implements IEntityResponse {
                 && acceptedTos == other.acceptedTos
                 && isPayor == other.isPayor
                 && isPayee == other.isPayee
+                && isNetworkPayor == other.isNetworkPayor
+                && isNetworkPayee == other.isNetworkPayee
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt)
+                && accountId.equals(other.accountId)
+                && logo.equals(other.logo)
                 && paymentMethods.equals(other.paymentMethods)
                 && counterpartyType.equals(other.counterpartyType)
                 && invoiceMetrics.equals(other.invoiceMetrics);
@@ -277,8 +330,12 @@ public final class CounterpartyResponse implements IEntityResponse {
                 this.acceptedTos,
                 this.isPayor,
                 this.isPayee,
+                this.isNetworkPayor,
+                this.isNetworkPayee,
                 this.createdAt,
                 this.updatedAt,
+                this.accountId,
+                this.logo,
                 this.paymentMethods,
                 this.counterpartyType,
                 this.invoiceMetrics);
@@ -332,7 +389,15 @@ public final class CounterpartyResponse implements IEntityResponse {
     }
 
     public interface IsPayeeStage {
-        CreatedAtStage isPayee(boolean isPayee);
+        IsNetworkPayorStage isPayee(boolean isPayee);
+    }
+
+    public interface IsNetworkPayorStage {
+        IsNetworkPayeeStage isNetworkPayor(boolean isNetworkPayor);
+    }
+
+    public interface IsNetworkPayeeStage {
+        CreatedAtStage isNetworkPayee(boolean isNetworkPayee);
     }
 
     public interface CreatedAtStage {
@@ -358,17 +423,21 @@ public final class CounterpartyResponse implements IEntityResponse {
 
         _FinalStage emailToAlias(List<String> emailToAlias);
 
+        _FinalStage accountId(Optional<String> accountId);
+
+        _FinalStage accountId(String accountId);
+
+        _FinalStage logo(Optional<String> logo);
+
+        _FinalStage logo(String logo);
+
+        _FinalStage paymentMethods(Optional<List<PaymentMethodResponse>> paymentMethods);
+
         _FinalStage paymentMethods(List<PaymentMethodResponse> paymentMethods);
 
-        _FinalStage addPaymentMethods(PaymentMethodResponse paymentMethods);
-
-        _FinalStage addAllPaymentMethods(List<PaymentMethodResponse> paymentMethods);
+        _FinalStage counterpartyType(Optional<List<CounterpartyNetworkType>> counterpartyType);
 
         _FinalStage counterpartyType(List<CounterpartyNetworkType> counterpartyType);
-
-        _FinalStage addCounterpartyType(CounterpartyNetworkType counterpartyType);
-
-        _FinalStage addAllCounterpartyType(List<CounterpartyNetworkType> counterpartyType);
 
         _FinalStage invoiceMetrics(Optional<CounterpartyInvoiceMetricsResponse> invoiceMetrics);
 
@@ -387,6 +456,8 @@ public final class CounterpartyResponse implements IEntityResponse {
                     AcceptedTosStage,
                     IsPayorStage,
                     IsPayeeStage,
+                    IsNetworkPayorStage,
+                    IsNetworkPayeeStage,
                     CreatedAtStage,
                     UpdatedAtStage,
                     _FinalStage {
@@ -410,15 +481,23 @@ public final class CounterpartyResponse implements IEntityResponse {
 
         private boolean isPayee;
 
+        private boolean isNetworkPayor;
+
+        private boolean isNetworkPayee;
+
         private OffsetDateTime createdAt;
 
         private OffsetDateTime updatedAt;
 
         private Optional<CounterpartyInvoiceMetricsResponse> invoiceMetrics = Optional.empty();
 
-        private List<CounterpartyNetworkType> counterpartyType = new ArrayList<>();
+        private Optional<List<CounterpartyNetworkType>> counterpartyType = Optional.empty();
 
-        private List<PaymentMethodResponse> paymentMethods = new ArrayList<>();
+        private Optional<List<PaymentMethodResponse>> paymentMethods = Optional.empty();
+
+        private Optional<String> logo = Optional.empty();
+
+        private Optional<String> accountId = Optional.empty();
 
         private Optional<List<String>> emailToAlias = Optional.empty();
 
@@ -446,8 +525,12 @@ public final class CounterpartyResponse implements IEntityResponse {
             acceptedTos(other.getAcceptedTos());
             isPayor(other.getIsPayor());
             isPayee(other.getIsPayee());
+            isNetworkPayor(other.getIsNetworkPayor());
+            isNetworkPayee(other.getIsNetworkPayee());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
+            accountId(other.getAccountId());
+            logo(other.getLogo());
             paymentMethods(other.getPaymentMethods());
             counterpartyType(other.getCounterpartyType());
             invoiceMetrics(other.getInvoiceMetrics());
@@ -535,8 +618,30 @@ public final class CounterpartyResponse implements IEntityResponse {
          */
         @java.lang.Override
         @JsonSetter("isPayee")
-        public CreatedAtStage isPayee(boolean isPayee) {
+        public IsNetworkPayorStage isPayee(boolean isPayee) {
             this.isPayee = isPayee;
+            return this;
+        }
+
+        /**
+         * <p>True if this entity is available as a payor to any entity on your platform. Otherwise this entity will only be available as a payor to entities that have a direct relationship with this entity.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("isNetworkPayor")
+        public IsNetworkPayeeStage isNetworkPayor(boolean isNetworkPayor) {
+            this.isNetworkPayor = isNetworkPayor;
+            return this;
+        }
+
+        /**
+         * <p>True if this entity is available as a payee to any entity on your platform. Otherwise this entity will only be available as a payee to entities that have a direct relationship with this entity.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("isNetworkPayee")
+        public CreatedAtStage isNetworkPayee(boolean isNetworkPayee) {
+            this.isNetworkPayee = isNetworkPayee;
             return this;
         }
 
@@ -568,42 +673,62 @@ public final class CounterpartyResponse implements IEntityResponse {
         }
 
         @java.lang.Override
-        public _FinalStage addAllCounterpartyType(List<CounterpartyNetworkType> counterpartyType) {
-            this.counterpartyType.addAll(counterpartyType);
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage addCounterpartyType(CounterpartyNetworkType counterpartyType) {
-            this.counterpartyType.add(counterpartyType);
+        public _FinalStage counterpartyType(List<CounterpartyNetworkType> counterpartyType) {
+            this.counterpartyType = Optional.of(counterpartyType);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "counterpartyType", nulls = Nulls.SKIP)
-        public _FinalStage counterpartyType(List<CounterpartyNetworkType> counterpartyType) {
-            this.counterpartyType.clear();
-            this.counterpartyType.addAll(counterpartyType);
+        public _FinalStage counterpartyType(Optional<List<CounterpartyNetworkType>> counterpartyType) {
+            this.counterpartyType = counterpartyType;
             return this;
         }
 
         @java.lang.Override
-        public _FinalStage addAllPaymentMethods(List<PaymentMethodResponse> paymentMethods) {
-            this.paymentMethods.addAll(paymentMethods);
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage addPaymentMethods(PaymentMethodResponse paymentMethods) {
-            this.paymentMethods.add(paymentMethods);
+        public _FinalStage paymentMethods(List<PaymentMethodResponse> paymentMethods) {
+            this.paymentMethods = Optional.of(paymentMethods);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "paymentMethods", nulls = Nulls.SKIP)
-        public _FinalStage paymentMethods(List<PaymentMethodResponse> paymentMethods) {
-            this.paymentMethods.clear();
-            this.paymentMethods.addAll(paymentMethods);
+        public _FinalStage paymentMethods(Optional<List<PaymentMethodResponse>> paymentMethods) {
+            this.paymentMethods = paymentMethods;
+            return this;
+        }
+
+        /**
+         * <p>URL to the entity logo</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage logo(String logo) {
+            this.logo = Optional.of(logo);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "logo", nulls = Nulls.SKIP)
+        public _FinalStage logo(Optional<String> logo) {
+            this.logo = logo;
+            return this;
+        }
+
+        /**
+         * <p>If the entity searching for counterparties has an Account ID configured in the Payee/Payor relationship, it will be returned</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage accountId(String accountId) {
+            this.accountId = Optional.of(accountId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
+        public _FinalStage accountId(Optional<String> accountId) {
+            this.accountId = accountId;
             return this;
         }
 
@@ -674,8 +799,12 @@ public final class CounterpartyResponse implements IEntityResponse {
                     acceptedTos,
                     isPayor,
                     isPayee,
+                    isNetworkPayor,
+                    isNetworkPayee,
                     createdAt,
                     updatedAt,
+                    accountId,
+                    logo,
                     paymentMethods,
                     counterpartyType,
                     invoiceMetrics,

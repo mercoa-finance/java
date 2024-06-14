@@ -48,6 +48,10 @@ public final class EntityResponse implements IEntityResponse {
 
     private final boolean isPayee;
 
+    private final boolean isNetworkPayor;
+
+    private final boolean isNetworkPayee;
+
     private final OffsetDateTime createdAt;
 
     private final OffsetDateTime updatedAt;
@@ -68,6 +72,8 @@ public final class EntityResponse implements IEntityResponse {
             boolean acceptedTos,
             boolean isPayor,
             boolean isPayee,
+            boolean isNetworkPayor,
+            boolean isNetworkPayee,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Map<String, Object> additionalProperties) {
@@ -84,6 +90,8 @@ public final class EntityResponse implements IEntityResponse {
         this.acceptedTos = acceptedTos;
         this.isPayor = isPayor;
         this.isPayee = isPayee;
+        this.isNetworkPayor = isNetworkPayor;
+        this.isNetworkPayee = isNetworkPayee;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
@@ -188,6 +196,24 @@ public final class EntityResponse implements IEntityResponse {
         return isPayee;
     }
 
+    /**
+     * @return True if this entity is available as a payor to any entity on your platform. Otherwise this entity will only be available as a payor to entities that have a direct relationship with this entity.
+     */
+    @JsonProperty("isNetworkPayor")
+    @java.lang.Override
+    public boolean getIsNetworkPayor() {
+        return isNetworkPayor;
+    }
+
+    /**
+     * @return True if this entity is available as a payee to any entity on your platform. Otherwise this entity will only be available as a payee to entities that have a direct relationship with this entity.
+     */
+    @JsonProperty("isNetworkPayee")
+    @java.lang.Override
+    public boolean getIsNetworkPayee() {
+        return isNetworkPayee;
+    }
+
     @JsonProperty("createdAt")
     @java.lang.Override
     public OffsetDateTime getCreatedAt() {
@@ -225,6 +251,8 @@ public final class EntityResponse implements IEntityResponse {
                 && acceptedTos == other.acceptedTos
                 && isPayor == other.isPayor
                 && isPayee == other.isPayee
+                && isNetworkPayor == other.isNetworkPayor
+                && isNetworkPayee == other.isNetworkPayee
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt);
     }
@@ -245,6 +273,8 @@ public final class EntityResponse implements IEntityResponse {
                 this.acceptedTos,
                 this.isPayor,
                 this.isPayee,
+                this.isNetworkPayor,
+                this.isNetworkPayee,
                 this.createdAt,
                 this.updatedAt);
     }
@@ -297,7 +327,15 @@ public final class EntityResponse implements IEntityResponse {
     }
 
     public interface IsPayeeStage {
-        CreatedAtStage isPayee(boolean isPayee);
+        IsNetworkPayorStage isPayee(boolean isPayee);
+    }
+
+    public interface IsNetworkPayorStage {
+        IsNetworkPayeeStage isNetworkPayor(boolean isNetworkPayor);
+    }
+
+    public interface IsNetworkPayeeStage {
+        CreatedAtStage isNetworkPayee(boolean isNetworkPayee);
     }
 
     public interface CreatedAtStage {
@@ -336,6 +374,8 @@ public final class EntityResponse implements IEntityResponse {
                     AcceptedTosStage,
                     IsPayorStage,
                     IsPayeeStage,
+                    IsNetworkPayorStage,
+                    IsNetworkPayeeStage,
                     CreatedAtStage,
                     UpdatedAtStage,
                     _FinalStage {
@@ -358,6 +398,10 @@ public final class EntityResponse implements IEntityResponse {
         private boolean isPayor;
 
         private boolean isPayee;
+
+        private boolean isNetworkPayor;
+
+        private boolean isNetworkPayee;
 
         private OffsetDateTime createdAt;
 
@@ -389,6 +433,8 @@ public final class EntityResponse implements IEntityResponse {
             acceptedTos(other.getAcceptedTos());
             isPayor(other.getIsPayor());
             isPayee(other.getIsPayee());
+            isNetworkPayor(other.getIsNetworkPayor());
+            isNetworkPayee(other.getIsNetworkPayee());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             return this;
@@ -475,8 +521,30 @@ public final class EntityResponse implements IEntityResponse {
          */
         @java.lang.Override
         @JsonSetter("isPayee")
-        public CreatedAtStage isPayee(boolean isPayee) {
+        public IsNetworkPayorStage isPayee(boolean isPayee) {
             this.isPayee = isPayee;
+            return this;
+        }
+
+        /**
+         * <p>True if this entity is available as a payor to any entity on your platform. Otherwise this entity will only be available as a payor to entities that have a direct relationship with this entity.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("isNetworkPayor")
+        public IsNetworkPayeeStage isNetworkPayor(boolean isNetworkPayor) {
+            this.isNetworkPayor = isNetworkPayor;
+            return this;
+        }
+
+        /**
+         * <p>True if this entity is available as a payee to any entity on your platform. Otherwise this entity will only be available as a payee to entities that have a direct relationship with this entity.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("isNetworkPayee")
+        public CreatedAtStage isNetworkPayee(boolean isNetworkPayee) {
+            this.isNetworkPayee = isNetworkPayee;
             return this;
         }
 
@@ -561,6 +629,8 @@ public final class EntityResponse implements IEntityResponse {
                     acceptedTos,
                     isPayor,
                     isPayee,
+                    isNetworkPayor,
+                    isNetworkPayee,
                     createdAt,
                     updatedAt,
                     additionalProperties);

@@ -37,6 +37,10 @@ public final class EntityUpdateRequest {
 
     private final Optional<Boolean> isPayee;
 
+    private final Optional<Boolean> isNetworkPayor;
+
+    private final Optional<Boolean> isNetworkPayee;
+
     private final Optional<String> logo;
 
     private final Map<String, Object> additionalProperties;
@@ -50,6 +54,8 @@ public final class EntityUpdateRequest {
             Optional<ProfileRequest> profile,
             Optional<Boolean> isPayor,
             Optional<Boolean> isPayee,
+            Optional<Boolean> isNetworkPayor,
+            Optional<Boolean> isNetworkPayee,
             Optional<String> logo,
             Map<String, Object> additionalProperties) {
         this.foreignId = foreignId;
@@ -60,6 +66,8 @@ public final class EntityUpdateRequest {
         this.profile = profile;
         this.isPayor = isPayor;
         this.isPayee = isPayee;
+        this.isNetworkPayor = isNetworkPayor;
+        this.isNetworkPayee = isNetworkPayee;
         this.logo = logo;
         this.additionalProperties = additionalProperties;
     }
@@ -123,6 +131,22 @@ public final class EntityUpdateRequest {
     }
 
     /**
+     * @return Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.
+     */
+    @JsonProperty("isNetworkPayor")
+    public Optional<Boolean> getIsNetworkPayor() {
+        return isNetworkPayor;
+    }
+
+    /**
+     * @return Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.
+     */
+    @JsonProperty("isNetworkPayee")
+    public Optional<Boolean> getIsNetworkPayee() {
+        return isNetworkPayee;
+    }
+
+    /**
      * @return Base64 encoded PNG image data for the entity logo.
      */
     @JsonProperty("logo")
@@ -150,6 +174,8 @@ public final class EntityUpdateRequest {
                 && profile.equals(other.profile)
                 && isPayor.equals(other.isPayor)
                 && isPayee.equals(other.isPayee)
+                && isNetworkPayor.equals(other.isNetworkPayor)
+                && isNetworkPayee.equals(other.isNetworkPayee)
                 && logo.equals(other.logo);
     }
 
@@ -164,6 +190,8 @@ public final class EntityUpdateRequest {
                 this.profile,
                 this.isPayor,
                 this.isPayee,
+                this.isNetworkPayor,
+                this.isNetworkPayee,
                 this.logo);
     }
 
@@ -194,6 +222,10 @@ public final class EntityUpdateRequest {
 
         private Optional<Boolean> isPayee = Optional.empty();
 
+        private Optional<Boolean> isNetworkPayor = Optional.empty();
+
+        private Optional<Boolean> isNetworkPayee = Optional.empty();
+
         private Optional<String> logo = Optional.empty();
 
         @JsonAnySetter
@@ -210,6 +242,8 @@ public final class EntityUpdateRequest {
             profile(other.getProfile());
             isPayor(other.getIsPayor());
             isPayee(other.getIsPayee());
+            isNetworkPayor(other.getIsNetworkPayor());
+            isNetworkPayee(other.getIsNetworkPayee());
             logo(other.getLogo());
             return this;
         }
@@ -302,6 +336,28 @@ public final class EntityUpdateRequest {
             return this;
         }
 
+        @JsonSetter(value = "isNetworkPayor", nulls = Nulls.SKIP)
+        public Builder isNetworkPayor(Optional<Boolean> isNetworkPayor) {
+            this.isNetworkPayor = isNetworkPayor;
+            return this;
+        }
+
+        public Builder isNetworkPayor(Boolean isNetworkPayor) {
+            this.isNetworkPayor = Optional.of(isNetworkPayor);
+            return this;
+        }
+
+        @JsonSetter(value = "isNetworkPayee", nulls = Nulls.SKIP)
+        public Builder isNetworkPayee(Optional<Boolean> isNetworkPayee) {
+            this.isNetworkPayee = isNetworkPayee;
+            return this;
+        }
+
+        public Builder isNetworkPayee(Boolean isNetworkPayee) {
+            this.isNetworkPayee = Optional.of(isNetworkPayee);
+            return this;
+        }
+
         @JsonSetter(value = "logo", nulls = Nulls.SKIP)
         public Builder logo(Optional<String> logo) {
             this.logo = logo;
@@ -323,6 +379,8 @@ public final class EntityUpdateRequest {
                     profile,
                     isPayor,
                     isPayee,
+                    isNetworkPayor,
+                    isNetworkPayee,
                     logo,
                     additionalProperties);
         }

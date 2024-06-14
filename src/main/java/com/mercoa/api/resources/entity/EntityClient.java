@@ -278,10 +278,16 @@ public class EntityClient {
         }
     }
 
+    /**
+     * Will archive the entity. This action cannot be undone, and the entity will no longer be available for use.
+     */
     public void delete(String entityId) {
         delete(entityId, null);
     }
 
+    /**
+     * Will archive the entity. This action cannot be undone, and the entity will no longer be available for use.
+     */
     public void delete(String entityId, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()

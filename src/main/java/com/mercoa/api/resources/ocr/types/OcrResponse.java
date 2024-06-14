@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.resources.entitytypes.types.EntityResponse;
+import com.mercoa.api.resources.entitytypes.types.CounterpartyResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.BankAccountResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.CheckResponse;
@@ -26,7 +26,7 @@ import java.util.Optional;
 public final class OcrResponse {
     private final InvoiceResponse invoice;
 
-    private final EntityResponse vendor;
+    private final CounterpartyResponse vendor;
 
     private final Optional<CheckResponse> check;
 
@@ -36,7 +36,7 @@ public final class OcrResponse {
 
     private OcrResponse(
             InvoiceResponse invoice,
-            EntityResponse vendor,
+            CounterpartyResponse vendor,
             Optional<CheckResponse> check,
             Optional<BankAccountResponse> bankAccount,
             Map<String, Object> additionalProperties) {
@@ -53,7 +53,7 @@ public final class OcrResponse {
     }
 
     @JsonProperty("vendor")
-    public EntityResponse getVendor() {
+    public CounterpartyResponse getVendor() {
         return vendor;
     }
 
@@ -106,7 +106,7 @@ public final class OcrResponse {
     }
 
     public interface VendorStage {
-        _FinalStage vendor(EntityResponse vendor);
+        _FinalStage vendor(CounterpartyResponse vendor);
     }
 
     public interface _FinalStage {
@@ -125,7 +125,7 @@ public final class OcrResponse {
     public static final class Builder implements InvoiceStage, VendorStage, _FinalStage {
         private InvoiceResponse invoice;
 
-        private EntityResponse vendor;
+        private CounterpartyResponse vendor;
 
         private Optional<BankAccountResponse> bankAccount = Optional.empty();
 
@@ -154,7 +154,7 @@ public final class OcrResponse {
 
         @java.lang.Override
         @JsonSetter("vendor")
-        public _FinalStage vendor(EntityResponse vendor) {
+        public _FinalStage vendor(CounterpartyResponse vendor) {
             this.vendor = vendor;
             return this;
         }

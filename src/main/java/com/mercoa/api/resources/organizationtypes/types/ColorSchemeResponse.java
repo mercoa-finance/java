@@ -26,16 +26,20 @@ public final class ColorSchemeResponse {
 
     private final Optional<String> logoBackgroundColor;
 
+    private final Optional<Integer> roundedCorners;
+
     private final Map<String, Object> additionalProperties;
 
     private ColorSchemeResponse(
             Optional<String> primaryColor,
             Optional<String> secondaryColor,
             Optional<String> logoBackgroundColor,
+            Optional<Integer> roundedCorners,
             Map<String, Object> additionalProperties) {
         this.primaryColor = primaryColor;
         this.secondaryColor = secondaryColor;
         this.logoBackgroundColor = logoBackgroundColor;
+        this.roundedCorners = roundedCorners;
         this.additionalProperties = additionalProperties;
     }
 
@@ -54,6 +58,11 @@ public final class ColorSchemeResponse {
         return logoBackgroundColor;
     }
 
+    @JsonProperty("roundedCorners")
+    public Optional<Integer> getRoundedCorners() {
+        return roundedCorners;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -68,12 +77,13 @@ public final class ColorSchemeResponse {
     private boolean equalTo(ColorSchemeResponse other) {
         return primaryColor.equals(other.primaryColor)
                 && secondaryColor.equals(other.secondaryColor)
-                && logoBackgroundColor.equals(other.logoBackgroundColor);
+                && logoBackgroundColor.equals(other.logoBackgroundColor)
+                && roundedCorners.equals(other.roundedCorners);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.primaryColor, this.secondaryColor, this.logoBackgroundColor);
+        return Objects.hash(this.primaryColor, this.secondaryColor, this.logoBackgroundColor, this.roundedCorners);
     }
 
     @java.lang.Override
@@ -93,6 +103,8 @@ public final class ColorSchemeResponse {
 
         private Optional<String> logoBackgroundColor = Optional.empty();
 
+        private Optional<Integer> roundedCorners = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -102,6 +114,7 @@ public final class ColorSchemeResponse {
             primaryColor(other.getPrimaryColor());
             secondaryColor(other.getSecondaryColor());
             logoBackgroundColor(other.getLogoBackgroundColor());
+            roundedCorners(other.getRoundedCorners());
             return this;
         }
 
@@ -138,8 +151,20 @@ public final class ColorSchemeResponse {
             return this;
         }
 
+        @JsonSetter(value = "roundedCorners", nulls = Nulls.SKIP)
+        public Builder roundedCorners(Optional<Integer> roundedCorners) {
+            this.roundedCorners = roundedCorners;
+            return this;
+        }
+
+        public Builder roundedCorners(Integer roundedCorners) {
+            this.roundedCorners = Optional.of(roundedCorners);
+            return this;
+        }
+
         public ColorSchemeResponse build() {
-            return new ColorSchemeResponse(primaryColor, secondaryColor, logoBackgroundColor, additionalProperties);
+            return new ColorSchemeResponse(
+                    primaryColor, secondaryColor, logoBackgroundColor, roundedCorners, additionalProperties);
         }
     }
 }

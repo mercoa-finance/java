@@ -34,6 +34,10 @@ public interface IEntityResponse {
 
     boolean getIsPayee();
 
+    boolean getIsNetworkPayor();
+
+    boolean getIsNetworkPayee();
+
     OffsetDateTime getCreatedAt();
 
     OffsetDateTime getUpdatedAt();
