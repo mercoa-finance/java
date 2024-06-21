@@ -34,6 +34,8 @@ public final class CustomPaymentMethodSchemaResponse {
 
     private final List<CustomPaymentMethodSchemaField> fields;
 
+    private final int estimatedProcessingTime;
+
     private final OffsetDateTime createdAt;
 
     private final OffsetDateTime updatedAt;
@@ -47,6 +49,7 @@ public final class CustomPaymentMethodSchemaResponse {
             boolean isDestination,
             List<CurrencyCode> supportedCurrencies,
             List<CustomPaymentMethodSchemaField> fields,
+            int estimatedProcessingTime,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Map<String, Object> additionalProperties) {
@@ -56,6 +59,7 @@ public final class CustomPaymentMethodSchemaResponse {
         this.isDestination = isDestination;
         this.supportedCurrencies = supportedCurrencies;
         this.fields = fields;
+        this.estimatedProcessingTime = estimatedProcessingTime;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
@@ -100,6 +104,14 @@ public final class CustomPaymentMethodSchemaResponse {
         return fields;
     }
 
+    /**
+     * @return Estimated time in days for this payment method to process a payments. 0 is an same-day payment methods, -1 is unknown processing time.
+     */
+    @JsonProperty("estimatedProcessingTime")
+    public int getEstimatedProcessingTime() {
+        return estimatedProcessingTime;
+    }
+
     @JsonProperty("createdAt")
     public OffsetDateTime getCreatedAt() {
         return createdAt;
@@ -128,6 +140,7 @@ public final class CustomPaymentMethodSchemaResponse {
                 && isDestination == other.isDestination
                 && supportedCurrencies.equals(other.supportedCurrencies)
                 && fields.equals(other.fields)
+                && estimatedProcessingTime == other.estimatedProcessingTime
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt);
     }
@@ -141,6 +154,7 @@ public final class CustomPaymentMethodSchemaResponse {
                 this.isDestination,
                 this.supportedCurrencies,
                 this.fields,
+                this.estimatedProcessingTime,
                 this.createdAt,
                 this.updatedAt);
     }
@@ -169,7 +183,11 @@ public final class CustomPaymentMethodSchemaResponse {
     }
 
     public interface IsDestinationStage {
-        CreatedAtStage isDestination(boolean isDestination);
+        EstimatedProcessingTimeStage isDestination(boolean isDestination);
+    }
+
+    public interface EstimatedProcessingTimeStage {
+        CreatedAtStage estimatedProcessingTime(int estimatedProcessingTime);
     }
 
     public interface CreatedAtStage {
@@ -202,6 +220,7 @@ public final class CustomPaymentMethodSchemaResponse {
                     NameStage,
                     IsSourceStage,
                     IsDestinationStage,
+                    EstimatedProcessingTimeStage,
                     CreatedAtStage,
                     UpdatedAtStage,
                     _FinalStage {
@@ -212,6 +231,8 @@ public final class CustomPaymentMethodSchemaResponse {
         private boolean isSource;
 
         private boolean isDestination;
+
+        private int estimatedProcessingTime;
 
         private OffsetDateTime createdAt;
 
@@ -234,6 +255,7 @@ public final class CustomPaymentMethodSchemaResponse {
             isDestination(other.getIsDestination());
             supportedCurrencies(other.getSupportedCurrencies());
             fields(other.getFields());
+            estimatedProcessingTime(other.getEstimatedProcessingTime());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             return this;
@@ -270,8 +292,19 @@ public final class CustomPaymentMethodSchemaResponse {
          */
         @java.lang.Override
         @JsonSetter("isDestination")
-        public CreatedAtStage isDestination(boolean isDestination) {
+        public EstimatedProcessingTimeStage isDestination(boolean isDestination) {
             this.isDestination = isDestination;
+            return this;
+        }
+
+        /**
+         * <p>Estimated time in days for this payment method to process a payments. 0 is an same-day payment methods, -1 is unknown processing time.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("estimatedProcessingTime")
+        public CreatedAtStage estimatedProcessingTime(int estimatedProcessingTime) {
+            this.estimatedProcessingTime = estimatedProcessingTime;
             return this;
         }
 
@@ -346,6 +379,7 @@ public final class CustomPaymentMethodSchemaResponse {
                     isDestination,
                     supportedCurrencies,
                     fields,
+                    estimatedProcessingTime,
                     createdAt,
                     updatedAt,
                     additionalProperties);

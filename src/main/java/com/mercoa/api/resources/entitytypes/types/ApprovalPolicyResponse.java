@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,10 @@ public final class ApprovalPolicyResponse {
 
     private final String upstreamPolicyId;
 
+    private final OffsetDateTime createdAt;
+
+    private final OffsetDateTime updatedAt;
+
     private final Map<String, Object> additionalProperties;
 
     private ApprovalPolicyResponse(
@@ -36,11 +41,15 @@ public final class ApprovalPolicyResponse {
             List<Trigger> trigger,
             Rule rule,
             String upstreamPolicyId,
+            OffsetDateTime createdAt,
+            OffsetDateTime updatedAt,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.trigger = trigger;
         this.rule = rule;
         this.upstreamPolicyId = upstreamPolicyId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
     }
 
@@ -64,6 +73,16 @@ public final class ApprovalPolicyResponse {
         return upstreamPolicyId;
     }
 
+    @JsonProperty("createdAt")
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    @JsonProperty("updatedAt")
+    public OffsetDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -79,12 +98,14 @@ public final class ApprovalPolicyResponse {
         return id.equals(other.id)
                 && trigger.equals(other.trigger)
                 && rule.equals(other.rule)
-                && upstreamPolicyId.equals(other.upstreamPolicyId);
+                && upstreamPolicyId.equals(other.upstreamPolicyId)
+                && createdAt.equals(other.createdAt)
+                && updatedAt.equals(other.updatedAt);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.id, this.trigger, this.rule, this.upstreamPolicyId);
+        return Objects.hash(this.id, this.trigger, this.rule, this.upstreamPolicyId, this.createdAt, this.updatedAt);
     }
 
     @java.lang.Override
@@ -107,7 +128,15 @@ public final class ApprovalPolicyResponse {
     }
 
     public interface UpstreamPolicyIdStage {
-        _FinalStage upstreamPolicyId(String upstreamPolicyId);
+        CreatedAtStage upstreamPolicyId(String upstreamPolicyId);
+    }
+
+    public interface CreatedAtStage {
+        UpdatedAtStage createdAt(OffsetDateTime createdAt);
+    }
+
+    public interface UpdatedAtStage {
+        _FinalStage updatedAt(OffsetDateTime updatedAt);
     }
 
     public interface _FinalStage {
@@ -121,12 +150,17 @@ public final class ApprovalPolicyResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements IdStage, RuleStage, UpstreamPolicyIdStage, _FinalStage {
+    public static final class Builder
+            implements IdStage, RuleStage, UpstreamPolicyIdStage, CreatedAtStage, UpdatedAtStage, _FinalStage {
         private String id;
 
         private Rule rule;
 
         private String upstreamPolicyId;
+
+        private OffsetDateTime createdAt;
+
+        private OffsetDateTime updatedAt;
 
         private List<Trigger> trigger = new ArrayList<>();
 
@@ -141,6 +175,8 @@ public final class ApprovalPolicyResponse {
             trigger(other.getTrigger());
             rule(other.getRule());
             upstreamPolicyId(other.getUpstreamPolicyId());
+            createdAt(other.getCreatedAt());
+            updatedAt(other.getUpdatedAt());
             return this;
         }
 
@@ -160,8 +196,22 @@ public final class ApprovalPolicyResponse {
 
         @java.lang.Override
         @JsonSetter("upstreamPolicyId")
-        public _FinalStage upstreamPolicyId(String upstreamPolicyId) {
+        public CreatedAtStage upstreamPolicyId(String upstreamPolicyId) {
             this.upstreamPolicyId = upstreamPolicyId;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("createdAt")
+        public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("updatedAt")
+        public _FinalStage updatedAt(OffsetDateTime updatedAt) {
+            this.updatedAt = updatedAt;
             return this;
         }
 
@@ -187,7 +237,8 @@ public final class ApprovalPolicyResponse {
 
         @java.lang.Override
         public ApprovalPolicyResponse build() {
-            return new ApprovalPolicyResponse(id, trigger, rule, upstreamPolicyId, additionalProperties);
+            return new ApprovalPolicyResponse(
+                    id, trigger, rule, upstreamPolicyId, createdAt, updatedAt, additionalProperties);
         }
     }
 }
