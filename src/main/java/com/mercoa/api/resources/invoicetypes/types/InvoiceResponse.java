@@ -41,6 +41,8 @@ public final class InvoiceResponse {
 
     private final Optional<OffsetDateTime> deductionDate;
 
+    private final Optional<OffsetDateTime> processedAt;
+
     private final Optional<OffsetDateTime> settlementDate;
 
     private final Optional<OffsetDateTime> dueDate;
@@ -93,8 +95,6 @@ public final class InvoiceResponse {
 
     private final Optional<InvoiceFailureType> failureType;
 
-    private final Optional<OffsetDateTime> processedAt;
-
     private final OffsetDateTime createdAt;
 
     private final OffsetDateTime updatedAt;
@@ -110,6 +110,7 @@ public final class InvoiceResponse {
             Optional<CurrencyCode> currency,
             Optional<OffsetDateTime> invoiceDate,
             Optional<OffsetDateTime> deductionDate,
+            Optional<OffsetDateTime> processedAt,
             Optional<OffsetDateTime> settlementDate,
             Optional<OffsetDateTime> dueDate,
             Optional<String> invoiceNumber,
@@ -136,7 +137,6 @@ public final class InvoiceResponse {
             Optional<String> foreignId,
             Optional<EntityUserResponse> creatorUser,
             Optional<InvoiceFailureType> failureType,
-            Optional<OffsetDateTime> processedAt,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Optional<InvoiceFeesResponse> fees,
@@ -147,6 +147,7 @@ public final class InvoiceResponse {
         this.currency = currency;
         this.invoiceDate = invoiceDate;
         this.deductionDate = deductionDate;
+        this.processedAt = processedAt;
         this.settlementDate = settlementDate;
         this.dueDate = dueDate;
         this.invoiceNumber = invoiceNumber;
@@ -173,7 +174,6 @@ public final class InvoiceResponse {
         this.foreignId = foreignId;
         this.creatorUser = creatorUser;
         this.failureType = failureType;
-        this.processedAt = processedAt;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.fees = fees;
@@ -215,11 +215,19 @@ public final class InvoiceResponse {
     }
 
     /**
-     * @return Date when funds will be deducted from payer's account.
+     * @return Date when funds are scheduled to be deducted from payer's account. The actual deduction date may differ from this date, and will be reflected in the processedAt field.
      */
     @JsonProperty("deductionDate")
     public Optional<OffsetDateTime> getDeductionDate() {
         return deductionDate;
+    }
+
+    /**
+     * @return Date when the invoice payment was processed.
+     */
+    @JsonProperty("processedAt")
+    public Optional<OffsetDateTime> getProcessedAt() {
+        return processedAt;
     }
 
     /**
@@ -379,11 +387,6 @@ public final class InvoiceResponse {
         return failureType;
     }
 
-    @JsonProperty("processedAt")
-    public Optional<OffsetDateTime> getProcessedAt() {
-        return processedAt;
-    }
-
     @JsonProperty("createdAt")
     public OffsetDateTime getCreatedAt() {
         return createdAt;
@@ -420,6 +423,7 @@ public final class InvoiceResponse {
                 && currency.equals(other.currency)
                 && invoiceDate.equals(other.invoiceDate)
                 && deductionDate.equals(other.deductionDate)
+                && processedAt.equals(other.processedAt)
                 && settlementDate.equals(other.settlementDate)
                 && dueDate.equals(other.dueDate)
                 && invoiceNumber.equals(other.invoiceNumber)
@@ -446,7 +450,6 @@ public final class InvoiceResponse {
                 && foreignId.equals(other.foreignId)
                 && creatorUser.equals(other.creatorUser)
                 && failureType.equals(other.failureType)
-                && processedAt.equals(other.processedAt)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt)
                 && fees.equals(other.fees);
@@ -461,6 +464,7 @@ public final class InvoiceResponse {
                 this.currency,
                 this.invoiceDate,
                 this.deductionDate,
+                this.processedAt,
                 this.settlementDate,
                 this.dueDate,
                 this.invoiceNumber,
@@ -487,7 +491,6 @@ public final class InvoiceResponse {
                 this.foreignId,
                 this.creatorUser,
                 this.failureType,
-                this.processedAt,
                 this.createdAt,
                 this.updatedAt,
                 this.fees);
@@ -550,6 +553,10 @@ public final class InvoiceResponse {
         _FinalStage deductionDate(Optional<OffsetDateTime> deductionDate);
 
         _FinalStage deductionDate(OffsetDateTime deductionDate);
+
+        _FinalStage processedAt(Optional<OffsetDateTime> processedAt);
+
+        _FinalStage processedAt(OffsetDateTime processedAt);
 
         _FinalStage settlementDate(Optional<OffsetDateTime> settlementDate);
 
@@ -649,10 +656,6 @@ public final class InvoiceResponse {
 
         _FinalStage failureType(InvoiceFailureType failureType);
 
-        _FinalStage processedAt(Optional<OffsetDateTime> processedAt);
-
-        _FinalStage processedAt(OffsetDateTime processedAt);
-
         _FinalStage fees(Optional<InvoiceFeesResponse> fees);
 
         _FinalStage fees(InvoiceFeesResponse fees);
@@ -683,8 +686,6 @@ public final class InvoiceResponse {
         private OffsetDateTime updatedAt;
 
         private Optional<InvoiceFeesResponse> fees = Optional.empty();
-
-        private Optional<OffsetDateTime> processedAt = Optional.empty();
 
         private Optional<InvoiceFailureType> failureType = Optional.empty();
 
@@ -732,6 +733,8 @@ public final class InvoiceResponse {
 
         private Optional<OffsetDateTime> settlementDate = Optional.empty();
 
+        private Optional<OffsetDateTime> processedAt = Optional.empty();
+
         private Optional<OffsetDateTime> deductionDate = Optional.empty();
 
         private Optional<OffsetDateTime> invoiceDate = Optional.empty();
@@ -753,6 +756,7 @@ public final class InvoiceResponse {
             currency(other.getCurrency());
             invoiceDate(other.getInvoiceDate());
             deductionDate(other.getDeductionDate());
+            processedAt(other.getProcessedAt());
             settlementDate(other.getSettlementDate());
             dueDate(other.getDueDate());
             invoiceNumber(other.getInvoiceNumber());
@@ -779,7 +783,6 @@ public final class InvoiceResponse {
             foreignId(other.getForeignId());
             creatorUser(other.getCreatorUser());
             failureType(other.getFailureType());
-            processedAt(other.getProcessedAt());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             fees(other.getFees());
@@ -861,19 +864,6 @@ public final class InvoiceResponse {
         @JsonSetter(value = "fees", nulls = Nulls.SKIP)
         public _FinalStage fees(Optional<InvoiceFeesResponse> fees) {
             this.fees = fees;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage processedAt(OffsetDateTime processedAt) {
-            this.processedAt = Optional.of(processedAt);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "processedAt", nulls = Nulls.SKIP)
-        public _FinalStage processedAt(Optional<OffsetDateTime> processedAt) {
-            this.processedAt = processedAt;
             return this;
         }
 
@@ -1226,7 +1216,24 @@ public final class InvoiceResponse {
         }
 
         /**
-         * <p>Date when funds will be deducted from payer's account.</p>
+         * <p>Date when the invoice payment was processed.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage processedAt(OffsetDateTime processedAt) {
+            this.processedAt = Optional.of(processedAt);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "processedAt", nulls = Nulls.SKIP)
+        public _FinalStage processedAt(Optional<OffsetDateTime> processedAt) {
+            this.processedAt = processedAt;
+            return this;
+        }
+
+        /**
+         * <p>Date when funds are scheduled to be deducted from payer's account. The actual deduction date may differ from this date, and will be reflected in the processedAt field.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1302,6 +1309,7 @@ public final class InvoiceResponse {
                     currency,
                     invoiceDate,
                     deductionDate,
+                    processedAt,
                     settlementDate,
                     dueDate,
                     invoiceNumber,
@@ -1328,7 +1336,6 @@ public final class InvoiceResponse {
                     foreignId,
                     creatorUser,
                     failureType,
-                    processedAt,
                     createdAt,
                     updatedAt,
                     fees,

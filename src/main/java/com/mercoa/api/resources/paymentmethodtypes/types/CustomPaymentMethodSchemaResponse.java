@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = CustomPaymentMethodSchemaResponse.Builder.class)
@@ -36,6 +37,8 @@ public final class CustomPaymentMethodSchemaResponse {
 
     private final int estimatedProcessingTime;
 
+    private final Optional<CustomPaymentMethodSchemaFee> fees;
+
     private final OffsetDateTime createdAt;
 
     private final OffsetDateTime updatedAt;
@@ -50,6 +53,7 @@ public final class CustomPaymentMethodSchemaResponse {
             List<CurrencyCode> supportedCurrencies,
             List<CustomPaymentMethodSchemaField> fields,
             int estimatedProcessingTime,
+            Optional<CustomPaymentMethodSchemaFee> fees,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Map<String, Object> additionalProperties) {
@@ -60,6 +64,7 @@ public final class CustomPaymentMethodSchemaResponse {
         this.supportedCurrencies = supportedCurrencies;
         this.fields = fields;
         this.estimatedProcessingTime = estimatedProcessingTime;
+        this.fees = fees;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
@@ -112,6 +117,11 @@ public final class CustomPaymentMethodSchemaResponse {
         return estimatedProcessingTime;
     }
 
+    @JsonProperty("fees")
+    public Optional<CustomPaymentMethodSchemaFee> getFees() {
+        return fees;
+    }
+
     @JsonProperty("createdAt")
     public OffsetDateTime getCreatedAt() {
         return createdAt;
@@ -141,6 +151,7 @@ public final class CustomPaymentMethodSchemaResponse {
                 && supportedCurrencies.equals(other.supportedCurrencies)
                 && fields.equals(other.fields)
                 && estimatedProcessingTime == other.estimatedProcessingTime
+                && fees.equals(other.fees)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt);
     }
@@ -155,6 +166,7 @@ public final class CustomPaymentMethodSchemaResponse {
                 this.supportedCurrencies,
                 this.fields,
                 this.estimatedProcessingTime,
+                this.fees,
                 this.createdAt,
                 this.updatedAt);
     }
@@ -212,6 +224,10 @@ public final class CustomPaymentMethodSchemaResponse {
         _FinalStage addFields(CustomPaymentMethodSchemaField fields);
 
         _FinalStage addAllFields(List<CustomPaymentMethodSchemaField> fields);
+
+        _FinalStage fees(Optional<CustomPaymentMethodSchemaFee> fees);
+
+        _FinalStage fees(CustomPaymentMethodSchemaFee fees);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -238,6 +254,8 @@ public final class CustomPaymentMethodSchemaResponse {
 
         private OffsetDateTime updatedAt;
 
+        private Optional<CustomPaymentMethodSchemaFee> fees = Optional.empty();
+
         private List<CustomPaymentMethodSchemaField> fields = new ArrayList<>();
 
         private List<CurrencyCode> supportedCurrencies = new ArrayList<>();
@@ -256,6 +274,7 @@ public final class CustomPaymentMethodSchemaResponse {
             supportedCurrencies(other.getSupportedCurrencies());
             fields(other.getFields());
             estimatedProcessingTime(other.getEstimatedProcessingTime());
+            fees(other.getFees());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             return this;
@@ -323,6 +342,19 @@ public final class CustomPaymentMethodSchemaResponse {
         }
 
         @java.lang.Override
+        public _FinalStage fees(CustomPaymentMethodSchemaFee fees) {
+            this.fees = Optional.of(fees);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "fees", nulls = Nulls.SKIP)
+        public _FinalStage fees(Optional<CustomPaymentMethodSchemaFee> fees) {
+            this.fees = fees;
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage addAllFields(List<CustomPaymentMethodSchemaField> fields) {
             this.fields.addAll(fields);
             return this;
@@ -380,6 +412,7 @@ public final class CustomPaymentMethodSchemaResponse {
                     supportedCurrencies,
                     fields,
                     estimatedProcessingTime,
+                    fees,
                     createdAt,
                     updatedAt,
                     additionalProperties);

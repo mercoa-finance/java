@@ -28,11 +28,13 @@ public final class CustomPaymentMethodSchemaRequest {
 
     private final boolean isDestination;
 
-    private final Optional<Integer> estimatedProcessingTime;
-
     private final Optional<List<CurrencyCode>> supportedCurrencies;
 
     private final List<CustomPaymentMethodSchemaField> fields;
+
+    private final Optional<Integer> estimatedProcessingTime;
+
+    private final Optional<CustomPaymentMethodSchemaFee> fees;
 
     private final Map<String, Object> additionalProperties;
 
@@ -40,16 +42,18 @@ public final class CustomPaymentMethodSchemaRequest {
             String name,
             boolean isSource,
             boolean isDestination,
-            Optional<Integer> estimatedProcessingTime,
             Optional<List<CurrencyCode>> supportedCurrencies,
             List<CustomPaymentMethodSchemaField> fields,
+            Optional<Integer> estimatedProcessingTime,
+            Optional<CustomPaymentMethodSchemaFee> fees,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.isSource = isSource;
         this.isDestination = isDestination;
-        this.estimatedProcessingTime = estimatedProcessingTime;
         this.supportedCurrencies = supportedCurrencies;
         this.fields = fields;
+        this.estimatedProcessingTime = estimatedProcessingTime;
+        this.fees = fees;
         this.additionalProperties = additionalProperties;
     }
 
@@ -75,14 +79,6 @@ public final class CustomPaymentMethodSchemaRequest {
     }
 
     /**
-     * @return Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
-     */
-    @JsonProperty("estimatedProcessingTime")
-    public Optional<Integer> getEstimatedProcessingTime() {
-        return estimatedProcessingTime;
-    }
-
-    /**
      * @return List of currencies that this payment method supports. If not provided, the payment method will support only USD.
      */
     @JsonProperty("supportedCurrencies")
@@ -93,6 +89,19 @@ public final class CustomPaymentMethodSchemaRequest {
     @JsonProperty("fields")
     public List<CustomPaymentMethodSchemaField> getFields() {
         return fields;
+    }
+
+    /**
+     * @return Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
+     */
+    @JsonProperty("estimatedProcessingTime")
+    public Optional<Integer> getEstimatedProcessingTime() {
+        return estimatedProcessingTime;
+    }
+
+    @JsonProperty("fees")
+    public Optional<CustomPaymentMethodSchemaFee> getFees() {
+        return fees;
     }
 
     @java.lang.Override
@@ -110,9 +119,10 @@ public final class CustomPaymentMethodSchemaRequest {
         return name.equals(other.name)
                 && isSource == other.isSource
                 && isDestination == other.isDestination
-                && estimatedProcessingTime.equals(other.estimatedProcessingTime)
                 && supportedCurrencies.equals(other.supportedCurrencies)
-                && fields.equals(other.fields);
+                && fields.equals(other.fields)
+                && estimatedProcessingTime.equals(other.estimatedProcessingTime)
+                && fees.equals(other.fees);
     }
 
     @java.lang.Override
@@ -121,9 +131,10 @@ public final class CustomPaymentMethodSchemaRequest {
                 this.name,
                 this.isSource,
                 this.isDestination,
-                this.estimatedProcessingTime,
                 this.supportedCurrencies,
-                this.fields);
+                this.fields,
+                this.estimatedProcessingTime,
+                this.fees);
     }
 
     @java.lang.Override
@@ -152,10 +163,6 @@ public final class CustomPaymentMethodSchemaRequest {
     public interface _FinalStage {
         CustomPaymentMethodSchemaRequest build();
 
-        _FinalStage estimatedProcessingTime(Optional<Integer> estimatedProcessingTime);
-
-        _FinalStage estimatedProcessingTime(Integer estimatedProcessingTime);
-
         _FinalStage supportedCurrencies(Optional<List<CurrencyCode>> supportedCurrencies);
 
         _FinalStage supportedCurrencies(List<CurrencyCode> supportedCurrencies);
@@ -165,6 +172,14 @@ public final class CustomPaymentMethodSchemaRequest {
         _FinalStage addFields(CustomPaymentMethodSchemaField fields);
 
         _FinalStage addAllFields(List<CustomPaymentMethodSchemaField> fields);
+
+        _FinalStage estimatedProcessingTime(Optional<Integer> estimatedProcessingTime);
+
+        _FinalStage estimatedProcessingTime(Integer estimatedProcessingTime);
+
+        _FinalStage fees(Optional<CustomPaymentMethodSchemaFee> fees);
+
+        _FinalStage fees(CustomPaymentMethodSchemaFee fees);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -175,11 +190,13 @@ public final class CustomPaymentMethodSchemaRequest {
 
         private boolean isDestination;
 
+        private Optional<CustomPaymentMethodSchemaFee> fees = Optional.empty();
+
+        private Optional<Integer> estimatedProcessingTime = Optional.empty();
+
         private List<CustomPaymentMethodSchemaField> fields = new ArrayList<>();
 
         private Optional<List<CurrencyCode>> supportedCurrencies = Optional.empty();
-
-        private Optional<Integer> estimatedProcessingTime = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -191,9 +208,10 @@ public final class CustomPaymentMethodSchemaRequest {
             name(other.getName());
             isSource(other.getIsSource());
             isDestination(other.getIsDestination());
-            estimatedProcessingTime(other.getEstimatedProcessingTime());
             supportedCurrencies(other.getSupportedCurrencies());
             fields(other.getFields());
+            estimatedProcessingTime(other.getEstimatedProcessingTime());
+            fees(other.getFees());
             return this;
         }
 
@@ -223,6 +241,36 @@ public final class CustomPaymentMethodSchemaRequest {
         @JsonSetter("isDestination")
         public _FinalStage isDestination(boolean isDestination) {
             this.isDestination = isDestination;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage fees(CustomPaymentMethodSchemaFee fees) {
+            this.fees = Optional.of(fees);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "fees", nulls = Nulls.SKIP)
+        public _FinalStage fees(Optional<CustomPaymentMethodSchemaFee> fees) {
+            this.fees = fees;
+            return this;
+        }
+
+        /**
+         * <p>Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage estimatedProcessingTime(Integer estimatedProcessingTime) {
+            this.estimatedProcessingTime = Optional.of(estimatedProcessingTime);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "estimatedProcessingTime", nulls = Nulls.SKIP)
+        public _FinalStage estimatedProcessingTime(Optional<Integer> estimatedProcessingTime) {
+            this.estimatedProcessingTime = estimatedProcessingTime;
             return this;
         }
 
@@ -263,32 +311,16 @@ public final class CustomPaymentMethodSchemaRequest {
             return this;
         }
 
-        /**
-         * <p>Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage estimatedProcessingTime(Integer estimatedProcessingTime) {
-            this.estimatedProcessingTime = Optional.of(estimatedProcessingTime);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "estimatedProcessingTime", nulls = Nulls.SKIP)
-        public _FinalStage estimatedProcessingTime(Optional<Integer> estimatedProcessingTime) {
-            this.estimatedProcessingTime = estimatedProcessingTime;
-            return this;
-        }
-
         @java.lang.Override
         public CustomPaymentMethodSchemaRequest build() {
             return new CustomPaymentMethodSchemaRequest(
                     name,
                     isSource,
                     isDestination,
-                    estimatedProcessingTime,
                     supportedCurrencies,
                     fields,
+                    estimatedProcessingTime,
+                    fees,
                     additionalProperties);
         }
     }

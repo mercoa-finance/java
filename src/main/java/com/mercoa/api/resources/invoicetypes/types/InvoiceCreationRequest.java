@@ -69,6 +69,8 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
 
     private final Optional<String> creatorUserId;
 
+    private final Optional<InvoiceFailureType> failureType;
+
     private final String creatorEntityId;
 
     private final Map<String, Object> additionalProperties;
@@ -97,6 +99,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
             Optional<String> document,
             Optional<String> uploadedImage,
             Optional<String> creatorUserId,
+            Optional<InvoiceFailureType> failureType,
             String creatorEntityId,
             Map<String, Object> additionalProperties) {
         this.status = status;
@@ -122,6 +125,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         this.document = document;
         this.uploadedImage = uploadedImage;
         this.creatorUserId = creatorUserId;
+        this.failureType = failureType;
         this.creatorEntityId = creatorEntityId;
         this.additionalProperties = additionalProperties;
     }
@@ -160,7 +164,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
     }
 
     /**
-     * @return Date when funds will be deducted from payer's account.
+     * @return Date when funds are scheduled to be deducted from payer's account.
      */
     @JsonProperty("deductionDate")
     @java.lang.Override
@@ -313,6 +317,15 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
     }
 
     /**
+     * @return If the invoice failed to be paid, indicate the failure reason. Only applicable for invoices with custom payment methods.
+     */
+    @JsonProperty("failureType")
+    @java.lang.Override
+    public Optional<InvoiceFailureType> getFailureType() {
+        return failureType;
+    }
+
+    /**
      * @return ID of entity who created this invoice.
      */
     @JsonProperty("creatorEntityId")
@@ -355,6 +368,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
                 && document.equals(other.document)
                 && uploadedImage.equals(other.uploadedImage)
                 && creatorUserId.equals(other.creatorUserId)
+                && failureType.equals(other.failureType)
                 && creatorEntityId.equals(other.creatorEntityId);
     }
 
@@ -384,6 +398,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
                 this.document,
                 this.uploadedImage,
                 this.creatorUserId,
+                this.failureType,
                 this.creatorEntityId);
     }
 
@@ -496,11 +511,17 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         _FinalStage creatorUserId(Optional<String> creatorUserId);
 
         _FinalStage creatorUserId(String creatorUserId);
+
+        _FinalStage failureType(Optional<InvoiceFailureType> failureType);
+
+        _FinalStage failureType(InvoiceFailureType failureType);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements CreatorEntityIdStage, _FinalStage {
         private String creatorEntityId;
+
+        private Optional<InvoiceFailureType> failureType = Optional.empty();
 
         private Optional<String> creatorUserId = Optional.empty();
 
@@ -578,6 +599,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
             document(other.getDocument());
             uploadedImage(other.getUploadedImage());
             creatorUserId(other.getCreatorUserId());
+            failureType(other.getFailureType());
             creatorEntityId(other.getCreatorEntityId());
             return this;
         }
@@ -590,6 +612,23 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         @JsonSetter("creatorEntityId")
         public _FinalStage creatorEntityId(String creatorEntityId) {
             this.creatorEntityId = creatorEntityId;
+            return this;
+        }
+
+        /**
+         * <p>If the invoice failed to be paid, indicate the failure reason. Only applicable for invoices with custom payment methods.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage failureType(InvoiceFailureType failureType) {
+            this.failureType = Optional.of(failureType);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "failureType", nulls = Nulls.SKIP)
+        public _FinalStage failureType(Optional<InvoiceFailureType> failureType) {
+            this.failureType = failureType;
             return this;
         }
 
@@ -876,7 +915,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         }
 
         /**
-         * <p>Date when funds will be deducted from payer's account.</p>
+         * <p>Date when funds are scheduled to be deducted from payer's account.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -982,6 +1021,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
                     document,
                     uploadedImage,
                     creatorUserId,
+                    failureType,
                     creatorEntityId,
                     additionalProperties);
         }

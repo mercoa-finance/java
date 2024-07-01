@@ -55,4 +55,6 @@ public interface IInvoiceRequestBase {
     Optional<String> getUploadedImage();
 
     Optional<String> getCreatorUserId();
+
+    Optional<InvoiceFailureType> getFailureType();
 }

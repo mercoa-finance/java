@@ -44,6 +44,8 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
     private final Optional<String> accountNumber;
 
+    private final Optional<Double> availableBalance;
+
     private final String schemaId;
 
     private final CustomPaymentMethodSchemaResponse schema;
@@ -63,6 +65,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
             String foreignId,
             Optional<String> accountName,
             Optional<String> accountNumber,
+            Optional<Double> availableBalance,
             String schemaId,
             CustomPaymentMethodSchemaResponse schema,
             Map<String, String> data,
@@ -77,6 +80,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
         this.foreignId = foreignId;
         this.accountName = accountName;
         this.accountNumber = accountNumber;
+        this.availableBalance = availableBalance;
         this.schemaId = schemaId;
         this.schema = schema;
         this.data = data;
@@ -153,6 +157,14 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
     }
 
     /**
+     * @return The available balance for this payment method.
+     */
+    @JsonProperty("availableBalance")
+    public Optional<Double> getAvailableBalance() {
+        return availableBalance;
+    }
+
+    /**
      * @return Payment method schema used for this payment method. Defines the fields that this payment method contains.
      */
     @JsonProperty("schemaId")
@@ -195,6 +207,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
                 && foreignId.equals(other.foreignId)
                 && accountName.equals(other.accountName)
                 && accountNumber.equals(other.accountNumber)
+                && availableBalance.equals(other.availableBalance)
                 && schemaId.equals(other.schemaId)
                 && schema.equals(other.schema)
                 && data.equals(other.data);
@@ -213,6 +226,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
                 this.foreignId,
                 this.accountName,
                 this.accountNumber,
+                this.availableBalance,
                 this.schemaId,
                 this.schema,
                 this.data);
@@ -282,6 +296,10 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
         _FinalStage accountNumber(String accountNumber);
 
+        _FinalStage availableBalance(Optional<Double> availableBalance);
+
+        _FinalStage availableBalance(Double availableBalance);
+
         _FinalStage data(Map<String, String> data);
 
         _FinalStage putAllData(Map<String, String> data);
@@ -318,6 +336,8 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
         private Map<String, String> data = new LinkedHashMap<>();
 
+        private Optional<Double> availableBalance = Optional.empty();
+
         private Optional<String> accountNumber = Optional.empty();
 
         private Optional<String> accountName = Optional.empty();
@@ -343,6 +363,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
             foreignId(other.getForeignId());
             accountName(other.getAccountName());
             accountNumber(other.getAccountNumber());
+            availableBalance(other.getAvailableBalance());
             schemaId(other.getSchemaId());
             schema(other.getSchema());
             data(other.getData());
@@ -449,6 +470,23 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
             return this;
         }
 
+        /**
+         * <p>The available balance for this payment method.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage availableBalance(Double availableBalance) {
+            this.availableBalance = Optional.of(availableBalance);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "availableBalance", nulls = Nulls.SKIP)
+        public _FinalStage availableBalance(Optional<Double> availableBalance) {
+            this.availableBalance = availableBalance;
+            return this;
+        }
+
         @java.lang.Override
         public _FinalStage accountNumber(String accountNumber) {
             this.accountNumber = Optional.of(accountNumber);
@@ -525,6 +563,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
                     foreignId,
                     accountName,
                     accountNumber,
+                    availableBalance,
                     schemaId,
                     schema,
                     data,

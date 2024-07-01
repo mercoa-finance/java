@@ -69,6 +69,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
     private final Optional<String> creatorUserId;
 
+    private final Optional<InvoiceFailureType> failureType;
+
     private final Map<String, Object> additionalProperties;
 
     private InvoiceRequestBase(
@@ -95,6 +97,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             Optional<String> document,
             Optional<String> uploadedImage,
             Optional<String> creatorUserId,
+            Optional<InvoiceFailureType> failureType,
             Map<String, Object> additionalProperties) {
         this.status = status;
         this.amount = amount;
@@ -119,6 +122,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         this.document = document;
         this.uploadedImage = uploadedImage;
         this.creatorUserId = creatorUserId;
+        this.failureType = failureType;
         this.additionalProperties = additionalProperties;
     }
 
@@ -156,7 +160,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
     }
 
     /**
-     * @return Date when funds will be deducted from payer's account.
+     * @return Date when funds are scheduled to be deducted from payer's account.
      */
     @JsonProperty("deductionDate")
     @java.lang.Override
@@ -308,6 +312,15 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         return creatorUserId;
     }
 
+    /**
+     * @return If the invoice failed to be paid, indicate the failure reason. Only applicable for invoices with custom payment methods.
+     */
+    @JsonProperty("failureType")
+    @java.lang.Override
+    public Optional<InvoiceFailureType> getFailureType() {
+        return failureType;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -342,7 +355,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 && foreignId.equals(other.foreignId)
                 && document.equals(other.document)
                 && uploadedImage.equals(other.uploadedImage)
-                && creatorUserId.equals(other.creatorUserId);
+                && creatorUserId.equals(other.creatorUserId)
+                && failureType.equals(other.failureType);
     }
 
     @java.lang.Override
@@ -370,7 +384,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 this.foreignId,
                 this.document,
                 this.uploadedImage,
-                this.creatorUserId);
+                this.creatorUserId,
+                this.failureType);
     }
 
     @java.lang.Override
@@ -430,6 +445,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
         private Optional<String> creatorUserId = Optional.empty();
 
+        private Optional<InvoiceFailureType> failureType = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -459,6 +476,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             document(other.getDocument());
             uploadedImage(other.getUploadedImage());
             creatorUserId(other.getCreatorUserId());
+            failureType(other.getFailureType());
             return this;
         }
 
@@ -715,6 +733,17 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        @JsonSetter(value = "failureType", nulls = Nulls.SKIP)
+        public Builder failureType(Optional<InvoiceFailureType> failureType) {
+            this.failureType = failureType;
+            return this;
+        }
+
+        public Builder failureType(InvoiceFailureType failureType) {
+            this.failureType = Optional.of(failureType);
+            return this;
+        }
+
         public InvoiceRequestBase build() {
             return new InvoiceRequestBase(
                     status,
@@ -740,6 +769,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                     document,
                     uploadedImage,
                     creatorUserId,
+                    failureType,
                     additionalProperties);
         }
     }

@@ -20,7 +20,11 @@ public enum CustomPaymentMethodSchemaFieldType {
 
     URL("url"),
 
-    ADDRESS("address");
+    ADDRESS("address"),
+
+    US_BANK_ROUTING_NUMBER("usBankRoutingNumber"),
+
+    US_BANK_ACCOUNT_NUMBER("usBankAccountNumber");
 
     private final String value;
 

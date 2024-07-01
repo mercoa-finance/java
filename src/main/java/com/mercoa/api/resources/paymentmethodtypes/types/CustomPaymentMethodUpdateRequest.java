@@ -32,6 +32,8 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
 
     private final Optional<String> accountNumber;
 
+    private final Optional<Double> availableBalance;
+
     private final Optional<String> schemaId;
 
     private final Optional<Map<String, String>> data;
@@ -45,6 +47,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             Optional<String> foreignId,
             Optional<String> accountName,
             Optional<String> accountNumber,
+            Optional<Double> availableBalance,
             Optional<String> schemaId,
             Optional<Map<String, String>> data,
             Map<String, Object> additionalProperties) {
@@ -54,6 +57,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
         this.foreignId = foreignId;
         this.accountName = accountName;
         this.accountNumber = accountNumber;
+        this.availableBalance = availableBalance;
         this.schemaId = schemaId;
         this.data = data;
         this.additionalProperties = additionalProperties;
@@ -105,6 +109,14 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
     }
 
     /**
+     * @return The available balance for this payment method.
+     */
+    @JsonProperty("availableBalance")
+    public Optional<Double> getAvailableBalance() {
+        return availableBalance;
+    }
+
+    /**
      * @return Payment method schema used for this payment method. Defines the fields that this payment method contains.
      */
     @JsonProperty("schemaId")
@@ -138,6 +150,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
                 && foreignId.equals(other.foreignId)
                 && accountName.equals(other.accountName)
                 && accountNumber.equals(other.accountNumber)
+                && availableBalance.equals(other.availableBalance)
                 && schemaId.equals(other.schemaId)
                 && data.equals(other.data);
     }
@@ -151,6 +164,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
                 this.foreignId,
                 this.accountName,
                 this.accountNumber,
+                this.availableBalance,
                 this.schemaId,
                 this.data);
     }
@@ -178,6 +192,8 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
 
         private Optional<String> accountNumber = Optional.empty();
 
+        private Optional<Double> availableBalance = Optional.empty();
+
         private Optional<String> schemaId = Optional.empty();
 
         private Optional<Map<String, String>> data = Optional.empty();
@@ -194,6 +210,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             foreignId(other.getForeignId());
             accountName(other.getAccountName());
             accountNumber(other.getAccountNumber());
+            availableBalance(other.getAvailableBalance());
             schemaId(other.getSchemaId());
             data(other.getData());
             return this;
@@ -265,6 +282,17 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             return this;
         }
 
+        @JsonSetter(value = "availableBalance", nulls = Nulls.SKIP)
+        public Builder availableBalance(Optional<Double> availableBalance) {
+            this.availableBalance = availableBalance;
+            return this;
+        }
+
+        public Builder availableBalance(Double availableBalance) {
+            this.availableBalance = Optional.of(availableBalance);
+            return this;
+        }
+
         @JsonSetter(value = "schemaId", nulls = Nulls.SKIP)
         public Builder schemaId(Optional<String> schemaId) {
             this.schemaId = schemaId;
@@ -295,6 +323,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
                     foreignId,
                     accountName,
                     accountNumber,
+                    availableBalance,
                     schemaId,
                     data,
                     additionalProperties);

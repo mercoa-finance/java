@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.resources.entitytypes.types.EntityResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,16 +26,20 @@ public final class PaymentMethodWebhook {
 
     private final PaymentMethodResponse paymentMethod;
 
+    private final EntityResponse entity;
+
     private final Map<String, Object> additionalProperties;
 
     private PaymentMethodWebhook(
             String eventType,
             String entityId,
             PaymentMethodResponse paymentMethod,
+            EntityResponse entity,
             Map<String, Object> additionalProperties) {
         this.eventType = eventType;
         this.entityId = entityId;
         this.paymentMethod = paymentMethod;
+        this.entity = entity;
         this.additionalProperties = additionalProperties;
     }
 
@@ -53,6 +58,11 @@ public final class PaymentMethodWebhook {
         return paymentMethod;
     }
 
+    @JsonProperty("entity")
+    public EntityResponse getEntity() {
+        return entity;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -67,12 +77,13 @@ public final class PaymentMethodWebhook {
     private boolean equalTo(PaymentMethodWebhook other) {
         return eventType.equals(other.eventType)
                 && entityId.equals(other.entityId)
-                && paymentMethod.equals(other.paymentMethod);
+                && paymentMethod.equals(other.paymentMethod)
+                && entity.equals(other.entity);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.eventType, this.entityId, this.paymentMethod);
+        return Objects.hash(this.eventType, this.entityId, this.paymentMethod, this.entity);
     }
 
     @java.lang.Override
@@ -95,7 +106,11 @@ public final class PaymentMethodWebhook {
     }
 
     public interface PaymentMethodStage {
-        _FinalStage paymentMethod(PaymentMethodResponse paymentMethod);
+        EntityStage paymentMethod(PaymentMethodResponse paymentMethod);
+    }
+
+    public interface EntityStage {
+        _FinalStage entity(EntityResponse entity);
     }
 
     public interface _FinalStage {
@@ -103,12 +118,15 @@ public final class PaymentMethodWebhook {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements EventTypeStage, EntityIdStage, PaymentMethodStage, _FinalStage {
+    public static final class Builder
+            implements EventTypeStage, EntityIdStage, PaymentMethodStage, EntityStage, _FinalStage {
         private String eventType;
 
         private String entityId;
 
         private PaymentMethodResponse paymentMethod;
+
+        private EntityResponse entity;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -120,6 +138,7 @@ public final class PaymentMethodWebhook {
             eventType(other.getEventType());
             entityId(other.getEntityId());
             paymentMethod(other.getPaymentMethod());
+            entity(other.getEntity());
             return this;
         }
 
@@ -139,14 +158,21 @@ public final class PaymentMethodWebhook {
 
         @java.lang.Override
         @JsonSetter("paymentMethod")
-        public _FinalStage paymentMethod(PaymentMethodResponse paymentMethod) {
+        public EntityStage paymentMethod(PaymentMethodResponse paymentMethod) {
             this.paymentMethod = paymentMethod;
             return this;
         }
 
         @java.lang.Override
+        @JsonSetter("entity")
+        public _FinalStage entity(EntityResponse entity) {
+            this.entity = entity;
+            return this;
+        }
+
+        @java.lang.Override
         public PaymentMethodWebhook build() {
-            return new PaymentMethodWebhook(eventType, entityId, paymentMethod, additionalProperties);
+            return new PaymentMethodWebhook(eventType, entityId, paymentMethod, entity, additionalProperties);
         }
     }
 }
