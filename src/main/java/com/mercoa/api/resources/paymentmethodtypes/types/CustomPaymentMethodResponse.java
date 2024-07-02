@@ -38,7 +38,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
     private final OffsetDateTime updatedAt;
 
-    private final String foreignId;
+    private final Optional<String> foreignId;
 
     private final Optional<String> accountName;
 
@@ -62,7 +62,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
             Optional<String> externalAccountingSystemId,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
-            String foreignId,
+            Optional<String> foreignId,
             Optional<String> accountName,
             Optional<String> accountNumber,
             Optional<Double> availableBalance,
@@ -142,7 +142,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
      * @return ID for this payment method in your system
      */
     @JsonProperty("foreignId")
-    public String getForeignId() {
+    public Optional<String> getForeignId() {
         return foreignId;
     }
 
@@ -260,11 +260,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
     }
 
     public interface UpdatedAtStage {
-        ForeignIdStage updatedAt(OffsetDateTime updatedAt);
-    }
-
-    public interface ForeignIdStage {
-        SchemaIdStage foreignId(String foreignId);
+        SchemaIdStage updatedAt(OffsetDateTime updatedAt);
     }
 
     public interface SchemaIdStage {
@@ -287,6 +283,10 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
         _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId);
 
         _FinalStage externalAccountingSystemId(String externalAccountingSystemId);
+
+        _FinalStage foreignId(Optional<String> foreignId);
+
+        _FinalStage foreignId(String foreignId);
 
         _FinalStage accountName(Optional<String> accountName);
 
@@ -314,7 +314,6 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
                     IsDefaultDestinationStage,
                     CreatedAtStage,
                     UpdatedAtStage,
-                    ForeignIdStage,
                     SchemaIdStage,
                     SchemaStage,
                     _FinalStage {
@@ -328,8 +327,6 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
         private OffsetDateTime updatedAt;
 
-        private String foreignId;
-
         private String schemaId;
 
         private CustomPaymentMethodSchemaResponse schema;
@@ -341,6 +338,8 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
         private Optional<String> accountNumber = Optional.empty();
 
         private Optional<String> accountName = Optional.empty();
+
+        private Optional<String> foreignId = Optional.empty();
 
         private Optional<String> externalAccountingSystemId = Optional.empty();
 
@@ -408,19 +407,8 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
         @java.lang.Override
         @JsonSetter("updatedAt")
-        public ForeignIdStage updatedAt(OffsetDateTime updatedAt) {
+        public SchemaIdStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = updatedAt;
-            return this;
-        }
-
-        /**
-         * <p>ID for this payment method in your system</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("foreignId")
-        public SchemaIdStage foreignId(String foreignId) {
-            this.foreignId = foreignId;
             return this;
         }
 
@@ -510,6 +498,23 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
         @JsonSetter(value = "accountName", nulls = Nulls.SKIP)
         public _FinalStage accountName(Optional<String> accountName) {
             this.accountName = accountName;
+            return this;
+        }
+
+        /**
+         * <p>ID for this payment method in your system</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage foreignId(String foreignId) {
+            this.foreignId = Optional.of(foreignId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
+        public _FinalStage foreignId(Optional<String> foreignId) {
+            this.foreignId = foreignId;
             return this;
         }
 
