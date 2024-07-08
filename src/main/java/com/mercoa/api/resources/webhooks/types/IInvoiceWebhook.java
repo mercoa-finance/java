@@ -3,10 +3,14 @@
  */
 package com.mercoa.api.resources.webhooks.types;
 
+import com.mercoa.api.resources.entitytypes.types.EntityUserResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
+import java.util.Optional;
 
 public interface IInvoiceWebhook {
     String getEventType();
 
     InvoiceResponse getInvoice();
+
+    Optional<EntityUserResponse> getUser();
 }

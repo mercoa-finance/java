@@ -56,8 +56,6 @@ public final class GetAllInvoicesRequest {
 
     private final Optional<InvoiceStatus> status;
 
-    private final Optional<Boolean> includeFees;
-
     private final Map<String, Object> additionalProperties;
 
     private GetAllInvoicesRequest(
@@ -76,7 +74,6 @@ public final class GetAllInvoicesRequest {
             Optional<ApproverAction> approverAction,
             Optional<String> invoiceId,
             Optional<InvoiceStatus> status,
-            Optional<Boolean> includeFees,
             Map<String, Object> additionalProperties) {
         this.entityId = entityId;
         this.startDate = startDate;
@@ -93,7 +90,6 @@ public final class GetAllInvoicesRequest {
         this.approverAction = approverAction;
         this.invoiceId = invoiceId;
         this.status = status;
-        this.includeFees = includeFees;
         this.additionalProperties = additionalProperties;
     }
 
@@ -217,14 +213,6 @@ public final class GetAllInvoicesRequest {
         return status;
     }
 
-    /**
-     * @return DEPRECATED. Fees are now included by default in the response.
-     */
-    @JsonProperty("includeFees")
-    public Optional<Boolean> getIncludeFees() {
-        return includeFees;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -251,8 +239,7 @@ public final class GetAllInvoicesRequest {
                 && approverId.equals(other.approverId)
                 && approverAction.equals(other.approverAction)
                 && invoiceId.equals(other.invoiceId)
-                && status.equals(other.status)
-                && includeFees.equals(other.includeFees);
+                && status.equals(other.status);
     }
 
     @java.lang.Override
@@ -272,8 +259,7 @@ public final class GetAllInvoicesRequest {
                 this.approverId,
                 this.approverAction,
                 this.invoiceId,
-                this.status,
-                this.includeFees);
+                this.status);
     }
 
     @java.lang.Override
@@ -317,8 +303,6 @@ public final class GetAllInvoicesRequest {
 
         private Optional<InvoiceStatus> status = Optional.empty();
 
-        private Optional<Boolean> includeFees = Optional.empty();
-
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -340,7 +324,6 @@ public final class GetAllInvoicesRequest {
             approverAction(other.getApproverAction());
             invoiceId(other.getInvoiceId());
             status(other.getStatus());
-            includeFees(other.getIncludeFees());
             return this;
         }
 
@@ -509,17 +492,6 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
-        @JsonSetter(value = "includeFees", nulls = Nulls.SKIP)
-        public Builder includeFees(Optional<Boolean> includeFees) {
-            this.includeFees = includeFees;
-            return this;
-        }
-
-        public Builder includeFees(Boolean includeFees) {
-            this.includeFees = Optional.of(includeFees);
-            return this;
-        }
-
         public GetAllInvoicesRequest build() {
             return new GetAllInvoicesRequest(
                     entityId,
@@ -537,7 +509,6 @@ public final class GetAllInvoicesRequest {
                     approverAction,
                     invoiceId,
                     status,
-                    includeFees,
                     additionalProperties);
         }
     }

@@ -9,13 +9,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.EntityResponse;
+import com.mercoa.api.resources.entitytypes.types.EntityUserResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = PaymentMethodWebhook.Builder.class)
@@ -28,6 +31,8 @@ public final class PaymentMethodWebhook {
 
     private final EntityResponse entity;
 
+    private final Optional<EntityUserResponse> user;
+
     private final Map<String, Object> additionalProperties;
 
     private PaymentMethodWebhook(
@@ -35,11 +40,13 @@ public final class PaymentMethodWebhook {
             String entityId,
             PaymentMethodResponse paymentMethod,
             EntityResponse entity,
+            Optional<EntityUserResponse> user,
             Map<String, Object> additionalProperties) {
         this.eventType = eventType;
         this.entityId = entityId;
         this.paymentMethod = paymentMethod;
         this.entity = entity;
+        this.user = user;
         this.additionalProperties = additionalProperties;
     }
 
@@ -63,6 +70,14 @@ public final class PaymentMethodWebhook {
         return entity;
     }
 
+    /**
+     * @return User who initiated the change.
+     */
+    @JsonProperty("user")
+    public Optional<EntityUserResponse> getUser() {
+        return user;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -78,12 +93,13 @@ public final class PaymentMethodWebhook {
         return eventType.equals(other.eventType)
                 && entityId.equals(other.entityId)
                 && paymentMethod.equals(other.paymentMethod)
-                && entity.equals(other.entity);
+                && entity.equals(other.entity)
+                && user.equals(other.user);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.eventType, this.entityId, this.paymentMethod, this.entity);
+        return Objects.hash(this.eventType, this.entityId, this.paymentMethod, this.entity, this.user);
     }
 
     @java.lang.Override
@@ -115,6 +131,10 @@ public final class PaymentMethodWebhook {
 
     public interface _FinalStage {
         PaymentMethodWebhook build();
+
+        _FinalStage user(Optional<EntityUserResponse> user);
+
+        _FinalStage user(EntityUserResponse user);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -128,6 +148,8 @@ public final class PaymentMethodWebhook {
 
         private EntityResponse entity;
 
+        private Optional<EntityUserResponse> user = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -139,6 +161,7 @@ public final class PaymentMethodWebhook {
             entityId(other.getEntityId());
             paymentMethod(other.getPaymentMethod());
             entity(other.getEntity());
+            user(other.getUser());
             return this;
         }
 
@@ -170,9 +193,26 @@ public final class PaymentMethodWebhook {
             return this;
         }
 
+        /**
+         * <p>User who initiated the change.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage user(EntityUserResponse user) {
+            this.user = Optional.of(user);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "user", nulls = Nulls.SKIP)
+        public _FinalStage user(Optional<EntityUserResponse> user) {
+            this.user = user;
+            return this;
+        }
+
         @java.lang.Override
         public PaymentMethodWebhook build() {
-            return new PaymentMethodWebhook(eventType, entityId, paymentMethod, entity, additionalProperties);
+            return new PaymentMethodWebhook(eventType, entityId, paymentMethod, entity, user, additionalProperties);
         }
     }
 }

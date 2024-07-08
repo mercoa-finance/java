@@ -53,7 +53,7 @@ public final class OcrRequest {
     }
 
     /**
-     * @return Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.
+     * @return Base64 encoded image or PDF. PNG, JPG, WEBP, and PDF are supported. 10MB max.
      */
     @JsonProperty("image")
     public String getImage() {
@@ -166,7 +166,7 @@ public final class OcrRequest {
         }
 
         /**
-         * <p>Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.</p>
+         * <p>Base64 encoded image or PDF. PNG, JPG, WEBP, and PDF are supported. 10MB max.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

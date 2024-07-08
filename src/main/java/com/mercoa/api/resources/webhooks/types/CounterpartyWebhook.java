@@ -9,11 +9,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.resources.entitytypes.types.EntityUserResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = CounterpartyWebhook.Builder.class)
@@ -24,13 +27,20 @@ public final class CounterpartyWebhook {
 
     private final String payorId;
 
+    private final Optional<EntityUserResponse> user;
+
     private final Map<String, Object> additionalProperties;
 
     private CounterpartyWebhook(
-            String eventType, String payeeId, String payorId, Map<String, Object> additionalProperties) {
+            String eventType,
+            String payeeId,
+            String payorId,
+            Optional<EntityUserResponse> user,
+            Map<String, Object> additionalProperties) {
         this.eventType = eventType;
         this.payeeId = payeeId;
         this.payorId = payorId;
+        this.user = user;
         this.additionalProperties = additionalProperties;
     }
 
@@ -49,6 +59,14 @@ public final class CounterpartyWebhook {
         return payorId;
     }
 
+    /**
+     * @return User who initiated the change.
+     */
+    @JsonProperty("user")
+    public Optional<EntityUserResponse> getUser() {
+        return user;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -61,12 +79,15 @@ public final class CounterpartyWebhook {
     }
 
     private boolean equalTo(CounterpartyWebhook other) {
-        return eventType.equals(other.eventType) && payeeId.equals(other.payeeId) && payorId.equals(other.payorId);
+        return eventType.equals(other.eventType)
+                && payeeId.equals(other.payeeId)
+                && payorId.equals(other.payorId)
+                && user.equals(other.user);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.eventType, this.payeeId, this.payorId);
+        return Objects.hash(this.eventType, this.payeeId, this.payorId, this.user);
     }
 
     @java.lang.Override
@@ -94,6 +115,10 @@ public final class CounterpartyWebhook {
 
     public interface _FinalStage {
         CounterpartyWebhook build();
+
+        _FinalStage user(Optional<EntityUserResponse> user);
+
+        _FinalStage user(EntityUserResponse user);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -103,6 +128,8 @@ public final class CounterpartyWebhook {
         private String payeeId;
 
         private String payorId;
+
+        private Optional<EntityUserResponse> user = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -114,6 +141,7 @@ public final class CounterpartyWebhook {
             eventType(other.getEventType());
             payeeId(other.getPayeeId());
             payorId(other.getPayorId());
+            user(other.getUser());
             return this;
         }
 
@@ -138,9 +166,26 @@ public final class CounterpartyWebhook {
             return this;
         }
 
+        /**
+         * <p>User who initiated the change.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage user(EntityUserResponse user) {
+            this.user = Optional.of(user);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "user", nulls = Nulls.SKIP)
+        public _FinalStage user(Optional<EntityUserResponse> user) {
+            this.user = user;
+            return this;
+        }
+
         @java.lang.Override
         public CounterpartyWebhook build() {
-            return new CounterpartyWebhook(eventType, payeeId, payorId, additionalProperties);
+            return new CounterpartyWebhook(eventType, payeeId, payorId, user, additionalProperties);
         }
     }
 }

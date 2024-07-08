@@ -9,12 +9,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.resources.entitytypes.types.EntityUserResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = InvoiceStatusChangedWebhook.Builder.class)
@@ -22,6 +25,8 @@ public final class InvoiceStatusChangedWebhook implements IInvoiceWebhook {
     private final String eventType;
 
     private final InvoiceResponse invoice;
+
+    private final Optional<EntityUserResponse> user;
 
     private final String newStatus;
 
@@ -32,11 +37,13 @@ public final class InvoiceStatusChangedWebhook implements IInvoiceWebhook {
     private InvoiceStatusChangedWebhook(
             String eventType,
             InvoiceResponse invoice,
+            Optional<EntityUserResponse> user,
             String newStatus,
             String previousStatus,
             Map<String, Object> additionalProperties) {
         this.eventType = eventType;
         this.invoice = invoice;
+        this.user = user;
         this.newStatus = newStatus;
         this.previousStatus = previousStatus;
         this.additionalProperties = additionalProperties;
@@ -52,6 +59,15 @@ public final class InvoiceStatusChangedWebhook implements IInvoiceWebhook {
     @java.lang.Override
     public InvoiceResponse getInvoice() {
         return invoice;
+    }
+
+    /**
+     * @return User who initiated the change.
+     */
+    @JsonProperty("user")
+    @java.lang.Override
+    public Optional<EntityUserResponse> getUser() {
+        return user;
     }
 
     @JsonProperty("newStatus")
@@ -78,13 +94,14 @@ public final class InvoiceStatusChangedWebhook implements IInvoiceWebhook {
     private boolean equalTo(InvoiceStatusChangedWebhook other) {
         return eventType.equals(other.eventType)
                 && invoice.equals(other.invoice)
+                && user.equals(other.user)
                 && newStatus.equals(other.newStatus)
                 && previousStatus.equals(other.previousStatus);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.eventType, this.invoice, this.newStatus, this.previousStatus);
+        return Objects.hash(this.eventType, this.invoice, this.user, this.newStatus, this.previousStatus);
     }
 
     @java.lang.Override
@@ -116,6 +133,10 @@ public final class InvoiceStatusChangedWebhook implements IInvoiceWebhook {
 
     public interface _FinalStage {
         InvoiceStatusChangedWebhook build();
+
+        _FinalStage user(Optional<EntityUserResponse> user);
+
+        _FinalStage user(EntityUserResponse user);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -129,6 +150,8 @@ public final class InvoiceStatusChangedWebhook implements IInvoiceWebhook {
 
         private String previousStatus;
 
+        private Optional<EntityUserResponse> user = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -138,6 +161,7 @@ public final class InvoiceStatusChangedWebhook implements IInvoiceWebhook {
         public Builder from(InvoiceStatusChangedWebhook other) {
             eventType(other.getEventType());
             invoice(other.getInvoice());
+            user(other.getUser());
             newStatus(other.getNewStatus());
             previousStatus(other.getPreviousStatus());
             return this;
@@ -171,9 +195,27 @@ public final class InvoiceStatusChangedWebhook implements IInvoiceWebhook {
             return this;
         }
 
+        /**
+         * <p>User who initiated the change.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage user(EntityUserResponse user) {
+            this.user = Optional.of(user);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "user", nulls = Nulls.SKIP)
+        public _FinalStage user(Optional<EntityUserResponse> user) {
+            this.user = user;
+            return this;
+        }
+
         @java.lang.Override
         public InvoiceStatusChangedWebhook build() {
-            return new InvoiceStatusChangedWebhook(eventType, invoice, newStatus, previousStatus, additionalProperties);
+            return new InvoiceStatusChangedWebhook(
+                    eventType, invoice, user, newStatus, previousStatus, additionalProperties);
         }
     }
 }

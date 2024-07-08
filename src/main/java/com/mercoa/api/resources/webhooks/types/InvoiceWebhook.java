@@ -9,12 +9,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.resources.entitytypes.types.EntityUserResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = InvoiceWebhook.Builder.class)
@@ -23,11 +26,18 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
 
     private final InvoiceResponse invoice;
 
+    private final Optional<EntityUserResponse> user;
+
     private final Map<String, Object> additionalProperties;
 
-    private InvoiceWebhook(String eventType, InvoiceResponse invoice, Map<String, Object> additionalProperties) {
+    private InvoiceWebhook(
+            String eventType,
+            InvoiceResponse invoice,
+            Optional<EntityUserResponse> user,
+            Map<String, Object> additionalProperties) {
         this.eventType = eventType;
         this.invoice = invoice;
+        this.user = user;
         this.additionalProperties = additionalProperties;
     }
 
@@ -43,6 +53,15 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
         return invoice;
     }
 
+    /**
+     * @return User who initiated the change.
+     */
+    @JsonProperty("user")
+    @java.lang.Override
+    public Optional<EntityUserResponse> getUser() {
+        return user;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -55,12 +74,12 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
     }
 
     private boolean equalTo(InvoiceWebhook other) {
-        return eventType.equals(other.eventType) && invoice.equals(other.invoice);
+        return eventType.equals(other.eventType) && invoice.equals(other.invoice) && user.equals(other.user);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.eventType, this.invoice);
+        return Objects.hash(this.eventType, this.invoice, this.user);
     }
 
     @java.lang.Override
@@ -84,6 +103,10 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
 
     public interface _FinalStage {
         InvoiceWebhook build();
+
+        _FinalStage user(Optional<EntityUserResponse> user);
+
+        _FinalStage user(EntityUserResponse user);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -91,6 +114,8 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
         private String eventType;
 
         private InvoiceResponse invoice;
+
+        private Optional<EntityUserResponse> user = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -101,6 +126,7 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
         public Builder from(InvoiceWebhook other) {
             eventType(other.getEventType());
             invoice(other.getInvoice());
+            user(other.getUser());
             return this;
         }
 
@@ -118,9 +144,26 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
             return this;
         }
 
+        /**
+         * <p>User who initiated the change.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage user(EntityUserResponse user) {
+            this.user = Optional.of(user);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "user", nulls = Nulls.SKIP)
+        public _FinalStage user(Optional<EntityUserResponse> user) {
+            this.user = user;
+            return this;
+        }
+
         @java.lang.Override
         public InvoiceWebhook build() {
-            return new InvoiceWebhook(eventType, invoice, additionalProperties);
+            return new InvoiceWebhook(eventType, invoice, user, additionalProperties);
         }
     }
 }

@@ -9,12 +9,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.EntityResponse;
+import com.mercoa.api.resources.entitytypes.types.EntityUserResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = EntityWebhook.Builder.class)
@@ -23,11 +26,18 @@ public final class EntityWebhook {
 
     private final EntityResponse entity;
 
+    private final Optional<EntityUserResponse> user;
+
     private final Map<String, Object> additionalProperties;
 
-    private EntityWebhook(String eventType, EntityResponse entity, Map<String, Object> additionalProperties) {
+    private EntityWebhook(
+            String eventType,
+            EntityResponse entity,
+            Optional<EntityUserResponse> user,
+            Map<String, Object> additionalProperties) {
         this.eventType = eventType;
         this.entity = entity;
+        this.user = user;
         this.additionalProperties = additionalProperties;
     }
 
@@ -39,6 +49,14 @@ public final class EntityWebhook {
     @JsonProperty("entity")
     public EntityResponse getEntity() {
         return entity;
+    }
+
+    /**
+     * @return User who initiated the change.
+     */
+    @JsonProperty("user")
+    public Optional<EntityUserResponse> getUser() {
+        return user;
     }
 
     @java.lang.Override
@@ -53,12 +71,12 @@ public final class EntityWebhook {
     }
 
     private boolean equalTo(EntityWebhook other) {
-        return eventType.equals(other.eventType) && entity.equals(other.entity);
+        return eventType.equals(other.eventType) && entity.equals(other.entity) && user.equals(other.user);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.eventType, this.entity);
+        return Objects.hash(this.eventType, this.entity, this.user);
     }
 
     @java.lang.Override
@@ -82,6 +100,10 @@ public final class EntityWebhook {
 
     public interface _FinalStage {
         EntityWebhook build();
+
+        _FinalStage user(Optional<EntityUserResponse> user);
+
+        _FinalStage user(EntityUserResponse user);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -89,6 +111,8 @@ public final class EntityWebhook {
         private String eventType;
 
         private EntityResponse entity;
+
+        private Optional<EntityUserResponse> user = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -99,6 +123,7 @@ public final class EntityWebhook {
         public Builder from(EntityWebhook other) {
             eventType(other.getEventType());
             entity(other.getEntity());
+            user(other.getUser());
             return this;
         }
 
@@ -116,9 +141,26 @@ public final class EntityWebhook {
             return this;
         }
 
+        /**
+         * <p>User who initiated the change.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage user(EntityUserResponse user) {
+            this.user = Optional.of(user);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "user", nulls = Nulls.SKIP)
+        public _FinalStage user(Optional<EntityUserResponse> user) {
+            this.user = user;
+            return this;
+        }
+
         @java.lang.Override
         public EntityWebhook build() {
-            return new EntityWebhook(eventType, entity, additionalProperties);
+            return new EntityWebhook(eventType, entity, user, additionalProperties);
         }
     }
 }
