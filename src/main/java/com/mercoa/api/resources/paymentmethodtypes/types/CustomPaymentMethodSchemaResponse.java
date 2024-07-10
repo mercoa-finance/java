@@ -37,6 +37,10 @@ public final class CustomPaymentMethodSchemaResponse {
 
     private final int estimatedProcessingTime;
 
+    private final Optional<Double> maxAmount;
+
+    private final Optional<Double> minAmount;
+
     private final Optional<CustomPaymentMethodSchemaFee> fees;
 
     private final OffsetDateTime createdAt;
@@ -53,6 +57,8 @@ public final class CustomPaymentMethodSchemaResponse {
             List<CurrencyCode> supportedCurrencies,
             List<CustomPaymentMethodSchemaField> fields,
             int estimatedProcessingTime,
+            Optional<Double> maxAmount,
+            Optional<Double> minAmount,
             Optional<CustomPaymentMethodSchemaFee> fees,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
@@ -64,6 +70,8 @@ public final class CustomPaymentMethodSchemaResponse {
         this.supportedCurrencies = supportedCurrencies;
         this.fields = fields;
         this.estimatedProcessingTime = estimatedProcessingTime;
+        this.maxAmount = maxAmount;
+        this.minAmount = minAmount;
         this.fees = fees;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -117,6 +125,22 @@ public final class CustomPaymentMethodSchemaResponse {
         return estimatedProcessingTime;
     }
 
+    /**
+     * @return The maximum amount that can be transferred from this payment method in a single transaction.
+     */
+    @JsonProperty("maxAmount")
+    public Optional<Double> getMaxAmount() {
+        return maxAmount;
+    }
+
+    /**
+     * @return The minimum amount that can be transferred from this payment method in a single transaction. Default is 1.
+     */
+    @JsonProperty("minAmount")
+    public Optional<Double> getMinAmount() {
+        return minAmount;
+    }
+
     @JsonProperty("fees")
     public Optional<CustomPaymentMethodSchemaFee> getFees() {
         return fees;
@@ -151,6 +175,8 @@ public final class CustomPaymentMethodSchemaResponse {
                 && supportedCurrencies.equals(other.supportedCurrencies)
                 && fields.equals(other.fields)
                 && estimatedProcessingTime == other.estimatedProcessingTime
+                && maxAmount.equals(other.maxAmount)
+                && minAmount.equals(other.minAmount)
                 && fees.equals(other.fees)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt);
@@ -166,6 +192,8 @@ public final class CustomPaymentMethodSchemaResponse {
                 this.supportedCurrencies,
                 this.fields,
                 this.estimatedProcessingTime,
+                this.maxAmount,
+                this.minAmount,
                 this.fees,
                 this.createdAt,
                 this.updatedAt);
@@ -225,6 +253,14 @@ public final class CustomPaymentMethodSchemaResponse {
 
         _FinalStage addAllFields(List<CustomPaymentMethodSchemaField> fields);
 
+        _FinalStage maxAmount(Optional<Double> maxAmount);
+
+        _FinalStage maxAmount(Double maxAmount);
+
+        _FinalStage minAmount(Optional<Double> minAmount);
+
+        _FinalStage minAmount(Double minAmount);
+
         _FinalStage fees(Optional<CustomPaymentMethodSchemaFee> fees);
 
         _FinalStage fees(CustomPaymentMethodSchemaFee fees);
@@ -256,6 +292,10 @@ public final class CustomPaymentMethodSchemaResponse {
 
         private Optional<CustomPaymentMethodSchemaFee> fees = Optional.empty();
 
+        private Optional<Double> minAmount = Optional.empty();
+
+        private Optional<Double> maxAmount = Optional.empty();
+
         private List<CustomPaymentMethodSchemaField> fields = new ArrayList<>();
 
         private List<CurrencyCode> supportedCurrencies = new ArrayList<>();
@@ -274,6 +314,8 @@ public final class CustomPaymentMethodSchemaResponse {
             supportedCurrencies(other.getSupportedCurrencies());
             fields(other.getFields());
             estimatedProcessingTime(other.getEstimatedProcessingTime());
+            maxAmount(other.getMaxAmount());
+            minAmount(other.getMinAmount());
             fees(other.getFees());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
@@ -354,6 +396,40 @@ public final class CustomPaymentMethodSchemaResponse {
             return this;
         }
 
+        /**
+         * <p>The minimum amount that can be transferred from this payment method in a single transaction. Default is 1.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage minAmount(Double minAmount) {
+            this.minAmount = Optional.of(minAmount);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "minAmount", nulls = Nulls.SKIP)
+        public _FinalStage minAmount(Optional<Double> minAmount) {
+            this.minAmount = minAmount;
+            return this;
+        }
+
+        /**
+         * <p>The maximum amount that can be transferred from this payment method in a single transaction.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage maxAmount(Double maxAmount) {
+            this.maxAmount = Optional.of(maxAmount);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "maxAmount", nulls = Nulls.SKIP)
+        public _FinalStage maxAmount(Optional<Double> maxAmount) {
+            this.maxAmount = maxAmount;
+            return this;
+        }
+
         @java.lang.Override
         public _FinalStage addAllFields(List<CustomPaymentMethodSchemaField> fields) {
             this.fields.addAll(fields);
@@ -412,6 +488,8 @@ public final class CustomPaymentMethodSchemaResponse {
                     supportedCurrencies,
                     fields,
                     estimatedProcessingTime,
+                    maxAmount,
+                    minAmount,
                     fees,
                     createdAt,
                     updatedAt,

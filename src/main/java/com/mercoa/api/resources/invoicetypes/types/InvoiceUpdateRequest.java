@@ -71,6 +71,8 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
 
     private final Optional<InvoiceFailureType> failureType;
 
+    private final Optional<InvoiceFeesRequest> fees;
+
     private final Optional<String> creatorEntityId;
 
     private final Map<String, Object> additionalProperties;
@@ -100,6 +102,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
             Optional<String> uploadedImage,
             Optional<String> creatorUserId,
             Optional<InvoiceFailureType> failureType,
+            Optional<InvoiceFeesRequest> fees,
             Optional<String> creatorEntityId,
             Map<String, Object> additionalProperties) {
         this.status = status;
@@ -126,6 +129,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
         this.uploadedImage = uploadedImage;
         this.creatorUserId = creatorUserId;
         this.failureType = failureType;
+        this.fees = fees;
         this.creatorEntityId = creatorEntityId;
         this.additionalProperties = additionalProperties;
     }
@@ -326,6 +330,15 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
     }
 
     /**
+     * @return If using a custom payment method, you can override the default fees for this invoice. If not provided, the default fees for the custom payment method will be used.
+     */
+    @JsonProperty("fees")
+    @java.lang.Override
+    public Optional<InvoiceFeesRequest> getFees() {
+        return fees;
+    }
+
+    /**
      * @return ID of entity who created this invoice. If creating a payable invoice (AP), this must be the same as the payerId. If creating a receivable invoice (AR), this must be the same as the vendorId.
      */
     @JsonProperty("creatorEntityId")
@@ -369,6 +382,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
                 && uploadedImage.equals(other.uploadedImage)
                 && creatorUserId.equals(other.creatorUserId)
                 && failureType.equals(other.failureType)
+                && fees.equals(other.fees)
                 && creatorEntityId.equals(other.creatorEntityId);
     }
 
@@ -399,6 +413,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
                 this.uploadedImage,
                 this.creatorUserId,
                 this.failureType,
+                this.fees,
                 this.creatorEntityId);
     }
 
@@ -461,6 +476,8 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
 
         private Optional<InvoiceFailureType> failureType = Optional.empty();
 
+        private Optional<InvoiceFeesRequest> fees = Optional.empty();
+
         private Optional<String> creatorEntityId = Optional.empty();
 
         @JsonAnySetter
@@ -493,6 +510,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
             uploadedImage(other.getUploadedImage());
             creatorUserId(other.getCreatorUserId());
             failureType(other.getFailureType());
+            fees(other.getFees());
             creatorEntityId(other.getCreatorEntityId());
             return this;
         }
@@ -761,6 +779,17 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
             return this;
         }
 
+        @JsonSetter(value = "fees", nulls = Nulls.SKIP)
+        public Builder fees(Optional<InvoiceFeesRequest> fees) {
+            this.fees = fees;
+            return this;
+        }
+
+        public Builder fees(InvoiceFeesRequest fees) {
+            this.fees = Optional.of(fees);
+            return this;
+        }
+
         @JsonSetter(value = "creatorEntityId", nulls = Nulls.SKIP)
         public Builder creatorEntityId(Optional<String> creatorEntityId) {
             this.creatorEntityId = creatorEntityId;
@@ -798,6 +827,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
                     uploadedImage,
                     creatorUserId,
                     failureType,
+                    fees,
                     creatorEntityId,
                     additionalProperties);
         }

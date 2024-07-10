@@ -34,6 +34,10 @@ public final class CustomPaymentMethodSchemaRequest {
 
     private final Optional<Integer> estimatedProcessingTime;
 
+    private final Optional<Double> maxAmount;
+
+    private final Optional<Double> minAmount;
+
     private final Optional<CustomPaymentMethodSchemaFee> fees;
 
     private final Map<String, Object> additionalProperties;
@@ -45,6 +49,8 @@ public final class CustomPaymentMethodSchemaRequest {
             Optional<List<CurrencyCode>> supportedCurrencies,
             List<CustomPaymentMethodSchemaField> fields,
             Optional<Integer> estimatedProcessingTime,
+            Optional<Double> maxAmount,
+            Optional<Double> minAmount,
             Optional<CustomPaymentMethodSchemaFee> fees,
             Map<String, Object> additionalProperties) {
         this.name = name;
@@ -53,6 +59,8 @@ public final class CustomPaymentMethodSchemaRequest {
         this.supportedCurrencies = supportedCurrencies;
         this.fields = fields;
         this.estimatedProcessingTime = estimatedProcessingTime;
+        this.maxAmount = maxAmount;
+        this.minAmount = minAmount;
         this.fees = fees;
         this.additionalProperties = additionalProperties;
     }
@@ -99,6 +107,22 @@ public final class CustomPaymentMethodSchemaRequest {
         return estimatedProcessingTime;
     }
 
+    /**
+     * @return The maximum amount that can be transferred from this payment method in a single transaction.
+     */
+    @JsonProperty("maxAmount")
+    public Optional<Double> getMaxAmount() {
+        return maxAmount;
+    }
+
+    /**
+     * @return The minimum amount that can be transferred from this payment method in a single transaction. Default is 1.
+     */
+    @JsonProperty("minAmount")
+    public Optional<Double> getMinAmount() {
+        return minAmount;
+    }
+
     @JsonProperty("fees")
     public Optional<CustomPaymentMethodSchemaFee> getFees() {
         return fees;
@@ -122,6 +146,8 @@ public final class CustomPaymentMethodSchemaRequest {
                 && supportedCurrencies.equals(other.supportedCurrencies)
                 && fields.equals(other.fields)
                 && estimatedProcessingTime.equals(other.estimatedProcessingTime)
+                && maxAmount.equals(other.maxAmount)
+                && minAmount.equals(other.minAmount)
                 && fees.equals(other.fees);
     }
 
@@ -134,6 +160,8 @@ public final class CustomPaymentMethodSchemaRequest {
                 this.supportedCurrencies,
                 this.fields,
                 this.estimatedProcessingTime,
+                this.maxAmount,
+                this.minAmount,
                 this.fees);
     }
 
@@ -177,6 +205,14 @@ public final class CustomPaymentMethodSchemaRequest {
 
         _FinalStage estimatedProcessingTime(Integer estimatedProcessingTime);
 
+        _FinalStage maxAmount(Optional<Double> maxAmount);
+
+        _FinalStage maxAmount(Double maxAmount);
+
+        _FinalStage minAmount(Optional<Double> minAmount);
+
+        _FinalStage minAmount(Double minAmount);
+
         _FinalStage fees(Optional<CustomPaymentMethodSchemaFee> fees);
 
         _FinalStage fees(CustomPaymentMethodSchemaFee fees);
@@ -191,6 +227,10 @@ public final class CustomPaymentMethodSchemaRequest {
         private boolean isDestination;
 
         private Optional<CustomPaymentMethodSchemaFee> fees = Optional.empty();
+
+        private Optional<Double> minAmount = Optional.empty();
+
+        private Optional<Double> maxAmount = Optional.empty();
 
         private Optional<Integer> estimatedProcessingTime = Optional.empty();
 
@@ -211,6 +251,8 @@ public final class CustomPaymentMethodSchemaRequest {
             supportedCurrencies(other.getSupportedCurrencies());
             fields(other.getFields());
             estimatedProcessingTime(other.getEstimatedProcessingTime());
+            maxAmount(other.getMaxAmount());
+            minAmount(other.getMinAmount());
             fees(other.getFees());
             return this;
         }
@@ -254,6 +296,40 @@ public final class CustomPaymentMethodSchemaRequest {
         @JsonSetter(value = "fees", nulls = Nulls.SKIP)
         public _FinalStage fees(Optional<CustomPaymentMethodSchemaFee> fees) {
             this.fees = fees;
+            return this;
+        }
+
+        /**
+         * <p>The minimum amount that can be transferred from this payment method in a single transaction. Default is 1.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage minAmount(Double minAmount) {
+            this.minAmount = Optional.of(minAmount);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "minAmount", nulls = Nulls.SKIP)
+        public _FinalStage minAmount(Optional<Double> minAmount) {
+            this.minAmount = minAmount;
+            return this;
+        }
+
+        /**
+         * <p>The maximum amount that can be transferred from this payment method in a single transaction.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage maxAmount(Double maxAmount) {
+            this.maxAmount = Optional.of(maxAmount);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "maxAmount", nulls = Nulls.SKIP)
+        public _FinalStage maxAmount(Optional<Double> maxAmount) {
+            this.maxAmount = maxAmount;
             return this;
         }
 
@@ -320,6 +396,8 @@ public final class CustomPaymentMethodSchemaRequest {
                     supportedCurrencies,
                     fields,
                     estimatedProcessingTime,
+                    maxAmount,
+                    minAmount,
                     fees,
                     additionalProperties);
         }

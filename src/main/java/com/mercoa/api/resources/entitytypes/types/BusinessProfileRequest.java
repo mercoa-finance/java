@@ -43,6 +43,8 @@ public final class BusinessProfileRequest {
 
     private final Optional<OffsetDateTime> formationDate;
 
+    private final Optional<IndustryCodes> industryCodes;
+
     private final Map<String, Object> additionalProperties;
 
     private BusinessProfileRequest(
@@ -56,6 +58,7 @@ public final class BusinessProfileRequest {
             Optional<Address> address,
             Optional<TaxId> taxId,
             Optional<OffsetDateTime> formationDate,
+            Optional<IndustryCodes> industryCodes,
             Map<String, Object> additionalProperties) {
         this.email = email;
         this.legalBusinessName = legalBusinessName;
@@ -67,6 +70,7 @@ public final class BusinessProfileRequest {
         this.address = address;
         this.taxId = taxId;
         this.formationDate = formationDate;
+        this.industryCodes = industryCodes;
         this.additionalProperties = additionalProperties;
     }
 
@@ -141,6 +145,14 @@ public final class BusinessProfileRequest {
         return formationDate;
     }
 
+    /**
+     * @return Industry code for the business. Required to collect funds.
+     */
+    @JsonProperty("industryCodes")
+    public Optional<IndustryCodes> getIndustryCodes() {
+        return industryCodes;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -162,7 +174,8 @@ public final class BusinessProfileRequest {
                 && description.equals(other.description)
                 && address.equals(other.address)
                 && taxId.equals(other.taxId)
-                && formationDate.equals(other.formationDate);
+                && formationDate.equals(other.formationDate)
+                && industryCodes.equals(other.industryCodes);
     }
 
     @java.lang.Override
@@ -177,7 +190,8 @@ public final class BusinessProfileRequest {
                 this.description,
                 this.address,
                 this.taxId,
-                this.formationDate);
+                this.formationDate,
+                this.industryCodes);
     }
 
     @java.lang.Override
@@ -233,11 +247,17 @@ public final class BusinessProfileRequest {
         _FinalStage formationDate(Optional<OffsetDateTime> formationDate);
 
         _FinalStage formationDate(OffsetDateTime formationDate);
+
+        _FinalStage industryCodes(Optional<IndustryCodes> industryCodes);
+
+        _FinalStage industryCodes(IndustryCodes industryCodes);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements LegalBusinessNameStage, _FinalStage {
         private String legalBusinessName;
+
+        private Optional<IndustryCodes> industryCodes = Optional.empty();
 
         private Optional<OffsetDateTime> formationDate = Optional.empty();
 
@@ -274,6 +294,7 @@ public final class BusinessProfileRequest {
             address(other.getAddress());
             taxId(other.getTaxId());
             formationDate(other.getFormationDate());
+            industryCodes(other.getIndustryCodes());
             return this;
         }
 
@@ -281,6 +302,23 @@ public final class BusinessProfileRequest {
         @JsonSetter("legalBusinessName")
         public _FinalStage legalBusinessName(String legalBusinessName) {
             this.legalBusinessName = legalBusinessName;
+            return this;
+        }
+
+        /**
+         * <p>Industry code for the business. Required to collect funds.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage industryCodes(IndustryCodes industryCodes) {
+            this.industryCodes = Optional.of(industryCodes);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "industryCodes", nulls = Nulls.SKIP)
+        public _FinalStage industryCodes(Optional<IndustryCodes> industryCodes) {
+            this.industryCodes = industryCodes;
             return this;
         }
 
@@ -442,6 +480,7 @@ public final class BusinessProfileRequest {
                     address,
                     taxId,
                     formationDate,
+                    industryCodes,
                     additionalProperties);
         }
     }

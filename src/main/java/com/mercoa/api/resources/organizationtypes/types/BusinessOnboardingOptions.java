@@ -30,6 +30,8 @@ public final class BusinessOnboardingOptions {
 
     private final OnboardingOption ein;
 
+    private final OnboardingOption mcc;
+
     private final OnboardingOption address;
 
     private final OnboardingOption phone;
@@ -51,6 +53,7 @@ public final class BusinessOnboardingOptions {
             OnboardingOption type,
             OnboardingOption doingBusinessAs,
             OnboardingOption ein,
+            OnboardingOption mcc,
             OnboardingOption address,
             OnboardingOption phone,
             OnboardingOption formationDate,
@@ -64,6 +67,7 @@ public final class BusinessOnboardingOptions {
         this.type = type;
         this.doingBusinessAs = doingBusinessAs;
         this.ein = ein;
+        this.mcc = mcc;
         this.address = address;
         this.phone = phone;
         this.formationDate = formationDate;
@@ -101,6 +105,11 @@ public final class BusinessOnboardingOptions {
     @JsonProperty("ein")
     public OnboardingOption getEin() {
         return ein;
+    }
+
+    @JsonProperty("mcc")
+    public OnboardingOption getMcc() {
+        return mcc;
     }
 
     @JsonProperty("address")
@@ -151,6 +160,7 @@ public final class BusinessOnboardingOptions {
                 && type.equals(other.type)
                 && doingBusinessAs.equals(other.doingBusinessAs)
                 && ein.equals(other.ein)
+                && mcc.equals(other.mcc)
                 && address.equals(other.address)
                 && phone.equals(other.phone)
                 && formationDate.equals(other.formationDate)
@@ -168,6 +178,7 @@ public final class BusinessOnboardingOptions {
                 this.type,
                 this.doingBusinessAs,
                 this.ein,
+                this.mcc,
                 this.address,
                 this.phone,
                 this.formationDate,
@@ -208,7 +219,11 @@ public final class BusinessOnboardingOptions {
     }
 
     public interface EinStage {
-        AddressStage ein(OnboardingOption ein);
+        MccStage ein(OnboardingOption ein);
+    }
+
+    public interface MccStage {
+        AddressStage mcc(OnboardingOption mcc);
     }
 
     public interface AddressStage {
@@ -247,6 +262,7 @@ public final class BusinessOnboardingOptions {
                     TypeStage,
                     DoingBusinessAsStage,
                     EinStage,
+                    MccStage,
                     AddressStage,
                     PhoneStage,
                     FormationDateStage,
@@ -265,6 +281,8 @@ public final class BusinessOnboardingOptions {
         private OnboardingOption doingBusinessAs;
 
         private OnboardingOption ein;
+
+        private OnboardingOption mcc;
 
         private OnboardingOption address;
 
@@ -291,6 +309,7 @@ public final class BusinessOnboardingOptions {
             type(other.getType());
             doingBusinessAs(other.getDoingBusinessAs());
             ein(other.getEin());
+            mcc(other.getMcc());
             address(other.getAddress());
             phone(other.getPhone());
             formationDate(other.getFormationDate());
@@ -337,8 +356,15 @@ public final class BusinessOnboardingOptions {
 
         @java.lang.Override
         @JsonSetter("ein")
-        public AddressStage ein(OnboardingOption ein) {
+        public MccStage ein(OnboardingOption ein) {
             this.ein = ein;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("mcc")
+        public AddressStage mcc(OnboardingOption mcc) {
+            this.mcc = mcc;
             return this;
         }
 
@@ -393,6 +419,7 @@ public final class BusinessOnboardingOptions {
                     type,
                     doingBusinessAs,
                     ein,
+                    mcc,
                     address,
                     phone,
                     formationDate,

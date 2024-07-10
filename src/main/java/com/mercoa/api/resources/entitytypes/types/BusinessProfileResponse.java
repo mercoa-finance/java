@@ -42,6 +42,8 @@ public final class BusinessProfileResponse {
 
     private final boolean taxIdProvided;
 
+    private final Optional<IndustryCodes> industryCodes;
+
     private final Map<String, Object> additionalProperties;
 
     private BusinessProfileResponse(
@@ -55,6 +57,7 @@ public final class BusinessProfileResponse {
             Optional<Address> address,
             Optional<Boolean> ownersProvided,
             boolean taxIdProvided,
+            Optional<IndustryCodes> industryCodes,
             Map<String, Object> additionalProperties) {
         this.email = email;
         this.legalBusinessName = legalBusinessName;
@@ -66,6 +69,7 @@ public final class BusinessProfileResponse {
         this.address = address;
         this.ownersProvided = ownersProvided;
         this.taxIdProvided = taxIdProvided;
+        this.industryCodes = industryCodes;
         this.additionalProperties = additionalProperties;
     }
 
@@ -122,6 +126,11 @@ public final class BusinessProfileResponse {
         return taxIdProvided;
     }
 
+    @JsonProperty("industryCodes")
+    public Optional<IndustryCodes> getIndustryCodes() {
+        return industryCodes;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -143,7 +152,8 @@ public final class BusinessProfileResponse {
                 && description.equals(other.description)
                 && address.equals(other.address)
                 && ownersProvided.equals(other.ownersProvided)
-                && taxIdProvided == other.taxIdProvided;
+                && taxIdProvided == other.taxIdProvided
+                && industryCodes.equals(other.industryCodes);
     }
 
     @java.lang.Override
@@ -158,7 +168,8 @@ public final class BusinessProfileResponse {
                 this.description,
                 this.address,
                 this.ownersProvided,
-                this.taxIdProvided);
+                this.taxIdProvided,
+                this.industryCodes);
     }
 
     @java.lang.Override
@@ -214,6 +225,10 @@ public final class BusinessProfileResponse {
         _FinalStage ownersProvided(Optional<Boolean> ownersProvided);
 
         _FinalStage ownersProvided(Boolean ownersProvided);
+
+        _FinalStage industryCodes(Optional<IndustryCodes> industryCodes);
+
+        _FinalStage industryCodes(IndustryCodes industryCodes);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -221,6 +236,8 @@ public final class BusinessProfileResponse {
         private String legalBusinessName;
 
         private boolean taxIdProvided;
+
+        private Optional<IndustryCodes> industryCodes = Optional.empty();
 
         private Optional<Boolean> ownersProvided = Optional.empty();
 
@@ -255,6 +272,7 @@ public final class BusinessProfileResponse {
             address(other.getAddress());
             ownersProvided(other.getOwnersProvided());
             taxIdProvided(other.getTaxIdProvided());
+            industryCodes(other.getIndustryCodes());
             return this;
         }
 
@@ -269,6 +287,19 @@ public final class BusinessProfileResponse {
         @JsonSetter("taxIDProvided")
         public _FinalStage taxIdProvided(boolean taxIdProvided) {
             this.taxIdProvided = taxIdProvided;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage industryCodes(IndustryCodes industryCodes) {
+            this.industryCodes = Optional.of(industryCodes);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "industryCodes", nulls = Nulls.SKIP)
+        public _FinalStage industryCodes(Optional<IndustryCodes> industryCodes) {
+            this.industryCodes = industryCodes;
             return this;
         }
 
@@ -393,6 +424,7 @@ public final class BusinessProfileResponse {
                     address,
                     ownersProvided,
                     taxIdProvided,
+                    industryCodes,
                     additionalProperties);
         }
     }

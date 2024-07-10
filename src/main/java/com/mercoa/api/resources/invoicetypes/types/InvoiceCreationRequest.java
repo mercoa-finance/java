@@ -71,6 +71,8 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
 
     private final Optional<InvoiceFailureType> failureType;
 
+    private final Optional<InvoiceFeesRequest> fees;
+
     private final String creatorEntityId;
 
     private final Map<String, Object> additionalProperties;
@@ -100,6 +102,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
             Optional<String> uploadedImage,
             Optional<String> creatorUserId,
             Optional<InvoiceFailureType> failureType,
+            Optional<InvoiceFeesRequest> fees,
             String creatorEntityId,
             Map<String, Object> additionalProperties) {
         this.status = status;
@@ -126,6 +129,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         this.uploadedImage = uploadedImage;
         this.creatorUserId = creatorUserId;
         this.failureType = failureType;
+        this.fees = fees;
         this.creatorEntityId = creatorEntityId;
         this.additionalProperties = additionalProperties;
     }
@@ -326,6 +330,15 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
     }
 
     /**
+     * @return If using a custom payment method, you can override the default fees for this invoice. If not provided, the default fees for the custom payment method will be used.
+     */
+    @JsonProperty("fees")
+    @java.lang.Override
+    public Optional<InvoiceFeesRequest> getFees() {
+        return fees;
+    }
+
+    /**
      * @return ID of entity who created this invoice.
      */
     @JsonProperty("creatorEntityId")
@@ -369,6 +382,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
                 && uploadedImage.equals(other.uploadedImage)
                 && creatorUserId.equals(other.creatorUserId)
                 && failureType.equals(other.failureType)
+                && fees.equals(other.fees)
                 && creatorEntityId.equals(other.creatorEntityId);
     }
 
@@ -399,6 +413,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
                 this.uploadedImage,
                 this.creatorUserId,
                 this.failureType,
+                this.fees,
                 this.creatorEntityId);
     }
 
@@ -515,11 +530,17 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         _FinalStage failureType(Optional<InvoiceFailureType> failureType);
 
         _FinalStage failureType(InvoiceFailureType failureType);
+
+        _FinalStage fees(Optional<InvoiceFeesRequest> fees);
+
+        _FinalStage fees(InvoiceFeesRequest fees);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements CreatorEntityIdStage, _FinalStage {
         private String creatorEntityId;
+
+        private Optional<InvoiceFeesRequest> fees = Optional.empty();
 
         private Optional<InvoiceFailureType> failureType = Optional.empty();
 
@@ -600,6 +621,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
             uploadedImage(other.getUploadedImage());
             creatorUserId(other.getCreatorUserId());
             failureType(other.getFailureType());
+            fees(other.getFees());
             creatorEntityId(other.getCreatorEntityId());
             return this;
         }
@@ -612,6 +634,23 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         @JsonSetter("creatorEntityId")
         public _FinalStage creatorEntityId(String creatorEntityId) {
             this.creatorEntityId = creatorEntityId;
+            return this;
+        }
+
+        /**
+         * <p>If using a custom payment method, you can override the default fees for this invoice. If not provided, the default fees for the custom payment method will be used.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage fees(InvoiceFeesRequest fees) {
+            this.fees = Optional.of(fees);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "fees", nulls = Nulls.SKIP)
+        public _FinalStage fees(Optional<InvoiceFeesRequest> fees) {
+            this.fees = fees;
             return this;
         }
 
@@ -1022,6 +1061,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
                     uploadedImage,
                     creatorUserId,
                     failureType,
+                    fees,
                     creatorEntityId,
                     additionalProperties);
         }

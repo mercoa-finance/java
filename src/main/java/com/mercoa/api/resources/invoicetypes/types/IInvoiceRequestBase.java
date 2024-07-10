@@ -57,4 +57,6 @@ public interface IInvoiceRequestBase {
     Optional<String> getCreatorUserId();
 
     Optional<InvoiceFailureType> getFailureType();
+
+    Optional<InvoiceFeesRequest> getFees();
 }

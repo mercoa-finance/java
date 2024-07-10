@@ -71,6 +71,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
     private final Optional<InvoiceFailureType> failureType;
 
+    private final Optional<InvoiceFeesRequest> fees;
+
     private final Map<String, Object> additionalProperties;
 
     private InvoiceRequestBase(
@@ -98,6 +100,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             Optional<String> uploadedImage,
             Optional<String> creatorUserId,
             Optional<InvoiceFailureType> failureType,
+            Optional<InvoiceFeesRequest> fees,
             Map<String, Object> additionalProperties) {
         this.status = status;
         this.amount = amount;
@@ -123,6 +126,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         this.uploadedImage = uploadedImage;
         this.creatorUserId = creatorUserId;
         this.failureType = failureType;
+        this.fees = fees;
         this.additionalProperties = additionalProperties;
     }
 
@@ -321,6 +325,15 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         return failureType;
     }
 
+    /**
+     * @return If using a custom payment method, you can override the default fees for this invoice. If not provided, the default fees for the custom payment method will be used.
+     */
+    @JsonProperty("fees")
+    @java.lang.Override
+    public Optional<InvoiceFeesRequest> getFees() {
+        return fees;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -356,7 +369,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 && document.equals(other.document)
                 && uploadedImage.equals(other.uploadedImage)
                 && creatorUserId.equals(other.creatorUserId)
-                && failureType.equals(other.failureType);
+                && failureType.equals(other.failureType)
+                && fees.equals(other.fees);
     }
 
     @java.lang.Override
@@ -385,7 +399,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 this.document,
                 this.uploadedImage,
                 this.creatorUserId,
-                this.failureType);
+                this.failureType,
+                this.fees);
     }
 
     @java.lang.Override
@@ -447,6 +462,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
         private Optional<InvoiceFailureType> failureType = Optional.empty();
 
+        private Optional<InvoiceFeesRequest> fees = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -477,6 +494,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             uploadedImage(other.getUploadedImage());
             creatorUserId(other.getCreatorUserId());
             failureType(other.getFailureType());
+            fees(other.getFees());
             return this;
         }
 
@@ -744,6 +762,17 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        @JsonSetter(value = "fees", nulls = Nulls.SKIP)
+        public Builder fees(Optional<InvoiceFeesRequest> fees) {
+            this.fees = fees;
+            return this;
+        }
+
+        public Builder fees(InvoiceFeesRequest fees) {
+            this.fees = Optional.of(fees);
+            return this;
+        }
+
         public InvoiceRequestBase build() {
             return new InvoiceRequestBase(
                     status,
@@ -770,6 +799,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                     uploadedImage,
                     creatorUserId,
                     failureType,
+                    fees,
                     additionalProperties);
         }
     }
