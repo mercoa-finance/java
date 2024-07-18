@@ -44,6 +44,10 @@ public final class EntityGetInvoicesRequest {
 
     private final Optional<InvoiceMetadataFilter> metadata;
 
+    private final Optional<InvoiceMetadataFilter> lineItemMetadata;
+
+    private final Optional<String> lineItemGlAccountId;
+
     private final Optional<String> search;
 
     private final Optional<String> payerId;
@@ -70,6 +74,8 @@ public final class EntityGetInvoicesRequest {
             Optional<Integer> limit,
             Optional<String> startingAfter,
             Optional<InvoiceMetadataFilter> metadata,
+            Optional<InvoiceMetadataFilter> lineItemMetadata,
+            Optional<String> lineItemGlAccountId,
             Optional<String> search,
             Optional<String> payerId,
             Optional<String> vendorId,
@@ -87,6 +93,8 @@ public final class EntityGetInvoicesRequest {
         this.limit = limit;
         this.startingAfter = startingAfter;
         this.metadata = metadata;
+        this.lineItemMetadata = lineItemMetadata;
+        this.lineItemGlAccountId = lineItemGlAccountId;
         this.search = search;
         this.payerId = payerId;
         this.vendorId = vendorId;
@@ -170,6 +178,22 @@ public final class EntityGetInvoicesRequest {
     }
 
     /**
+     * @return Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+     */
+    @JsonProperty("lineItemMetadata")
+    public Optional<InvoiceMetadataFilter> getLineItemMetadata() {
+        return lineItemMetadata;
+    }
+
+    /**
+     * @return Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
+     */
+    @JsonProperty("lineItemGlAccountId")
+    public Optional<String> getLineItemGlAccountId() {
+        return lineItemGlAccountId;
+    }
+
+    /**
      * @return Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
      */
     @JsonProperty("search")
@@ -246,6 +270,8 @@ public final class EntityGetInvoicesRequest {
                 && limit.equals(other.limit)
                 && startingAfter.equals(other.startingAfter)
                 && metadata.equals(other.metadata)
+                && lineItemMetadata.equals(other.lineItemMetadata)
+                && lineItemGlAccountId.equals(other.lineItemGlAccountId)
                 && search.equals(other.search)
                 && payerId.equals(other.payerId)
                 && vendorId.equals(other.vendorId)
@@ -267,6 +293,8 @@ public final class EntityGetInvoicesRequest {
                 this.limit,
                 this.startingAfter,
                 this.metadata,
+                this.lineItemMetadata,
+                this.lineItemGlAccountId,
                 this.search,
                 this.payerId,
                 this.vendorId,
@@ -305,6 +333,10 @@ public final class EntityGetInvoicesRequest {
 
         private Optional<InvoiceMetadataFilter> metadata = Optional.empty();
 
+        private Optional<InvoiceMetadataFilter> lineItemMetadata = Optional.empty();
+
+        private Optional<String> lineItemGlAccountId = Optional.empty();
+
         private Optional<String> search = Optional.empty();
 
         private Optional<String> payerId = Optional.empty();
@@ -334,6 +366,8 @@ public final class EntityGetInvoicesRequest {
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
             metadata(other.getMetadata());
+            lineItemMetadata(other.getLineItemMetadata());
+            lineItemGlAccountId(other.getLineItemGlAccountId());
             search(other.getSearch());
             payerId(other.getPayerId());
             vendorId(other.getVendorId());
@@ -443,6 +477,28 @@ public final class EntityGetInvoicesRequest {
             return this;
         }
 
+        @JsonSetter(value = "lineItemMetadata", nulls = Nulls.SKIP)
+        public Builder lineItemMetadata(Optional<InvoiceMetadataFilter> lineItemMetadata) {
+            this.lineItemMetadata = lineItemMetadata;
+            return this;
+        }
+
+        public Builder lineItemMetadata(InvoiceMetadataFilter lineItemMetadata) {
+            this.lineItemMetadata = Optional.of(lineItemMetadata);
+            return this;
+        }
+
+        @JsonSetter(value = "lineItemGlAccountId", nulls = Nulls.SKIP)
+        public Builder lineItemGlAccountId(Optional<String> lineItemGlAccountId) {
+            this.lineItemGlAccountId = lineItemGlAccountId;
+            return this;
+        }
+
+        public Builder lineItemGlAccountId(String lineItemGlAccountId) {
+            this.lineItemGlAccountId = Optional.of(lineItemGlAccountId);
+            return this;
+        }
+
         @JsonSetter(value = "search", nulls = Nulls.SKIP)
         public Builder search(Optional<String> search) {
             this.search = search;
@@ -531,6 +587,8 @@ public final class EntityGetInvoicesRequest {
                     limit,
                     startingAfter,
                     metadata,
+                    lineItemMetadata,
+                    lineItemGlAccountId,
                     search,
                     payerId,
                     vendorId,

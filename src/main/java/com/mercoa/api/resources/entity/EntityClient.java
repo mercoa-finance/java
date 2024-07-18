@@ -6,14 +6,15 @@ package com.mercoa.api.resources.entity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiApiError;
-import com.mercoa.api.core.MercoaApiError;
+import com.mercoa.api.core.MercoaApiException;
+import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.entity.approvalpolicy.ApprovalPolicyClient;
 import com.mercoa.api.resources.entity.counterparty.CounterpartyClient;
 import com.mercoa.api.resources.entity.customization.CustomizationClient;
+import com.mercoa.api.resources.entity.document.DocumentClient;
 import com.mercoa.api.resources.entity.emaillog.EmailLogClient;
 import com.mercoa.api.resources.entity.externalaccountingsystem.ExternalAccountingSystemClient;
 import com.mercoa.api.resources.entity.invoice.InvoiceClient;
@@ -54,6 +55,8 @@ public class EntityClient {
 
     protected final Supplier<CustomizationClient> customizationClient;
 
+    protected final Supplier<DocumentClient> documentClient;
+
     protected final Supplier<ExternalAccountingSystemClient> externalAccountingSystemClient;
 
     protected final Supplier<InvoiceClient> invoiceClient;
@@ -73,6 +76,7 @@ public class EntityClient {
         this.approvalPolicyClient = Suppliers.memoize(() -> new ApprovalPolicyClient(clientOptions));
         this.counterpartyClient = Suppliers.memoize(() -> new CounterpartyClient(clientOptions));
         this.customizationClient = Suppliers.memoize(() -> new CustomizationClient(clientOptions));
+        this.documentClient = Suppliers.memoize(() -> new DocumentClient(clientOptions));
         this.externalAccountingSystemClient =
                 Suppliers.memoize(() -> new ExternalAccountingSystemClient(clientOptions));
         this.invoiceClient = Suppliers.memoize(() -> new InvoiceClient(clientOptions));
@@ -149,12 +153,12 @@ public class EntityClient {
                 return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), FindEntityResponse.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 
@@ -172,7 +176,7 @@ public class EntityClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new MercoaApiError("Failed to serialize request", e);
+            throw new MercoaException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
@@ -190,12 +194,12 @@ public class EntityClient {
                 return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityResponse.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 
@@ -225,12 +229,12 @@ public class EntityClient {
                 return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityResponse.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 
@@ -253,7 +257,7 @@ public class EntityClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new MercoaApiError("Failed to serialize request", e);
+            throw new MercoaException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
@@ -271,12 +275,12 @@ public class EntityClient {
                 return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityResponse.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 
@@ -311,12 +315,12 @@ public class EntityClient {
                 return;
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 
@@ -352,12 +356,12 @@ public class EntityClient {
                 return;
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 
@@ -397,12 +401,12 @@ public class EntityClient {
                 return;
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 
@@ -438,7 +442,7 @@ public class EntityClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new MercoaApiError("Failed to serialize request", e);
+            throw new MercoaException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
@@ -456,12 +460,12 @@ public class EntityClient {
                 return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 
@@ -508,12 +512,12 @@ public class EntityClient {
                 return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 
@@ -557,12 +561,12 @@ public class EntityClient {
                 return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 
@@ -605,12 +609,12 @@ public class EntityClient {
                 return;
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 
@@ -632,6 +636,10 @@ public class EntityClient {
 
     public CustomizationClient customization() {
         return this.customizationClient.get();
+    }
+
+    public DocumentClient document() {
+        return this.documentClient.get();
     }
 
     public ExternalAccountingSystemClient externalAccountingSystem() {

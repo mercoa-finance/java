@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.commons.types.OrderDirection;
+import com.mercoa.api.resources.entitytypes.types.NotificationStatus;
 import com.mercoa.api.resources.entitytypes.types.NotificationType;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -35,6 +36,8 @@ public final class EntityGetNotificationsRequest {
 
     private final Optional<NotificationType> notificationType;
 
+    private final Optional<NotificationStatus> status;
+
     private final Map<String, Object> additionalProperties;
 
     private EntityGetNotificationsRequest(
@@ -44,6 +47,7 @@ public final class EntityGetNotificationsRequest {
             Optional<Integer> limit,
             Optional<String> startingAfter,
             Optional<NotificationType> notificationType,
+            Optional<NotificationStatus> status,
             Map<String, Object> additionalProperties) {
         this.startDate = startDate;
         this.endDate = endDate;
@@ -51,6 +55,7 @@ public final class EntityGetNotificationsRequest {
         this.limit = limit;
         this.startingAfter = startingAfter;
         this.notificationType = notificationType;
+        this.status = status;
         this.additionalProperties = additionalProperties;
     }
 
@@ -102,6 +107,14 @@ public final class EntityGetNotificationsRequest {
         return notificationType;
     }
 
+    /**
+     * @return The status of the notification to filter by.
+     */
+    @JsonProperty("status")
+    public Optional<NotificationStatus> getStatus() {
+        return status;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -119,7 +132,8 @@ public final class EntityGetNotificationsRequest {
                 && orderDirection.equals(other.orderDirection)
                 && limit.equals(other.limit)
                 && startingAfter.equals(other.startingAfter)
-                && notificationType.equals(other.notificationType);
+                && notificationType.equals(other.notificationType)
+                && status.equals(other.status);
     }
 
     @java.lang.Override
@@ -130,7 +144,8 @@ public final class EntityGetNotificationsRequest {
                 this.orderDirection,
                 this.limit,
                 this.startingAfter,
-                this.notificationType);
+                this.notificationType,
+                this.status);
     }
 
     @java.lang.Override
@@ -156,6 +171,8 @@ public final class EntityGetNotificationsRequest {
 
         private Optional<NotificationType> notificationType = Optional.empty();
 
+        private Optional<NotificationStatus> status = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -168,6 +185,7 @@ public final class EntityGetNotificationsRequest {
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
             notificationType(other.getNotificationType());
+            status(other.getStatus());
             return this;
         }
 
@@ -237,9 +255,27 @@ public final class EntityGetNotificationsRequest {
             return this;
         }
 
+        @JsonSetter(value = "status", nulls = Nulls.SKIP)
+        public Builder status(Optional<NotificationStatus> status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder status(NotificationStatus status) {
+            this.status = Optional.of(status);
+            return this;
+        }
+
         public EntityGetNotificationsRequest build() {
             return new EntityGetNotificationsRequest(
-                    startDate, endDate, orderDirection, limit, startingAfter, notificationType, additionalProperties);
+                    startDate,
+                    endDate,
+                    orderDirection,
+                    limit,
+                    startingAfter,
+                    notificationType,
+                    status,
+                    additionalProperties);
         }
     }
 }

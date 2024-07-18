@@ -34,12 +34,20 @@ public final class PaymentDestinationOptions {
         return new PaymentDestinationOptions(new BankAccountValue(value));
     }
 
+    public static PaymentDestinationOptions utility(UtilityPaymentDestinationOptions value) {
+        return new PaymentDestinationOptions(new UtilityValue(value));
+    }
+
     public boolean isCheck() {
         return value instanceof CheckValue;
     }
 
     public boolean isBankAccount() {
         return value instanceof BankAccountValue;
+    }
+
+    public boolean isUtility() {
+        return value instanceof UtilityValue;
     }
 
     public boolean _isUnknown() {
@@ -56,6 +64,13 @@ public final class PaymentDestinationOptions {
     public Optional<BankAccountPaymentDestinationOptions> getBankAccount() {
         if (isBankAccount()) {
             return Optional.of(((BankAccountValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<UtilityPaymentDestinationOptions> getUtility() {
+        if (isUtility()) {
+            return Optional.of(((UtilityValue) value).value);
         }
         return Optional.empty();
     }
@@ -77,11 +92,17 @@ public final class PaymentDestinationOptions {
 
         T visitBankAccount(BankAccountPaymentDestinationOptions bankAccount);
 
+        T visitUtility(UtilityPaymentDestinationOptions utility);
+
         T _visitUnknown(Object unknownType);
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = _UnknownValue.class)
-    @JsonSubTypes({@JsonSubTypes.Type(CheckValue.class), @JsonSubTypes.Type(BankAccountValue.class)})
+    @JsonSubTypes({
+        @JsonSubTypes.Type(CheckValue.class),
+        @JsonSubTypes.Type(BankAccountValue.class),
+        @JsonSubTypes.Type(UtilityValue.class)
+    })
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
         <T> T visit(Visitor<T> visitor);
@@ -149,6 +170,44 @@ public final class PaymentDestinationOptions {
         }
 
         private boolean equalTo(BankAccountValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentDestinationOptions{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("utility")
+    private static final class UtilityValue implements Value {
+        @JsonUnwrapped
+        private UtilityPaymentDestinationOptions value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private UtilityValue() {}
+
+        private UtilityValue(UtilityPaymentDestinationOptions value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitUtility(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof UtilityValue && equalTo((UtilityValue) other);
+        }
+
+        private boolean equalTo(UtilityValue other) {
             return value.equals(other.value);
         }
 

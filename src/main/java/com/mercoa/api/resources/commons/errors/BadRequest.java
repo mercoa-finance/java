@@ -3,16 +3,16 @@
  */
 package com.mercoa.api.resources.commons.errors;
 
-import com.mercoa.api.core.MercoaApiApiError;
+import com.mercoa.api.core.MercoaApiException;
 
-public final class MercoaApiConflict extends MercoaApiApiError {
+public final class BadRequest extends MercoaApiException {
     /**
      * The body of the response that triggered the exception.
      */
     private final String body;
 
-    public MercoaApiConflict(String body) {
-        super("Conflict", 409, body);
+    public BadRequest(String body) {
+        super("BadRequest", 400, body);
         this.body = body;
     }
 

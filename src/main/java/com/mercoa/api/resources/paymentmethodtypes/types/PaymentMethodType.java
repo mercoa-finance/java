@@ -20,7 +20,9 @@ public enum PaymentMethodType {
 
     VIRTUAL_CARD("virtualCard"),
 
-    OFF_PLATFORM("offPlatform");
+    OFF_PLATFORM("offPlatform"),
+
+    UTILITY("utility");
 
     private final String value;
 

@@ -27,6 +27,8 @@ public final class NotificationResponse {
 
     private final NotificationType type;
 
+    private final NotificationStatus status;
+
     private final OffsetDateTime createdAt;
 
     private final Map<String, Object> additionalProperties;
@@ -35,11 +37,13 @@ public final class NotificationResponse {
             String id,
             Optional<String> invoiceId,
             NotificationType type,
+            NotificationStatus status,
             OffsetDateTime createdAt,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.invoiceId = invoiceId;
         this.type = type;
+        this.status = status;
         this.createdAt = createdAt;
         this.additionalProperties = additionalProperties;
     }
@@ -62,6 +66,11 @@ public final class NotificationResponse {
         return type;
     }
 
+    @JsonProperty("status")
+    public NotificationStatus getStatus() {
+        return status;
+    }
+
     @JsonProperty("createdAt")
     public OffsetDateTime getCreatedAt() {
         return createdAt;
@@ -82,12 +91,13 @@ public final class NotificationResponse {
         return id.equals(other.id)
                 && invoiceId.equals(other.invoiceId)
                 && type.equals(other.type)
+                && status.equals(other.status)
                 && createdAt.equals(other.createdAt);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.id, this.invoiceId, this.type, this.createdAt);
+        return Objects.hash(this.id, this.invoiceId, this.type, this.status, this.createdAt);
     }
 
     @java.lang.Override
@@ -106,7 +116,11 @@ public final class NotificationResponse {
     }
 
     public interface TypeStage {
-        CreatedAtStage type(NotificationType type);
+        StatusStage type(NotificationType type);
+    }
+
+    public interface StatusStage {
+        CreatedAtStage status(NotificationStatus status);
     }
 
     public interface CreatedAtStage {
@@ -122,10 +136,12 @@ public final class NotificationResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements IdStage, TypeStage, CreatedAtStage, _FinalStage {
+    public static final class Builder implements IdStage, TypeStage, StatusStage, CreatedAtStage, _FinalStage {
         private String id;
 
         private NotificationType type;
+
+        private NotificationStatus status;
 
         private OffsetDateTime createdAt;
 
@@ -141,6 +157,7 @@ public final class NotificationResponse {
             id(other.getId());
             invoiceId(other.getInvoiceId());
             type(other.getType());
+            status(other.getStatus());
             createdAt(other.getCreatedAt());
             return this;
         }
@@ -154,8 +171,15 @@ public final class NotificationResponse {
 
         @java.lang.Override
         @JsonSetter("type")
-        public CreatedAtStage type(NotificationType type) {
+        public StatusStage type(NotificationType type) {
             this.type = type;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("status")
+        public CreatedAtStage status(NotificationStatus status) {
+            this.status = status;
             return this;
         }
 
@@ -185,7 +209,7 @@ public final class NotificationResponse {
 
         @java.lang.Override
         public NotificationResponse build() {
-            return new NotificationResponse(id, invoiceId, type, createdAt, additionalProperties);
+            return new NotificationResponse(id, invoiceId, type, status, createdAt, additionalProperties);
         }
     }
 }

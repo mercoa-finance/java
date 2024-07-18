@@ -3,16 +3,16 @@
  */
 package com.mercoa.api.resources.commons.errors;
 
-import com.mercoa.api.core.MercoaApiApiError;
+import com.mercoa.api.core.MercoaApiException;
 
-public final class MercoaApiInternalServerError extends MercoaApiApiError {
+public final class Unauthorized extends MercoaApiException {
     /**
      * The body of the response that triggered the exception.
      */
     private final String body;
 
-    public MercoaApiInternalServerError(String body) {
-        super("InternalServerError", 500, body);
+    public Unauthorized(String body) {
+        super("Unauthorized", 401, body);
         this.body = body;
     }
 

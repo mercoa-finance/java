@@ -57,7 +57,7 @@ public final class CounterpartyResponse implements IEntityResponse {
 
     private final OffsetDateTime updatedAt;
 
-    private final Optional<String> accountId;
+    private final Optional<List<CounterpartyCustomizationAccount>> accounts;
 
     private final Optional<String> logo;
 
@@ -87,7 +87,7 @@ public final class CounterpartyResponse implements IEntityResponse {
             boolean isNetworkPayee,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
-            Optional<String> accountId,
+            Optional<List<CounterpartyCustomizationAccount>> accounts,
             Optional<String> logo,
             Optional<List<PaymentMethodResponse>> paymentMethods,
             Optional<List<CounterpartyNetworkType>> counterpartyType,
@@ -110,7 +110,7 @@ public final class CounterpartyResponse implements IEntityResponse {
         this.isNetworkPayee = isNetworkPayee;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.accountId = accountId;
+        this.accounts = accounts;
         this.logo = logo;
         this.paymentMethods = paymentMethods;
         this.counterpartyType = counterpartyType;
@@ -248,11 +248,11 @@ public final class CounterpartyResponse implements IEntityResponse {
     }
 
     /**
-     * @return If the entity searching for counterparties has an Account ID configured in the Payee/Payor relationship, it will be returned
+     * @return If the entity searching for counterparties has any accounts configured in the Payee/Payor relationship, they will be returned
      */
-    @JsonProperty("accountId")
-    public Optional<String> getAccountId() {
-        return accountId;
+    @JsonProperty("accounts")
+    public Optional<List<CounterpartyCustomizationAccount>> getAccounts() {
+        return accounts;
     }
 
     /**
@@ -307,7 +307,7 @@ public final class CounterpartyResponse implements IEntityResponse {
                 && isNetworkPayee == other.isNetworkPayee
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt)
-                && accountId.equals(other.accountId)
+                && accounts.equals(other.accounts)
                 && logo.equals(other.logo)
                 && paymentMethods.equals(other.paymentMethods)
                 && counterpartyType.equals(other.counterpartyType)
@@ -334,7 +334,7 @@ public final class CounterpartyResponse implements IEntityResponse {
                 this.isNetworkPayee,
                 this.createdAt,
                 this.updatedAt,
-                this.accountId,
+                this.accounts,
                 this.logo,
                 this.paymentMethods,
                 this.counterpartyType,
@@ -423,9 +423,9 @@ public final class CounterpartyResponse implements IEntityResponse {
 
         _FinalStage emailToAlias(List<String> emailToAlias);
 
-        _FinalStage accountId(Optional<String> accountId);
+        _FinalStage accounts(Optional<List<CounterpartyCustomizationAccount>> accounts);
 
-        _FinalStage accountId(String accountId);
+        _FinalStage accounts(List<CounterpartyCustomizationAccount> accounts);
 
         _FinalStage logo(Optional<String> logo);
 
@@ -497,7 +497,7 @@ public final class CounterpartyResponse implements IEntityResponse {
 
         private Optional<String> logo = Optional.empty();
 
-        private Optional<String> accountId = Optional.empty();
+        private Optional<List<CounterpartyCustomizationAccount>> accounts = Optional.empty();
 
         private Optional<List<String>> emailToAlias = Optional.empty();
 
@@ -529,7 +529,7 @@ public final class CounterpartyResponse implements IEntityResponse {
             isNetworkPayee(other.getIsNetworkPayee());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
-            accountId(other.getAccountId());
+            accounts(other.getAccounts());
             logo(other.getLogo());
             paymentMethods(other.getPaymentMethods());
             counterpartyType(other.getCounterpartyType());
@@ -716,19 +716,19 @@ public final class CounterpartyResponse implements IEntityResponse {
         }
 
         /**
-         * <p>If the entity searching for counterparties has an Account ID configured in the Payee/Payor relationship, it will be returned</p>
+         * <p>If the entity searching for counterparties has any accounts configured in the Payee/Payor relationship, they will be returned</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage accountId(String accountId) {
-            this.accountId = Optional.of(accountId);
+        public _FinalStage accounts(List<CounterpartyCustomizationAccount> accounts) {
+            this.accounts = Optional.of(accounts);
             return this;
         }
 
         @java.lang.Override
-        @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
-        public _FinalStage accountId(Optional<String> accountId) {
-            this.accountId = accountId;
+        @JsonSetter(value = "accounts", nulls = Nulls.SKIP)
+        public _FinalStage accounts(Optional<List<CounterpartyCustomizationAccount>> accounts) {
+            this.accounts = accounts;
             return this;
         }
 
@@ -803,7 +803,7 @@ public final class CounterpartyResponse implements IEntityResponse {
                     isNetworkPayee,
                     createdAt,
                     updatedAt,
-                    accountId,
+                    accounts,
                     logo,
                     paymentMethods,
                     counterpartyType,

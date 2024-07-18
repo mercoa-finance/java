@@ -3,16 +3,16 @@
  */
 package com.mercoa.api.resources.commons.errors;
 
-import com.mercoa.api.core.MercoaApiApiError;
+import com.mercoa.api.core.MercoaApiException;
 
-public final class MercoaApiNotFound extends MercoaApiApiError {
+public final class Conflict extends MercoaApiException {
     /**
      * The body of the response that triggered the exception.
      */
     private final String body;
 
-    public MercoaApiNotFound(String body) {
-        super("NotFound", 404, body);
+    public Conflict(String body) {
+        super("Conflict", 409, body);
         this.body = body;
     }
 

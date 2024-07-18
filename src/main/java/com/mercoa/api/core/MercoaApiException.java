@@ -6,7 +6,7 @@ package com.mercoa.api.core;
 /**
  * This exception type will be thrown for any non-2XX API responses.
  */
-public class MercoaApiApiError extends MercoaApiError {
+public class MercoaApiException extends MercoaException {
     /**
      * The error code of the response that triggered the exception.
      */
@@ -17,7 +17,7 @@ public class MercoaApiApiError extends MercoaApiError {
      */
     private final Object body;
 
-    public MercoaApiApiError(String message, int statusCode, Object body) {
+    public MercoaApiException(String message, int statusCode, Object body) {
         super(message);
         this.statusCode = statusCode;
         this.body = body;
@@ -39,7 +39,7 @@ public class MercoaApiApiError extends MercoaApiError {
 
     @java.lang.Override
     public String toString() {
-        return "MercoaApiApiError{" + "message: " + getMessage() + ", statusCode: " + statusCode + ", body: " + body
+        return "MercoaApiException{" + "message: " + getMessage() + ", statusCode: " + statusCode + ", body: " + body
                 + "}";
     }
 }

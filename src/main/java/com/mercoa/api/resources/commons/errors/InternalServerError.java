@@ -3,16 +3,16 @@
  */
 package com.mercoa.api.resources.commons.errors;
 
-import com.mercoa.api.core.MercoaApiApiError;
+import com.mercoa.api.core.MercoaApiException;
 
-public final class MercoaApiForbidden extends MercoaApiApiError {
+public final class InternalServerError extends MercoaApiException {
     /**
      * The body of the response that triggered the exception.
      */
     private final String body;
 
-    public MercoaApiForbidden(String body) {
-        super("Forbidden", 403, body);
+    public InternalServerError(String body) {
+        super("InternalServerError", 500, body);
         this.body = body;
     }
 

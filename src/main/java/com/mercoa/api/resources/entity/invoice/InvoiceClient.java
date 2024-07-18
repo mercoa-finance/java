@@ -5,8 +5,8 @@ package com.mercoa.api.resources.entity.invoice;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MercoaApiApiError;
-import com.mercoa.api.core.MercoaApiError;
+import com.mercoa.api.core.MercoaApiException;
+import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.entity.invoice.requests.EntityGetInvoicesRequest;
@@ -83,6 +83,14 @@ public class InvoiceClient {
         if (request.getMetadata().isPresent()) {
             httpUrl.addQueryParameter("metadata", request.getMetadata().get().toString());
         }
+        if (request.getLineItemMetadata().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "lineItemMetadata", request.getLineItemMetadata().get().toString());
+        }
+        if (request.getLineItemGlAccountId().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "lineItemGlAccountId", request.getLineItemGlAccountId().get());
+        }
         if (request.getSearch().isPresent()) {
             httpUrl.addQueryParameter("search", request.getSearch().get());
         }
@@ -121,12 +129,12 @@ public class InvoiceClient {
                 return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), FindInvoiceResponse.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 
@@ -220,12 +228,12 @@ public class InvoiceClient {
                         responseBody.string(), new TypeReference<List<InvoiceMetricsResponse>>() {});
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 }

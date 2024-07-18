@@ -4,8 +4,8 @@
 package com.mercoa.api.resources.entity.emaillog;
 
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MercoaApiApiError;
-import com.mercoa.api.core.MercoaApiError;
+import com.mercoa.api.core.MercoaApiException;
+import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.emaillogtypes.types.EmailLog;
@@ -81,12 +81,12 @@ public class EmailLogClient {
                 return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EmailLogResponse.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 
@@ -124,12 +124,12 @@ public class EmailLogClient {
                 return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EmailLog.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 }

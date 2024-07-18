@@ -46,6 +46,10 @@ public final class PaymentMethodRequest {
         return new PaymentMethodRequest(new OffPlatformValue(value));
     }
 
+    public static PaymentMethodRequest utility(UtilityPaymentMethodRequest value) {
+        return new PaymentMethodRequest(new UtilityValue(value));
+    }
+
     public boolean isBankAccount() {
         return value instanceof BankAccountValue;
     }
@@ -64,6 +68,10 @@ public final class PaymentMethodRequest {
 
     public boolean isOffPlatform() {
         return value instanceof OffPlatformValue;
+    }
+
+    public boolean isUtility() {
+        return value instanceof UtilityValue;
     }
 
     public boolean _isUnknown() {
@@ -105,6 +113,13 @@ public final class PaymentMethodRequest {
         return Optional.empty();
     }
 
+    public Optional<UtilityPaymentMethodRequest> getUtility() {
+        if (isUtility()) {
+            return Optional.of(((UtilityValue) value).value);
+        }
+        return Optional.empty();
+    }
+
     public Optional<Object> _getUnknown() {
         if (_isUnknown()) {
             return Optional.of(((_UnknownValue) value).value);
@@ -128,6 +143,8 @@ public final class PaymentMethodRequest {
 
         T visitOffPlatform(PaymentMethodBaseRequest offPlatform);
 
+        T visitUtility(UtilityPaymentMethodRequest utility);
+
         T _visitUnknown(Object unknownType);
     }
 
@@ -137,7 +154,8 @@ public final class PaymentMethodRequest {
         @JsonSubTypes.Type(CardValue.class),
         @JsonSubTypes.Type(CheckValue.class),
         @JsonSubTypes.Type(CustomValue.class),
-        @JsonSubTypes.Type(OffPlatformValue.class)
+        @JsonSubTypes.Type(OffPlatformValue.class),
+        @JsonSubTypes.Type(UtilityValue.class)
     })
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
@@ -320,6 +338,44 @@ public final class PaymentMethodRequest {
         }
 
         private boolean equalTo(OffPlatformValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentMethodRequest{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("utility")
+    private static final class UtilityValue implements Value {
+        @JsonUnwrapped
+        private UtilityPaymentMethodRequest value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private UtilityValue() {}
+
+        private UtilityValue(UtilityPaymentMethodRequest value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitUtility(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof UtilityValue && equalTo((UtilityValue) other);
+        }
+
+        private boolean equalTo(UtilityValue other) {
             return value.equals(other.value);
         }
 

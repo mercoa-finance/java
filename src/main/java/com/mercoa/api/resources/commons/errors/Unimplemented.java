@@ -3,16 +3,16 @@
  */
 package com.mercoa.api.resources.commons.errors;
 
-import com.mercoa.api.core.MercoaApiApiError;
+import com.mercoa.api.core.MercoaApiException;
 
-public final class MercoaApiUnauthorized extends MercoaApiApiError {
+public final class Unimplemented extends MercoaApiException {
     /**
      * The body of the response that triggered the exception.
      */
     private final String body;
 
-    public MercoaApiUnauthorized(String body) {
-        super("Unauthorized", 401, body);
+    public Unimplemented(String body) {
+        super("Unimplemented", 501, body);
         this.body = body;
     }
 

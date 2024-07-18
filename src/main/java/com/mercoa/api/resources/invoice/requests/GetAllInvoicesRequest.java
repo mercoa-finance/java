@@ -44,6 +44,10 @@ public final class GetAllInvoicesRequest {
 
     private final Optional<InvoiceMetadataFilter> metadata;
 
+    private final Optional<InvoiceMetadataFilter> lineItemMetadata;
+
+    private final Optional<String> lineItemGlAccountId;
+
     private final Optional<String> payerId;
 
     private final Optional<String> vendorId;
@@ -68,6 +72,8 @@ public final class GetAllInvoicesRequest {
             Optional<String> startingAfter,
             Optional<String> search,
             Optional<InvoiceMetadataFilter> metadata,
+            Optional<InvoiceMetadataFilter> lineItemMetadata,
+            Optional<String> lineItemGlAccountId,
             Optional<String> payerId,
             Optional<String> vendorId,
             Optional<String> approverId,
@@ -84,6 +90,8 @@ public final class GetAllInvoicesRequest {
         this.startingAfter = startingAfter;
         this.search = search;
         this.metadata = metadata;
+        this.lineItemMetadata = lineItemMetadata;
+        this.lineItemGlAccountId = lineItemGlAccountId;
         this.payerId = payerId;
         this.vendorId = vendorId;
         this.approverId = approverId;
@@ -166,6 +174,22 @@ public final class GetAllInvoicesRequest {
     }
 
     /**
+     * @return Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+     */
+    @JsonProperty("lineItemMetadata")
+    public Optional<InvoiceMetadataFilter> getLineItemMetadata() {
+        return lineItemMetadata;
+    }
+
+    /**
+     * @return Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
+     */
+    @JsonProperty("lineItemGlAccountId")
+    public Optional<String> getLineItemGlAccountId() {
+        return lineItemGlAccountId;
+    }
+
+    /**
      * @return Filter invoices by payer ID.
      */
     @JsonProperty("payerId")
@@ -234,6 +258,8 @@ public final class GetAllInvoicesRequest {
                 && startingAfter.equals(other.startingAfter)
                 && search.equals(other.search)
                 && metadata.equals(other.metadata)
+                && lineItemMetadata.equals(other.lineItemMetadata)
+                && lineItemGlAccountId.equals(other.lineItemGlAccountId)
                 && payerId.equals(other.payerId)
                 && vendorId.equals(other.vendorId)
                 && approverId.equals(other.approverId)
@@ -254,6 +280,8 @@ public final class GetAllInvoicesRequest {
                 this.startingAfter,
                 this.search,
                 this.metadata,
+                this.lineItemMetadata,
+                this.lineItemGlAccountId,
                 this.payerId,
                 this.vendorId,
                 this.approverId,
@@ -291,6 +319,10 @@ public final class GetAllInvoicesRequest {
 
         private Optional<InvoiceMetadataFilter> metadata = Optional.empty();
 
+        private Optional<InvoiceMetadataFilter> lineItemMetadata = Optional.empty();
+
+        private Optional<String> lineItemGlAccountId = Optional.empty();
+
         private Optional<String> payerId = Optional.empty();
 
         private Optional<String> vendorId = Optional.empty();
@@ -318,6 +350,8 @@ public final class GetAllInvoicesRequest {
             startingAfter(other.getStartingAfter());
             search(other.getSearch());
             metadata(other.getMetadata());
+            lineItemMetadata(other.getLineItemMetadata());
+            lineItemGlAccountId(other.getLineItemGlAccountId());
             payerId(other.getPayerId());
             vendorId(other.getVendorId());
             approverId(other.getApproverId());
@@ -426,6 +460,28 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
+        @JsonSetter(value = "lineItemMetadata", nulls = Nulls.SKIP)
+        public Builder lineItemMetadata(Optional<InvoiceMetadataFilter> lineItemMetadata) {
+            this.lineItemMetadata = lineItemMetadata;
+            return this;
+        }
+
+        public Builder lineItemMetadata(InvoiceMetadataFilter lineItemMetadata) {
+            this.lineItemMetadata = Optional.of(lineItemMetadata);
+            return this;
+        }
+
+        @JsonSetter(value = "lineItemGlAccountId", nulls = Nulls.SKIP)
+        public Builder lineItemGlAccountId(Optional<String> lineItemGlAccountId) {
+            this.lineItemGlAccountId = lineItemGlAccountId;
+            return this;
+        }
+
+        public Builder lineItemGlAccountId(String lineItemGlAccountId) {
+            this.lineItemGlAccountId = Optional.of(lineItemGlAccountId);
+            return this;
+        }
+
         @JsonSetter(value = "payerId", nulls = Nulls.SKIP)
         public Builder payerId(Optional<String> payerId) {
             this.payerId = payerId;
@@ -503,6 +559,8 @@ public final class GetAllInvoicesRequest {
                     startingAfter,
                     search,
                     metadata,
+                    lineItemMetadata,
+                    lineItemGlAccountId,
                     payerId,
                     vendorId,
                     approverId,

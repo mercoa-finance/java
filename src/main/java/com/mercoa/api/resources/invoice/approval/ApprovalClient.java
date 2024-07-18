@@ -6,8 +6,8 @@ package com.mercoa.api.resources.invoice.approval;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiApiError;
-import com.mercoa.api.core.MercoaApiError;
+import com.mercoa.api.core.MercoaApiException;
+import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.invoicetypes.types.AddApproverRequest;
@@ -50,7 +50,7 @@ public class ApprovalClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new MercoaApiError("Failed to serialize request", e);
+            throw new MercoaException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
@@ -68,12 +68,12 @@ public class ApprovalClient {
                 return;
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 
@@ -93,7 +93,7 @@ public class ApprovalClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new MercoaApiError("Failed to serialize request", e);
+            throw new MercoaException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
@@ -111,12 +111,12 @@ public class ApprovalClient {
                 return;
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 
@@ -136,7 +136,7 @@ public class ApprovalClient {
             body = RequestBody.create(
                     ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
-            throw new MercoaApiError("Failed to serialize request", e);
+            throw new MercoaException("Failed to serialize request", e);
         }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
@@ -154,12 +154,12 @@ public class ApprovalClient {
                 return;
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiApiError(
+            throw new MercoaApiException(
                     "Error with status code " + response.code(),
                     response.code(),
                     ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
         } catch (IOException e) {
-            throw new MercoaApiError("Network error executing HTTP request", e);
+            throw new MercoaException("Network error executing HTTP request", e);
         }
     }
 }

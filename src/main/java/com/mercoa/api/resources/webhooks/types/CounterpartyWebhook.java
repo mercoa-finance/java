@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.EntityUserResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,9 +25,9 @@ import java.util.Optional;
 public final class CounterpartyWebhook {
     private final String eventType;
 
-    private final String payeeId;
+    private final List<String> payeeId;
 
-    private final String payorId;
+    private final List<String> payorId;
 
     private final Optional<EntityUserResponse> user;
 
@@ -33,8 +35,8 @@ public final class CounterpartyWebhook {
 
     private CounterpartyWebhook(
             String eventType,
-            String payeeId,
-            String payorId,
+            List<String> payeeId,
+            List<String> payorId,
             Optional<EntityUserResponse> user,
             Map<String, Object> additionalProperties) {
         this.eventType = eventType;
@@ -50,12 +52,12 @@ public final class CounterpartyWebhook {
     }
 
     @JsonProperty("payeeId")
-    public String getPayeeId() {
+    public List<String> getPayeeId() {
         return payeeId;
     }
 
     @JsonProperty("payorId")
-    public String getPayorId() {
+    public List<String> getPayorId() {
         return payorId;
     }
 
@@ -100,21 +102,25 @@ public final class CounterpartyWebhook {
     }
 
     public interface EventTypeStage {
-        PayeeIdStage eventType(String eventType);
+        _FinalStage eventType(String eventType);
 
         Builder from(CounterpartyWebhook other);
     }
 
-    public interface PayeeIdStage {
-        PayorIdStage payeeId(String payeeId);
-    }
-
-    public interface PayorIdStage {
-        _FinalStage payorId(String payorId);
-    }
-
     public interface _FinalStage {
         CounterpartyWebhook build();
+
+        _FinalStage payeeId(List<String> payeeId);
+
+        _FinalStage addPayeeId(String payeeId);
+
+        _FinalStage addAllPayeeId(List<String> payeeId);
+
+        _FinalStage payorId(List<String> payorId);
+
+        _FinalStage addPayorId(String payorId);
+
+        _FinalStage addAllPayorId(List<String> payorId);
 
         _FinalStage user(Optional<EntityUserResponse> user);
 
@@ -122,14 +128,14 @@ public final class CounterpartyWebhook {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements EventTypeStage, PayeeIdStage, PayorIdStage, _FinalStage {
+    public static final class Builder implements EventTypeStage, _FinalStage {
         private String eventType;
 
-        private String payeeId;
-
-        private String payorId;
-
         private Optional<EntityUserResponse> user = Optional.empty();
+
+        private List<String> payorId = new ArrayList<>();
+
+        private List<String> payeeId = new ArrayList<>();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -147,22 +153,8 @@ public final class CounterpartyWebhook {
 
         @java.lang.Override
         @JsonSetter("eventType")
-        public PayeeIdStage eventType(String eventType) {
+        public _FinalStage eventType(String eventType) {
             this.eventType = eventType;
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("payeeId")
-        public PayorIdStage payeeId(String payeeId) {
-            this.payeeId = payeeId;
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("payorId")
-        public _FinalStage payorId(String payorId) {
-            this.payorId = payorId;
             return this;
         }
 
@@ -180,6 +172,46 @@ public final class CounterpartyWebhook {
         @JsonSetter(value = "user", nulls = Nulls.SKIP)
         public _FinalStage user(Optional<EntityUserResponse> user) {
             this.user = user;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage addAllPayorId(List<String> payorId) {
+            this.payorId.addAll(payorId);
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage addPayorId(String payorId) {
+            this.payorId.add(payorId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "payorId", nulls = Nulls.SKIP)
+        public _FinalStage payorId(List<String> payorId) {
+            this.payorId.clear();
+            this.payorId.addAll(payorId);
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage addAllPayeeId(List<String> payeeId) {
+            this.payeeId.addAll(payeeId);
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage addPayeeId(String payeeId) {
+            this.payeeId.add(payeeId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "payeeId", nulls = Nulls.SKIP)
+        public _FinalStage payeeId(List<String> payeeId) {
+            this.payeeId.clear();
+            this.payeeId.addAll(payeeId);
             return this;
         }
 

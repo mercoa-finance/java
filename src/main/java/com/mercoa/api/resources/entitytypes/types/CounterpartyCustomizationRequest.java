@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,14 +23,16 @@ import java.util.Optional;
 public final class CounterpartyCustomizationRequest {
     private final String counterpartyId;
 
-    private final Optional<String> accountId;
+    private final Optional<List<CounterpartyCustomizationAccount>> accounts;
 
     private final Map<String, Object> additionalProperties;
 
     private CounterpartyCustomizationRequest(
-            String counterpartyId, Optional<String> accountId, Map<String, Object> additionalProperties) {
+            String counterpartyId,
+            Optional<List<CounterpartyCustomizationAccount>> accounts,
+            Map<String, Object> additionalProperties) {
         this.counterpartyId = counterpartyId;
-        this.accountId = accountId;
+        this.accounts = accounts;
         this.additionalProperties = additionalProperties;
     }
 
@@ -39,11 +42,11 @@ public final class CounterpartyCustomizationRequest {
     }
 
     /**
-     * @return The ID the counterparty has assigned to this account.
+     * @return The list of accounts the entity has with the counterparty.
      */
-    @JsonProperty("accountId")
-    public Optional<String> getAccountId() {
-        return accountId;
+    @JsonProperty("accounts")
+    public Optional<List<CounterpartyCustomizationAccount>> getAccounts() {
+        return accounts;
     }
 
     @java.lang.Override
@@ -58,12 +61,12 @@ public final class CounterpartyCustomizationRequest {
     }
 
     private boolean equalTo(CounterpartyCustomizationRequest other) {
-        return counterpartyId.equals(other.counterpartyId) && accountId.equals(other.accountId);
+        return counterpartyId.equals(other.counterpartyId) && accounts.equals(other.accounts);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.counterpartyId, this.accountId);
+        return Objects.hash(this.counterpartyId, this.accounts);
     }
 
     @java.lang.Override
@@ -84,16 +87,16 @@ public final class CounterpartyCustomizationRequest {
     public interface _FinalStage {
         CounterpartyCustomizationRequest build();
 
-        _FinalStage accountId(Optional<String> accountId);
+        _FinalStage accounts(Optional<List<CounterpartyCustomizationAccount>> accounts);
 
-        _FinalStage accountId(String accountId);
+        _FinalStage accounts(List<CounterpartyCustomizationAccount> accounts);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements CounterpartyIdStage, _FinalStage {
         private String counterpartyId;
 
-        private Optional<String> accountId = Optional.empty();
+        private Optional<List<CounterpartyCustomizationAccount>> accounts = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -103,7 +106,7 @@ public final class CounterpartyCustomizationRequest {
         @java.lang.Override
         public Builder from(CounterpartyCustomizationRequest other) {
             counterpartyId(other.getCounterpartyId());
-            accountId(other.getAccountId());
+            accounts(other.getAccounts());
             return this;
         }
 
@@ -115,25 +118,25 @@ public final class CounterpartyCustomizationRequest {
         }
 
         /**
-         * <p>The ID the counterparty has assigned to this account.</p>
+         * <p>The list of accounts the entity has with the counterparty.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage accountId(String accountId) {
-            this.accountId = Optional.of(accountId);
+        public _FinalStage accounts(List<CounterpartyCustomizationAccount> accounts) {
+            this.accounts = Optional.of(accounts);
             return this;
         }
 
         @java.lang.Override
-        @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
-        public _FinalStage accountId(Optional<String> accountId) {
-            this.accountId = accountId;
+        @JsonSetter(value = "accounts", nulls = Nulls.SKIP)
+        public _FinalStage accounts(Optional<List<CounterpartyCustomizationAccount>> accounts) {
+            this.accounts = accounts;
             return this;
         }
 
         @java.lang.Override
         public CounterpartyCustomizationRequest build() {
-            return new CounterpartyCustomizationRequest(counterpartyId, accountId, additionalProperties);
+            return new CounterpartyCustomizationRequest(counterpartyId, accounts, additionalProperties);
         }
     }
 }

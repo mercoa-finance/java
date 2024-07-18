@@ -6,12 +6,12 @@ package com.mercoa.api.core;
 /**
  * This class serves as the base exception for all errors in the SDK.
  */
-public class MercoaApiError extends RuntimeException {
-    public MercoaApiError(String message) {
+public class MercoaException extends RuntimeException {
+    public MercoaException(String message) {
         super(message);
     }
 
-    public MercoaApiError(String message, Exception e) {
+    public MercoaException(String message, Exception e) {
         super(message, e);
     }
 }
