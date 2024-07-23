@@ -57,8 +57,6 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
 
     private final Optional<List<ApprovalSlotAssignment>> approvers;
 
-    private final Optional<List<InvoiceLineItemRequest>> lineItems;
-
     private final Optional<Map<String, String>> metadata;
 
     private final Optional<String> foreignId;
@@ -72,6 +70,8 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
     private final Optional<InvoiceFailureType> failureType;
 
     private final Optional<InvoiceFeesRequest> fees;
+
+    private final Optional<List<InvoiceLineItemCreationRequest>> lineItems;
 
     private final String creatorEntityId;
 
@@ -95,7 +95,6 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
             Optional<String> paymentDestinationId,
             Optional<PaymentDestinationOptions> paymentDestinationOptions,
             Optional<List<ApprovalSlotAssignment>> approvers,
-            Optional<List<InvoiceLineItemRequest>> lineItems,
             Optional<Map<String, String>> metadata,
             Optional<String> foreignId,
             Optional<String> document,
@@ -103,6 +102,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
             Optional<String> creatorUserId,
             Optional<InvoiceFailureType> failureType,
             Optional<InvoiceFeesRequest> fees,
+            Optional<List<InvoiceLineItemCreationRequest>> lineItems,
             String creatorEntityId,
             Map<String, Object> additionalProperties) {
         this.status = status;
@@ -122,7 +122,6 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         this.paymentDestinationId = paymentDestinationId;
         this.paymentDestinationOptions = paymentDestinationOptions;
         this.approvers = approvers;
-        this.lineItems = lineItems;
         this.metadata = metadata;
         this.foreignId = foreignId;
         this.document = document;
@@ -130,6 +129,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         this.creatorUserId = creatorUserId;
         this.failureType = failureType;
         this.fees = fees;
+        this.lineItems = lineItems;
         this.creatorEntityId = creatorEntityId;
         this.additionalProperties = additionalProperties;
     }
@@ -269,14 +269,8 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         return approvers;
     }
 
-    @JsonProperty("lineItems")
-    @java.lang.Override
-    public Optional<List<InvoiceLineItemRequest>> getLineItems() {
-        return lineItems;
-    }
-
     /**
-     * @return Metadata associated with this invoice. You can specify up to 10 keys, with key names up to 40 characters long and values up to 200 characters long.
+     * @return Metadata associated with this invoice.
      */
     @JsonProperty("metadata")
     @java.lang.Override
@@ -338,6 +332,11 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         return fees;
     }
 
+    @JsonProperty("lineItems")
+    public Optional<List<InvoiceLineItemCreationRequest>> getLineItems() {
+        return lineItems;
+    }
+
     /**
      * @return ID of entity who created this invoice.
      */
@@ -375,7 +374,6 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
                 && paymentDestinationId.equals(other.paymentDestinationId)
                 && paymentDestinationOptions.equals(other.paymentDestinationOptions)
                 && approvers.equals(other.approvers)
-                && lineItems.equals(other.lineItems)
                 && metadata.equals(other.metadata)
                 && foreignId.equals(other.foreignId)
                 && document.equals(other.document)
@@ -383,6 +381,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
                 && creatorUserId.equals(other.creatorUserId)
                 && failureType.equals(other.failureType)
                 && fees.equals(other.fees)
+                && lineItems.equals(other.lineItems)
                 && creatorEntityId.equals(other.creatorEntityId);
     }
 
@@ -406,7 +405,6 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
                 this.paymentDestinationId,
                 this.paymentDestinationOptions,
                 this.approvers,
-                this.lineItems,
                 this.metadata,
                 this.foreignId,
                 this.document,
@@ -414,6 +412,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
                 this.creatorUserId,
                 this.failureType,
                 this.fees,
+                this.lineItems,
                 this.creatorEntityId);
     }
 
@@ -503,10 +502,6 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
 
         _FinalStage approvers(List<ApprovalSlotAssignment> approvers);
 
-        _FinalStage lineItems(Optional<List<InvoiceLineItemRequest>> lineItems);
-
-        _FinalStage lineItems(List<InvoiceLineItemRequest> lineItems);
-
         _FinalStage metadata(Optional<Map<String, String>> metadata);
 
         _FinalStage metadata(Map<String, String> metadata);
@@ -534,11 +529,17 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         _FinalStage fees(Optional<InvoiceFeesRequest> fees);
 
         _FinalStage fees(InvoiceFeesRequest fees);
+
+        _FinalStage lineItems(Optional<List<InvoiceLineItemCreationRequest>> lineItems);
+
+        _FinalStage lineItems(List<InvoiceLineItemCreationRequest> lineItems);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements CreatorEntityIdStage, _FinalStage {
         private String creatorEntityId;
+
+        private Optional<List<InvoiceLineItemCreationRequest>> lineItems = Optional.empty();
 
         private Optional<InvoiceFeesRequest> fees = Optional.empty();
 
@@ -553,8 +554,6 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         private Optional<String> foreignId = Optional.empty();
 
         private Optional<Map<String, String>> metadata = Optional.empty();
-
-        private Optional<List<InvoiceLineItemRequest>> lineItems = Optional.empty();
 
         private Optional<List<ApprovalSlotAssignment>> approvers = Optional.empty();
 
@@ -614,7 +613,6 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
             paymentDestinationId(other.getPaymentDestinationId());
             paymentDestinationOptions(other.getPaymentDestinationOptions());
             approvers(other.getApprovers());
-            lineItems(other.getLineItems());
             metadata(other.getMetadata());
             foreignId(other.getForeignId());
             document(other.getDocument());
@@ -622,6 +620,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
             creatorUserId(other.getCreatorUserId());
             failureType(other.getFailureType());
             fees(other.getFees());
+            lineItems(other.getLineItems());
             creatorEntityId(other.getCreatorEntityId());
             return this;
         }
@@ -634,6 +633,19 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         @JsonSetter("creatorEntityId")
         public _FinalStage creatorEntityId(String creatorEntityId) {
             this.creatorEntityId = creatorEntityId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage lineItems(List<InvoiceLineItemCreationRequest> lineItems) {
+            this.lineItems = Optional.of(lineItems);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
+        public _FinalStage lineItems(Optional<List<InvoiceLineItemCreationRequest>> lineItems) {
+            this.lineItems = lineItems;
             return this;
         }
 
@@ -740,7 +752,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         }
 
         /**
-         * <p>Metadata associated with this invoice. You can specify up to 10 keys, with key names up to 40 characters long and values up to 200 characters long.</p>
+         * <p>Metadata associated with this invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -753,19 +765,6 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public _FinalStage metadata(Optional<Map<String, String>> metadata) {
             this.metadata = metadata;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage lineItems(List<InvoiceLineItemRequest> lineItems) {
-            this.lineItems = Optional.of(lineItems);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
-        public _FinalStage lineItems(Optional<List<InvoiceLineItemRequest>> lineItems) {
-            this.lineItems = lineItems;
             return this;
         }
 
@@ -1054,7 +1053,6 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
                     paymentDestinationId,
                     paymentDestinationOptions,
                     approvers,
-                    lineItems,
                     metadata,
                     foreignId,
                     document,
@@ -1062,6 +1060,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
                     creatorUserId,
                     failureType,
                     fees,
+                    lineItems,
                     creatorEntityId,
                     additionalProperties);
         }

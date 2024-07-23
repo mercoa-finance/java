@@ -26,6 +26,10 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
 
     private final Optional<String> externalAccountingSystemId;
 
+    private final Optional<Boolean> frozen;
+
+    private final Optional<Map<String, String>> metadata;
+
     private final Optional<String> accountName;
 
     private final Optional<PlaidLinkRequest> plaid;
@@ -38,6 +42,8 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
             Optional<String> externalAccountingSystemId,
+            Optional<Boolean> frozen,
+            Optional<Map<String, String>> metadata,
             Optional<String> accountName,
             Optional<PlaidLinkRequest> plaid,
             Optional<BankAccountCheckOptions> checkOptions,
@@ -45,6 +51,8 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
         this.externalAccountingSystemId = externalAccountingSystemId;
+        this.frozen = frozen;
+        this.metadata = metadata;
         this.accountName = accountName;
         this.plaid = plaid;
         this.checkOptions = checkOptions;
@@ -76,6 +84,24 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
     @java.lang.Override
     public Optional<String> getExternalAccountingSystemId() {
         return externalAccountingSystemId;
+    }
+
+    /**
+     * @return If true, this payment method will be frozen. Frozen payment methods cannot be used for payments, but will still be returned in API responses.
+     */
+    @JsonProperty("frozen")
+    @java.lang.Override
+    public Optional<Boolean> getFrozen() {
+        return frozen;
+    }
+
+    /**
+     * @return Metadata associated with this payment method.
+     */
+    @JsonProperty("metadata")
+    @java.lang.Override
+    public Optional<Map<String, String>> getMetadata() {
+        return metadata;
     }
 
     @JsonProperty("accountName")
@@ -114,6 +140,8 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
         return defaultSource.equals(other.defaultSource)
                 && defaultDestination.equals(other.defaultDestination)
                 && externalAccountingSystemId.equals(other.externalAccountingSystemId)
+                && frozen.equals(other.frozen)
+                && metadata.equals(other.metadata)
                 && accountName.equals(other.accountName)
                 && plaid.equals(other.plaid)
                 && checkOptions.equals(other.checkOptions);
@@ -125,6 +153,8 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
                 this.defaultSource,
                 this.defaultDestination,
                 this.externalAccountingSystemId,
+                this.frozen,
+                this.metadata,
                 this.accountName,
                 this.plaid,
                 this.checkOptions);
@@ -147,6 +177,10 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
 
         private Optional<String> externalAccountingSystemId = Optional.empty();
 
+        private Optional<Boolean> frozen = Optional.empty();
+
+        private Optional<Map<String, String>> metadata = Optional.empty();
+
         private Optional<String> accountName = Optional.empty();
 
         private Optional<PlaidLinkRequest> plaid = Optional.empty();
@@ -162,6 +196,8 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
             externalAccountingSystemId(other.getExternalAccountingSystemId());
+            frozen(other.getFrozen());
+            metadata(other.getMetadata());
             accountName(other.getAccountName());
             plaid(other.getPlaid());
             checkOptions(other.getCheckOptions());
@@ -198,6 +234,28 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
 
         public Builder externalAccountingSystemId(String externalAccountingSystemId) {
             this.externalAccountingSystemId = Optional.of(externalAccountingSystemId);
+            return this;
+        }
+
+        @JsonSetter(value = "frozen", nulls = Nulls.SKIP)
+        public Builder frozen(Optional<Boolean> frozen) {
+            this.frozen = frozen;
+            return this;
+        }
+
+        public Builder frozen(Boolean frozen) {
+            this.frozen = Optional.of(frozen);
+            return this;
+        }
+
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public Builder metadata(Optional<Map<String, String>> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        public Builder metadata(Map<String, String> metadata) {
+            this.metadata = Optional.of(metadata);
             return this;
         }
 
@@ -239,6 +297,8 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
                     defaultSource,
                     defaultDestination,
                     externalAccountingSystemId,
+                    frozen,
+                    metadata,
                     accountName,
                     plaid,
                     checkOptions,

@@ -44,8 +44,6 @@ public interface IInvoiceRequestBase {
 
     Optional<List<ApprovalSlotAssignment>> getApprovers();
 
-    Optional<List<InvoiceLineItemRequest>> getLineItems();
-
     Optional<Map<String, String>> getMetadata();
 
     Optional<String> getForeignId();

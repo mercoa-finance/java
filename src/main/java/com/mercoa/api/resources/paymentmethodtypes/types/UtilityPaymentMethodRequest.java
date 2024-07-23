@@ -26,6 +26,10 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
 
     private final Optional<String> externalAccountingSystemId;
 
+    private final Optional<Boolean> frozen;
+
+    private final Optional<Map<String, String>> metadata;
+
     private final String utilityId;
 
     private final Map<String, Object> additionalProperties;
@@ -34,11 +38,15 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
             Optional<String> externalAccountingSystemId,
+            Optional<Boolean> frozen,
+            Optional<Map<String, String>> metadata,
             String utilityId,
             Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
         this.externalAccountingSystemId = externalAccountingSystemId;
+        this.frozen = frozen;
+        this.metadata = metadata;
         this.utilityId = utilityId;
         this.additionalProperties = additionalProperties;
     }
@@ -71,6 +79,24 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
     }
 
     /**
+     * @return If true, this payment method will be frozen. Frozen payment methods cannot be used for payments, but will still be returned in API responses.
+     */
+    @JsonProperty("frozen")
+    @java.lang.Override
+    public Optional<Boolean> getFrozen() {
+        return frozen;
+    }
+
+    /**
+     * @return Metadata associated with this payment method.
+     */
+    @JsonProperty("metadata")
+    @java.lang.Override
+    public Optional<Map<String, String>> getMetadata() {
+        return metadata;
+    }
+
+    /**
      * @return The ID of the utility that this payment method is linked to.
      */
     @JsonProperty("utilityId")
@@ -93,13 +119,20 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
         return defaultSource.equals(other.defaultSource)
                 && defaultDestination.equals(other.defaultDestination)
                 && externalAccountingSystemId.equals(other.externalAccountingSystemId)
+                && frozen.equals(other.frozen)
+                && metadata.equals(other.metadata)
                 && utilityId.equals(other.utilityId);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.defaultSource, this.defaultDestination, this.externalAccountingSystemId, this.utilityId);
+                this.defaultSource,
+                this.defaultDestination,
+                this.externalAccountingSystemId,
+                this.frozen,
+                this.metadata,
+                this.utilityId);
     }
 
     @java.lang.Override
@@ -131,11 +164,23 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
         _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId);
 
         _FinalStage externalAccountingSystemId(String externalAccountingSystemId);
+
+        _FinalStage frozen(Optional<Boolean> frozen);
+
+        _FinalStage frozen(Boolean frozen);
+
+        _FinalStage metadata(Optional<Map<String, String>> metadata);
+
+        _FinalStage metadata(Map<String, String> metadata);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements UtilityIdStage, _FinalStage {
         private String utilityId;
+
+        private Optional<Map<String, String>> metadata = Optional.empty();
+
+        private Optional<Boolean> frozen = Optional.empty();
 
         private Optional<String> externalAccountingSystemId = Optional.empty();
 
@@ -153,6 +198,8 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
             externalAccountingSystemId(other.getExternalAccountingSystemId());
+            frozen(other.getFrozen());
+            metadata(other.getMetadata());
             utilityId(other.getUtilityId());
             return this;
         }
@@ -165,6 +212,40 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
         @JsonSetter("utilityId")
         public _FinalStage utilityId(String utilityId) {
             this.utilityId = utilityId;
+            return this;
+        }
+
+        /**
+         * <p>Metadata associated with this payment method.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage metadata(Map<String, String> metadata) {
+            this.metadata = Optional.of(metadata);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public _FinalStage metadata(Optional<Map<String, String>> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        /**
+         * <p>If true, this payment method will be frozen. Frozen payment methods cannot be used for payments, but will still be returned in API responses.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage frozen(Boolean frozen) {
+            this.frozen = Optional.of(frozen);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "frozen", nulls = Nulls.SKIP)
+        public _FinalStage frozen(Optional<Boolean> frozen) {
+            this.frozen = frozen;
             return this;
         }
 
@@ -222,7 +303,13 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
         @java.lang.Override
         public UtilityPaymentMethodRequest build() {
             return new UtilityPaymentMethodRequest(
-                    defaultSource, defaultDestination, externalAccountingSystemId, utilityId, additionalProperties);
+                    defaultSource,
+                    defaultDestination,
+                    externalAccountingSystemId,
+                    frozen,
+                    metadata,
+                    utilityId,
+                    additionalProperties);
         }
     }
 }

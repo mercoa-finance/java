@@ -20,15 +20,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = InvoiceLineItemRequest.Builder.class)
-public final class InvoiceLineItemRequest {
-    private final Optional<String> id;
-
-    private final double amount;
-
+@JsonDeserialize(builder = InvoiceLineItemCreationRequest.Builder.class)
+public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemRequestBase {
     private final Optional<CurrencyCode> currency;
-
-    private final String description;
 
     private final Optional<String> name;
 
@@ -44,13 +38,14 @@ public final class InvoiceLineItemRequest {
 
     private final Optional<String> glAccountId;
 
+    private final double amount;
+
+    private final String description;
+
     private final Map<String, Object> additionalProperties;
 
-    private InvoiceLineItemRequest(
-            Optional<String> id,
-            double amount,
+    private InvoiceLineItemCreationRequest(
             Optional<CurrencyCode> currency,
-            String description,
             Optional<String> name,
             Optional<Integer> quantity,
             Optional<Double> unitPrice,
@@ -58,11 +53,10 @@ public final class InvoiceLineItemRequest {
             Optional<OffsetDateTime> serviceEndDate,
             Optional<Map<String, String>> metadata,
             Optional<String> glAccountId,
+            double amount,
+            String description,
             Map<String, Object> additionalProperties) {
-        this.id = id;
-        this.amount = amount;
         this.currency = currency;
-        this.description = description;
         this.name = name;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
@@ -70,15 +64,66 @@ public final class InvoiceLineItemRequest {
         this.serviceEndDate = serviceEndDate;
         this.metadata = metadata;
         this.glAccountId = glAccountId;
+        this.amount = amount;
+        this.description = description;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return If provided, will overwrite line item on the invoice with this ID. If not provided, will create a new line item.
+     * @return Currency code for the amount. Defaults to USD.
      */
-    @JsonProperty("id")
-    public Optional<String> getId() {
-        return id;
+    @JsonProperty("currency")
+    @java.lang.Override
+    public Optional<CurrencyCode> getCurrency() {
+        return currency;
+    }
+
+    @JsonProperty("name")
+    @java.lang.Override
+    public Optional<String> getName() {
+        return name;
+    }
+
+    @JsonProperty("quantity")
+    @java.lang.Override
+    public Optional<Integer> getQuantity() {
+        return quantity;
+    }
+
+    /**
+     * @return Unit price of the line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
+     */
+    @JsonProperty("unitPrice")
+    @java.lang.Override
+    public Optional<Double> getUnitPrice() {
+        return unitPrice;
+    }
+
+    @JsonProperty("serviceStartDate")
+    @java.lang.Override
+    public Optional<OffsetDateTime> getServiceStartDate() {
+        return serviceStartDate;
+    }
+
+    @JsonProperty("serviceEndDate")
+    @java.lang.Override
+    public Optional<OffsetDateTime> getServiceEndDate() {
+        return serviceEndDate;
+    }
+
+    @JsonProperty("metadata")
+    @java.lang.Override
+    public Optional<Map<String, String>> getMetadata() {
+        return metadata;
+    }
+
+    /**
+     * @return ID of general ledger account associated with this line item.
+     */
+    @JsonProperty("glAccountId")
+    @java.lang.Override
+    public Optional<String> getGlAccountId() {
+        return glAccountId;
     }
 
     /**
@@ -89,64 +134,15 @@ public final class InvoiceLineItemRequest {
         return amount;
     }
 
-    /**
-     * @return Currency code for the amount. Defaults to USD.
-     */
-    @JsonProperty("currency")
-    public Optional<CurrencyCode> getCurrency() {
-        return currency;
-    }
-
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
-    @JsonProperty("name")
-    public Optional<String> getName() {
-        return name;
-    }
-
-    @JsonProperty("quantity")
-    public Optional<Integer> getQuantity() {
-        return quantity;
-    }
-
-    /**
-     * @return Unit price of the line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
-     */
-    @JsonProperty("unitPrice")
-    public Optional<Double> getUnitPrice() {
-        return unitPrice;
-    }
-
-    @JsonProperty("serviceStartDate")
-    public Optional<OffsetDateTime> getServiceStartDate() {
-        return serviceStartDate;
-    }
-
-    @JsonProperty("serviceEndDate")
-    public Optional<OffsetDateTime> getServiceEndDate() {
-        return serviceEndDate;
-    }
-
-    @JsonProperty("metadata")
-    public Optional<Map<String, String>> getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * @return ID of general ledger account associated with this line item.
-     */
-    @JsonProperty("glAccountId")
-    public Optional<String> getGlAccountId() {
-        return glAccountId;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof InvoiceLineItemRequest && equalTo((InvoiceLineItemRequest) other);
+        return other instanceof InvoiceLineItemCreationRequest && equalTo((InvoiceLineItemCreationRequest) other);
     }
 
     @JsonAnyGetter
@@ -154,34 +150,32 @@ public final class InvoiceLineItemRequest {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(InvoiceLineItemRequest other) {
-        return id.equals(other.id)
-                && amount == other.amount
-                && currency.equals(other.currency)
-                && description.equals(other.description)
+    private boolean equalTo(InvoiceLineItemCreationRequest other) {
+        return currency.equals(other.currency)
                 && name.equals(other.name)
                 && quantity.equals(other.quantity)
                 && unitPrice.equals(other.unitPrice)
                 && serviceStartDate.equals(other.serviceStartDate)
                 && serviceEndDate.equals(other.serviceEndDate)
                 && metadata.equals(other.metadata)
-                && glAccountId.equals(other.glAccountId);
+                && glAccountId.equals(other.glAccountId)
+                && amount == other.amount
+                && description.equals(other.description);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.id,
-                this.amount,
                 this.currency,
-                this.description,
                 this.name,
                 this.quantity,
                 this.unitPrice,
                 this.serviceStartDate,
                 this.serviceEndDate,
                 this.metadata,
-                this.glAccountId);
+                this.glAccountId,
+                this.amount,
+                this.description);
     }
 
     @java.lang.Override
@@ -196,7 +190,7 @@ public final class InvoiceLineItemRequest {
     public interface AmountStage {
         DescriptionStage amount(double amount);
 
-        Builder from(InvoiceLineItemRequest other);
+        Builder from(InvoiceLineItemCreationRequest other);
     }
 
     public interface DescriptionStage {
@@ -204,11 +198,7 @@ public final class InvoiceLineItemRequest {
     }
 
     public interface _FinalStage {
-        InvoiceLineItemRequest build();
-
-        _FinalStage id(Optional<String> id);
-
-        _FinalStage id(String id);
+        InvoiceLineItemCreationRequest build();
 
         _FinalStage currency(Optional<CurrencyCode> currency);
 
@@ -265,19 +255,14 @@ public final class InvoiceLineItemRequest {
 
         private Optional<CurrencyCode> currency = Optional.empty();
 
-        private Optional<String> id = Optional.empty();
-
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(InvoiceLineItemRequest other) {
-            id(other.getId());
-            amount(other.getAmount());
+        public Builder from(InvoiceLineItemCreationRequest other) {
             currency(other.getCurrency());
-            description(other.getDescription());
             name(other.getName());
             quantity(other.getQuantity());
             unitPrice(other.getUnitPrice());
@@ -285,6 +270,8 @@ public final class InvoiceLineItemRequest {
             serviceEndDate(other.getServiceEndDate());
             metadata(other.getMetadata());
             glAccountId(other.getGlAccountId());
+            amount(other.getAmount());
+            description(other.getDescription());
             return this;
         }
 
@@ -422,30 +409,10 @@ public final class InvoiceLineItemRequest {
             return this;
         }
 
-        /**
-         * <p>If provided, will overwrite line item on the invoice with this ID. If not provided, will create a new line item.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
         @java.lang.Override
-        public _FinalStage id(String id) {
-            this.id = Optional.of(id);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "id", nulls = Nulls.SKIP)
-        public _FinalStage id(Optional<String> id) {
-            this.id = id;
-            return this;
-        }
-
-        @java.lang.Override
-        public InvoiceLineItemRequest build() {
-            return new InvoiceLineItemRequest(
-                    id,
-                    amount,
+        public InvoiceLineItemCreationRequest build() {
+            return new InvoiceLineItemCreationRequest(
                     currency,
-                    description,
                     name,
                     quantity,
                     unitPrice,
@@ -453,6 +420,8 @@ public final class InvoiceLineItemRequest {
                     serviceEndDate,
                     metadata,
                     glAccountId,
+                    amount,
+                    description,
                     additionalProperties);
         }
     }

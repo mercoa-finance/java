@@ -13,6 +13,7 @@ import com.mercoa.api.resources.entitygroup.EntityGroupClient;
 import com.mercoa.api.resources.invoice.InvoiceClient;
 import com.mercoa.api.resources.ocr.OcrClient;
 import com.mercoa.api.resources.organization.OrganizationClient;
+import com.mercoa.api.resources.paymentmethods.PaymentMethodsClient;
 import java.util.function.Supplier;
 
 public class Mercoa {
@@ -34,6 +35,8 @@ public class Mercoa {
 
     protected final Supplier<OcrClient> ocrClient;
 
+    protected final Supplier<PaymentMethodsClient> paymentMethodsClient;
+
     public Mercoa(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.entityGroupClient = Suppliers.memoize(() -> new EntityGroupClient(clientOptions));
@@ -45,6 +48,7 @@ public class Mercoa {
         this.customPaymentMethodSchemaClient =
                 Suppliers.memoize(() -> new CustomPaymentMethodSchemaClient(clientOptions));
         this.ocrClient = Suppliers.memoize(() -> new OcrClient(clientOptions));
+        this.paymentMethodsClient = Suppliers.memoize(() -> new PaymentMethodsClient(clientOptions));
     }
 
     public EntityGroupClient entityGroup() {
@@ -77,6 +81,10 @@ public class Mercoa {
 
     public OcrClient ocr() {
         return this.ocrClient.get();
+    }
+
+    public PaymentMethodsClient paymentMethods() {
+        return this.paymentMethodsClient.get();
     }
 
     public static MercoaBuilder builder() {

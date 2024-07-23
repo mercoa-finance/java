@@ -15,6 +15,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -32,6 +33,10 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
     private final List<CurrencyCode> supportedCurrencies;
 
     private final Optional<String> externalAccountingSystemId;
+
+    private final boolean frozen;
+
+    private final Map<String, String> metadata;
 
     private final OffsetDateTime createdAt;
 
@@ -59,6 +64,8 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
             boolean isDefaultDestination,
             List<CurrencyCode> supportedCurrencies,
             Optional<String> externalAccountingSystemId,
+            boolean frozen,
+            Map<String, String> metadata,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             String accountName,
@@ -74,6 +81,8 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
         this.isDefaultDestination = isDefaultDestination;
         this.supportedCurrencies = supportedCurrencies;
         this.externalAccountingSystemId = externalAccountingSystemId;
+        this.frozen = frozen;
+        this.metadata = metadata;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.accountName = accountName;
@@ -123,6 +132,24 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
     @java.lang.Override
     public Optional<String> getExternalAccountingSystemId() {
         return externalAccountingSystemId;
+    }
+
+    /**
+     * @return Frozen payment methods cannot be used for payments, but will still be returned in API responses.
+     */
+    @JsonProperty("frozen")
+    @java.lang.Override
+    public boolean getFrozen() {
+        return frozen;
+    }
+
+    /**
+     * @return Metadata associated with this payment method.
+     */
+    @JsonProperty("metadata")
+    @java.lang.Override
+    public Map<String, String> getMetadata() {
+        return metadata;
     }
 
     @JsonProperty("createdAt")
@@ -192,6 +219,8 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
                 && isDefaultDestination == other.isDefaultDestination
                 && supportedCurrencies.equals(other.supportedCurrencies)
                 && externalAccountingSystemId.equals(other.externalAccountingSystemId)
+                && frozen == other.frozen
+                && metadata.equals(other.metadata)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt)
                 && accountName.equals(other.accountName)
@@ -211,6 +240,8 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
                 this.isDefaultDestination,
                 this.supportedCurrencies,
                 this.externalAccountingSystemId,
+                this.frozen,
+                this.metadata,
                 this.createdAt,
                 this.updatedAt,
                 this.accountName,
@@ -242,7 +273,11 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
     }
 
     public interface IsDefaultDestinationStage {
-        CreatedAtStage isDefaultDestination(boolean isDefaultDestination);
+        FrozenStage isDefaultDestination(boolean isDefaultDestination);
+    }
+
+    public interface FrozenStage {
+        CreatedAtStage frozen(boolean frozen);
     }
 
     public interface CreatedAtStage {
@@ -290,6 +325,12 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
 
         _FinalStage externalAccountingSystemId(String externalAccountingSystemId);
 
+        _FinalStage metadata(Map<String, String> metadata);
+
+        _FinalStage putAllMetadata(Map<String, String> metadata);
+
+        _FinalStage metadata(String key, String value);
+
         _FinalStage checkOptions(Optional<BankAccountCheckOptions> checkOptions);
 
         _FinalStage checkOptions(BankAccountCheckOptions checkOptions);
@@ -300,6 +341,7 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
             implements IdStage,
                     IsDefaultSourceStage,
                     IsDefaultDestinationStage,
+                    FrozenStage,
                     CreatedAtStage,
                     UpdatedAtStage,
                     AccountNameStage,
@@ -314,6 +356,8 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
         private boolean isDefaultSource;
 
         private boolean isDefaultDestination;
+
+        private boolean frozen;
 
         private OffsetDateTime createdAt;
 
@@ -333,6 +377,8 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
 
         private Optional<BankAccountCheckOptions> checkOptions = Optional.empty();
 
+        private Map<String, String> metadata = new LinkedHashMap<>();
+
         private Optional<String> externalAccountingSystemId = Optional.empty();
 
         private List<CurrencyCode> supportedCurrencies = new ArrayList<>();
@@ -349,6 +395,8 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
             isDefaultDestination(other.getIsDefaultDestination());
             supportedCurrencies(other.getSupportedCurrencies());
             externalAccountingSystemId(other.getExternalAccountingSystemId());
+            frozen(other.getFrozen());
+            metadata(other.getMetadata());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             accountName(other.getAccountName());
@@ -385,8 +433,19 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
          */
         @java.lang.Override
         @JsonSetter("isDefaultDestination")
-        public CreatedAtStage isDefaultDestination(boolean isDefaultDestination) {
+        public FrozenStage isDefaultDestination(boolean isDefaultDestination) {
             this.isDefaultDestination = isDefaultDestination;
+            return this;
+        }
+
+        /**
+         * <p>Frozen payment methods cannot be used for payments, but will still be returned in API responses.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("frozen")
+        public CreatedAtStage frozen(boolean frozen) {
+            this.frozen = frozen;
             return this;
         }
 
@@ -464,6 +523,34 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
         }
 
         /**
+         * <p>Metadata associated with this payment method.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage metadata(String key, String value) {
+            this.metadata.put(key, value);
+            return this;
+        }
+
+        /**
+         * <p>Metadata associated with this payment method.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage putAllMetadata(Map<String, String> metadata) {
+            this.metadata.putAll(metadata);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public _FinalStage metadata(Map<String, String> metadata) {
+            this.metadata.clear();
+            this.metadata.putAll(metadata);
+            return this;
+        }
+
+        /**
          * <p>ID for this payment method in the external accounting system (e.g Rutter or Codat)</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -508,6 +595,8 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
                     isDefaultDestination,
                     supportedCurrencies,
                     externalAccountingSystemId,
+                    frozen,
+                    metadata,
                     createdAt,
                     updatedAt,
                     accountName,

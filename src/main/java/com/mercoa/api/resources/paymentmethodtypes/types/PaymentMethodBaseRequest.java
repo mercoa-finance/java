@@ -26,16 +26,24 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
 
     private final Optional<String> externalAccountingSystemId;
 
+    private final Optional<Boolean> frozen;
+
+    private final Optional<Map<String, String>> metadata;
+
     private final Map<String, Object> additionalProperties;
 
     private PaymentMethodBaseRequest(
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
             Optional<String> externalAccountingSystemId,
+            Optional<Boolean> frozen,
+            Optional<Map<String, String>> metadata,
             Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
         this.externalAccountingSystemId = externalAccountingSystemId;
+        this.frozen = frozen;
+        this.metadata = metadata;
         this.additionalProperties = additionalProperties;
     }
 
@@ -66,6 +74,24 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
         return externalAccountingSystemId;
     }
 
+    /**
+     * @return If true, this payment method will be frozen. Frozen payment methods cannot be used for payments, but will still be returned in API responses.
+     */
+    @JsonProperty("frozen")
+    @java.lang.Override
+    public Optional<Boolean> getFrozen() {
+        return frozen;
+    }
+
+    /**
+     * @return Metadata associated with this payment method.
+     */
+    @JsonProperty("metadata")
+    @java.lang.Override
+    public Optional<Map<String, String>> getMetadata() {
+        return metadata;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -80,12 +106,19 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
     private boolean equalTo(PaymentMethodBaseRequest other) {
         return defaultSource.equals(other.defaultSource)
                 && defaultDestination.equals(other.defaultDestination)
-                && externalAccountingSystemId.equals(other.externalAccountingSystemId);
+                && externalAccountingSystemId.equals(other.externalAccountingSystemId)
+                && frozen.equals(other.frozen)
+                && metadata.equals(other.metadata);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.defaultSource, this.defaultDestination, this.externalAccountingSystemId);
+        return Objects.hash(
+                this.defaultSource,
+                this.defaultDestination,
+                this.externalAccountingSystemId,
+                this.frozen,
+                this.metadata);
     }
 
     @java.lang.Override
@@ -105,6 +138,10 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
 
         private Optional<String> externalAccountingSystemId = Optional.empty();
 
+        private Optional<Boolean> frozen = Optional.empty();
+
+        private Optional<Map<String, String>> metadata = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -114,6 +151,8 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
             externalAccountingSystemId(other.getExternalAccountingSystemId());
+            frozen(other.getFrozen());
+            metadata(other.getMetadata());
             return this;
         }
 
@@ -150,9 +189,36 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
             return this;
         }
 
+        @JsonSetter(value = "frozen", nulls = Nulls.SKIP)
+        public Builder frozen(Optional<Boolean> frozen) {
+            this.frozen = frozen;
+            return this;
+        }
+
+        public Builder frozen(Boolean frozen) {
+            this.frozen = Optional.of(frozen);
+            return this;
+        }
+
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public Builder metadata(Optional<Map<String, String>> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        public Builder metadata(Map<String, String> metadata) {
+            this.metadata = Optional.of(metadata);
+            return this;
+        }
+
         public PaymentMethodBaseRequest build() {
             return new PaymentMethodBaseRequest(
-                    defaultSource, defaultDestination, externalAccountingSystemId, additionalProperties);
+                    defaultSource,
+                    defaultDestination,
+                    externalAccountingSystemId,
+                    frozen,
+                    metadata,
+                    additionalProperties);
         }
     }
 }

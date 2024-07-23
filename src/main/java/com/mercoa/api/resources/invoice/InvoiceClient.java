@@ -14,6 +14,7 @@ import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.invoice.approval.ApprovalClient;
 import com.mercoa.api.resources.invoice.comment.CommentClient;
 import com.mercoa.api.resources.invoice.document.DocumentClient;
+import com.mercoa.api.resources.invoice.lineitem.LineItemClient;
 import com.mercoa.api.resources.invoice.paymentlinks.PaymentLinksClient;
 import com.mercoa.api.resources.invoice.requests.GetAllInvoicesRequest;
 import com.mercoa.api.resources.invoicetypes.types.FindInvoiceResponse;
@@ -33,6 +34,8 @@ import okhttp3.ResponseBody;
 public class InvoiceClient {
     protected final ClientOptions clientOptions;
 
+    protected final Supplier<LineItemClient> lineItemClient;
+
     protected final Supplier<ApprovalClient> approvalClient;
 
     protected final Supplier<CommentClient> commentClient;
@@ -43,6 +46,7 @@ public class InvoiceClient {
 
     public InvoiceClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.lineItemClient = Suppliers.memoize(() -> new LineItemClient(clientOptions));
         this.approvalClient = Suppliers.memoize(() -> new ApprovalClient(clientOptions));
         this.commentClient = Suppliers.memoize(() -> new CommentClient(clientOptions));
         this.documentClient = Suppliers.memoize(() -> new DocumentClient(clientOptions));
@@ -311,6 +315,10 @@ public class InvoiceClient {
         } catch (IOException e) {
             throw new MercoaException("Network error executing HTTP request", e);
         }
+    }
+
+    public LineItemClient lineItem() {
+        return this.lineItemClient.get();
     }
 
     public ApprovalClient approval() {

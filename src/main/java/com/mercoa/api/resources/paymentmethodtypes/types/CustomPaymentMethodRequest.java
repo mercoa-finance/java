@@ -27,6 +27,10 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
 
     private final Optional<String> externalAccountingSystemId;
 
+    private final Optional<Boolean> frozen;
+
+    private final Optional<Map<String, String>> metadata;
+
     private final Optional<String> foreignId;
 
     private final Optional<String> accountName;
@@ -45,6 +49,8 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
             Optional<String> externalAccountingSystemId,
+            Optional<Boolean> frozen,
+            Optional<Map<String, String>> metadata,
             Optional<String> foreignId,
             Optional<String> accountName,
             Optional<String> accountNumber,
@@ -55,6 +61,8 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
         this.externalAccountingSystemId = externalAccountingSystemId;
+        this.frozen = frozen;
+        this.metadata = metadata;
         this.foreignId = foreignId;
         this.accountName = accountName;
         this.accountNumber = accountNumber;
@@ -89,6 +97,24 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
     @java.lang.Override
     public Optional<String> getExternalAccountingSystemId() {
         return externalAccountingSystemId;
+    }
+
+    /**
+     * @return If true, this payment method will be frozen. Frozen payment methods cannot be used for payments, but will still be returned in API responses.
+     */
+    @JsonProperty("frozen")
+    @java.lang.Override
+    public Optional<Boolean> getFrozen() {
+        return frozen;
+    }
+
+    /**
+     * @return Metadata associated with this payment method.
+     */
+    @JsonProperty("metadata")
+    @java.lang.Override
+    public Optional<Map<String, String>> getMetadata() {
+        return metadata;
     }
 
     /**
@@ -148,6 +174,8 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
         return defaultSource.equals(other.defaultSource)
                 && defaultDestination.equals(other.defaultDestination)
                 && externalAccountingSystemId.equals(other.externalAccountingSystemId)
+                && frozen.equals(other.frozen)
+                && metadata.equals(other.metadata)
                 && foreignId.equals(other.foreignId)
                 && accountName.equals(other.accountName)
                 && accountNumber.equals(other.accountNumber)
@@ -162,6 +190,8 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
                 this.defaultSource,
                 this.defaultDestination,
                 this.externalAccountingSystemId,
+                this.frozen,
+                this.metadata,
                 this.foreignId,
                 this.accountName,
                 this.accountNumber,
@@ -200,6 +230,14 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
 
         _FinalStage externalAccountingSystemId(String externalAccountingSystemId);
 
+        _FinalStage frozen(Optional<Boolean> frozen);
+
+        _FinalStage frozen(Boolean frozen);
+
+        _FinalStage metadata(Optional<Map<String, String>> metadata);
+
+        _FinalStage metadata(Map<String, String> metadata);
+
         _FinalStage foreignId(Optional<String> foreignId);
 
         _FinalStage foreignId(String foreignId);
@@ -237,6 +275,10 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
 
         private Optional<String> foreignId = Optional.empty();
 
+        private Optional<Map<String, String>> metadata = Optional.empty();
+
+        private Optional<Boolean> frozen = Optional.empty();
+
         private Optional<String> externalAccountingSystemId = Optional.empty();
 
         private Optional<Boolean> defaultDestination = Optional.empty();
@@ -253,6 +295,8 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
             externalAccountingSystemId(other.getExternalAccountingSystemId());
+            frozen(other.getFrozen());
+            metadata(other.getMetadata());
             foreignId(other.getForeignId());
             accountName(other.getAccountName());
             accountNumber(other.getAccountNumber());
@@ -362,6 +406,40 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
         }
 
         /**
+         * <p>Metadata associated with this payment method.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage metadata(Map<String, String> metadata) {
+            this.metadata = Optional.of(metadata);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public _FinalStage metadata(Optional<Map<String, String>> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        /**
+         * <p>If true, this payment method will be frozen. Frozen payment methods cannot be used for payments, but will still be returned in API responses.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage frozen(Boolean frozen) {
+            this.frozen = Optional.of(frozen);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "frozen", nulls = Nulls.SKIP)
+        public _FinalStage frozen(Optional<Boolean> frozen) {
+            this.frozen = frozen;
+            return this;
+        }
+
+        /**
          * <p>ID for this payment method in the external accounting system (e.g Rutter or Codat)</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -418,6 +496,8 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
                     defaultSource,
                     defaultDestination,
                     externalAccountingSystemId,
+                    frozen,
+                    metadata,
                     foreignId,
                     accountName,
                     accountNumber,

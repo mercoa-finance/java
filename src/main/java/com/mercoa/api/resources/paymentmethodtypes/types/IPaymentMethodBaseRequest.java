@@ -3,6 +3,7 @@
  */
 package com.mercoa.api.resources.paymentmethodtypes.types;
 
+import java.util.Map;
 import java.util.Optional;
 
 public interface IPaymentMethodBaseRequest {
@@ -11,4 +12,8 @@ public interface IPaymentMethodBaseRequest {
     Optional<Boolean> getDefaultDestination();
 
     Optional<String> getExternalAccountingSystemId();
+
+    Optional<Boolean> getFrozen();
+
+    Optional<Map<String, String>> getMetadata();
 }

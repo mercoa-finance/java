@@ -15,6 +15,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -33,6 +34,10 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
 
     private final Optional<String> externalAccountingSystemId;
 
+    private final boolean frozen;
+
+    private final Map<String, String> metadata;
+
     private final OffsetDateTime createdAt;
 
     private final OffsetDateTime updatedAt;
@@ -47,6 +52,8 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
             boolean isDefaultDestination,
             List<CurrencyCode> supportedCurrencies,
             Optional<String> externalAccountingSystemId,
+            boolean frozen,
+            Map<String, String> metadata,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             String utilityId,
@@ -56,6 +63,8 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
         this.isDefaultDestination = isDefaultDestination;
         this.supportedCurrencies = supportedCurrencies;
         this.externalAccountingSystemId = externalAccountingSystemId;
+        this.frozen = frozen;
+        this.metadata = metadata;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.utilityId = utilityId;
@@ -101,6 +110,24 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
         return externalAccountingSystemId;
     }
 
+    /**
+     * @return Frozen payment methods cannot be used for payments, but will still be returned in API responses.
+     */
+    @JsonProperty("frozen")
+    @java.lang.Override
+    public boolean getFrozen() {
+        return frozen;
+    }
+
+    /**
+     * @return Metadata associated with this payment method.
+     */
+    @JsonProperty("metadata")
+    @java.lang.Override
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     @JsonProperty("createdAt")
     @java.lang.Override
     public OffsetDateTime getCreatedAt() {
@@ -138,6 +165,8 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
                 && isDefaultDestination == other.isDefaultDestination
                 && supportedCurrencies.equals(other.supportedCurrencies)
                 && externalAccountingSystemId.equals(other.externalAccountingSystemId)
+                && frozen == other.frozen
+                && metadata.equals(other.metadata)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt)
                 && utilityId.equals(other.utilityId);
@@ -151,6 +180,8 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
                 this.isDefaultDestination,
                 this.supportedCurrencies,
                 this.externalAccountingSystemId,
+                this.frozen,
+                this.metadata,
                 this.createdAt,
                 this.updatedAt,
                 this.utilityId);
@@ -176,7 +207,11 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
     }
 
     public interface IsDefaultDestinationStage {
-        CreatedAtStage isDefaultDestination(boolean isDefaultDestination);
+        FrozenStage isDefaultDestination(boolean isDefaultDestination);
+    }
+
+    public interface FrozenStage {
+        CreatedAtStage frozen(boolean frozen);
     }
 
     public interface CreatedAtStage {
@@ -203,6 +238,12 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
         _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId);
 
         _FinalStage externalAccountingSystemId(String externalAccountingSystemId);
+
+        _FinalStage metadata(Map<String, String> metadata);
+
+        _FinalStage putAllMetadata(Map<String, String> metadata);
+
+        _FinalStage metadata(String key, String value);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -210,6 +251,7 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
             implements IdStage,
                     IsDefaultSourceStage,
                     IsDefaultDestinationStage,
+                    FrozenStage,
                     CreatedAtStage,
                     UpdatedAtStage,
                     UtilityIdStage,
@@ -220,11 +262,15 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
 
         private boolean isDefaultDestination;
 
+        private boolean frozen;
+
         private OffsetDateTime createdAt;
 
         private OffsetDateTime updatedAt;
 
         private String utilityId;
+
+        private Map<String, String> metadata = new LinkedHashMap<>();
 
         private Optional<String> externalAccountingSystemId = Optional.empty();
 
@@ -242,6 +288,8 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
             isDefaultDestination(other.getIsDefaultDestination());
             supportedCurrencies(other.getSupportedCurrencies());
             externalAccountingSystemId(other.getExternalAccountingSystemId());
+            frozen(other.getFrozen());
+            metadata(other.getMetadata());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             utilityId(other.getUtilityId());
@@ -272,8 +320,19 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
          */
         @java.lang.Override
         @JsonSetter("isDefaultDestination")
-        public CreatedAtStage isDefaultDestination(boolean isDefaultDestination) {
+        public FrozenStage isDefaultDestination(boolean isDefaultDestination) {
             this.isDefaultDestination = isDefaultDestination;
+            return this;
+        }
+
+        /**
+         * <p>Frozen payment methods cannot be used for payments, but will still be returned in API responses.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("frozen")
+        public CreatedAtStage frozen(boolean frozen) {
+            this.frozen = frozen;
             return this;
         }
 
@@ -299,6 +358,34 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
         @JsonSetter("utilityId")
         public _FinalStage utilityId(String utilityId) {
             this.utilityId = utilityId;
+            return this;
+        }
+
+        /**
+         * <p>Metadata associated with this payment method.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage metadata(String key, String value) {
+            this.metadata.put(key, value);
+            return this;
+        }
+
+        /**
+         * <p>Metadata associated with this payment method.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage putAllMetadata(Map<String, String> metadata) {
+            this.metadata.putAll(metadata);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public _FinalStage metadata(Map<String, String> metadata) {
+            this.metadata.clear();
+            this.metadata.putAll(metadata);
             return this;
         }
 
@@ -347,6 +434,8 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
                     isDefaultDestination,
                     supportedCurrencies,
                     externalAccountingSystemId,
+                    frozen,
+                    metadata,
                     createdAt,
                     updatedAt,
                     utilityId,

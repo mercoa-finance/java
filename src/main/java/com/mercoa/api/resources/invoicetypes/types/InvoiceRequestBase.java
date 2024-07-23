@@ -57,8 +57,6 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
     private final Optional<List<ApprovalSlotAssignment>> approvers;
 
-    private final Optional<List<InvoiceLineItemRequest>> lineItems;
-
     private final Optional<Map<String, String>> metadata;
 
     private final Optional<String> foreignId;
@@ -93,7 +91,6 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             Optional<String> paymentDestinationId,
             Optional<PaymentDestinationOptions> paymentDestinationOptions,
             Optional<List<ApprovalSlotAssignment>> approvers,
-            Optional<List<InvoiceLineItemRequest>> lineItems,
             Optional<Map<String, String>> metadata,
             Optional<String> foreignId,
             Optional<String> document,
@@ -119,7 +116,6 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         this.paymentDestinationId = paymentDestinationId;
         this.paymentDestinationOptions = paymentDestinationOptions;
         this.approvers = approvers;
-        this.lineItems = lineItems;
         this.metadata = metadata;
         this.foreignId = foreignId;
         this.document = document;
@@ -265,14 +261,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         return approvers;
     }
 
-    @JsonProperty("lineItems")
-    @java.lang.Override
-    public Optional<List<InvoiceLineItemRequest>> getLineItems() {
-        return lineItems;
-    }
-
     /**
-     * @return Metadata associated with this invoice. You can specify up to 10 keys, with key names up to 40 characters long and values up to 200 characters long.
+     * @return Metadata associated with this invoice.
      */
     @JsonProperty("metadata")
     @java.lang.Override
@@ -363,7 +353,6 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 && paymentDestinationId.equals(other.paymentDestinationId)
                 && paymentDestinationOptions.equals(other.paymentDestinationOptions)
                 && approvers.equals(other.approvers)
-                && lineItems.equals(other.lineItems)
                 && metadata.equals(other.metadata)
                 && foreignId.equals(other.foreignId)
                 && document.equals(other.document)
@@ -393,7 +382,6 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 this.paymentDestinationId,
                 this.paymentDestinationOptions,
                 this.approvers,
-                this.lineItems,
                 this.metadata,
                 this.foreignId,
                 this.document,
@@ -448,8 +436,6 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
         private Optional<List<ApprovalSlotAssignment>> approvers = Optional.empty();
 
-        private Optional<List<InvoiceLineItemRequest>> lineItems = Optional.empty();
-
         private Optional<Map<String, String>> metadata = Optional.empty();
 
         private Optional<String> foreignId = Optional.empty();
@@ -487,7 +473,6 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             paymentDestinationId(other.getPaymentDestinationId());
             paymentDestinationOptions(other.getPaymentDestinationOptions());
             approvers(other.getApprovers());
-            lineItems(other.getLineItems());
             metadata(other.getMetadata());
             foreignId(other.getForeignId());
             document(other.getDocument());
@@ -685,17 +670,6 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
-        @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
-        public Builder lineItems(Optional<List<InvoiceLineItemRequest>> lineItems) {
-            this.lineItems = lineItems;
-            return this;
-        }
-
-        public Builder lineItems(List<InvoiceLineItemRequest> lineItems) {
-            this.lineItems = Optional.of(lineItems);
-            return this;
-        }
-
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public Builder metadata(Optional<Map<String, String>> metadata) {
             this.metadata = metadata;
@@ -792,7 +766,6 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                     paymentDestinationId,
                     paymentDestinationOptions,
                     approvers,
-                    lineItems,
                     metadata,
                     foreignId,
                     document,

@@ -26,6 +26,10 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
 
     private final Optional<String> externalAccountingSystemId;
 
+    private final Optional<Boolean> frozen;
+
+    private final Optional<Map<String, String>> metadata;
+
     private final Optional<String> accountName;
 
     private final Optional<String> bankName;
@@ -46,6 +50,8 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             Optional<Boolean> defaultSource,
             Optional<Boolean> defaultDestination,
             Optional<String> externalAccountingSystemId,
+            Optional<Boolean> frozen,
+            Optional<Map<String, String>> metadata,
             Optional<String> accountName,
             Optional<String> bankName,
             String routingNumber,
@@ -57,6 +63,8 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
         this.externalAccountingSystemId = externalAccountingSystemId;
+        this.frozen = frozen;
+        this.metadata = metadata;
         this.accountName = accountName;
         this.bankName = bankName;
         this.routingNumber = routingNumber;
@@ -92,6 +100,24 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
     @java.lang.Override
     public Optional<String> getExternalAccountingSystemId() {
         return externalAccountingSystemId;
+    }
+
+    /**
+     * @return If true, this payment method will be frozen. Frozen payment methods cannot be used for payments, but will still be returned in API responses.
+     */
+    @JsonProperty("frozen")
+    @java.lang.Override
+    public Optional<Boolean> getFrozen() {
+        return frozen;
+    }
+
+    /**
+     * @return Metadata associated with this payment method.
+     */
+    @JsonProperty("metadata")
+    @java.lang.Override
+    public Optional<Map<String, String>> getMetadata() {
+        return metadata;
     }
 
     /**
@@ -156,6 +182,8 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         return defaultSource.equals(other.defaultSource)
                 && defaultDestination.equals(other.defaultDestination)
                 && externalAccountingSystemId.equals(other.externalAccountingSystemId)
+                && frozen.equals(other.frozen)
+                && metadata.equals(other.metadata)
                 && accountName.equals(other.accountName)
                 && bankName.equals(other.bankName)
                 && routingNumber.equals(other.routingNumber)
@@ -171,6 +199,8 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
                 this.defaultSource,
                 this.defaultDestination,
                 this.externalAccountingSystemId,
+                this.frozen,
+                this.metadata,
                 this.accountName,
                 this.bankName,
                 this.routingNumber,
@@ -218,6 +248,14 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
 
         _FinalStage externalAccountingSystemId(String externalAccountingSystemId);
 
+        _FinalStage frozen(Optional<Boolean> frozen);
+
+        _FinalStage frozen(Boolean frozen);
+
+        _FinalStage metadata(Optional<Map<String, String>> metadata);
+
+        _FinalStage metadata(Map<String, String> metadata);
+
         _FinalStage accountName(Optional<String> accountName);
 
         _FinalStage accountName(String accountName);
@@ -251,6 +289,10 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
 
         private Optional<String> accountName = Optional.empty();
 
+        private Optional<Map<String, String>> metadata = Optional.empty();
+
+        private Optional<Boolean> frozen = Optional.empty();
+
         private Optional<String> externalAccountingSystemId = Optional.empty();
 
         private Optional<Boolean> defaultDestination = Optional.empty();
@@ -267,6 +309,8 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             defaultSource(other.getDefaultSource());
             defaultDestination(other.getDefaultDestination());
             externalAccountingSystemId(other.getExternalAccountingSystemId());
+            frozen(other.getFrozen());
+            metadata(other.getMetadata());
             accountName(other.getAccountName());
             bankName(other.getBankName());
             routingNumber(other.getRoutingNumber());
@@ -367,6 +411,40 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         }
 
         /**
+         * <p>Metadata associated with this payment method.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage metadata(Map<String, String> metadata) {
+            this.metadata = Optional.of(metadata);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public _FinalStage metadata(Optional<Map<String, String>> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        /**
+         * <p>If true, this payment method will be frozen. Frozen payment methods cannot be used for payments, but will still be returned in API responses.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage frozen(Boolean frozen) {
+            this.frozen = Optional.of(frozen);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "frozen", nulls = Nulls.SKIP)
+        public _FinalStage frozen(Optional<Boolean> frozen) {
+            this.frozen = frozen;
+            return this;
+        }
+
+        /**
          * <p>ID for this payment method in the external accounting system (e.g Rutter or Codat)</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -423,6 +501,8 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
                     defaultSource,
                     defaultDestination,
                     externalAccountingSystemId,
+                    frozen,
+                    metadata,
                     accountName,
                     bankName,
                     routingNumber,
