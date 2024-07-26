@@ -26,6 +26,8 @@ public interface IEntityResponse {
 
     ProfileResponse getProfile();
 
+    Optional<String> getLogo();
+
     EntityStatus getStatus();
 
     boolean getAcceptedTos();

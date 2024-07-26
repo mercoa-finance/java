@@ -147,7 +147,7 @@ public final class EntityUpdateRequest {
     }
 
     /**
-     * @return Base64 encoded PNG image data for the entity logo.
+     * @return Base64 encoded PNG image data for the entity logo. Max size 100KB.
      */
     @JsonProperty("logo")
     public Optional<String> getLogo() {

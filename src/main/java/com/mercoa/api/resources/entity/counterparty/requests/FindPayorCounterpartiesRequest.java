@@ -29,8 +29,6 @@ public final class FindPayorCounterpartiesRequest {
 
     private final Optional<Boolean> invoiceMetrics;
 
-    private final Optional<Boolean> logo;
-
     private final Optional<String> counterpartyId;
 
     private final Optional<Integer> limit;
@@ -44,7 +42,6 @@ public final class FindPayorCounterpartiesRequest {
             Optional<CounterpartyNetworkType> networkType,
             Optional<Boolean> paymentMethods,
             Optional<Boolean> invoiceMetrics,
-            Optional<Boolean> logo,
             Optional<String> counterpartyId,
             Optional<Integer> limit,
             Optional<String> startingAfter,
@@ -53,7 +50,6 @@ public final class FindPayorCounterpartiesRequest {
         this.networkType = networkType;
         this.paymentMethods = paymentMethods;
         this.invoiceMetrics = invoiceMetrics;
-        this.logo = logo;
         this.counterpartyId = counterpartyId;
         this.limit = limit;
         this.startingAfter = startingAfter;
@@ -90,14 +86,6 @@ public final class FindPayorCounterpartiesRequest {
     @JsonProperty("invoiceMetrics")
     public Optional<Boolean> getInvoiceMetrics() {
         return invoiceMetrics;
-    }
-
-    /**
-     * @return If true, will include counterparty logo as part of the response
-     */
-    @JsonProperty("logo")
-    public Optional<Boolean> getLogo() {
-        return logo;
     }
 
     /**
@@ -140,7 +128,6 @@ public final class FindPayorCounterpartiesRequest {
                 && networkType.equals(other.networkType)
                 && paymentMethods.equals(other.paymentMethods)
                 && invoiceMetrics.equals(other.invoiceMetrics)
-                && logo.equals(other.logo)
                 && counterpartyId.equals(other.counterpartyId)
                 && limit.equals(other.limit)
                 && startingAfter.equals(other.startingAfter);
@@ -153,7 +140,6 @@ public final class FindPayorCounterpartiesRequest {
                 this.networkType,
                 this.paymentMethods,
                 this.invoiceMetrics,
-                this.logo,
                 this.counterpartyId,
                 this.limit,
                 this.startingAfter);
@@ -178,8 +164,6 @@ public final class FindPayorCounterpartiesRequest {
 
         private Optional<Boolean> invoiceMetrics = Optional.empty();
 
-        private Optional<Boolean> logo = Optional.empty();
-
         private Optional<String> counterpartyId = Optional.empty();
 
         private Optional<Integer> limit = Optional.empty();
@@ -196,7 +180,6 @@ public final class FindPayorCounterpartiesRequest {
             networkType(other.getNetworkType());
             paymentMethods(other.getPaymentMethods());
             invoiceMetrics(other.getInvoiceMetrics());
-            logo(other.getLogo());
             counterpartyId(other.getCounterpartyId());
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
@@ -247,17 +230,6 @@ public final class FindPayorCounterpartiesRequest {
             return this;
         }
 
-        @JsonSetter(value = "logo", nulls = Nulls.SKIP)
-        public Builder logo(Optional<Boolean> logo) {
-            this.logo = logo;
-            return this;
-        }
-
-        public Builder logo(Boolean logo) {
-            this.logo = Optional.of(logo);
-            return this;
-        }
-
         @JsonSetter(value = "counterpartyId", nulls = Nulls.SKIP)
         public Builder counterpartyId(Optional<String> counterpartyId) {
             this.counterpartyId = counterpartyId;
@@ -297,7 +269,6 @@ public final class FindPayorCounterpartiesRequest {
                     networkType,
                     paymentMethods,
                     invoiceMetrics,
-                    logo,
                     counterpartyId,
                     limit,
                     startingAfter,

@@ -44,6 +44,8 @@ public final class BusinessOnboardingOptions {
 
     private final OnboardingOption representatives;
 
+    private final OnboardingOption logo;
+
     private final Map<String, Object> additionalProperties;
 
     private BusinessOnboardingOptions(
@@ -60,6 +62,7 @@ public final class BusinessOnboardingOptions {
             OnboardingOption website,
             OnboardingOption description,
             OnboardingOption representatives,
+            OnboardingOption logo,
             Map<String, Object> additionalProperties) {
         this.termsOfService = termsOfService;
         this.email = email;
@@ -74,6 +77,7 @@ public final class BusinessOnboardingOptions {
         this.website = website;
         this.description = description;
         this.representatives = representatives;
+        this.logo = logo;
         this.additionalProperties = additionalProperties;
     }
 
@@ -142,6 +146,11 @@ public final class BusinessOnboardingOptions {
         return representatives;
     }
 
+    @JsonProperty("logo")
+    public OnboardingOption getLogo() {
+        return logo;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -166,7 +175,8 @@ public final class BusinessOnboardingOptions {
                 && formationDate.equals(other.formationDate)
                 && website.equals(other.website)
                 && description.equals(other.description)
-                && representatives.equals(other.representatives);
+                && representatives.equals(other.representatives)
+                && logo.equals(other.logo);
     }
 
     @java.lang.Override
@@ -184,7 +194,8 @@ public final class BusinessOnboardingOptions {
                 this.formationDate,
                 this.website,
                 this.description,
-                this.representatives);
+                this.representatives,
+                this.logo);
     }
 
     @java.lang.Override
@@ -247,7 +258,11 @@ public final class BusinessOnboardingOptions {
     }
 
     public interface RepresentativesStage {
-        _FinalStage representatives(OnboardingOption representatives);
+        LogoStage representatives(OnboardingOption representatives);
+    }
+
+    public interface LogoStage {
+        _FinalStage logo(OnboardingOption logo);
     }
 
     public interface _FinalStage {
@@ -269,6 +284,7 @@ public final class BusinessOnboardingOptions {
                     WebsiteStage,
                     DescriptionStage,
                     RepresentativesStage,
+                    LogoStage,
                     _FinalStage {
         private OnboardingOption termsOfService;
 
@@ -296,6 +312,8 @@ public final class BusinessOnboardingOptions {
 
         private OnboardingOption representatives;
 
+        private OnboardingOption logo;
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -316,6 +334,7 @@ public final class BusinessOnboardingOptions {
             website(other.getWebsite());
             description(other.getDescription());
             representatives(other.getRepresentatives());
+            logo(other.getLogo());
             return this;
         }
 
@@ -405,8 +424,15 @@ public final class BusinessOnboardingOptions {
 
         @java.lang.Override
         @JsonSetter("representatives")
-        public _FinalStage representatives(OnboardingOption representatives) {
+        public LogoStage representatives(OnboardingOption representatives) {
             this.representatives = representatives;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("logo")
+        public _FinalStage logo(OnboardingOption logo) {
+            this.logo = logo;
             return this;
         }
 
@@ -426,6 +452,7 @@ public final class BusinessOnboardingOptions {
                     website,
                     description,
                     representatives,
+                    logo,
                     additionalProperties);
         }
     }

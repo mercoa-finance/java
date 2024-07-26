@@ -41,6 +41,8 @@ public final class CounterpartyResponse implements IEntityResponse {
 
     private final ProfileResponse profile;
 
+    private final Optional<String> logo;
+
     private final EntityStatus status;
 
     private final boolean acceptedTos;
@@ -58,8 +60,6 @@ public final class CounterpartyResponse implements IEntityResponse {
     private final OffsetDateTime updatedAt;
 
     private final Optional<List<CounterpartyCustomizationAccount>> accounts;
-
-    private final Optional<String> logo;
 
     private final Optional<List<PaymentMethodResponse>> paymentMethods;
 
@@ -79,6 +79,7 @@ public final class CounterpartyResponse implements IEntityResponse {
             boolean isCustomer,
             AccountType accountType,
             ProfileResponse profile,
+            Optional<String> logo,
             EntityStatus status,
             boolean acceptedTos,
             boolean isPayor,
@@ -88,7 +89,6 @@ public final class CounterpartyResponse implements IEntityResponse {
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Optional<List<CounterpartyCustomizationAccount>> accounts,
-            Optional<String> logo,
             Optional<List<PaymentMethodResponse>> paymentMethods,
             Optional<List<CounterpartyNetworkType>> counterpartyType,
             Optional<CounterpartyInvoiceMetricsResponse> invoiceMetrics,
@@ -102,6 +102,7 @@ public final class CounterpartyResponse implements IEntityResponse {
         this.isCustomer = isCustomer;
         this.accountType = accountType;
         this.profile = profile;
+        this.logo = logo;
         this.status = status;
         this.acceptedTos = acceptedTos;
         this.isPayor = isPayor;
@@ -111,7 +112,6 @@ public final class CounterpartyResponse implements IEntityResponse {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.accounts = accounts;
-        this.logo = logo;
         this.paymentMethods = paymentMethods;
         this.counterpartyType = counterpartyType;
         this.invoiceMetrics = invoiceMetrics;
@@ -182,6 +182,15 @@ public final class CounterpartyResponse implements IEntityResponse {
     @java.lang.Override
     public ProfileResponse getProfile() {
         return profile;
+    }
+
+    /**
+     * @return URL for the entity logo
+     */
+    @JsonProperty("logo")
+    @java.lang.Override
+    public Optional<String> getLogo() {
+        return logo;
     }
 
     @JsonProperty("status")
@@ -255,14 +264,6 @@ public final class CounterpartyResponse implements IEntityResponse {
         return accounts;
     }
 
-    /**
-     * @return URL to the entity logo
-     */
-    @JsonProperty("logo")
-    public Optional<String> getLogo() {
-        return logo;
-    }
-
     @JsonProperty("paymentMethods")
     public Optional<List<PaymentMethodResponse>> getPaymentMethods() {
         return paymentMethods;
@@ -299,6 +300,7 @@ public final class CounterpartyResponse implements IEntityResponse {
                 && isCustomer == other.isCustomer
                 && accountType.equals(other.accountType)
                 && profile.equals(other.profile)
+                && logo.equals(other.logo)
                 && status.equals(other.status)
                 && acceptedTos == other.acceptedTos
                 && isPayor == other.isPayor
@@ -308,7 +310,6 @@ public final class CounterpartyResponse implements IEntityResponse {
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt)
                 && accounts.equals(other.accounts)
-                && logo.equals(other.logo)
                 && paymentMethods.equals(other.paymentMethods)
                 && counterpartyType.equals(other.counterpartyType)
                 && invoiceMetrics.equals(other.invoiceMetrics);
@@ -326,6 +327,7 @@ public final class CounterpartyResponse implements IEntityResponse {
                 this.isCustomer,
                 this.accountType,
                 this.profile,
+                this.logo,
                 this.status,
                 this.acceptedTos,
                 this.isPayor,
@@ -335,7 +337,6 @@ public final class CounterpartyResponse implements IEntityResponse {
                 this.createdAt,
                 this.updatedAt,
                 this.accounts,
-                this.logo,
                 this.paymentMethods,
                 this.counterpartyType,
                 this.invoiceMetrics);
@@ -423,13 +424,13 @@ public final class CounterpartyResponse implements IEntityResponse {
 
         _FinalStage emailToAlias(List<String> emailToAlias);
 
-        _FinalStage accounts(Optional<List<CounterpartyCustomizationAccount>> accounts);
-
-        _FinalStage accounts(List<CounterpartyCustomizationAccount> accounts);
-
         _FinalStage logo(Optional<String> logo);
 
         _FinalStage logo(String logo);
+
+        _FinalStage accounts(Optional<List<CounterpartyCustomizationAccount>> accounts);
+
+        _FinalStage accounts(List<CounterpartyCustomizationAccount> accounts);
 
         _FinalStage paymentMethods(Optional<List<PaymentMethodResponse>> paymentMethods);
 
@@ -495,9 +496,9 @@ public final class CounterpartyResponse implements IEntityResponse {
 
         private Optional<List<PaymentMethodResponse>> paymentMethods = Optional.empty();
 
-        private Optional<String> logo = Optional.empty();
-
         private Optional<List<CounterpartyCustomizationAccount>> accounts = Optional.empty();
+
+        private Optional<String> logo = Optional.empty();
 
         private Optional<List<String>> emailToAlias = Optional.empty();
 
@@ -521,6 +522,7 @@ public final class CounterpartyResponse implements IEntityResponse {
             isCustomer(other.getIsCustomer());
             accountType(other.getAccountType());
             profile(other.getProfile());
+            logo(other.getLogo());
             status(other.getStatus());
             acceptedTos(other.getAcceptedTos());
             isPayor(other.getIsPayor());
@@ -530,7 +532,6 @@ public final class CounterpartyResponse implements IEntityResponse {
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             accounts(other.getAccounts());
-            logo(other.getLogo());
             paymentMethods(other.getPaymentMethods());
             counterpartyType(other.getCounterpartyType());
             invoiceMetrics(other.getInvoiceMetrics());
@@ -699,23 +700,6 @@ public final class CounterpartyResponse implements IEntityResponse {
         }
 
         /**
-         * <p>URL to the entity logo</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage logo(String logo) {
-            this.logo = Optional.of(logo);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "logo", nulls = Nulls.SKIP)
-        public _FinalStage logo(Optional<String> logo) {
-            this.logo = logo;
-            return this;
-        }
-
-        /**
          * <p>If the entity searching for counterparties has any accounts configured in the Payee/Payor relationship, they will be returned</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -729,6 +713,23 @@ public final class CounterpartyResponse implements IEntityResponse {
         @JsonSetter(value = "accounts", nulls = Nulls.SKIP)
         public _FinalStage accounts(Optional<List<CounterpartyCustomizationAccount>> accounts) {
             this.accounts = accounts;
+            return this;
+        }
+
+        /**
+         * <p>URL for the entity logo</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage logo(String logo) {
+            this.logo = Optional.of(logo);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "logo", nulls = Nulls.SKIP)
+        public _FinalStage logo(Optional<String> logo) {
+            this.logo = logo;
             return this;
         }
 
@@ -795,6 +796,7 @@ public final class CounterpartyResponse implements IEntityResponse {
                     isCustomer,
                     accountType,
                     profile,
+                    logo,
                     status,
                     acceptedTos,
                     isPayor,
@@ -804,7 +806,6 @@ public final class CounterpartyResponse implements IEntityResponse {
                     createdAt,
                     updatedAt,
                     accounts,
-                    logo,
                     paymentMethods,
                     counterpartyType,
                     invoiceMetrics,

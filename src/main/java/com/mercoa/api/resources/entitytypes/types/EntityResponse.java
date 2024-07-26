@@ -40,6 +40,8 @@ public final class EntityResponse implements IEntityResponse {
 
     private final ProfileResponse profile;
 
+    private final Optional<String> logo;
+
     private final EntityStatus status;
 
     private final boolean acceptedTos;
@@ -68,6 +70,7 @@ public final class EntityResponse implements IEntityResponse {
             boolean isCustomer,
             AccountType accountType,
             ProfileResponse profile,
+            Optional<String> logo,
             EntityStatus status,
             boolean acceptedTos,
             boolean isPayor,
@@ -86,6 +89,7 @@ public final class EntityResponse implements IEntityResponse {
         this.isCustomer = isCustomer;
         this.accountType = accountType;
         this.profile = profile;
+        this.logo = logo;
         this.status = status;
         this.acceptedTos = acceptedTos;
         this.isPayor = isPayor;
@@ -161,6 +165,15 @@ public final class EntityResponse implements IEntityResponse {
     @java.lang.Override
     public ProfileResponse getProfile() {
         return profile;
+    }
+
+    /**
+     * @return URL for the entity logo
+     */
+    @JsonProperty("logo")
+    @java.lang.Override
+    public Optional<String> getLogo() {
+        return logo;
     }
 
     @JsonProperty("status")
@@ -247,6 +260,7 @@ public final class EntityResponse implements IEntityResponse {
                 && isCustomer == other.isCustomer
                 && accountType.equals(other.accountType)
                 && profile.equals(other.profile)
+                && logo.equals(other.logo)
                 && status.equals(other.status)
                 && acceptedTos == other.acceptedTos
                 && isPayor == other.isPayor
@@ -269,6 +283,7 @@ public final class EntityResponse implements IEntityResponse {
                 this.isCustomer,
                 this.accountType,
                 this.profile,
+                this.logo,
                 this.status,
                 this.acceptedTos,
                 this.isPayor,
@@ -360,6 +375,10 @@ public final class EntityResponse implements IEntityResponse {
         _FinalStage emailToAlias(Optional<List<String>> emailToAlias);
 
         _FinalStage emailToAlias(List<String> emailToAlias);
+
+        _FinalStage logo(Optional<String> logo);
+
+        _FinalStage logo(String logo);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -407,6 +426,8 @@ public final class EntityResponse implements IEntityResponse {
 
         private OffsetDateTime updatedAt;
 
+        private Optional<String> logo = Optional.empty();
+
         private Optional<List<String>> emailToAlias = Optional.empty();
 
         private Optional<String> emailTo = Optional.empty();
@@ -429,6 +450,7 @@ public final class EntityResponse implements IEntityResponse {
             isCustomer(other.getIsCustomer());
             accountType(other.getAccountType());
             profile(other.getProfile());
+            logo(other.getLogo());
             status(other.getStatus());
             acceptedTos(other.getAcceptedTos());
             isPayor(other.getIsPayor());
@@ -563,6 +585,23 @@ public final class EntityResponse implements IEntityResponse {
         }
 
         /**
+         * <p>URL for the entity logo</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage logo(String logo) {
+            this.logo = Optional.of(logo);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "logo", nulls = Nulls.SKIP)
+        public _FinalStage logo(Optional<String> logo) {
+            this.logo = logo;
+            return this;
+        }
+
+        /**
          * <p>Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -625,6 +664,7 @@ public final class EntityResponse implements IEntityResponse {
                     isCustomer,
                     accountType,
                     profile,
+                    logo,
                     status,
                     acceptedTos,
                     isPayor,

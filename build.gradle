@@ -46,7 +46,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.mercoa'
             artifactId = 'mercoa'
-            version = '0.4.8'
+            version = '0.4.49'
             from components.java
             pom {
                 scm {

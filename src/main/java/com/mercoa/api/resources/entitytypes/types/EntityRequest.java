@@ -147,7 +147,7 @@ public final class EntityRequest {
     }
 
     /**
-     * @return Base64 encoded PNG image data for the entity logo.
+     * @return Base64 encoded PNG image data for the entity logo. Max size 100KB.
      */
     @JsonProperty("logo")
     public Optional<String> getLogo() {
@@ -348,7 +348,7 @@ public final class EntityRequest {
         }
 
         /**
-         * <p>Base64 encoded PNG image data for the entity logo.</p>
+         * <p>Base64 encoded PNG image data for the entity logo. Max size 100KB.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
