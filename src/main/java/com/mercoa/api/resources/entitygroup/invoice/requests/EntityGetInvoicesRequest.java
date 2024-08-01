@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.commons.types.OrderDirection;
 import com.mercoa.api.resources.invoicetypes.types.ApproverAction;
+import com.mercoa.api.resources.invoicetypes.types.InvoiceDateFilter;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceMetadataFilter;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceOrderByField;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
@@ -33,6 +34,8 @@ public final class EntityGetInvoicesRequest {
     private final Optional<OffsetDateTime> startDate;
 
     private final Optional<OffsetDateTime> endDate;
+
+    private final Optional<InvoiceDateFilter> dateType;
 
     private final Optional<InvoiceOrderByField> orderBy;
 
@@ -65,6 +68,7 @@ public final class EntityGetInvoicesRequest {
             Optional<Boolean> excludeReceivables,
             Optional<OffsetDateTime> startDate,
             Optional<OffsetDateTime> endDate,
+            Optional<InvoiceDateFilter> dateType,
             Optional<InvoiceOrderByField> orderBy,
             Optional<OrderDirection> orderDirection,
             Optional<Integer> limit,
@@ -82,6 +86,7 @@ public final class EntityGetInvoicesRequest {
         this.excludeReceivables = excludeReceivables;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.dateType = dateType;
         this.orderBy = orderBy;
         this.orderDirection = orderDirection;
         this.limit = limit;
@@ -127,6 +132,14 @@ public final class EntityGetInvoicesRequest {
     @JsonProperty("endDate")
     public Optional<OffsetDateTime> getEndDate() {
         return endDate;
+    }
+
+    /**
+     * @return Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
+     */
+    @JsonProperty("dateType")
+    public Optional<InvoiceDateFilter> getDateType() {
+        return dateType;
     }
 
     /**
@@ -241,6 +254,7 @@ public final class EntityGetInvoicesRequest {
                 && excludeReceivables.equals(other.excludeReceivables)
                 && startDate.equals(other.startDate)
                 && endDate.equals(other.endDate)
+                && dateType.equals(other.dateType)
                 && orderBy.equals(other.orderBy)
                 && orderDirection.equals(other.orderDirection)
                 && limit.equals(other.limit)
@@ -262,6 +276,7 @@ public final class EntityGetInvoicesRequest {
                 this.excludeReceivables,
                 this.startDate,
                 this.endDate,
+                this.dateType,
                 this.orderBy,
                 this.orderDirection,
                 this.limit,
@@ -294,6 +309,8 @@ public final class EntityGetInvoicesRequest {
         private Optional<OffsetDateTime> startDate = Optional.empty();
 
         private Optional<OffsetDateTime> endDate = Optional.empty();
+
+        private Optional<InvoiceDateFilter> dateType = Optional.empty();
 
         private Optional<InvoiceOrderByField> orderBy = Optional.empty();
 
@@ -329,6 +346,7 @@ public final class EntityGetInvoicesRequest {
             excludeReceivables(other.getExcludeReceivables());
             startDate(other.getStartDate());
             endDate(other.getEndDate());
+            dateType(other.getDateType());
             orderBy(other.getOrderBy());
             orderDirection(other.getOrderDirection());
             limit(other.getLimit());
@@ -385,6 +403,17 @@ public final class EntityGetInvoicesRequest {
 
         public Builder endDate(OffsetDateTime endDate) {
             this.endDate = Optional.of(endDate);
+            return this;
+        }
+
+        @JsonSetter(value = "dateType", nulls = Nulls.SKIP)
+        public Builder dateType(Optional<InvoiceDateFilter> dateType) {
+            this.dateType = dateType;
+            return this;
+        }
+
+        public Builder dateType(InvoiceDateFilter dateType) {
+            this.dateType = Optional.of(dateType);
             return this;
         }
 
@@ -526,6 +555,7 @@ public final class EntityGetInvoicesRequest {
                     excludeReceivables,
                     startDate,
                     endDate,
+                    dateType,
                     orderBy,
                     orderDirection,
                     limit,

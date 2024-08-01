@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.resources.invoicetypes.types.InvoiceDateFilter;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceMetricsPerDateGroupBy;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
 import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
@@ -42,6 +43,12 @@ public final class InvoiceMetricsRequest {
 
     private final Optional<InvoiceStatus> status;
 
+    private final Optional<OffsetDateTime> startDate;
+
+    private final Optional<OffsetDateTime> endDate;
+
+    private final Optional<InvoiceDateFilter> dateType;
+
     private final Optional<OffsetDateTime> dueDateStart;
 
     private final Optional<OffsetDateTime> dueDateEnd;
@@ -64,6 +71,9 @@ public final class InvoiceMetricsRequest {
             Optional<String> approverId,
             Optional<String> invoiceId,
             Optional<InvoiceStatus> status,
+            Optional<OffsetDateTime> startDate,
+            Optional<OffsetDateTime> endDate,
+            Optional<InvoiceDateFilter> dateType,
             Optional<OffsetDateTime> dueDateStart,
             Optional<OffsetDateTime> dueDateEnd,
             Optional<OffsetDateTime> createdDateStart,
@@ -79,6 +89,9 @@ public final class InvoiceMetricsRequest {
         this.approverId = approverId;
         this.invoiceId = invoiceId;
         this.status = status;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.dateType = dateType;
         this.dueDateStart = dueDateStart;
         this.dueDateEnd = dueDateEnd;
         this.createdDateStart = createdDateStart;
@@ -160,7 +173,31 @@ public final class InvoiceMetricsRequest {
     }
 
     /**
-     * @return Start date for invoice dueDate filter.
+     * @return Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
+     */
+    @JsonProperty("startDate")
+    public Optional<OffsetDateTime> getStartDate() {
+        return startDate;
+    }
+
+    /**
+     * @return End date filter. Defaults to CREATED_AT unless specified the dateType is specified
+     */
+    @JsonProperty("endDate")
+    public Optional<OffsetDateTime> getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * @return Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
+     */
+    @JsonProperty("dateType")
+    public Optional<InvoiceDateFilter> getDateType() {
+        return dateType;
+    }
+
+    /**
+     * @return DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice dueDate filter.
      */
     @JsonProperty("dueDateStart")
     public Optional<OffsetDateTime> getDueDateStart() {
@@ -168,7 +205,7 @@ public final class InvoiceMetricsRequest {
     }
 
     /**
-     * @return End date for invoice dueDate filter.
+     * @return DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice dueDate filter.
      */
     @JsonProperty("dueDateEnd")
     public Optional<OffsetDateTime> getDueDateEnd() {
@@ -176,7 +213,7 @@ public final class InvoiceMetricsRequest {
     }
 
     /**
-     * @return Start date for invoice created on date filter.
+     * @return DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice created on date filter.
      */
     @JsonProperty("createdDateStart")
     public Optional<OffsetDateTime> getCreatedDateStart() {
@@ -184,7 +221,7 @@ public final class InvoiceMetricsRequest {
     }
 
     /**
-     * @return End date for invoice created date filter.
+     * @return DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice created date filter.
      */
     @JsonProperty("createdDateEnd")
     public Optional<OffsetDateTime> getCreatedDateEnd() {
@@ -220,6 +257,9 @@ public final class InvoiceMetricsRequest {
                 && approverId.equals(other.approverId)
                 && invoiceId.equals(other.invoiceId)
                 && status.equals(other.status)
+                && startDate.equals(other.startDate)
+                && endDate.equals(other.endDate)
+                && dateType.equals(other.dateType)
                 && dueDateStart.equals(other.dueDateStart)
                 && dueDateEnd.equals(other.dueDateEnd)
                 && createdDateStart.equals(other.createdDateStart)
@@ -239,6 +279,9 @@ public final class InvoiceMetricsRequest {
                 this.approverId,
                 this.invoiceId,
                 this.status,
+                this.startDate,
+                this.endDate,
+                this.dateType,
                 this.dueDateStart,
                 this.dueDateEnd,
                 this.createdDateStart,
@@ -275,6 +318,12 @@ public final class InvoiceMetricsRequest {
 
         private Optional<InvoiceStatus> status = Optional.empty();
 
+        private Optional<OffsetDateTime> startDate = Optional.empty();
+
+        private Optional<OffsetDateTime> endDate = Optional.empty();
+
+        private Optional<InvoiceDateFilter> dateType = Optional.empty();
+
         private Optional<OffsetDateTime> dueDateStart = Optional.empty();
 
         private Optional<OffsetDateTime> dueDateEnd = Optional.empty();
@@ -300,6 +349,9 @@ public final class InvoiceMetricsRequest {
             approverId(other.getApproverId());
             invoiceId(other.getInvoiceId());
             status(other.getStatus());
+            startDate(other.getStartDate());
+            endDate(other.getEndDate());
+            dateType(other.getDateType());
             dueDateStart(other.getDueDateStart());
             dueDateEnd(other.getDueDateEnd());
             createdDateStart(other.getCreatedDateStart());
@@ -407,6 +459,39 @@ public final class InvoiceMetricsRequest {
             return this;
         }
 
+        @JsonSetter(value = "startDate", nulls = Nulls.SKIP)
+        public Builder startDate(Optional<OffsetDateTime> startDate) {
+            this.startDate = startDate;
+            return this;
+        }
+
+        public Builder startDate(OffsetDateTime startDate) {
+            this.startDate = Optional.of(startDate);
+            return this;
+        }
+
+        @JsonSetter(value = "endDate", nulls = Nulls.SKIP)
+        public Builder endDate(Optional<OffsetDateTime> endDate) {
+            this.endDate = endDate;
+            return this;
+        }
+
+        public Builder endDate(OffsetDateTime endDate) {
+            this.endDate = Optional.of(endDate);
+            return this;
+        }
+
+        @JsonSetter(value = "dateType", nulls = Nulls.SKIP)
+        public Builder dateType(Optional<InvoiceDateFilter> dateType) {
+            this.dateType = dateType;
+            return this;
+        }
+
+        public Builder dateType(InvoiceDateFilter dateType) {
+            this.dateType = Optional.of(dateType);
+            return this;
+        }
+
         @JsonSetter(value = "dueDateStart", nulls = Nulls.SKIP)
         public Builder dueDateStart(Optional<OffsetDateTime> dueDateStart) {
             this.dueDateStart = dueDateStart;
@@ -473,6 +558,9 @@ public final class InvoiceMetricsRequest {
                     approverId,
                     invoiceId,
                     status,
+                    startDate,
+                    endDate,
+                    dateType,
                     dueDateStart,
                     dueDateEnd,
                     createdDateStart,

@@ -121,6 +121,14 @@ public class NotificationPolicyClient {
     /**
      * Update notification policy associated with this entity
      */
+    public NotificationPolicyResponse update(String entityId, NotificationType notificationType) {
+        return update(
+                entityId, notificationType, NotificationPolicyRequest.builder().build());
+    }
+
+    /**
+     * Update notification policy associated with this entity
+     */
     public NotificationPolicyResponse update(
             String entityId, NotificationType notificationType, NotificationPolicyRequest request) {
         return update(entityId, notificationType, request, null);

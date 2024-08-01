@@ -25,6 +25,8 @@ public final class NotificationPolicyResponse {
 
     private final List<String> additionalRoles;
 
+    private final boolean notifyCounterparty;
+
     private final NotificationType type;
 
     private final Map<String, Object> additionalProperties;
@@ -32,10 +34,12 @@ public final class NotificationPolicyResponse {
     private NotificationPolicyResponse(
             boolean disabled,
             List<String> additionalRoles,
+            boolean notifyCounterparty,
             NotificationType type,
             Map<String, Object> additionalProperties) {
         this.disabled = disabled;
         this.additionalRoles = additionalRoles;
+        this.notifyCounterparty = notifyCounterparty;
         this.type = type;
         this.additionalProperties = additionalProperties;
     }
@@ -56,6 +60,14 @@ public final class NotificationPolicyResponse {
         return additionalRoles;
     }
 
+    /**
+     * @return True if the selected notification type is sent to the counterparty
+     */
+    @JsonProperty("notifyCounterparty")
+    public boolean getNotifyCounterparty() {
+        return notifyCounterparty;
+    }
+
     @JsonProperty("type")
     public NotificationType getType() {
         return type;
@@ -73,12 +85,15 @@ public final class NotificationPolicyResponse {
     }
 
     private boolean equalTo(NotificationPolicyResponse other) {
-        return disabled == other.disabled && additionalRoles.equals(other.additionalRoles) && type.equals(other.type);
+        return disabled == other.disabled
+                && additionalRoles.equals(other.additionalRoles)
+                && notifyCounterparty == other.notifyCounterparty
+                && type.equals(other.type);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.disabled, this.additionalRoles, this.type);
+        return Objects.hash(this.disabled, this.additionalRoles, this.notifyCounterparty, this.type);
     }
 
     @java.lang.Override
@@ -91,9 +106,13 @@ public final class NotificationPolicyResponse {
     }
 
     public interface DisabledStage {
-        TypeStage disabled(boolean disabled);
+        NotifyCounterpartyStage disabled(boolean disabled);
 
         Builder from(NotificationPolicyResponse other);
+    }
+
+    public interface NotifyCounterpartyStage {
+        TypeStage notifyCounterparty(boolean notifyCounterparty);
     }
 
     public interface TypeStage {
@@ -111,8 +130,10 @@ public final class NotificationPolicyResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements DisabledStage, TypeStage, _FinalStage {
+    public static final class Builder implements DisabledStage, NotifyCounterpartyStage, TypeStage, _FinalStage {
         private boolean disabled;
+
+        private boolean notifyCounterparty;
 
         private NotificationType type;
 
@@ -127,6 +148,7 @@ public final class NotificationPolicyResponse {
         public Builder from(NotificationPolicyResponse other) {
             disabled(other.getDisabled());
             additionalRoles(other.getAdditionalRoles());
+            notifyCounterparty(other.getNotifyCounterparty());
             type(other.getType());
             return this;
         }
@@ -137,8 +159,19 @@ public final class NotificationPolicyResponse {
          */
         @java.lang.Override
         @JsonSetter("disabled")
-        public TypeStage disabled(boolean disabled) {
+        public NotifyCounterpartyStage disabled(boolean disabled) {
             this.disabled = disabled;
+            return this;
+        }
+
+        /**
+         * <p>True if the selected notification type is sent to the counterparty</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("notifyCounterparty")
+        public TypeStage notifyCounterparty(boolean notifyCounterparty) {
+            this.notifyCounterparty = notifyCounterparty;
             return this;
         }
 
@@ -179,7 +212,8 @@ public final class NotificationPolicyResponse {
 
         @java.lang.Override
         public NotificationPolicyResponse build() {
-            return new NotificationPolicyResponse(disabled, additionalRoles, type, additionalProperties);
+            return new NotificationPolicyResponse(
+                    disabled, additionalRoles, notifyCounterparty, type, additionalProperties);
         }
     }
 }

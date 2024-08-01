@@ -67,6 +67,9 @@ public class InvoiceClient {
         if (request.getEndDate().isPresent()) {
             httpUrl.addQueryParameter("endDate", request.getEndDate().get().toString());
         }
+        if (request.getDateType().isPresent()) {
+            httpUrl.addQueryParameter("dateType", request.getDateType().get().toString());
+        }
         if (request.getOrderBy().isPresent()) {
             httpUrl.addQueryParameter("orderBy", request.getOrderBy().get().toString());
         }
@@ -184,6 +187,15 @@ public class InvoiceClient {
         }
         if (request.getStatus().isPresent()) {
             httpUrl.addQueryParameter("status", request.getStatus().get().toString());
+        }
+        if (request.getStartDate().isPresent()) {
+            httpUrl.addQueryParameter("startDate", request.getStartDate().get().toString());
+        }
+        if (request.getEndDate().isPresent()) {
+            httpUrl.addQueryParameter("endDate", request.getEndDate().get().toString());
+        }
+        if (request.getDateType().isPresent()) {
+            httpUrl.addQueryParameter("dateType", request.getDateType().get().toString());
         }
         if (request.getDueDateStart().isPresent()) {
             httpUrl.addQueryParameter(

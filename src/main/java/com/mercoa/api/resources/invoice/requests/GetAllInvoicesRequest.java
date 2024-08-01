@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.commons.types.OrderDirection;
 import com.mercoa.api.resources.invoicetypes.types.ApproverAction;
+import com.mercoa.api.resources.invoicetypes.types.InvoiceDateFilter;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceMetadataFilter;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceOrderByField;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
@@ -31,6 +32,8 @@ public final class GetAllInvoicesRequest {
     private final Optional<OffsetDateTime> startDate;
 
     private final Optional<OffsetDateTime> endDate;
+
+    private final Optional<InvoiceDateFilter> dateType;
 
     private final Optional<InvoiceOrderByField> orderBy;
 
@@ -66,6 +69,7 @@ public final class GetAllInvoicesRequest {
             Optional<String> entityId,
             Optional<OffsetDateTime> startDate,
             Optional<OffsetDateTime> endDate,
+            Optional<InvoiceDateFilter> dateType,
             Optional<InvoiceOrderByField> orderBy,
             Optional<OrderDirection> orderDirection,
             Optional<Integer> limit,
@@ -84,6 +88,7 @@ public final class GetAllInvoicesRequest {
         this.entityId = entityId;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.dateType = dateType;
         this.orderBy = orderBy;
         this.orderDirection = orderDirection;
         this.limit = limit;
@@ -110,7 +115,7 @@ public final class GetAllInvoicesRequest {
     }
 
     /**
-     * @return Start date for invoice created on date filter.
+     * @return Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
      */
     @JsonProperty("startDate")
     public Optional<OffsetDateTime> getStartDate() {
@@ -118,11 +123,19 @@ public final class GetAllInvoicesRequest {
     }
 
     /**
-     * @return End date for invoice created date filter.
+     * @return End date filter. Defaults to CREATED_AT unless specified the dateType is specified
      */
     @JsonProperty("endDate")
     public Optional<OffsetDateTime> getEndDate() {
         return endDate;
+    }
+
+    /**
+     * @return Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
+     */
+    @JsonProperty("dateType")
+    public Optional<InvoiceDateFilter> getDateType() {
+        return dateType;
     }
 
     /**
@@ -252,6 +265,7 @@ public final class GetAllInvoicesRequest {
         return entityId.equals(other.entityId)
                 && startDate.equals(other.startDate)
                 && endDate.equals(other.endDate)
+                && dateType.equals(other.dateType)
                 && orderBy.equals(other.orderBy)
                 && orderDirection.equals(other.orderDirection)
                 && limit.equals(other.limit)
@@ -274,6 +288,7 @@ public final class GetAllInvoicesRequest {
                 this.entityId,
                 this.startDate,
                 this.endDate,
+                this.dateType,
                 this.orderBy,
                 this.orderDirection,
                 this.limit,
@@ -306,6 +321,8 @@ public final class GetAllInvoicesRequest {
         private Optional<OffsetDateTime> startDate = Optional.empty();
 
         private Optional<OffsetDateTime> endDate = Optional.empty();
+
+        private Optional<InvoiceDateFilter> dateType = Optional.empty();
 
         private Optional<InvoiceOrderByField> orderBy = Optional.empty();
 
@@ -344,6 +361,7 @@ public final class GetAllInvoicesRequest {
             entityId(other.getEntityId());
             startDate(other.getStartDate());
             endDate(other.getEndDate());
+            dateType(other.getDateType());
             orderBy(other.getOrderBy());
             orderDirection(other.getOrderDirection());
             limit(other.getLimit());
@@ -391,6 +409,17 @@ public final class GetAllInvoicesRequest {
 
         public Builder endDate(OffsetDateTime endDate) {
             this.endDate = Optional.of(endDate);
+            return this;
+        }
+
+        @JsonSetter(value = "dateType", nulls = Nulls.SKIP)
+        public Builder dateType(Optional<InvoiceDateFilter> dateType) {
+            this.dateType = dateType;
+            return this;
+        }
+
+        public Builder dateType(InvoiceDateFilter dateType) {
+            this.dateType = Optional.of(dateType);
             return this;
         }
 
@@ -553,6 +582,7 @@ public final class GetAllInvoicesRequest {
                     entityId,
                     startDate,
                     endDate,
+                    dateType,
                     orderBy,
                     orderDirection,
                     limit,

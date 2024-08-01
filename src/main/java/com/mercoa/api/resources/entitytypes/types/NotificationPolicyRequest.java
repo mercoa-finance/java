@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,14 +23,20 @@ import java.util.Optional;
 public final class NotificationPolicyRequest {
     private final Optional<Boolean> disabled;
 
-    private final List<String> additionalRoles;
+    private final Optional<List<String>> additionalRoles;
+
+    private final Optional<Boolean> notifyCounterparty;
 
     private final Map<String, Object> additionalProperties;
 
     private NotificationPolicyRequest(
-            Optional<Boolean> disabled, List<String> additionalRoles, Map<String, Object> additionalProperties) {
+            Optional<Boolean> disabled,
+            Optional<List<String>> additionalRoles,
+            Optional<Boolean> notifyCounterparty,
+            Map<String, Object> additionalProperties) {
         this.disabled = disabled;
         this.additionalRoles = additionalRoles;
+        this.notifyCounterparty = notifyCounterparty;
         this.additionalProperties = additionalProperties;
     }
 
@@ -47,8 +52,16 @@ public final class NotificationPolicyRequest {
      * @return List of user roles that should receive notifications in addition to the default users for this notification type
      */
     @JsonProperty("additionalRoles")
-    public List<String> getAdditionalRoles() {
+    public Optional<List<String>> getAdditionalRoles() {
         return additionalRoles;
+    }
+
+    /**
+     * @return Set to true if the selected notification type should be sent to the counterparty
+     */
+    @JsonProperty("notifyCounterparty")
+    public Optional<Boolean> getNotifyCounterparty() {
+        return notifyCounterparty;
     }
 
     @java.lang.Override
@@ -63,12 +76,14 @@ public final class NotificationPolicyRequest {
     }
 
     private boolean equalTo(NotificationPolicyRequest other) {
-        return disabled.equals(other.disabled) && additionalRoles.equals(other.additionalRoles);
+        return disabled.equals(other.disabled)
+                && additionalRoles.equals(other.additionalRoles)
+                && notifyCounterparty.equals(other.notifyCounterparty);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.disabled, this.additionalRoles);
+        return Objects.hash(this.disabled, this.additionalRoles, this.notifyCounterparty);
     }
 
     @java.lang.Override
@@ -84,7 +99,9 @@ public final class NotificationPolicyRequest {
     public static final class Builder {
         private Optional<Boolean> disabled = Optional.empty();
 
-        private List<String> additionalRoles = new ArrayList<>();
+        private Optional<List<String>> additionalRoles = Optional.empty();
+
+        private Optional<Boolean> notifyCounterparty = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -94,6 +111,7 @@ public final class NotificationPolicyRequest {
         public Builder from(NotificationPolicyRequest other) {
             disabled(other.getDisabled());
             additionalRoles(other.getAdditionalRoles());
+            notifyCounterparty(other.getNotifyCounterparty());
             return this;
         }
 
@@ -109,24 +127,29 @@ public final class NotificationPolicyRequest {
         }
 
         @JsonSetter(value = "additionalRoles", nulls = Nulls.SKIP)
+        public Builder additionalRoles(Optional<List<String>> additionalRoles) {
+            this.additionalRoles = additionalRoles;
+            return this;
+        }
+
         public Builder additionalRoles(List<String> additionalRoles) {
-            this.additionalRoles.clear();
-            this.additionalRoles.addAll(additionalRoles);
+            this.additionalRoles = Optional.of(additionalRoles);
             return this;
         }
 
-        public Builder addAdditionalRoles(String additionalRoles) {
-            this.additionalRoles.add(additionalRoles);
+        @JsonSetter(value = "notifyCounterparty", nulls = Nulls.SKIP)
+        public Builder notifyCounterparty(Optional<Boolean> notifyCounterparty) {
+            this.notifyCounterparty = notifyCounterparty;
             return this;
         }
 
-        public Builder addAllAdditionalRoles(List<String> additionalRoles) {
-            this.additionalRoles.addAll(additionalRoles);
+        public Builder notifyCounterparty(Boolean notifyCounterparty) {
+            this.notifyCounterparty = Optional.of(notifyCounterparty);
             return this;
         }
 
         public NotificationPolicyRequest build() {
-            return new NotificationPolicyRequest(disabled, additionalRoles, additionalProperties);
+            return new NotificationPolicyRequest(disabled, additionalRoles, notifyCounterparty, additionalProperties);
         }
     }
 }
