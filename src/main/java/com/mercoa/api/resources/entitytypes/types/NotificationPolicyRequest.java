@@ -25,18 +25,22 @@ public final class NotificationPolicyRequest {
 
     private final Optional<List<String>> additionalRoles;
 
-    private final Optional<Boolean> notifyCounterparty;
+    private final Optional<Boolean> notifyPayeeCounterparty;
+
+    private final Optional<Boolean> notifyPayorCounterparty;
 
     private final Map<String, Object> additionalProperties;
 
     private NotificationPolicyRequest(
             Optional<Boolean> disabled,
             Optional<List<String>> additionalRoles,
-            Optional<Boolean> notifyCounterparty,
+            Optional<Boolean> notifyPayeeCounterparty,
+            Optional<Boolean> notifyPayorCounterparty,
             Map<String, Object> additionalProperties) {
         this.disabled = disabled;
         this.additionalRoles = additionalRoles;
-        this.notifyCounterparty = notifyCounterparty;
+        this.notifyPayeeCounterparty = notifyPayeeCounterparty;
+        this.notifyPayorCounterparty = notifyPayorCounterparty;
         this.additionalProperties = additionalProperties;
     }
 
@@ -57,11 +61,19 @@ public final class NotificationPolicyRequest {
     }
 
     /**
-     * @return Set to true if the selected notification type should be sent to the counterparty
+     * @return Set to true if the selected notification type should be sent to the counterparty if this is a payable invoice.
      */
-    @JsonProperty("notifyCounterparty")
-    public Optional<Boolean> getNotifyCounterparty() {
-        return notifyCounterparty;
+    @JsonProperty("notifyPayeeCounterparty")
+    public Optional<Boolean> getNotifyPayeeCounterparty() {
+        return notifyPayeeCounterparty;
+    }
+
+    /**
+     * @return Set to true if the selected notification type should be sent to the counterparty if this is a receivable invoice.
+     */
+    @JsonProperty("notifyPayorCounterparty")
+    public Optional<Boolean> getNotifyPayorCounterparty() {
+        return notifyPayorCounterparty;
     }
 
     @java.lang.Override
@@ -78,12 +90,14 @@ public final class NotificationPolicyRequest {
     private boolean equalTo(NotificationPolicyRequest other) {
         return disabled.equals(other.disabled)
                 && additionalRoles.equals(other.additionalRoles)
-                && notifyCounterparty.equals(other.notifyCounterparty);
+                && notifyPayeeCounterparty.equals(other.notifyPayeeCounterparty)
+                && notifyPayorCounterparty.equals(other.notifyPayorCounterparty);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.disabled, this.additionalRoles, this.notifyCounterparty);
+        return Objects.hash(
+                this.disabled, this.additionalRoles, this.notifyPayeeCounterparty, this.notifyPayorCounterparty);
     }
 
     @java.lang.Override
@@ -101,7 +115,9 @@ public final class NotificationPolicyRequest {
 
         private Optional<List<String>> additionalRoles = Optional.empty();
 
-        private Optional<Boolean> notifyCounterparty = Optional.empty();
+        private Optional<Boolean> notifyPayeeCounterparty = Optional.empty();
+
+        private Optional<Boolean> notifyPayorCounterparty = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -111,7 +127,8 @@ public final class NotificationPolicyRequest {
         public Builder from(NotificationPolicyRequest other) {
             disabled(other.getDisabled());
             additionalRoles(other.getAdditionalRoles());
-            notifyCounterparty(other.getNotifyCounterparty());
+            notifyPayeeCounterparty(other.getNotifyPayeeCounterparty());
+            notifyPayorCounterparty(other.getNotifyPayorCounterparty());
             return this;
         }
 
@@ -137,19 +154,31 @@ public final class NotificationPolicyRequest {
             return this;
         }
 
-        @JsonSetter(value = "notifyCounterparty", nulls = Nulls.SKIP)
-        public Builder notifyCounterparty(Optional<Boolean> notifyCounterparty) {
-            this.notifyCounterparty = notifyCounterparty;
+        @JsonSetter(value = "notifyPayeeCounterparty", nulls = Nulls.SKIP)
+        public Builder notifyPayeeCounterparty(Optional<Boolean> notifyPayeeCounterparty) {
+            this.notifyPayeeCounterparty = notifyPayeeCounterparty;
             return this;
         }
 
-        public Builder notifyCounterparty(Boolean notifyCounterparty) {
-            this.notifyCounterparty = Optional.of(notifyCounterparty);
+        public Builder notifyPayeeCounterparty(Boolean notifyPayeeCounterparty) {
+            this.notifyPayeeCounterparty = Optional.of(notifyPayeeCounterparty);
+            return this;
+        }
+
+        @JsonSetter(value = "notifyPayorCounterparty", nulls = Nulls.SKIP)
+        public Builder notifyPayorCounterparty(Optional<Boolean> notifyPayorCounterparty) {
+            this.notifyPayorCounterparty = notifyPayorCounterparty;
+            return this;
+        }
+
+        public Builder notifyPayorCounterparty(Boolean notifyPayorCounterparty) {
+            this.notifyPayorCounterparty = Optional.of(notifyPayorCounterparty);
             return this;
         }
 
         public NotificationPolicyRequest build() {
-            return new NotificationPolicyRequest(disabled, additionalRoles, notifyCounterparty, additionalProperties);
+            return new NotificationPolicyRequest(
+                    disabled, additionalRoles, notifyPayeeCounterparty, notifyPayorCounterparty, additionalProperties);
         }
     }
 }

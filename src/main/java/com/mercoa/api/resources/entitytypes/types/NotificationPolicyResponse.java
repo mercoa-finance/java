@@ -25,7 +25,9 @@ public final class NotificationPolicyResponse {
 
     private final List<String> additionalRoles;
 
-    private final boolean notifyCounterparty;
+    private final boolean notifyPayeeCounterparty;
+
+    private final boolean notifyPayorCounterparty;
 
     private final NotificationType type;
 
@@ -34,12 +36,14 @@ public final class NotificationPolicyResponse {
     private NotificationPolicyResponse(
             boolean disabled,
             List<String> additionalRoles,
-            boolean notifyCounterparty,
+            boolean notifyPayeeCounterparty,
+            boolean notifyPayorCounterparty,
             NotificationType type,
             Map<String, Object> additionalProperties) {
         this.disabled = disabled;
         this.additionalRoles = additionalRoles;
-        this.notifyCounterparty = notifyCounterparty;
+        this.notifyPayeeCounterparty = notifyPayeeCounterparty;
+        this.notifyPayorCounterparty = notifyPayorCounterparty;
         this.type = type;
         this.additionalProperties = additionalProperties;
     }
@@ -61,11 +65,19 @@ public final class NotificationPolicyResponse {
     }
 
     /**
-     * @return True if the selected notification type is sent to the counterparty
+     * @return True if the selected notification type should be sent to the counterparty if this is a payable invoice.
      */
-    @JsonProperty("notifyCounterparty")
-    public boolean getNotifyCounterparty() {
-        return notifyCounterparty;
+    @JsonProperty("notifyPayeeCounterparty")
+    public boolean getNotifyPayeeCounterparty() {
+        return notifyPayeeCounterparty;
+    }
+
+    /**
+     * @return True if the selected notification type should be sent to the counterparty if this is a receivable invoice.
+     */
+    @JsonProperty("notifyPayorCounterparty")
+    public boolean getNotifyPayorCounterparty() {
+        return notifyPayorCounterparty;
     }
 
     @JsonProperty("type")
@@ -87,13 +99,19 @@ public final class NotificationPolicyResponse {
     private boolean equalTo(NotificationPolicyResponse other) {
         return disabled == other.disabled
                 && additionalRoles.equals(other.additionalRoles)
-                && notifyCounterparty == other.notifyCounterparty
+                && notifyPayeeCounterparty == other.notifyPayeeCounterparty
+                && notifyPayorCounterparty == other.notifyPayorCounterparty
                 && type.equals(other.type);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.disabled, this.additionalRoles, this.notifyCounterparty, this.type);
+        return Objects.hash(
+                this.disabled,
+                this.additionalRoles,
+                this.notifyPayeeCounterparty,
+                this.notifyPayorCounterparty,
+                this.type);
     }
 
     @java.lang.Override
@@ -106,13 +124,17 @@ public final class NotificationPolicyResponse {
     }
 
     public interface DisabledStage {
-        NotifyCounterpartyStage disabled(boolean disabled);
+        NotifyPayeeCounterpartyStage disabled(boolean disabled);
 
         Builder from(NotificationPolicyResponse other);
     }
 
-    public interface NotifyCounterpartyStage {
-        TypeStage notifyCounterparty(boolean notifyCounterparty);
+    public interface NotifyPayeeCounterpartyStage {
+        NotifyPayorCounterpartyStage notifyPayeeCounterparty(boolean notifyPayeeCounterparty);
+    }
+
+    public interface NotifyPayorCounterpartyStage {
+        TypeStage notifyPayorCounterparty(boolean notifyPayorCounterparty);
     }
 
     public interface TypeStage {
@@ -130,10 +152,17 @@ public final class NotificationPolicyResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements DisabledStage, NotifyCounterpartyStage, TypeStage, _FinalStage {
+    public static final class Builder
+            implements DisabledStage,
+                    NotifyPayeeCounterpartyStage,
+                    NotifyPayorCounterpartyStage,
+                    TypeStage,
+                    _FinalStage {
         private boolean disabled;
 
-        private boolean notifyCounterparty;
+        private boolean notifyPayeeCounterparty;
+
+        private boolean notifyPayorCounterparty;
 
         private NotificationType type;
 
@@ -148,7 +177,8 @@ public final class NotificationPolicyResponse {
         public Builder from(NotificationPolicyResponse other) {
             disabled(other.getDisabled());
             additionalRoles(other.getAdditionalRoles());
-            notifyCounterparty(other.getNotifyCounterparty());
+            notifyPayeeCounterparty(other.getNotifyPayeeCounterparty());
+            notifyPayorCounterparty(other.getNotifyPayorCounterparty());
             type(other.getType());
             return this;
         }
@@ -159,19 +189,30 @@ public final class NotificationPolicyResponse {
          */
         @java.lang.Override
         @JsonSetter("disabled")
-        public NotifyCounterpartyStage disabled(boolean disabled) {
+        public NotifyPayeeCounterpartyStage disabled(boolean disabled) {
             this.disabled = disabled;
             return this;
         }
 
         /**
-         * <p>True if the selected notification type is sent to the counterparty</p>
+         * <p>True if the selected notification type should be sent to the counterparty if this is a payable invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        @JsonSetter("notifyCounterparty")
-        public TypeStage notifyCounterparty(boolean notifyCounterparty) {
-            this.notifyCounterparty = notifyCounterparty;
+        @JsonSetter("notifyPayeeCounterparty")
+        public NotifyPayorCounterpartyStage notifyPayeeCounterparty(boolean notifyPayeeCounterparty) {
+            this.notifyPayeeCounterparty = notifyPayeeCounterparty;
+            return this;
+        }
+
+        /**
+         * <p>True if the selected notification type should be sent to the counterparty if this is a receivable invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("notifyPayorCounterparty")
+        public TypeStage notifyPayorCounterparty(boolean notifyPayorCounterparty) {
+            this.notifyPayorCounterparty = notifyPayorCounterparty;
             return this;
         }
 
@@ -213,7 +254,12 @@ public final class NotificationPolicyResponse {
         @java.lang.Override
         public NotificationPolicyResponse build() {
             return new NotificationPolicyResponse(
-                    disabled, additionalRoles, notifyCounterparty, type, additionalProperties);
+                    disabled,
+                    additionalRoles,
+                    notifyPayeeCounterparty,
+                    notifyPayorCounterparty,
+                    type,
+                    additionalProperties);
         }
     }
 }
