@@ -18,8 +18,10 @@ import com.mercoa.api.resources.invoicetypes.types.InvoiceDateFilter;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceMetadataFilter;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceOrderByField;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
+import com.mercoa.api.resources.invoicetypes.types.PaymentType;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -63,6 +65,8 @@ public final class GetAllInvoicesRequest {
 
     private final Optional<InvoiceStatus> status;
 
+    private final Optional<List<PaymentType>> paymentType;
+
     private final Map<String, Object> additionalProperties;
 
     private GetAllInvoicesRequest(
@@ -84,6 +88,7 @@ public final class GetAllInvoicesRequest {
             Optional<ApproverAction> approverAction,
             Optional<String> invoiceId,
             Optional<InvoiceStatus> status,
+            Optional<List<PaymentType>> paymentType,
             Map<String, Object> additionalProperties) {
         this.entityId = entityId;
         this.startDate = startDate;
@@ -103,6 +108,7 @@ public final class GetAllInvoicesRequest {
         this.approverAction = approverAction;
         this.invoiceId = invoiceId;
         this.status = status;
+        this.paymentType = paymentType;
         this.additionalProperties = additionalProperties;
     }
 
@@ -250,6 +256,14 @@ public final class GetAllInvoicesRequest {
         return status;
     }
 
+    /**
+     * @return Filter invoices by recurring status
+     */
+    @JsonProperty("paymentType")
+    public Optional<List<PaymentType>> getPaymentType() {
+        return paymentType;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -279,7 +293,8 @@ public final class GetAllInvoicesRequest {
                 && approverId.equals(other.approverId)
                 && approverAction.equals(other.approverAction)
                 && invoiceId.equals(other.invoiceId)
-                && status.equals(other.status);
+                && status.equals(other.status)
+                && paymentType.equals(other.paymentType);
     }
 
     @java.lang.Override
@@ -302,7 +317,8 @@ public final class GetAllInvoicesRequest {
                 this.approverId,
                 this.approverAction,
                 this.invoiceId,
-                this.status);
+                this.status,
+                this.paymentType);
     }
 
     @java.lang.Override
@@ -352,6 +368,8 @@ public final class GetAllInvoicesRequest {
 
         private Optional<InvoiceStatus> status = Optional.empty();
 
+        private Optional<List<PaymentType>> paymentType = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -376,6 +394,7 @@ public final class GetAllInvoicesRequest {
             approverAction(other.getApproverAction());
             invoiceId(other.getInvoiceId());
             status(other.getStatus());
+            paymentType(other.getPaymentType());
             return this;
         }
 
@@ -577,6 +596,17 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
+        @JsonSetter(value = "paymentType", nulls = Nulls.SKIP)
+        public Builder paymentType(Optional<List<PaymentType>> paymentType) {
+            this.paymentType = paymentType;
+            return this;
+        }
+
+        public Builder paymentType(List<PaymentType> paymentType) {
+            this.paymentType = Optional.of(paymentType);
+            return this;
+        }
+
         public GetAllInvoicesRequest build() {
             return new GetAllInvoicesRequest(
                     entityId,
@@ -597,6 +627,7 @@ public final class GetAllInvoicesRequest {
                     approverAction,
                     invoiceId,
                     status,
+                    paymentType,
                     additionalProperties);
         }
     }

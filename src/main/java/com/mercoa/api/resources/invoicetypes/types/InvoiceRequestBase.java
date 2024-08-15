@@ -71,6 +71,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
     private final Optional<InvoiceFeesRequest> fees;
 
+    private final Optional<PaymentSchedule> paymentSchedule;
+
     private final Map<String, Object> additionalProperties;
 
     private InvoiceRequestBase(
@@ -98,6 +100,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             Optional<String> creatorUserId,
             Optional<InvoiceFailureType> failureType,
             Optional<InvoiceFeesRequest> fees,
+            Optional<PaymentSchedule> paymentSchedule,
             Map<String, Object> additionalProperties) {
         this.status = status;
         this.amount = amount;
@@ -123,6 +126,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         this.creatorUserId = creatorUserId;
         this.failureType = failureType;
         this.fees = fees;
+        this.paymentSchedule = paymentSchedule;
         this.additionalProperties = additionalProperties;
     }
 
@@ -160,7 +164,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
     }
 
     /**
-     * @return Date when funds are scheduled to be deducted from payer's account.
+     * @return Initial date when funds are scheduled to be deducted from payer's account.
      */
     @JsonProperty("deductionDate")
     @java.lang.Override
@@ -324,6 +328,15 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         return fees;
     }
 
+    /**
+     * @return If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.
+     */
+    @JsonProperty("paymentSchedule")
+    @java.lang.Override
+    public Optional<PaymentSchedule> getPaymentSchedule() {
+        return paymentSchedule;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -359,7 +372,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 && uploadedImage.equals(other.uploadedImage)
                 && creatorUserId.equals(other.creatorUserId)
                 && failureType.equals(other.failureType)
-                && fees.equals(other.fees);
+                && fees.equals(other.fees)
+                && paymentSchedule.equals(other.paymentSchedule);
     }
 
     @java.lang.Override
@@ -388,7 +402,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 this.uploadedImage,
                 this.creatorUserId,
                 this.failureType,
-                this.fees);
+                this.fees,
+                this.paymentSchedule);
     }
 
     @java.lang.Override
@@ -450,6 +465,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
         private Optional<InvoiceFeesRequest> fees = Optional.empty();
 
+        private Optional<PaymentSchedule> paymentSchedule = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -480,6 +497,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             creatorUserId(other.getCreatorUserId());
             failureType(other.getFailureType());
             fees(other.getFees());
+            paymentSchedule(other.getPaymentSchedule());
             return this;
         }
 
@@ -747,6 +765,17 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        @JsonSetter(value = "paymentSchedule", nulls = Nulls.SKIP)
+        public Builder paymentSchedule(Optional<PaymentSchedule> paymentSchedule) {
+            this.paymentSchedule = paymentSchedule;
+            return this;
+        }
+
+        public Builder paymentSchedule(PaymentSchedule paymentSchedule) {
+            this.paymentSchedule = Optional.of(paymentSchedule);
+            return this;
+        }
+
         public InvoiceRequestBase build() {
             return new InvoiceRequestBase(
                     status,
@@ -773,6 +802,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                     creatorUserId,
                     failureType,
                     fees,
+                    paymentSchedule,
                     additionalProperties);
         }
     }

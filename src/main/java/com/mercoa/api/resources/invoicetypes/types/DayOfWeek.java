@@ -5,24 +5,24 @@ package com.mercoa.api.resources.invoicetypes.types;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum InvoiceDateFilter {
-    INVOICE_DATE("INVOICE_DATE"),
+public enum DayOfWeek {
+    SUNDAY("0"),
 
-    DEDUCTION_DATE("DEDUCTION_DATE"),
+    MONDAY("1"),
 
-    NEXT_PAYMENT_DATE("NEXT_PAYMENT_DATE"),
+    TUESDAY("2"),
 
-    DUE_DATE("DUE_DATE"),
+    WEDNESDAY("3"),
 
-    SETTLEMENT_DATE("SETTLEMENT_DATE"),
+    THURSDAY("4"),
 
-    CREATED_AT("CREATED_AT"),
+    FRIDAY("5"),
 
-    UPDATED_AT("UPDATED_AT");
+    SATURDAY("6");
 
     private final String value;
 
-    InvoiceDateFilter(String value) {
+    DayOfWeek(String value) {
         this.value = value;
     }
 

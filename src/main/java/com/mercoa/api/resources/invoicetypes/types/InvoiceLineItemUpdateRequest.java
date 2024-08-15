@@ -26,7 +26,7 @@ public final class InvoiceLineItemUpdateRequest implements IInvoiceLineItemReque
 
     private final Optional<String> name;
 
-    private final Optional<Integer> quantity;
+    private final Optional<Double> quantity;
 
     private final Optional<Double> unitPrice;
 
@@ -49,7 +49,7 @@ public final class InvoiceLineItemUpdateRequest implements IInvoiceLineItemReque
     private InvoiceLineItemUpdateRequest(
             Optional<CurrencyCode> currency,
             Optional<String> name,
-            Optional<Integer> quantity,
+            Optional<Double> quantity,
             Optional<Double> unitPrice,
             Optional<OffsetDateTime> serviceStartDate,
             Optional<OffsetDateTime> serviceEndDate,
@@ -90,7 +90,7 @@ public final class InvoiceLineItemUpdateRequest implements IInvoiceLineItemReque
 
     @JsonProperty("quantity")
     @java.lang.Override
-    public Optional<Integer> getQuantity() {
+    public Optional<Double> getQuantity() {
         return quantity;
     }
 
@@ -207,7 +207,7 @@ public final class InvoiceLineItemUpdateRequest implements IInvoiceLineItemReque
 
         private Optional<String> name = Optional.empty();
 
-        private Optional<Integer> quantity = Optional.empty();
+        private Optional<Double> quantity = Optional.empty();
 
         private Optional<Double> unitPrice = Optional.empty();
 
@@ -268,12 +268,12 @@ public final class InvoiceLineItemUpdateRequest implements IInvoiceLineItemReque
         }
 
         @JsonSetter(value = "quantity", nulls = Nulls.SKIP)
-        public Builder quantity(Optional<Integer> quantity) {
+        public Builder quantity(Optional<Double> quantity) {
             this.quantity = quantity;
             return this;
         }
 
-        public Builder quantity(Integer quantity) {
+        public Builder quantity(Double quantity) {
             this.quantity = Optional.of(quantity);
             return this;
         }

@@ -32,7 +32,7 @@ public final class InvoiceLineItemResponse {
 
     private final Optional<String> name;
 
-    private final Optional<Integer> quantity;
+    private final Optional<Double> quantity;
 
     private final Optional<Double> unitPrice;
 
@@ -56,7 +56,7 @@ public final class InvoiceLineItemResponse {
             CurrencyCode currency,
             Optional<String> description,
             Optional<String> name,
-            Optional<Integer> quantity,
+            Optional<Double> quantity,
             Optional<Double> unitPrice,
             Optional<OffsetDateTime> serviceStartDate,
             Optional<OffsetDateTime> serviceEndDate,
@@ -110,7 +110,7 @@ public final class InvoiceLineItemResponse {
     }
 
     @JsonProperty("quantity")
-    public Optional<Integer> getQuantity() {
+    public Optional<Double> getQuantity() {
         return quantity;
     }
 
@@ -242,9 +242,9 @@ public final class InvoiceLineItemResponse {
 
         _FinalStage name(String name);
 
-        _FinalStage quantity(Optional<Integer> quantity);
+        _FinalStage quantity(Optional<Double> quantity);
 
-        _FinalStage quantity(Integer quantity);
+        _FinalStage quantity(Double quantity);
 
         _FinalStage unitPrice(Optional<Double> unitPrice);
 
@@ -287,7 +287,7 @@ public final class InvoiceLineItemResponse {
 
         private Optional<Double> unitPrice = Optional.empty();
 
-        private Optional<Integer> quantity = Optional.empty();
+        private Optional<Double> quantity = Optional.empty();
 
         private Optional<String> name = Optional.empty();
 
@@ -420,14 +420,14 @@ public final class InvoiceLineItemResponse {
         }
 
         @java.lang.Override
-        public _FinalStage quantity(Integer quantity) {
+        public _FinalStage quantity(Double quantity) {
             this.quantity = Optional.of(quantity);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "quantity", nulls = Nulls.SKIP)
-        public _FinalStage quantity(Optional<Integer> quantity) {
+        public _FinalStage quantity(Optional<Double> quantity) {
             this.quantity = quantity;
             return this;
         }

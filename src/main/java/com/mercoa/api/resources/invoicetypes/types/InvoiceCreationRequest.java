@@ -71,6 +71,8 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
 
     private final Optional<InvoiceFeesRequest> fees;
 
+    private final Optional<PaymentSchedule> paymentSchedule;
+
     private final Optional<List<InvoiceLineItemCreationRequest>> lineItems;
 
     private final String creatorEntityId;
@@ -102,6 +104,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
             Optional<String> creatorUserId,
             Optional<InvoiceFailureType> failureType,
             Optional<InvoiceFeesRequest> fees,
+            Optional<PaymentSchedule> paymentSchedule,
             Optional<List<InvoiceLineItemCreationRequest>> lineItems,
             String creatorEntityId,
             Map<String, Object> additionalProperties) {
@@ -129,6 +132,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         this.creatorUserId = creatorUserId;
         this.failureType = failureType;
         this.fees = fees;
+        this.paymentSchedule = paymentSchedule;
         this.lineItems = lineItems;
         this.creatorEntityId = creatorEntityId;
         this.additionalProperties = additionalProperties;
@@ -168,7 +172,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
     }
 
     /**
-     * @return Date when funds are scheduled to be deducted from payer's account.
+     * @return Initial date when funds are scheduled to be deducted from payer's account.
      */
     @JsonProperty("deductionDate")
     @java.lang.Override
@@ -332,6 +336,15 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         return fees;
     }
 
+    /**
+     * @return If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.
+     */
+    @JsonProperty("paymentSchedule")
+    @java.lang.Override
+    public Optional<PaymentSchedule> getPaymentSchedule() {
+        return paymentSchedule;
+    }
+
     @JsonProperty("lineItems")
     public Optional<List<InvoiceLineItemCreationRequest>> getLineItems() {
         return lineItems;
@@ -381,6 +394,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
                 && creatorUserId.equals(other.creatorUserId)
                 && failureType.equals(other.failureType)
                 && fees.equals(other.fees)
+                && paymentSchedule.equals(other.paymentSchedule)
                 && lineItems.equals(other.lineItems)
                 && creatorEntityId.equals(other.creatorEntityId);
     }
@@ -412,6 +426,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
                 this.creatorUserId,
                 this.failureType,
                 this.fees,
+                this.paymentSchedule,
                 this.lineItems,
                 this.creatorEntityId);
     }
@@ -530,6 +545,10 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
 
         _FinalStage fees(InvoiceFeesRequest fees);
 
+        _FinalStage paymentSchedule(Optional<PaymentSchedule> paymentSchedule);
+
+        _FinalStage paymentSchedule(PaymentSchedule paymentSchedule);
+
         _FinalStage lineItems(Optional<List<InvoiceLineItemCreationRequest>> lineItems);
 
         _FinalStage lineItems(List<InvoiceLineItemCreationRequest> lineItems);
@@ -540,6 +559,8 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         private String creatorEntityId;
 
         private Optional<List<InvoiceLineItemCreationRequest>> lineItems = Optional.empty();
+
+        private Optional<PaymentSchedule> paymentSchedule = Optional.empty();
 
         private Optional<InvoiceFeesRequest> fees = Optional.empty();
 
@@ -620,6 +641,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
             creatorUserId(other.getCreatorUserId());
             failureType(other.getFailureType());
             fees(other.getFees());
+            paymentSchedule(other.getPaymentSchedule());
             lineItems(other.getLineItems());
             creatorEntityId(other.getCreatorEntityId());
             return this;
@@ -646,6 +668,23 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
         public _FinalStage lineItems(Optional<List<InvoiceLineItemCreationRequest>> lineItems) {
             this.lineItems = lineItems;
+            return this;
+        }
+
+        /**
+         * <p>If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paymentSchedule(PaymentSchedule paymentSchedule) {
+            this.paymentSchedule = Optional.of(paymentSchedule);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "paymentSchedule", nulls = Nulls.SKIP)
+        public _FinalStage paymentSchedule(Optional<PaymentSchedule> paymentSchedule) {
+            this.paymentSchedule = paymentSchedule;
             return this;
         }
 
@@ -953,7 +992,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         }
 
         /**
-         * <p>Date when funds are scheduled to be deducted from payer's account.</p>
+         * <p>Initial date when funds are scheduled to be deducted from payer's account.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1060,6 +1099,7 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
                     creatorUserId,
                     failureType,
                     fees,
+                    paymentSchedule,
                     lineItems,
                     creatorEntityId,
                     additionalProperties);

@@ -41,6 +41,8 @@ public final class InvoiceResponse {
 
     private final Optional<OffsetDateTime> deductionDate;
 
+    private final Optional<OffsetDateTime> nextDeductionDate;
+
     private final Optional<OffsetDateTime> processedAt;
 
     private final Optional<OffsetDateTime> settlementDate;
@@ -91,6 +93,8 @@ public final class InvoiceResponse {
 
     private final Optional<String> foreignId;
 
+    private final Optional<String> creatorEntityId;
+
     private final Optional<EntityUserResponse> creatorUser;
 
     private final Optional<InvoiceFailureType> failureType;
@@ -101,6 +105,8 @@ public final class InvoiceResponse {
 
     private final Optional<InvoiceFeesResponse> fees;
 
+    private final Optional<PaymentSchedule> paymentSchedule;
+
     private final Map<String, Object> additionalProperties;
 
     private InvoiceResponse(
@@ -110,6 +116,7 @@ public final class InvoiceResponse {
             Optional<CurrencyCode> currency,
             Optional<OffsetDateTime> invoiceDate,
             Optional<OffsetDateTime> deductionDate,
+            Optional<OffsetDateTime> nextDeductionDate,
             Optional<OffsetDateTime> processedAt,
             Optional<OffsetDateTime> settlementDate,
             Optional<OffsetDateTime> dueDate,
@@ -135,11 +142,13 @@ public final class InvoiceResponse {
             List<ApprovalPolicyResponse> approvalPolicy,
             Map<String, String> metadata,
             Optional<String> foreignId,
+            Optional<String> creatorEntityId,
             Optional<EntityUserResponse> creatorUser,
             Optional<InvoiceFailureType> failureType,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Optional<InvoiceFeesResponse> fees,
+            Optional<PaymentSchedule> paymentSchedule,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.status = status;
@@ -147,6 +156,7 @@ public final class InvoiceResponse {
         this.currency = currency;
         this.invoiceDate = invoiceDate;
         this.deductionDate = deductionDate;
+        this.nextDeductionDate = nextDeductionDate;
         this.processedAt = processedAt;
         this.settlementDate = settlementDate;
         this.dueDate = dueDate;
@@ -172,11 +182,13 @@ public final class InvoiceResponse {
         this.approvalPolicy = approvalPolicy;
         this.metadata = metadata;
         this.foreignId = foreignId;
+        this.creatorEntityId = creatorEntityId;
         this.creatorUser = creatorUser;
         this.failureType = failureType;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.fees = fees;
+        this.paymentSchedule = paymentSchedule;
         this.additionalProperties = additionalProperties;
     }
 
@@ -215,11 +227,19 @@ public final class InvoiceResponse {
     }
 
     /**
-     * @return Date when funds are scheduled to be deducted from payer's account. The actual deduction date may differ from this date, and will be reflected in the processedAt field.
+     * @return Initial date when funds are scheduled to be deducted from payer's account. The actual deduction date may differ from this date, and will be reflected in the processedAt field.
      */
     @JsonProperty("deductionDate")
     public Optional<OffsetDateTime> getDeductionDate() {
         return deductionDate;
+    }
+
+    /**
+     * @return If this is a recurring invoice, this will be the next date when funds are scheduled to be deducted from payer's account.
+     */
+    @JsonProperty("nextDeductionDate")
+    public Optional<OffsetDateTime> getNextDeductionDate() {
+        return nextDeductionDate;
     }
 
     /**
@@ -372,6 +392,14 @@ public final class InvoiceResponse {
     }
 
     /**
+     * @return The ID of the entity who created this invoice.
+     */
+    @JsonProperty("creatorEntityId")
+    public Optional<String> getCreatorEntityId() {
+        return creatorEntityId;
+    }
+
+    /**
      * @return Entity user who created this invoice.
      */
     @JsonProperty("creatorUser")
@@ -405,6 +433,14 @@ public final class InvoiceResponse {
         return fees;
     }
 
+    /**
+     * @return If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.
+     */
+    @JsonProperty("paymentSchedule")
+    public Optional<PaymentSchedule> getPaymentSchedule() {
+        return paymentSchedule;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -423,6 +459,7 @@ public final class InvoiceResponse {
                 && currency.equals(other.currency)
                 && invoiceDate.equals(other.invoiceDate)
                 && deductionDate.equals(other.deductionDate)
+                && nextDeductionDate.equals(other.nextDeductionDate)
                 && processedAt.equals(other.processedAt)
                 && settlementDate.equals(other.settlementDate)
                 && dueDate.equals(other.dueDate)
@@ -448,11 +485,13 @@ public final class InvoiceResponse {
                 && approvalPolicy.equals(other.approvalPolicy)
                 && metadata.equals(other.metadata)
                 && foreignId.equals(other.foreignId)
+                && creatorEntityId.equals(other.creatorEntityId)
                 && creatorUser.equals(other.creatorUser)
                 && failureType.equals(other.failureType)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt)
-                && fees.equals(other.fees);
+                && fees.equals(other.fees)
+                && paymentSchedule.equals(other.paymentSchedule);
     }
 
     @java.lang.Override
@@ -464,6 +503,7 @@ public final class InvoiceResponse {
                 this.currency,
                 this.invoiceDate,
                 this.deductionDate,
+                this.nextDeductionDate,
                 this.processedAt,
                 this.settlementDate,
                 this.dueDate,
@@ -489,11 +529,13 @@ public final class InvoiceResponse {
                 this.approvalPolicy,
                 this.metadata,
                 this.foreignId,
+                this.creatorEntityId,
                 this.creatorUser,
                 this.failureType,
                 this.createdAt,
                 this.updatedAt,
-                this.fees);
+                this.fees,
+                this.paymentSchedule);
     }
 
     @java.lang.Override
@@ -553,6 +595,10 @@ public final class InvoiceResponse {
         _FinalStage deductionDate(Optional<OffsetDateTime> deductionDate);
 
         _FinalStage deductionDate(OffsetDateTime deductionDate);
+
+        _FinalStage nextDeductionDate(Optional<OffsetDateTime> nextDeductionDate);
+
+        _FinalStage nextDeductionDate(OffsetDateTime nextDeductionDate);
 
         _FinalStage processedAt(Optional<OffsetDateTime> processedAt);
 
@@ -648,6 +694,10 @@ public final class InvoiceResponse {
 
         _FinalStage foreignId(String foreignId);
 
+        _FinalStage creatorEntityId(Optional<String> creatorEntityId);
+
+        _FinalStage creatorEntityId(String creatorEntityId);
+
         _FinalStage creatorUser(Optional<EntityUserResponse> creatorUser);
 
         _FinalStage creatorUser(EntityUserResponse creatorUser);
@@ -659,6 +709,10 @@ public final class InvoiceResponse {
         _FinalStage fees(Optional<InvoiceFeesResponse> fees);
 
         _FinalStage fees(InvoiceFeesResponse fees);
+
+        _FinalStage paymentSchedule(Optional<PaymentSchedule> paymentSchedule);
+
+        _FinalStage paymentSchedule(PaymentSchedule paymentSchedule);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -685,11 +739,15 @@ public final class InvoiceResponse {
 
         private OffsetDateTime updatedAt;
 
+        private Optional<PaymentSchedule> paymentSchedule = Optional.empty();
+
         private Optional<InvoiceFeesResponse> fees = Optional.empty();
 
         private Optional<InvoiceFailureType> failureType = Optional.empty();
 
         private Optional<EntityUserResponse> creatorUser = Optional.empty();
+
+        private Optional<String> creatorEntityId = Optional.empty();
 
         private Optional<String> foreignId = Optional.empty();
 
@@ -735,6 +793,8 @@ public final class InvoiceResponse {
 
         private Optional<OffsetDateTime> processedAt = Optional.empty();
 
+        private Optional<OffsetDateTime> nextDeductionDate = Optional.empty();
+
         private Optional<OffsetDateTime> deductionDate = Optional.empty();
 
         private Optional<OffsetDateTime> invoiceDate = Optional.empty();
@@ -756,6 +816,7 @@ public final class InvoiceResponse {
             currency(other.getCurrency());
             invoiceDate(other.getInvoiceDate());
             deductionDate(other.getDeductionDate());
+            nextDeductionDate(other.getNextDeductionDate());
             processedAt(other.getProcessedAt());
             settlementDate(other.getSettlementDate());
             dueDate(other.getDueDate());
@@ -781,11 +842,13 @@ public final class InvoiceResponse {
             approvalPolicy(other.getApprovalPolicy());
             metadata(other.getMetadata());
             foreignId(other.getForeignId());
+            creatorEntityId(other.getCreatorEntityId());
             creatorUser(other.getCreatorUser());
             failureType(other.getFailureType());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             fees(other.getFees());
+            paymentSchedule(other.getPaymentSchedule());
             return this;
         }
 
@@ -851,6 +914,23 @@ public final class InvoiceResponse {
         }
 
         /**
+         * <p>If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paymentSchedule(PaymentSchedule paymentSchedule) {
+            this.paymentSchedule = Optional.of(paymentSchedule);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "paymentSchedule", nulls = Nulls.SKIP)
+        public _FinalStage paymentSchedule(Optional<PaymentSchedule> paymentSchedule) {
+            this.paymentSchedule = paymentSchedule;
+            return this;
+        }
+
+        /**
          * <p>Fees associated with this invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -898,6 +978,23 @@ public final class InvoiceResponse {
         @JsonSetter(value = "creatorUser", nulls = Nulls.SKIP)
         public _FinalStage creatorUser(Optional<EntityUserResponse> creatorUser) {
             this.creatorUser = creatorUser;
+            return this;
+        }
+
+        /**
+         * <p>The ID of the entity who created this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage creatorEntityId(String creatorEntityId) {
+            this.creatorEntityId = Optional.of(creatorEntityId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "creatorEntityId", nulls = Nulls.SKIP)
+        public _FinalStage creatorEntityId(Optional<String> creatorEntityId) {
+            this.creatorEntityId = creatorEntityId;
             return this;
         }
 
@@ -1233,7 +1330,24 @@ public final class InvoiceResponse {
         }
 
         /**
-         * <p>Date when funds are scheduled to be deducted from payer's account. The actual deduction date may differ from this date, and will be reflected in the processedAt field.</p>
+         * <p>If this is a recurring invoice, this will be the next date when funds are scheduled to be deducted from payer's account.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage nextDeductionDate(OffsetDateTime nextDeductionDate) {
+            this.nextDeductionDate = Optional.of(nextDeductionDate);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "nextDeductionDate", nulls = Nulls.SKIP)
+        public _FinalStage nextDeductionDate(Optional<OffsetDateTime> nextDeductionDate) {
+            this.nextDeductionDate = nextDeductionDate;
+            return this;
+        }
+
+        /**
+         * <p>Initial date when funds are scheduled to be deducted from payer's account. The actual deduction date may differ from this date, and will be reflected in the processedAt field.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1309,6 +1423,7 @@ public final class InvoiceResponse {
                     currency,
                     invoiceDate,
                     deductionDate,
+                    nextDeductionDate,
                     processedAt,
                     settlementDate,
                     dueDate,
@@ -1334,11 +1449,13 @@ public final class InvoiceResponse {
                     approvalPolicy,
                     metadata,
                     foreignId,
+                    creatorEntityId,
                     creatorUser,
                     failureType,
                     createdAt,
                     updatedAt,
                     fees,
+                    paymentSchedule,
                     additionalProperties);
         }
     }

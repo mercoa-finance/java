@@ -18,8 +18,10 @@ import com.mercoa.api.resources.invoicetypes.types.InvoiceDateFilter;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceMetadataFilter;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceOrderByField;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
+import com.mercoa.api.resources.invoicetypes.types.PaymentType;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -61,6 +63,8 @@ public final class EntityGetInvoicesRequest {
 
     private final Optional<InvoiceStatus> status;
 
+    private final Optional<List<PaymentType>> paymentType;
+
     private final Map<String, Object> additionalProperties;
 
     private EntityGetInvoicesRequest(
@@ -81,6 +85,7 @@ public final class EntityGetInvoicesRequest {
             Optional<ApproverAction> approverAction,
             Optional<String> invoiceId,
             Optional<InvoiceStatus> status,
+            Optional<List<PaymentType>> paymentType,
             Map<String, Object> additionalProperties) {
         this.excludePayables = excludePayables;
         this.excludeReceivables = excludeReceivables;
@@ -99,6 +104,7 @@ public final class EntityGetInvoicesRequest {
         this.approverAction = approverAction;
         this.invoiceId = invoiceId;
         this.status = status;
+        this.paymentType = paymentType;
         this.additionalProperties = additionalProperties;
     }
 
@@ -238,6 +244,14 @@ public final class EntityGetInvoicesRequest {
         return status;
     }
 
+    /**
+     * @return Filter invoices by recurring status
+     */
+    @JsonProperty("paymentType")
+    public Optional<List<PaymentType>> getPaymentType() {
+        return paymentType;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -266,7 +280,8 @@ public final class EntityGetInvoicesRequest {
                 && approverId.equals(other.approverId)
                 && approverAction.equals(other.approverAction)
                 && invoiceId.equals(other.invoiceId)
-                && status.equals(other.status);
+                && status.equals(other.status)
+                && paymentType.equals(other.paymentType);
     }
 
     @java.lang.Override
@@ -288,7 +303,8 @@ public final class EntityGetInvoicesRequest {
                 this.approverId,
                 this.approverAction,
                 this.invoiceId,
-                this.status);
+                this.status,
+                this.paymentType);
     }
 
     @java.lang.Override
@@ -336,6 +352,8 @@ public final class EntityGetInvoicesRequest {
 
         private Optional<InvoiceStatus> status = Optional.empty();
 
+        private Optional<List<PaymentType>> paymentType = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -359,6 +377,7 @@ public final class EntityGetInvoicesRequest {
             approverAction(other.getApproverAction());
             invoiceId(other.getInvoiceId());
             status(other.getStatus());
+            paymentType(other.getPaymentType());
             return this;
         }
 
@@ -549,6 +568,17 @@ public final class EntityGetInvoicesRequest {
             return this;
         }
 
+        @JsonSetter(value = "paymentType", nulls = Nulls.SKIP)
+        public Builder paymentType(Optional<List<PaymentType>> paymentType) {
+            this.paymentType = paymentType;
+            return this;
+        }
+
+        public Builder paymentType(List<PaymentType> paymentType) {
+            this.paymentType = Optional.of(paymentType);
+            return this;
+        }
+
         public EntityGetInvoicesRequest build() {
             return new EntityGetInvoicesRequest(
                     excludePayables,
@@ -568,6 +598,7 @@ public final class EntityGetInvoicesRequest {
                     approverAction,
                     invoiceId,
                     status,
+                    paymentType,
                     additionalProperties);
         }
     }

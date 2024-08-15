@@ -57,4 +57,6 @@ public interface IInvoiceRequestBase {
     Optional<InvoiceFailureType> getFailureType();
 
     Optional<InvoiceFeesRequest> getFees();
+
+    Optional<PaymentSchedule> getPaymentSchedule();
 }

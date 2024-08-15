@@ -5,24 +5,14 @@ package com.mercoa.api.resources.invoicetypes.types;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum InvoiceDateFilter {
-    INVOICE_DATE("INVOICE_DATE"),
+public enum PaymentMonthRepeatType {
+    START("start"),
 
-    DEDUCTION_DATE("DEDUCTION_DATE"),
-
-    NEXT_PAYMENT_DATE("NEXT_PAYMENT_DATE"),
-
-    DUE_DATE("DUE_DATE"),
-
-    SETTLEMENT_DATE("SETTLEMENT_DATE"),
-
-    CREATED_AT("CREATED_AT"),
-
-    UPDATED_AT("UPDATED_AT");
+    END("end");
 
     private final String value;
 
-    InvoiceDateFilter(String value) {
+    PaymentMonthRepeatType(String value) {
         this.value = value;
     }
 

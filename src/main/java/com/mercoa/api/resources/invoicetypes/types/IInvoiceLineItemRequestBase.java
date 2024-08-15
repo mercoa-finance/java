@@ -13,7 +13,7 @@ public interface IInvoiceLineItemRequestBase {
 
     Optional<String> getName();
 
-    Optional<Integer> getQuantity();
+    Optional<Double> getQuantity();
 
     Optional<Double> getUnitPrice();
 

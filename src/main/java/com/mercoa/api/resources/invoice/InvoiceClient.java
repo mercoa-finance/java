@@ -133,6 +133,10 @@ public class InvoiceClient {
         if (request.getStatus().isPresent()) {
             httpUrl.addQueryParameter("status", request.getStatus().get().toString());
         }
+        if (request.getPaymentType().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "paymentType", request.getPaymentType().get().toString());
+        }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
