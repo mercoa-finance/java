@@ -6,6 +6,8 @@ package com.mercoa.api.resources.invoicetypes.types;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum InvoiceStatus {
+    UNASSIGNED("UNASSIGNED"),
+
     DRAFT("DRAFT"),
 
     NEW("NEW"),

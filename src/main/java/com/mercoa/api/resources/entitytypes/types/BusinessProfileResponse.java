@@ -44,6 +44,12 @@ public final class BusinessProfileResponse {
 
     private final Optional<IndustryCodes> industryCodes;
 
+    private final Optional<Double> averageMonthlyTransactionVolume;
+
+    private final Optional<Double> averageTransactionSize;
+
+    private final Optional<Double> maxTransactionSize;
+
     private final Map<String, Object> additionalProperties;
 
     private BusinessProfileResponse(
@@ -58,6 +64,9 @@ public final class BusinessProfileResponse {
             Optional<Boolean> ownersProvided,
             boolean taxIdProvided,
             Optional<IndustryCodes> industryCodes,
+            Optional<Double> averageMonthlyTransactionVolume,
+            Optional<Double> averageTransactionSize,
+            Optional<Double> maxTransactionSize,
             Map<String, Object> additionalProperties) {
         this.email = email;
         this.legalBusinessName = legalBusinessName;
@@ -70,6 +79,9 @@ public final class BusinessProfileResponse {
         this.ownersProvided = ownersProvided;
         this.taxIdProvided = taxIdProvided;
         this.industryCodes = industryCodes;
+        this.averageMonthlyTransactionVolume = averageMonthlyTransactionVolume;
+        this.averageTransactionSize = averageTransactionSize;
+        this.maxTransactionSize = maxTransactionSize;
         this.additionalProperties = additionalProperties;
     }
 
@@ -131,6 +143,21 @@ public final class BusinessProfileResponse {
         return industryCodes;
     }
 
+    @JsonProperty("averageMonthlyTransactionVolume")
+    public Optional<Double> getAverageMonthlyTransactionVolume() {
+        return averageMonthlyTransactionVolume;
+    }
+
+    @JsonProperty("averageTransactionSize")
+    public Optional<Double> getAverageTransactionSize() {
+        return averageTransactionSize;
+    }
+
+    @JsonProperty("maxTransactionSize")
+    public Optional<Double> getMaxTransactionSize() {
+        return maxTransactionSize;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -153,7 +180,10 @@ public final class BusinessProfileResponse {
                 && address.equals(other.address)
                 && ownersProvided.equals(other.ownersProvided)
                 && taxIdProvided == other.taxIdProvided
-                && industryCodes.equals(other.industryCodes);
+                && industryCodes.equals(other.industryCodes)
+                && averageMonthlyTransactionVolume.equals(other.averageMonthlyTransactionVolume)
+                && averageTransactionSize.equals(other.averageTransactionSize)
+                && maxTransactionSize.equals(other.maxTransactionSize);
     }
 
     @java.lang.Override
@@ -169,7 +199,10 @@ public final class BusinessProfileResponse {
                 this.address,
                 this.ownersProvided,
                 this.taxIdProvided,
-                this.industryCodes);
+                this.industryCodes,
+                this.averageMonthlyTransactionVolume,
+                this.averageTransactionSize,
+                this.maxTransactionSize);
     }
 
     @java.lang.Override
@@ -229,6 +262,18 @@ public final class BusinessProfileResponse {
         _FinalStage industryCodes(Optional<IndustryCodes> industryCodes);
 
         _FinalStage industryCodes(IndustryCodes industryCodes);
+
+        _FinalStage averageMonthlyTransactionVolume(Optional<Double> averageMonthlyTransactionVolume);
+
+        _FinalStage averageMonthlyTransactionVolume(Double averageMonthlyTransactionVolume);
+
+        _FinalStage averageTransactionSize(Optional<Double> averageTransactionSize);
+
+        _FinalStage averageTransactionSize(Double averageTransactionSize);
+
+        _FinalStage maxTransactionSize(Optional<Double> maxTransactionSize);
+
+        _FinalStage maxTransactionSize(Double maxTransactionSize);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -236,6 +281,12 @@ public final class BusinessProfileResponse {
         private String legalBusinessName;
 
         private boolean taxIdProvided;
+
+        private Optional<Double> maxTransactionSize = Optional.empty();
+
+        private Optional<Double> averageTransactionSize = Optional.empty();
+
+        private Optional<Double> averageMonthlyTransactionVolume = Optional.empty();
 
         private Optional<IndustryCodes> industryCodes = Optional.empty();
 
@@ -273,6 +324,9 @@ public final class BusinessProfileResponse {
             ownersProvided(other.getOwnersProvided());
             taxIdProvided(other.getTaxIdProvided());
             industryCodes(other.getIndustryCodes());
+            averageMonthlyTransactionVolume(other.getAverageMonthlyTransactionVolume());
+            averageTransactionSize(other.getAverageTransactionSize());
+            maxTransactionSize(other.getMaxTransactionSize());
             return this;
         }
 
@@ -287,6 +341,45 @@ public final class BusinessProfileResponse {
         @JsonSetter("taxIDProvided")
         public _FinalStage taxIdProvided(boolean taxIdProvided) {
             this.taxIdProvided = taxIdProvided;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage maxTransactionSize(Double maxTransactionSize) {
+            this.maxTransactionSize = Optional.of(maxTransactionSize);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "maxTransactionSize", nulls = Nulls.SKIP)
+        public _FinalStage maxTransactionSize(Optional<Double> maxTransactionSize) {
+            this.maxTransactionSize = maxTransactionSize;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage averageTransactionSize(Double averageTransactionSize) {
+            this.averageTransactionSize = Optional.of(averageTransactionSize);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "averageTransactionSize", nulls = Nulls.SKIP)
+        public _FinalStage averageTransactionSize(Optional<Double> averageTransactionSize) {
+            this.averageTransactionSize = averageTransactionSize;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage averageMonthlyTransactionVolume(Double averageMonthlyTransactionVolume) {
+            this.averageMonthlyTransactionVolume = Optional.of(averageMonthlyTransactionVolume);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "averageMonthlyTransactionVolume", nulls = Nulls.SKIP)
+        public _FinalStage averageMonthlyTransactionVolume(Optional<Double> averageMonthlyTransactionVolume) {
+            this.averageMonthlyTransactionVolume = averageMonthlyTransactionVolume;
             return this;
         }
 
@@ -425,6 +518,9 @@ public final class BusinessProfileResponse {
                     ownersProvided,
                     taxIdProvided,
                     industryCodes,
+                    averageMonthlyTransactionVolume,
+                    averageTransactionSize,
+                    maxTransactionSize,
                     additionalProperties);
         }
     }

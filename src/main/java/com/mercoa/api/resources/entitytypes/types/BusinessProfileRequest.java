@@ -45,6 +45,12 @@ public final class BusinessProfileRequest {
 
     private final Optional<IndustryCodes> industryCodes;
 
+    private final Optional<Double> averageMonthlyTransactionVolume;
+
+    private final Optional<Double> averageTransactionSize;
+
+    private final Optional<Double> maxTransactionSize;
+
     private final Map<String, Object> additionalProperties;
 
     private BusinessProfileRequest(
@@ -59,6 +65,9 @@ public final class BusinessProfileRequest {
             Optional<TaxId> taxId,
             Optional<OffsetDateTime> formationDate,
             Optional<IndustryCodes> industryCodes,
+            Optional<Double> averageMonthlyTransactionVolume,
+            Optional<Double> averageTransactionSize,
+            Optional<Double> maxTransactionSize,
             Map<String, Object> additionalProperties) {
         this.email = email;
         this.legalBusinessName = legalBusinessName;
@@ -71,6 +80,9 @@ public final class BusinessProfileRequest {
         this.taxId = taxId;
         this.formationDate = formationDate;
         this.industryCodes = industryCodes;
+        this.averageMonthlyTransactionVolume = averageMonthlyTransactionVolume;
+        this.averageTransactionSize = averageTransactionSize;
+        this.maxTransactionSize = maxTransactionSize;
         this.additionalProperties = additionalProperties;
     }
 
@@ -153,6 +165,30 @@ public final class BusinessProfileRequest {
         return industryCodes;
     }
 
+    /**
+     * @return Average monthly transaction volume for the business. Required to collect funds.
+     */
+    @JsonProperty("averageMonthlyTransactionVolume")
+    public Optional<Double> getAverageMonthlyTransactionVolume() {
+        return averageMonthlyTransactionVolume;
+    }
+
+    /**
+     * @return Average transaction size for the business. Required to collect funds.
+     */
+    @JsonProperty("averageTransactionSize")
+    public Optional<Double> getAverageTransactionSize() {
+        return averageTransactionSize;
+    }
+
+    /**
+     * @return Maximum transaction size for the business. Required to collect funds.
+     */
+    @JsonProperty("maxTransactionSize")
+    public Optional<Double> getMaxTransactionSize() {
+        return maxTransactionSize;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -175,7 +211,10 @@ public final class BusinessProfileRequest {
                 && address.equals(other.address)
                 && taxId.equals(other.taxId)
                 && formationDate.equals(other.formationDate)
-                && industryCodes.equals(other.industryCodes);
+                && industryCodes.equals(other.industryCodes)
+                && averageMonthlyTransactionVolume.equals(other.averageMonthlyTransactionVolume)
+                && averageTransactionSize.equals(other.averageTransactionSize)
+                && maxTransactionSize.equals(other.maxTransactionSize);
     }
 
     @java.lang.Override
@@ -191,7 +230,10 @@ public final class BusinessProfileRequest {
                 this.address,
                 this.taxId,
                 this.formationDate,
-                this.industryCodes);
+                this.industryCodes,
+                this.averageMonthlyTransactionVolume,
+                this.averageTransactionSize,
+                this.maxTransactionSize);
     }
 
     @java.lang.Override
@@ -251,11 +293,29 @@ public final class BusinessProfileRequest {
         _FinalStage industryCodes(Optional<IndustryCodes> industryCodes);
 
         _FinalStage industryCodes(IndustryCodes industryCodes);
+
+        _FinalStage averageMonthlyTransactionVolume(Optional<Double> averageMonthlyTransactionVolume);
+
+        _FinalStage averageMonthlyTransactionVolume(Double averageMonthlyTransactionVolume);
+
+        _FinalStage averageTransactionSize(Optional<Double> averageTransactionSize);
+
+        _FinalStage averageTransactionSize(Double averageTransactionSize);
+
+        _FinalStage maxTransactionSize(Optional<Double> maxTransactionSize);
+
+        _FinalStage maxTransactionSize(Double maxTransactionSize);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements LegalBusinessNameStage, _FinalStage {
         private String legalBusinessName;
+
+        private Optional<Double> maxTransactionSize = Optional.empty();
+
+        private Optional<Double> averageTransactionSize = Optional.empty();
+
+        private Optional<Double> averageMonthlyTransactionVolume = Optional.empty();
 
         private Optional<IndustryCodes> industryCodes = Optional.empty();
 
@@ -295,6 +355,9 @@ public final class BusinessProfileRequest {
             taxId(other.getTaxId());
             formationDate(other.getFormationDate());
             industryCodes(other.getIndustryCodes());
+            averageMonthlyTransactionVolume(other.getAverageMonthlyTransactionVolume());
+            averageTransactionSize(other.getAverageTransactionSize());
+            maxTransactionSize(other.getMaxTransactionSize());
             return this;
         }
 
@@ -302,6 +365,57 @@ public final class BusinessProfileRequest {
         @JsonSetter("legalBusinessName")
         public _FinalStage legalBusinessName(String legalBusinessName) {
             this.legalBusinessName = legalBusinessName;
+            return this;
+        }
+
+        /**
+         * <p>Maximum transaction size for the business. Required to collect funds.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage maxTransactionSize(Double maxTransactionSize) {
+            this.maxTransactionSize = Optional.of(maxTransactionSize);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "maxTransactionSize", nulls = Nulls.SKIP)
+        public _FinalStage maxTransactionSize(Optional<Double> maxTransactionSize) {
+            this.maxTransactionSize = maxTransactionSize;
+            return this;
+        }
+
+        /**
+         * <p>Average transaction size for the business. Required to collect funds.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage averageTransactionSize(Double averageTransactionSize) {
+            this.averageTransactionSize = Optional.of(averageTransactionSize);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "averageTransactionSize", nulls = Nulls.SKIP)
+        public _FinalStage averageTransactionSize(Optional<Double> averageTransactionSize) {
+            this.averageTransactionSize = averageTransactionSize;
+            return this;
+        }
+
+        /**
+         * <p>Average monthly transaction volume for the business. Required to collect funds.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage averageMonthlyTransactionVolume(Double averageMonthlyTransactionVolume) {
+            this.averageMonthlyTransactionVolume = Optional.of(averageMonthlyTransactionVolume);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "averageMonthlyTransactionVolume", nulls = Nulls.SKIP)
+        public _FinalStage averageMonthlyTransactionVolume(Optional<Double> averageMonthlyTransactionVolume) {
+            this.averageMonthlyTransactionVolume = averageMonthlyTransactionVolume;
             return this;
         }
 
@@ -481,6 +595,9 @@ public final class BusinessProfileRequest {
                     taxId,
                     formationDate,
                     industryCodes,
+                    averageMonthlyTransactionVolume,
+                    averageTransactionSize,
+                    maxTransactionSize,
                     additionalProperties);
         }
     }

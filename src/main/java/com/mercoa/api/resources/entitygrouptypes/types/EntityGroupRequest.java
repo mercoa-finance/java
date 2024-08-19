@@ -17,22 +17,52 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = EntityGroupRequest.Builder.class)
 public final class EntityGroupRequest {
     private final List<String> entityIds;
 
+    private final Optional<String> foreignId;
+
+    private final Optional<String> name;
+
+    private final Optional<String> emailToName;
+
     private final Map<String, Object> additionalProperties;
 
-    private EntityGroupRequest(List<String> entityIds, Map<String, Object> additionalProperties) {
+    private EntityGroupRequest(
+            List<String> entityIds,
+            Optional<String> foreignId,
+            Optional<String> name,
+            Optional<String> emailToName,
+            Map<String, Object> additionalProperties) {
         this.entityIds = entityIds;
+        this.foreignId = foreignId;
+        this.name = name;
+        this.emailToName = emailToName;
         this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("entityIds")
     public List<String> getEntityIds() {
         return entityIds;
+    }
+
+    @JsonProperty("foreignId")
+    public Optional<String> getForeignId() {
+        return foreignId;
+    }
+
+    @JsonProperty("name")
+    public Optional<String> getName() {
+        return name;
+    }
+
+    @JsonProperty("emailToName")
+    public Optional<String> getEmailToName() {
+        return emailToName;
     }
 
     @java.lang.Override
@@ -47,12 +77,15 @@ public final class EntityGroupRequest {
     }
 
     private boolean equalTo(EntityGroupRequest other) {
-        return entityIds.equals(other.entityIds);
+        return entityIds.equals(other.entityIds)
+                && foreignId.equals(other.foreignId)
+                && name.equals(other.name)
+                && emailToName.equals(other.emailToName);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.entityIds);
+        return Objects.hash(this.entityIds, this.foreignId, this.name, this.emailToName);
     }
 
     @java.lang.Override
@@ -68,6 +101,12 @@ public final class EntityGroupRequest {
     public static final class Builder {
         private List<String> entityIds = new ArrayList<>();
 
+        private Optional<String> foreignId = Optional.empty();
+
+        private Optional<String> name = Optional.empty();
+
+        private Optional<String> emailToName = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -75,6 +114,9 @@ public final class EntityGroupRequest {
 
         public Builder from(EntityGroupRequest other) {
             entityIds(other.getEntityIds());
+            foreignId(other.getForeignId());
+            name(other.getName());
+            emailToName(other.getEmailToName());
             return this;
         }
 
@@ -95,8 +137,41 @@ public final class EntityGroupRequest {
             return this;
         }
 
+        @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
+        public Builder foreignId(Optional<String> foreignId) {
+            this.foreignId = foreignId;
+            return this;
+        }
+
+        public Builder foreignId(String foreignId) {
+            this.foreignId = Optional.of(foreignId);
+            return this;
+        }
+
+        @JsonSetter(value = "name", nulls = Nulls.SKIP)
+        public Builder name(Optional<String> name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = Optional.of(name);
+            return this;
+        }
+
+        @JsonSetter(value = "emailToName", nulls = Nulls.SKIP)
+        public Builder emailToName(Optional<String> emailToName) {
+            this.emailToName = emailToName;
+            return this;
+        }
+
+        public Builder emailToName(String emailToName) {
+            this.emailToName = Optional.of(emailToName);
+            return this;
+        }
+
         public EntityGroupRequest build() {
-            return new EntityGroupRequest(entityIds, additionalProperties);
+            return new EntityGroupRequest(entityIds, foreignId, name, emailToName, additionalProperties);
         }
     }
 }

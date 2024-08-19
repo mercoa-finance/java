@@ -17,12 +17,20 @@ import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = BusinessOnboardingOptions.Builder.class)
-public final class BusinessOnboardingOptions {
+public final class BusinessOnboardingOptions implements ICommonOnboardingOptions {
     private final OnboardingOption termsOfService;
 
     private final OnboardingOption email;
 
     private final OnboardingOption name;
+
+    private final OnboardingOption address;
+
+    private final OnboardingOption phone;
+
+    private final OnboardingOption tenNinetyNine;
+
+    private final OnboardingOption w9;
 
     private final OnboardingOption type;
 
@@ -31,10 +39,6 @@ public final class BusinessOnboardingOptions {
     private final OnboardingOption ein;
 
     private final OnboardingOption mcc;
-
-    private final OnboardingOption address;
-
-    private final OnboardingOption phone;
 
     private final OnboardingOption formationDate;
 
@@ -46,54 +50,97 @@ public final class BusinessOnboardingOptions {
 
     private final OnboardingOption logo;
 
+    private final OnboardingOption averageTransactionSize;
+
+    private final OnboardingOption averageMonthlyTransactionVolume;
+
+    private final OnboardingOption maxTransactionSize;
+
     private final Map<String, Object> additionalProperties;
 
     private BusinessOnboardingOptions(
             OnboardingOption termsOfService,
             OnboardingOption email,
             OnboardingOption name,
+            OnboardingOption address,
+            OnboardingOption phone,
+            OnboardingOption tenNinetyNine,
+            OnboardingOption w9,
             OnboardingOption type,
             OnboardingOption doingBusinessAs,
             OnboardingOption ein,
             OnboardingOption mcc,
-            OnboardingOption address,
-            OnboardingOption phone,
             OnboardingOption formationDate,
             OnboardingOption website,
             OnboardingOption description,
             OnboardingOption representatives,
             OnboardingOption logo,
+            OnboardingOption averageTransactionSize,
+            OnboardingOption averageMonthlyTransactionVolume,
+            OnboardingOption maxTransactionSize,
             Map<String, Object> additionalProperties) {
         this.termsOfService = termsOfService;
         this.email = email;
         this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.tenNinetyNine = tenNinetyNine;
+        this.w9 = w9;
         this.type = type;
         this.doingBusinessAs = doingBusinessAs;
         this.ein = ein;
         this.mcc = mcc;
-        this.address = address;
-        this.phone = phone;
         this.formationDate = formationDate;
         this.website = website;
         this.description = description;
         this.representatives = representatives;
         this.logo = logo;
+        this.averageTransactionSize = averageTransactionSize;
+        this.averageMonthlyTransactionVolume = averageMonthlyTransactionVolume;
+        this.maxTransactionSize = maxTransactionSize;
         this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("termsOfService")
+    @java.lang.Override
     public OnboardingOption getTermsOfService() {
         return termsOfService;
     }
 
     @JsonProperty("email")
+    @java.lang.Override
     public OnboardingOption getEmail() {
         return email;
     }
 
     @JsonProperty("name")
+    @java.lang.Override
     public OnboardingOption getName() {
         return name;
+    }
+
+    @JsonProperty("address")
+    @java.lang.Override
+    public OnboardingOption getAddress() {
+        return address;
+    }
+
+    @JsonProperty("phone")
+    @java.lang.Override
+    public OnboardingOption getPhone() {
+        return phone;
+    }
+
+    @JsonProperty("tenNinetyNine")
+    @java.lang.Override
+    public OnboardingOption getTenNinetyNine() {
+        return tenNinetyNine;
+    }
+
+    @JsonProperty("w9")
+    @java.lang.Override
+    public OnboardingOption getW9() {
+        return w9;
     }
 
     @JsonProperty("type")
@@ -114,16 +161,6 @@ public final class BusinessOnboardingOptions {
     @JsonProperty("mcc")
     public OnboardingOption getMcc() {
         return mcc;
-    }
-
-    @JsonProperty("address")
-    public OnboardingOption getAddress() {
-        return address;
-    }
-
-    @JsonProperty("phone")
-    public OnboardingOption getPhone() {
-        return phone;
     }
 
     @JsonProperty("formationDate")
@@ -151,6 +188,21 @@ public final class BusinessOnboardingOptions {
         return logo;
     }
 
+    @JsonProperty("averageTransactionSize")
+    public OnboardingOption getAverageTransactionSize() {
+        return averageTransactionSize;
+    }
+
+    @JsonProperty("averageMonthlyTransactionVolume")
+    public OnboardingOption getAverageMonthlyTransactionVolume() {
+        return averageMonthlyTransactionVolume;
+    }
+
+    @JsonProperty("maxTransactionSize")
+    public OnboardingOption getMaxTransactionSize() {
+        return maxTransactionSize;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -166,17 +218,22 @@ public final class BusinessOnboardingOptions {
         return termsOfService.equals(other.termsOfService)
                 && email.equals(other.email)
                 && name.equals(other.name)
+                && address.equals(other.address)
+                && phone.equals(other.phone)
+                && tenNinetyNine.equals(other.tenNinetyNine)
+                && w9.equals(other.w9)
                 && type.equals(other.type)
                 && doingBusinessAs.equals(other.doingBusinessAs)
                 && ein.equals(other.ein)
                 && mcc.equals(other.mcc)
-                && address.equals(other.address)
-                && phone.equals(other.phone)
                 && formationDate.equals(other.formationDate)
                 && website.equals(other.website)
                 && description.equals(other.description)
                 && representatives.equals(other.representatives)
-                && logo.equals(other.logo);
+                && logo.equals(other.logo)
+                && averageTransactionSize.equals(other.averageTransactionSize)
+                && averageMonthlyTransactionVolume.equals(other.averageMonthlyTransactionVolume)
+                && maxTransactionSize.equals(other.maxTransactionSize);
     }
 
     @java.lang.Override
@@ -185,17 +242,22 @@ public final class BusinessOnboardingOptions {
                 this.termsOfService,
                 this.email,
                 this.name,
+                this.address,
+                this.phone,
+                this.tenNinetyNine,
+                this.w9,
                 this.type,
                 this.doingBusinessAs,
                 this.ein,
                 this.mcc,
-                this.address,
-                this.phone,
                 this.formationDate,
                 this.website,
                 this.description,
                 this.representatives,
-                this.logo);
+                this.logo,
+                this.averageTransactionSize,
+                this.averageMonthlyTransactionVolume,
+                this.maxTransactionSize);
     }
 
     @java.lang.Override
@@ -218,7 +280,23 @@ public final class BusinessOnboardingOptions {
     }
 
     public interface NameStage {
-        TypeStage name(OnboardingOption name);
+        AddressStage name(OnboardingOption name);
+    }
+
+    public interface AddressStage {
+        PhoneStage address(OnboardingOption address);
+    }
+
+    public interface PhoneStage {
+        TenNinetyNineStage phone(OnboardingOption phone);
+    }
+
+    public interface TenNinetyNineStage {
+        W9Stage tenNinetyNine(OnboardingOption tenNinetyNine);
+    }
+
+    public interface W9Stage {
+        TypeStage w9(OnboardingOption w9);
     }
 
     public interface TypeStage {
@@ -234,15 +312,7 @@ public final class BusinessOnboardingOptions {
     }
 
     public interface MccStage {
-        AddressStage mcc(OnboardingOption mcc);
-    }
-
-    public interface AddressStage {
-        PhoneStage address(OnboardingOption address);
-    }
-
-    public interface PhoneStage {
-        FormationDateStage phone(OnboardingOption phone);
+        FormationDateStage mcc(OnboardingOption mcc);
     }
 
     public interface FormationDateStage {
@@ -262,7 +332,19 @@ public final class BusinessOnboardingOptions {
     }
 
     public interface LogoStage {
-        _FinalStage logo(OnboardingOption logo);
+        AverageTransactionSizeStage logo(OnboardingOption logo);
+    }
+
+    public interface AverageTransactionSizeStage {
+        AverageMonthlyTransactionVolumeStage averageTransactionSize(OnboardingOption averageTransactionSize);
+    }
+
+    public interface AverageMonthlyTransactionVolumeStage {
+        MaxTransactionSizeStage averageMonthlyTransactionVolume(OnboardingOption averageMonthlyTransactionVolume);
+    }
+
+    public interface MaxTransactionSizeStage {
+        _FinalStage maxTransactionSize(OnboardingOption maxTransactionSize);
     }
 
     public interface _FinalStage {
@@ -274,23 +356,36 @@ public final class BusinessOnboardingOptions {
             implements TermsOfServiceStage,
                     EmailStage,
                     NameStage,
+                    AddressStage,
+                    PhoneStage,
+                    TenNinetyNineStage,
+                    W9Stage,
                     TypeStage,
                     DoingBusinessAsStage,
                     EinStage,
                     MccStage,
-                    AddressStage,
-                    PhoneStage,
                     FormationDateStage,
                     WebsiteStage,
                     DescriptionStage,
                     RepresentativesStage,
                     LogoStage,
+                    AverageTransactionSizeStage,
+                    AverageMonthlyTransactionVolumeStage,
+                    MaxTransactionSizeStage,
                     _FinalStage {
         private OnboardingOption termsOfService;
 
         private OnboardingOption email;
 
         private OnboardingOption name;
+
+        private OnboardingOption address;
+
+        private OnboardingOption phone;
+
+        private OnboardingOption tenNinetyNine;
+
+        private OnboardingOption w9;
 
         private OnboardingOption type;
 
@@ -299,10 +394,6 @@ public final class BusinessOnboardingOptions {
         private OnboardingOption ein;
 
         private OnboardingOption mcc;
-
-        private OnboardingOption address;
-
-        private OnboardingOption phone;
 
         private OnboardingOption formationDate;
 
@@ -314,6 +405,12 @@ public final class BusinessOnboardingOptions {
 
         private OnboardingOption logo;
 
+        private OnboardingOption averageTransactionSize;
+
+        private OnboardingOption averageMonthlyTransactionVolume;
+
+        private OnboardingOption maxTransactionSize;
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -324,17 +421,22 @@ public final class BusinessOnboardingOptions {
             termsOfService(other.getTermsOfService());
             email(other.getEmail());
             name(other.getName());
+            address(other.getAddress());
+            phone(other.getPhone());
+            tenNinetyNine(other.getTenNinetyNine());
+            w9(other.getW9());
             type(other.getType());
             doingBusinessAs(other.getDoingBusinessAs());
             ein(other.getEin());
             mcc(other.getMcc());
-            address(other.getAddress());
-            phone(other.getPhone());
             formationDate(other.getFormationDate());
             website(other.getWebsite());
             description(other.getDescription());
             representatives(other.getRepresentatives());
             logo(other.getLogo());
+            averageTransactionSize(other.getAverageTransactionSize());
+            averageMonthlyTransactionVolume(other.getAverageMonthlyTransactionVolume());
+            maxTransactionSize(other.getMaxTransactionSize());
             return this;
         }
 
@@ -354,8 +456,36 @@ public final class BusinessOnboardingOptions {
 
         @java.lang.Override
         @JsonSetter("name")
-        public TypeStage name(OnboardingOption name) {
+        public AddressStage name(OnboardingOption name) {
             this.name = name;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("address")
+        public PhoneStage address(OnboardingOption address) {
+            this.address = address;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("phone")
+        public TenNinetyNineStage phone(OnboardingOption phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("tenNinetyNine")
+        public W9Stage tenNinetyNine(OnboardingOption tenNinetyNine) {
+            this.tenNinetyNine = tenNinetyNine;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("w9")
+        public TypeStage w9(OnboardingOption w9) {
+            this.w9 = w9;
             return this;
         }
 
@@ -382,22 +512,8 @@ public final class BusinessOnboardingOptions {
 
         @java.lang.Override
         @JsonSetter("mcc")
-        public AddressStage mcc(OnboardingOption mcc) {
+        public FormationDateStage mcc(OnboardingOption mcc) {
             this.mcc = mcc;
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("address")
-        public PhoneStage address(OnboardingOption address) {
-            this.address = address;
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("phone")
-        public FormationDateStage phone(OnboardingOption phone) {
-            this.phone = phone;
             return this;
         }
 
@@ -431,8 +547,30 @@ public final class BusinessOnboardingOptions {
 
         @java.lang.Override
         @JsonSetter("logo")
-        public _FinalStage logo(OnboardingOption logo) {
+        public AverageTransactionSizeStage logo(OnboardingOption logo) {
             this.logo = logo;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("averageTransactionSize")
+        public AverageMonthlyTransactionVolumeStage averageTransactionSize(OnboardingOption averageTransactionSize) {
+            this.averageTransactionSize = averageTransactionSize;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("averageMonthlyTransactionVolume")
+        public MaxTransactionSizeStage averageMonthlyTransactionVolume(
+                OnboardingOption averageMonthlyTransactionVolume) {
+            this.averageMonthlyTransactionVolume = averageMonthlyTransactionVolume;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("maxTransactionSize")
+        public _FinalStage maxTransactionSize(OnboardingOption maxTransactionSize) {
+            this.maxTransactionSize = maxTransactionSize;
             return this;
         }
 
@@ -442,17 +580,22 @@ public final class BusinessOnboardingOptions {
                     termsOfService,
                     email,
                     name,
+                    address,
+                    phone,
+                    tenNinetyNine,
+                    w9,
                     type,
                     doingBusinessAs,
                     ein,
                     mcc,
-                    address,
-                    phone,
                     formationDate,
                     website,
                     description,
                     representatives,
                     logo,
+                    averageTransactionSize,
+                    averageMonthlyTransactionVolume,
+                    maxTransactionSize,
                     additionalProperties);
         }
     }

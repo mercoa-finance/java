@@ -16,8 +16,8 @@ import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = IndividualOnboardingOptions.Builder.class)
-public final class IndividualOnboardingOptions implements ICommonOnboardingOptions {
+@JsonDeserialize(builder = CommonOnboardingOptions.Builder.class)
+public final class CommonOnboardingOptions implements ICommonOnboardingOptions {
     private final OnboardingOption termsOfService;
 
     private final OnboardingOption email;
@@ -32,13 +32,9 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
 
     private final OnboardingOption w9;
 
-    private final OnboardingOption dateOfBirth;
-
-    private final OnboardingOption ssn;
-
     private final Map<String, Object> additionalProperties;
 
-    private IndividualOnboardingOptions(
+    private CommonOnboardingOptions(
             OnboardingOption termsOfService,
             OnboardingOption email,
             OnboardingOption name,
@@ -46,8 +42,6 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
             OnboardingOption phone,
             OnboardingOption tenNinetyNine,
             OnboardingOption w9,
-            OnboardingOption dateOfBirth,
-            OnboardingOption ssn,
             Map<String, Object> additionalProperties) {
         this.termsOfService = termsOfService;
         this.email = email;
@@ -56,8 +50,6 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
         this.phone = phone;
         this.tenNinetyNine = tenNinetyNine;
         this.w9 = w9;
-        this.dateOfBirth = dateOfBirth;
-        this.ssn = ssn;
         this.additionalProperties = additionalProperties;
     }
 
@@ -103,20 +95,10 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
         return w9;
     }
 
-    @JsonProperty("dateOfBirth")
-    public OnboardingOption getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    @JsonProperty("ssn")
-    public OnboardingOption getSsn() {
-        return ssn;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof IndividualOnboardingOptions && equalTo((IndividualOnboardingOptions) other);
+        return other instanceof CommonOnboardingOptions && equalTo((CommonOnboardingOptions) other);
     }
 
     @JsonAnyGetter
@@ -124,30 +106,20 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
         return this.additionalProperties;
     }
 
-    private boolean equalTo(IndividualOnboardingOptions other) {
+    private boolean equalTo(CommonOnboardingOptions other) {
         return termsOfService.equals(other.termsOfService)
                 && email.equals(other.email)
                 && name.equals(other.name)
                 && address.equals(other.address)
                 && phone.equals(other.phone)
                 && tenNinetyNine.equals(other.tenNinetyNine)
-                && w9.equals(other.w9)
-                && dateOfBirth.equals(other.dateOfBirth)
-                && ssn.equals(other.ssn);
+                && w9.equals(other.w9);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.termsOfService,
-                this.email,
-                this.name,
-                this.address,
-                this.phone,
-                this.tenNinetyNine,
-                this.w9,
-                this.dateOfBirth,
-                this.ssn);
+                this.termsOfService, this.email, this.name, this.address, this.phone, this.tenNinetyNine, this.w9);
     }
 
     @java.lang.Override
@@ -162,7 +134,7 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
     public interface TermsOfServiceStage {
         EmailStage termsOfService(OnboardingOption termsOfService);
 
-        Builder from(IndividualOnboardingOptions other);
+        Builder from(CommonOnboardingOptions other);
     }
 
     public interface EmailStage {
@@ -186,19 +158,11 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
     }
 
     public interface W9Stage {
-        DateOfBirthStage w9(OnboardingOption w9);
-    }
-
-    public interface DateOfBirthStage {
-        SsnStage dateOfBirth(OnboardingOption dateOfBirth);
-    }
-
-    public interface SsnStage {
-        _FinalStage ssn(OnboardingOption ssn);
+        _FinalStage w9(OnboardingOption w9);
     }
 
     public interface _FinalStage {
-        IndividualOnboardingOptions build();
+        CommonOnboardingOptions build();
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -210,8 +174,6 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
                     PhoneStage,
                     TenNinetyNineStage,
                     W9Stage,
-                    DateOfBirthStage,
-                    SsnStage,
                     _FinalStage {
         private OnboardingOption termsOfService;
 
@@ -227,17 +189,13 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
 
         private OnboardingOption w9;
 
-        private OnboardingOption dateOfBirth;
-
-        private OnboardingOption ssn;
-
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(IndividualOnboardingOptions other) {
+        public Builder from(CommonOnboardingOptions other) {
             termsOfService(other.getTermsOfService());
             email(other.getEmail());
             name(other.getName());
@@ -245,8 +203,6 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
             phone(other.getPhone());
             tenNinetyNine(other.getTenNinetyNine());
             w9(other.getW9());
-            dateOfBirth(other.getDateOfBirth());
-            ssn(other.getSsn());
             return this;
         }
 
@@ -294,38 +250,15 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
 
         @java.lang.Override
         @JsonSetter("w9")
-        public DateOfBirthStage w9(OnboardingOption w9) {
+        public _FinalStage w9(OnboardingOption w9) {
             this.w9 = w9;
             return this;
         }
 
         @java.lang.Override
-        @JsonSetter("dateOfBirth")
-        public SsnStage dateOfBirth(OnboardingOption dateOfBirth) {
-            this.dateOfBirth = dateOfBirth;
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("ssn")
-        public _FinalStage ssn(OnboardingOption ssn) {
-            this.ssn = ssn;
-            return this;
-        }
-
-        @java.lang.Override
-        public IndividualOnboardingOptions build() {
-            return new IndividualOnboardingOptions(
-                    termsOfService,
-                    email,
-                    name,
-                    address,
-                    phone,
-                    tenNinetyNine,
-                    w9,
-                    dateOfBirth,
-                    ssn,
-                    additionalProperties);
+        public CommonOnboardingOptions build() {
+            return new CommonOnboardingOptions(
+                    termsOfService, email, name, address, phone, tenNinetyNine, w9, additionalProperties);
         }
     }
 }
