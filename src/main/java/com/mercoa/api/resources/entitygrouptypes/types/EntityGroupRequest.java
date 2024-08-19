@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGroupRequest.Builder.class)
 public final class EntityGroupRequest {
     private final List<String> entityIds;
@@ -144,7 +144,7 @@ public final class EntityGroupRequest {
         }
 
         public Builder foreignId(String foreignId) {
-            this.foreignId = Optional.of(foreignId);
+            this.foreignId = Optional.ofNullable(foreignId);
             return this;
         }
 
@@ -155,7 +155,7 @@ public final class EntityGroupRequest {
         }
 
         public Builder name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -166,7 +166,7 @@ public final class EntityGroupRequest {
         }
 
         public Builder emailToName(String emailToName) {
-            this.emailToName = Optional.of(emailToName);
+            this.emailToName = Optional.ofNullable(emailToName);
             return this;
         }
 

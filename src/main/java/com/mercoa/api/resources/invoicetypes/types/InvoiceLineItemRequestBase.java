@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceLineItemRequestBase.Builder.class)
 public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequestBase {
     private final Optional<CurrencyCode> currency;
@@ -204,7 +204,7 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
         }
 
         public Builder currency(CurrencyCode currency) {
-            this.currency = Optional.of(currency);
+            this.currency = Optional.ofNullable(currency);
             return this;
         }
 
@@ -215,7 +215,7 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
         }
 
         public Builder name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -226,7 +226,7 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
         }
 
         public Builder quantity(Double quantity) {
-            this.quantity = Optional.of(quantity);
+            this.quantity = Optional.ofNullable(quantity);
             return this;
         }
 
@@ -237,7 +237,7 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
         }
 
         public Builder unitPrice(Double unitPrice) {
-            this.unitPrice = Optional.of(unitPrice);
+            this.unitPrice = Optional.ofNullable(unitPrice);
             return this;
         }
 
@@ -248,7 +248,7 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
         }
 
         public Builder serviceStartDate(OffsetDateTime serviceStartDate) {
-            this.serviceStartDate = Optional.of(serviceStartDate);
+            this.serviceStartDate = Optional.ofNullable(serviceStartDate);
             return this;
         }
 
@@ -259,7 +259,7 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
         }
 
         public Builder serviceEndDate(OffsetDateTime serviceEndDate) {
-            this.serviceEndDate = Optional.of(serviceEndDate);
+            this.serviceEndDate = Optional.ofNullable(serviceEndDate);
             return this;
         }
 
@@ -270,7 +270,7 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
         }
 
         public Builder metadata(Map<String, String> metadata) {
-            this.metadata = Optional.of(metadata);
+            this.metadata = Optional.ofNullable(metadata);
             return this;
         }
 
@@ -281,7 +281,7 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
         }
 
         public Builder glAccountId(String glAccountId) {
-            this.glAccountId = Optional.of(glAccountId);
+            this.glAccountId = Optional.ofNullable(glAccountId);
             return this;
         }
 

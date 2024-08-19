@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceResponse.Builder.class)
 public final class InvoiceResponse {
     private final String id;
@@ -919,7 +919,7 @@ public final class InvoiceResponse {
          */
         @java.lang.Override
         public _FinalStage paymentSchedule(PaymentSchedule paymentSchedule) {
-            this.paymentSchedule = Optional.of(paymentSchedule);
+            this.paymentSchedule = Optional.ofNullable(paymentSchedule);
             return this;
         }
 
@@ -936,7 +936,7 @@ public final class InvoiceResponse {
          */
         @java.lang.Override
         public _FinalStage fees(InvoiceFeesResponse fees) {
-            this.fees = Optional.of(fees);
+            this.fees = Optional.ofNullable(fees);
             return this;
         }
 
@@ -953,7 +953,7 @@ public final class InvoiceResponse {
          */
         @java.lang.Override
         public _FinalStage failureType(InvoiceFailureType failureType) {
-            this.failureType = Optional.of(failureType);
+            this.failureType = Optional.ofNullable(failureType);
             return this;
         }
 
@@ -970,7 +970,7 @@ public final class InvoiceResponse {
          */
         @java.lang.Override
         public _FinalStage creatorUser(EntityUserResponse creatorUser) {
-            this.creatorUser = Optional.of(creatorUser);
+            this.creatorUser = Optional.ofNullable(creatorUser);
             return this;
         }
 
@@ -987,7 +987,7 @@ public final class InvoiceResponse {
          */
         @java.lang.Override
         public _FinalStage creatorEntityId(String creatorEntityId) {
-            this.creatorEntityId = Optional.of(creatorEntityId);
+            this.creatorEntityId = Optional.ofNullable(creatorEntityId);
             return this;
         }
 
@@ -1004,7 +1004,7 @@ public final class InvoiceResponse {
          */
         @java.lang.Override
         public _FinalStage foreignId(String foreignId) {
-            this.foreignId = Optional.of(foreignId);
+            this.foreignId = Optional.ofNullable(foreignId);
             return this;
         }
 
@@ -1085,7 +1085,7 @@ public final class InvoiceResponse {
 
         @java.lang.Override
         public _FinalStage lineItems(List<InvoiceLineItemResponse> lineItems) {
-            this.lineItems = Optional.of(lineItems);
+            this.lineItems = Optional.ofNullable(lineItems);
             return this;
         }
 
@@ -1098,7 +1098,7 @@ public final class InvoiceResponse {
 
         @java.lang.Override
         public _FinalStage comments(List<CommentResponse> comments) {
-            this.comments = Optional.of(comments);
+            this.comments = Optional.ofNullable(comments);
             return this;
         }
 
@@ -1111,7 +1111,7 @@ public final class InvoiceResponse {
 
         @java.lang.Override
         public _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions) {
-            this.paymentDestinationOptions = Optional.of(paymentDestinationOptions);
+            this.paymentDestinationOptions = Optional.ofNullable(paymentDestinationOptions);
             return this;
         }
 
@@ -1124,7 +1124,7 @@ public final class InvoiceResponse {
 
         @java.lang.Override
         public _FinalStage paymentDestinationId(String paymentDestinationId) {
-            this.paymentDestinationId = Optional.of(paymentDestinationId);
+            this.paymentDestinationId = Optional.ofNullable(paymentDestinationId);
             return this;
         }
 
@@ -1137,7 +1137,7 @@ public final class InvoiceResponse {
 
         @java.lang.Override
         public _FinalStage paymentDestination(PaymentMethodResponse paymentDestination) {
-            this.paymentDestination = Optional.of(paymentDestination);
+            this.paymentDestination = Optional.ofNullable(paymentDestination);
             return this;
         }
 
@@ -1150,7 +1150,7 @@ public final class InvoiceResponse {
 
         @java.lang.Override
         public _FinalStage vendor(CounterpartyResponse vendor) {
-            this.vendor = Optional.of(vendor);
+            this.vendor = Optional.ofNullable(vendor);
             return this;
         }
 
@@ -1163,7 +1163,7 @@ public final class InvoiceResponse {
 
         @java.lang.Override
         public _FinalStage vendorId(String vendorId) {
-            this.vendorId = Optional.of(vendorId);
+            this.vendorId = Optional.ofNullable(vendorId);
             return this;
         }
 
@@ -1176,7 +1176,7 @@ public final class InvoiceResponse {
 
         @java.lang.Override
         public _FinalStage paymentSourceId(String paymentSourceId) {
-            this.paymentSourceId = Optional.of(paymentSourceId);
+            this.paymentSourceId = Optional.ofNullable(paymentSourceId);
             return this;
         }
 
@@ -1189,7 +1189,7 @@ public final class InvoiceResponse {
 
         @java.lang.Override
         public _FinalStage paymentSource(PaymentMethodResponse paymentSource) {
-            this.paymentSource = Optional.of(paymentSource);
+            this.paymentSource = Optional.ofNullable(paymentSource);
             return this;
         }
 
@@ -1202,7 +1202,7 @@ public final class InvoiceResponse {
 
         @java.lang.Override
         public _FinalStage payer(CounterpartyResponse payer) {
-            this.payer = Optional.of(payer);
+            this.payer = Optional.ofNullable(payer);
             return this;
         }
 
@@ -1215,7 +1215,7 @@ public final class InvoiceResponse {
 
         @java.lang.Override
         public _FinalStage payerId(String payerId) {
-            this.payerId = Optional.of(payerId);
+            this.payerId = Optional.ofNullable(payerId);
             return this;
         }
 
@@ -1228,7 +1228,7 @@ public final class InvoiceResponse {
 
         @java.lang.Override
         public _FinalStage serviceEndDate(OffsetDateTime serviceEndDate) {
-            this.serviceEndDate = Optional.of(serviceEndDate);
+            this.serviceEndDate = Optional.ofNullable(serviceEndDate);
             return this;
         }
 
@@ -1241,7 +1241,7 @@ public final class InvoiceResponse {
 
         @java.lang.Override
         public _FinalStage serviceStartDate(OffsetDateTime serviceStartDate) {
-            this.serviceStartDate = Optional.of(serviceStartDate);
+            this.serviceStartDate = Optional.ofNullable(serviceStartDate);
             return this;
         }
 
@@ -1254,7 +1254,7 @@ public final class InvoiceResponse {
 
         @java.lang.Override
         public _FinalStage noteToSelf(String noteToSelf) {
-            this.noteToSelf = Optional.of(noteToSelf);
+            this.noteToSelf = Optional.ofNullable(noteToSelf);
             return this;
         }
 
@@ -1267,7 +1267,7 @@ public final class InvoiceResponse {
 
         @java.lang.Override
         public _FinalStage invoiceNumber(String invoiceNumber) {
-            this.invoiceNumber = Optional.of(invoiceNumber);
+            this.invoiceNumber = Optional.ofNullable(invoiceNumber);
             return this;
         }
 
@@ -1284,7 +1284,7 @@ public final class InvoiceResponse {
          */
         @java.lang.Override
         public _FinalStage dueDate(OffsetDateTime dueDate) {
-            this.dueDate = Optional.of(dueDate);
+            this.dueDate = Optional.ofNullable(dueDate);
             return this;
         }
 
@@ -1301,7 +1301,7 @@ public final class InvoiceResponse {
          */
         @java.lang.Override
         public _FinalStage settlementDate(OffsetDateTime settlementDate) {
-            this.settlementDate = Optional.of(settlementDate);
+            this.settlementDate = Optional.ofNullable(settlementDate);
             return this;
         }
 
@@ -1318,7 +1318,7 @@ public final class InvoiceResponse {
          */
         @java.lang.Override
         public _FinalStage processedAt(OffsetDateTime processedAt) {
-            this.processedAt = Optional.of(processedAt);
+            this.processedAt = Optional.ofNullable(processedAt);
             return this;
         }
 
@@ -1335,7 +1335,7 @@ public final class InvoiceResponse {
          */
         @java.lang.Override
         public _FinalStage nextDeductionDate(OffsetDateTime nextDeductionDate) {
-            this.nextDeductionDate = Optional.of(nextDeductionDate);
+            this.nextDeductionDate = Optional.ofNullable(nextDeductionDate);
             return this;
         }
 
@@ -1352,7 +1352,7 @@ public final class InvoiceResponse {
          */
         @java.lang.Override
         public _FinalStage deductionDate(OffsetDateTime deductionDate) {
-            this.deductionDate = Optional.of(deductionDate);
+            this.deductionDate = Optional.ofNullable(deductionDate);
             return this;
         }
 
@@ -1369,7 +1369,7 @@ public final class InvoiceResponse {
          */
         @java.lang.Override
         public _FinalStage invoiceDate(OffsetDateTime invoiceDate) {
-            this.invoiceDate = Optional.of(invoiceDate);
+            this.invoiceDate = Optional.ofNullable(invoiceDate);
             return this;
         }
 
@@ -1386,7 +1386,7 @@ public final class InvoiceResponse {
          */
         @java.lang.Override
         public _FinalStage currency(CurrencyCode currency) {
-            this.currency = Optional.of(currency);
+            this.currency = Optional.ofNullable(currency);
             return this;
         }
 
@@ -1403,7 +1403,7 @@ public final class InvoiceResponse {
          */
         @java.lang.Override
         public _FinalStage amount(Double amount) {
-            this.amount = Optional.of(amount);
+            this.amount = Optional.ofNullable(amount);
             return this;
         }
 

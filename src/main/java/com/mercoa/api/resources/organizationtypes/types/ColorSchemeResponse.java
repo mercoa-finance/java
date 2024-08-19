@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ColorSchemeResponse.Builder.class)
 public final class ColorSchemeResponse {
     private final Optional<String> primaryColor;
@@ -125,7 +125,7 @@ public final class ColorSchemeResponse {
         }
 
         public Builder primaryColor(String primaryColor) {
-            this.primaryColor = Optional.of(primaryColor);
+            this.primaryColor = Optional.ofNullable(primaryColor);
             return this;
         }
 
@@ -136,7 +136,7 @@ public final class ColorSchemeResponse {
         }
 
         public Builder secondaryColor(String secondaryColor) {
-            this.secondaryColor = Optional.of(secondaryColor);
+            this.secondaryColor = Optional.ofNullable(secondaryColor);
             return this;
         }
 
@@ -147,7 +147,7 @@ public final class ColorSchemeResponse {
         }
 
         public Builder logoBackgroundColor(String logoBackgroundColor) {
-            this.logoBackgroundColor = Optional.of(logoBackgroundColor);
+            this.logoBackgroundColor = Optional.ofNullable(logoBackgroundColor);
             return this;
         }
 
@@ -158,7 +158,7 @@ public final class ColorSchemeResponse {
         }
 
         public Builder roundedCorners(Integer roundedCorners) {
-            this.roundedCorners = Optional.of(roundedCorners);
+            this.roundedCorners = Optional.ofNullable(roundedCorners);
             return this;
         }
 

@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceMetricsResponse.Builder.class)
 public final class InvoiceMetricsResponse {
     private final double totalAmount;
@@ -190,7 +190,7 @@ public final class InvoiceMetricsResponse {
 
         @java.lang.Override
         public _FinalStage dates(Map<String, InvoiceMetricsPerDateResponse> dates) {
-            this.dates = Optional.of(dates);
+            this.dates = Optional.ofNullable(dates);
             return this;
         }
 

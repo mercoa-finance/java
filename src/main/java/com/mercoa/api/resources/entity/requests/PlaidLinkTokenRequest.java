@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PlaidLinkTokenRequest.Builder.class)
 public final class PlaidLinkTokenRequest {
     private final Optional<String> paymentMethodId;
@@ -87,7 +87,7 @@ public final class PlaidLinkTokenRequest {
         }
 
         public Builder paymentMethodId(String paymentMethodId) {
-            this.paymentMethodId = Optional.of(paymentMethodId);
+            this.paymentMethodId = Optional.ofNullable(paymentMethodId);
             return this;
         }
 

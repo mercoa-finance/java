@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGetNotificationsRequest.Builder.class)
 public final class EntityGetNotificationsRequest {
     private final Optional<OffsetDateTime> startDate;
@@ -196,7 +196,7 @@ public final class EntityGetNotificationsRequest {
         }
 
         public Builder startDate(OffsetDateTime startDate) {
-            this.startDate = Optional.of(startDate);
+            this.startDate = Optional.ofNullable(startDate);
             return this;
         }
 
@@ -207,7 +207,7 @@ public final class EntityGetNotificationsRequest {
         }
 
         public Builder endDate(OffsetDateTime endDate) {
-            this.endDate = Optional.of(endDate);
+            this.endDate = Optional.ofNullable(endDate);
             return this;
         }
 
@@ -218,7 +218,7 @@ public final class EntityGetNotificationsRequest {
         }
 
         public Builder orderDirection(OrderDirection orderDirection) {
-            this.orderDirection = Optional.of(orderDirection);
+            this.orderDirection = Optional.ofNullable(orderDirection);
             return this;
         }
 
@@ -229,7 +229,7 @@ public final class EntityGetNotificationsRequest {
         }
 
         public Builder limit(Integer limit) {
-            this.limit = Optional.of(limit);
+            this.limit = Optional.ofNullable(limit);
             return this;
         }
 
@@ -240,7 +240,7 @@ public final class EntityGetNotificationsRequest {
         }
 
         public Builder startingAfter(String startingAfter) {
-            this.startingAfter = Optional.of(startingAfter);
+            this.startingAfter = Optional.ofNullable(startingAfter);
             return this;
         }
 
@@ -251,7 +251,7 @@ public final class EntityGetNotificationsRequest {
         }
 
         public Builder notificationType(NotificationType notificationType) {
-            this.notificationType = Optional.of(notificationType);
+            this.notificationType = Optional.ofNullable(notificationType);
             return this;
         }
 
@@ -262,7 +262,7 @@ public final class EntityGetNotificationsRequest {
         }
 
         public Builder status(NotificationStatus status) {
-            this.status = Optional.of(status);
+            this.status = Optional.ofNullable(status);
             return this;
         }
 

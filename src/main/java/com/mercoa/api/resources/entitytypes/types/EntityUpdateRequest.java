@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityUpdateRequest.Builder.class)
 public final class EntityUpdateRequest {
     private final Optional<String> foreignId;
@@ -255,7 +255,7 @@ public final class EntityUpdateRequest {
         }
 
         public Builder foreignId(String foreignId) {
-            this.foreignId = Optional.of(foreignId);
+            this.foreignId = Optional.ofNullable(foreignId);
             return this;
         }
 
@@ -266,7 +266,7 @@ public final class EntityUpdateRequest {
         }
 
         public Builder emailTo(String emailTo) {
-            this.emailTo = Optional.of(emailTo);
+            this.emailTo = Optional.ofNullable(emailTo);
             return this;
         }
 
@@ -277,7 +277,7 @@ public final class EntityUpdateRequest {
         }
 
         public Builder emailToAlias(List<String> emailToAlias) {
-            this.emailToAlias = Optional.of(emailToAlias);
+            this.emailToAlias = Optional.ofNullable(emailToAlias);
             return this;
         }
 
@@ -288,7 +288,7 @@ public final class EntityUpdateRequest {
         }
 
         public Builder isCustomer(Boolean isCustomer) {
-            this.isCustomer = Optional.of(isCustomer);
+            this.isCustomer = Optional.ofNullable(isCustomer);
             return this;
         }
 
@@ -299,7 +299,7 @@ public final class EntityUpdateRequest {
         }
 
         public Builder accountType(AccountType accountType) {
-            this.accountType = Optional.of(accountType);
+            this.accountType = Optional.ofNullable(accountType);
             return this;
         }
 
@@ -310,7 +310,7 @@ public final class EntityUpdateRequest {
         }
 
         public Builder profile(ProfileRequest profile) {
-            this.profile = Optional.of(profile);
+            this.profile = Optional.ofNullable(profile);
             return this;
         }
 
@@ -321,7 +321,7 @@ public final class EntityUpdateRequest {
         }
 
         public Builder isPayor(Boolean isPayor) {
-            this.isPayor = Optional.of(isPayor);
+            this.isPayor = Optional.ofNullable(isPayor);
             return this;
         }
 
@@ -332,7 +332,7 @@ public final class EntityUpdateRequest {
         }
 
         public Builder isPayee(Boolean isPayee) {
-            this.isPayee = Optional.of(isPayee);
+            this.isPayee = Optional.ofNullable(isPayee);
             return this;
         }
 
@@ -343,7 +343,7 @@ public final class EntityUpdateRequest {
         }
 
         public Builder isNetworkPayor(Boolean isNetworkPayor) {
-            this.isNetworkPayor = Optional.of(isNetworkPayor);
+            this.isNetworkPayor = Optional.ofNullable(isNetworkPayor);
             return this;
         }
 
@@ -354,7 +354,7 @@ public final class EntityUpdateRequest {
         }
 
         public Builder isNetworkPayee(Boolean isNetworkPayee) {
-            this.isNetworkPayee = Optional.of(isNetworkPayee);
+            this.isNetworkPayee = Optional.ofNullable(isNetworkPayee);
             return this;
         }
 
@@ -365,7 +365,7 @@ public final class EntityUpdateRequest {
         }
 
         public Builder logo(String logo) {
-            this.logo = Optional.of(logo);
+            this.logo = Optional.ofNullable(logo);
             return this;
         }
 

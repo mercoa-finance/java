@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Address.Builder.class)
 public final class Address {
     private final String addressLine1;
@@ -221,7 +221,7 @@ public final class Address {
 
         @java.lang.Override
         public _FinalStage country(String country) {
-            this.country = Optional.of(country);
+            this.country = Optional.ofNullable(country);
             return this;
         }
 
@@ -234,7 +234,7 @@ public final class Address {
 
         @java.lang.Override
         public _FinalStage addressLine2(String addressLine2) {
-            this.addressLine2 = Optional.of(addressLine2);
+            this.addressLine2 = Optional.ofNullable(addressLine2);
             return this;
         }
 

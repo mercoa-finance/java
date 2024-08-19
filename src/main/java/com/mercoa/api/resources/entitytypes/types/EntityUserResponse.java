@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityUserResponse.Builder.class)
 public final class EntityUserResponse {
     private final String id;
@@ -243,7 +243,7 @@ public final class EntityUserResponse {
 
         @java.lang.Override
         public _FinalStage name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -256,7 +256,7 @@ public final class EntityUserResponse {
 
         @java.lang.Override
         public _FinalStage email(String email) {
-            this.email = Optional.of(email);
+            this.email = Optional.ofNullable(email);
             return this;
         }
 
@@ -273,7 +273,7 @@ public final class EntityUserResponse {
          */
         @java.lang.Override
         public _FinalStage foreignId(String foreignId) {
-            this.foreignId = Optional.of(foreignId);
+            this.foreignId = Optional.ofNullable(foreignId);
             return this;
         }
 

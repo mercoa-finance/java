@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PaymentScheduleBase.Builder.class)
 public final class PaymentScheduleBase implements IPaymentScheduleBase {
     private final Optional<Integer> repeatEvery;
@@ -106,7 +106,7 @@ public final class PaymentScheduleBase implements IPaymentScheduleBase {
         }
 
         public Builder repeatEvery(Integer repeatEvery) {
-            this.repeatEvery = Optional.of(repeatEvery);
+            this.repeatEvery = Optional.ofNullable(repeatEvery);
             return this;
         }
 
@@ -117,7 +117,7 @@ public final class PaymentScheduleBase implements IPaymentScheduleBase {
         }
 
         public Builder ends(PaymentScheduleEndCondition ends) {
-            this.ends = Optional.of(ends);
+            this.ends = Optional.ofNullable(ends);
             return this;
         }
 

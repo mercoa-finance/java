@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = OcrResponse.Builder.class)
 public final class OcrResponse {
     private final InvoiceResponse invoice;
@@ -161,7 +161,7 @@ public final class OcrResponse {
 
         @java.lang.Override
         public _FinalStage bankAccount(BankAccountResponse bankAccount) {
-            this.bankAccount = Optional.of(bankAccount);
+            this.bankAccount = Optional.ofNullable(bankAccount);
             return this;
         }
 
@@ -174,7 +174,7 @@ public final class OcrResponse {
 
         @java.lang.Override
         public _FinalStage check(CheckResponse check) {
-            this.check = Optional.of(check);
+            this.check = Optional.ofNullable(check);
             return this;
         }
 

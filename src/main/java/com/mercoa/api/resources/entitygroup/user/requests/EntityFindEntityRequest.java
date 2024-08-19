@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityFindEntityRequest.Builder.class)
 public final class EntityFindEntityRequest {
     private final Optional<String> foreignId;
@@ -169,7 +169,7 @@ public final class EntityFindEntityRequest {
         }
 
         public Builder foreignId(String foreignId) {
-            this.foreignId = Optional.of(foreignId);
+            this.foreignId = Optional.ofNullable(foreignId);
             return this;
         }
 
@@ -180,7 +180,7 @@ public final class EntityFindEntityRequest {
         }
 
         public Builder role(String role) {
-            this.role = Optional.of(role);
+            this.role = Optional.ofNullable(role);
             return this;
         }
 
@@ -191,7 +191,7 @@ public final class EntityFindEntityRequest {
         }
 
         public Builder name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -202,7 +202,7 @@ public final class EntityFindEntityRequest {
         }
 
         public Builder email(String email) {
-            this.email = Optional.of(email);
+            this.email = Optional.ofNullable(email);
             return this;
         }
 
@@ -213,7 +213,7 @@ public final class EntityFindEntityRequest {
         }
 
         public Builder limit(Integer limit) {
-            this.limit = Optional.of(limit);
+            this.limit = Optional.ofNullable(limit);
             return this;
         }
 
@@ -224,7 +224,7 @@ public final class EntityFindEntityRequest {
         }
 
         public Builder startingAfter(String startingAfter) {
-            this.startingAfter = Optional.of(startingAfter);
+            this.startingAfter = Optional.ofNullable(startingAfter);
             return this;
         }
 

@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceWebhook.Builder.class)
 public final class InvoiceWebhook implements IInvoiceWebhook {
     private final String eventType;
@@ -150,7 +150,7 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
          */
         @java.lang.Override
         public _FinalStage user(EntityUserResponse user) {
-            this.user = Optional.of(user);
+            this.user = Optional.ofNullable(user);
             return this;
         }
 

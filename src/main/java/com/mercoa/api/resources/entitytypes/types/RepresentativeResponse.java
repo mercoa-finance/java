@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = RepresentativeResponse.Builder.class)
 public final class RepresentativeResponse {
     private final String id;
@@ -358,7 +358,7 @@ public final class RepresentativeResponse {
 
         @java.lang.Override
         public _FinalStage disabledOn(OffsetDateTime disabledOn) {
-            this.disabledOn = Optional.of(disabledOn);
+            this.disabledOn = Optional.ofNullable(disabledOn);
             return this;
         }
 

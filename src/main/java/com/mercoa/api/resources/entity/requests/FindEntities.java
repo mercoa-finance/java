@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = FindEntities.Builder.class)
 public final class FindEntities {
     private final Optional<Boolean> paymentMethods;
@@ -226,7 +226,7 @@ public final class FindEntities {
         }
 
         public Builder paymentMethods(Boolean paymentMethods) {
-            this.paymentMethods = Optional.of(paymentMethods);
+            this.paymentMethods = Optional.ofNullable(paymentMethods);
             return this;
         }
 
@@ -237,7 +237,7 @@ public final class FindEntities {
         }
 
         public Builder isCustomer(Boolean isCustomer) {
-            this.isCustomer = Optional.of(isCustomer);
+            this.isCustomer = Optional.ofNullable(isCustomer);
             return this;
         }
 
@@ -248,7 +248,7 @@ public final class FindEntities {
         }
 
         public Builder foreignId(String foreignId) {
-            this.foreignId = Optional.of(foreignId);
+            this.foreignId = Optional.ofNullable(foreignId);
             return this;
         }
 
@@ -259,7 +259,7 @@ public final class FindEntities {
         }
 
         public Builder status(EntityStatus status) {
-            this.status = Optional.of(status);
+            this.status = Optional.ofNullable(status);
             return this;
         }
 
@@ -270,7 +270,7 @@ public final class FindEntities {
         }
 
         public Builder isPayee(Boolean isPayee) {
-            this.isPayee = Optional.of(isPayee);
+            this.isPayee = Optional.ofNullable(isPayee);
             return this;
         }
 
@@ -281,7 +281,7 @@ public final class FindEntities {
         }
 
         public Builder isPayor(Boolean isPayor) {
-            this.isPayor = Optional.of(isPayor);
+            this.isPayor = Optional.ofNullable(isPayor);
             return this;
         }
 
@@ -292,7 +292,7 @@ public final class FindEntities {
         }
 
         public Builder name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -303,7 +303,7 @@ public final class FindEntities {
         }
 
         public Builder limit(Integer limit) {
-            this.limit = Optional.of(limit);
+            this.limit = Optional.ofNullable(limit);
             return this;
         }
 
@@ -314,7 +314,7 @@ public final class FindEntities {
         }
 
         public Builder startingAfter(String startingAfter) {
-            this.startingAfter = Optional.of(startingAfter);
+            this.startingAfter = Optional.ofNullable(startingAfter);
             return this;
         }
 

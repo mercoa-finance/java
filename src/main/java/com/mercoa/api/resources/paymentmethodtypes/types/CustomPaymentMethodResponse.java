@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CustomPaymentMethodResponse.Builder.class)
 public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResponse {
     private final String id;
@@ -522,7 +522,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
          */
         @java.lang.Override
         public _FinalStage availableBalance(Double availableBalance) {
-            this.availableBalance = Optional.of(availableBalance);
+            this.availableBalance = Optional.ofNullable(availableBalance);
             return this;
         }
 
@@ -535,7 +535,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
         @java.lang.Override
         public _FinalStage accountNumber(String accountNumber) {
-            this.accountNumber = Optional.of(accountNumber);
+            this.accountNumber = Optional.ofNullable(accountNumber);
             return this;
         }
 
@@ -548,7 +548,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
         @java.lang.Override
         public _FinalStage accountName(String accountName) {
-            this.accountName = Optional.of(accountName);
+            this.accountName = Optional.ofNullable(accountName);
             return this;
         }
 
@@ -565,7 +565,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
          */
         @java.lang.Override
         public _FinalStage foreignId(String foreignId) {
-            this.foreignId = Optional.of(foreignId);
+            this.foreignId = Optional.ofNullable(foreignId);
             return this;
         }
 
@@ -610,7 +610,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
          */
         @java.lang.Override
         public _FinalStage externalAccountingSystemId(String externalAccountingSystemId) {
-            this.externalAccountingSystemId = Optional.of(externalAccountingSystemId);
+            this.externalAccountingSystemId = Optional.ofNullable(externalAccountingSystemId);
             return this;
         }
 

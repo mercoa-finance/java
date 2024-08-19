@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = NotificationPolicyRequest.Builder.class)
 public final class NotificationPolicyRequest {
     private final Optional<Boolean> disabled;
@@ -139,7 +139,7 @@ public final class NotificationPolicyRequest {
         }
 
         public Builder disabled(Boolean disabled) {
-            this.disabled = Optional.of(disabled);
+            this.disabled = Optional.ofNullable(disabled);
             return this;
         }
 
@@ -150,7 +150,7 @@ public final class NotificationPolicyRequest {
         }
 
         public Builder additionalRoles(List<String> additionalRoles) {
-            this.additionalRoles = Optional.of(additionalRoles);
+            this.additionalRoles = Optional.ofNullable(additionalRoles);
             return this;
         }
 
@@ -161,7 +161,7 @@ public final class NotificationPolicyRequest {
         }
 
         public Builder notifyPayeeCounterparty(Boolean notifyPayeeCounterparty) {
-            this.notifyPayeeCounterparty = Optional.of(notifyPayeeCounterparty);
+            this.notifyPayeeCounterparty = Optional.ofNullable(notifyPayeeCounterparty);
             return this;
         }
 
@@ -172,7 +172,7 @@ public final class NotificationPolicyRequest {
         }
 
         public Builder notifyPayorCounterparty(Boolean notifyPayorCounterparty) {
-            this.notifyPayorCounterparty = Optional.of(notifyPayorCounterparty);
+            this.notifyPayorCounterparty = Optional.ofNullable(notifyPayorCounterparty);
             return this;
         }
 

@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityEmailLogRequest.Builder.class)
 public final class EntityEmailLogRequest {
     private final Optional<OffsetDateTime> startDate;
@@ -148,7 +148,7 @@ public final class EntityEmailLogRequest {
         }
 
         public Builder startDate(OffsetDateTime startDate) {
-            this.startDate = Optional.of(startDate);
+            this.startDate = Optional.ofNullable(startDate);
             return this;
         }
 
@@ -159,7 +159,7 @@ public final class EntityEmailLogRequest {
         }
 
         public Builder endDate(OffsetDateTime endDate) {
-            this.endDate = Optional.of(endDate);
+            this.endDate = Optional.ofNullable(endDate);
             return this;
         }
 
@@ -170,7 +170,7 @@ public final class EntityEmailLogRequest {
         }
 
         public Builder limit(Integer limit) {
-            this.limit = Optional.of(limit);
+            this.limit = Optional.ofNullable(limit);
             return this;
         }
 
@@ -181,7 +181,7 @@ public final class EntityEmailLogRequest {
         }
 
         public Builder startingAfter(String startingAfter) {
-            this.startingAfter = Optional.of(startingAfter);
+            this.startingAfter = Optional.ofNullable(startingAfter);
             return this;
         }
 
@@ -192,7 +192,7 @@ public final class EntityEmailLogRequest {
         }
 
         public Builder search(String search) {
-            this.search = Optional.of(search);
+            this.search = Optional.ofNullable(search);
             return this;
         }
 

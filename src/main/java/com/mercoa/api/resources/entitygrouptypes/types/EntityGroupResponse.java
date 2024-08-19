@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGroupResponse.Builder.class)
 public final class EntityGroupResponse {
     private final String id;
@@ -192,7 +192,7 @@ public final class EntityGroupResponse {
 
         @java.lang.Override
         public _FinalStage emailToName(String emailToName) {
-            this.emailToName = Optional.of(emailToName);
+            this.emailToName = Optional.ofNullable(emailToName);
             return this;
         }
 
@@ -205,7 +205,7 @@ public final class EntityGroupResponse {
 
         @java.lang.Override
         public _FinalStage name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -218,7 +218,7 @@ public final class EntityGroupResponse {
 
         @java.lang.Override
         public _FinalStage foreignId(String foreignId) {
-            this.foreignId = Optional.of(foreignId);
+            this.foreignId = Optional.ofNullable(foreignId);
             return this;
         }
 

@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = TokenGenerationInvoiceOptions.Builder.class)
 public final class TokenGenerationInvoiceOptions {
     private final Optional<LineItemAvailabilities> lineItems;
@@ -121,7 +121,7 @@ public final class TokenGenerationInvoiceOptions {
         }
 
         public Builder lineItems(LineItemAvailabilities lineItems) {
-            this.lineItems = Optional.of(lineItems);
+            this.lineItems = Optional.ofNullable(lineItems);
             return this;
         }
 
@@ -132,7 +132,7 @@ public final class TokenGenerationInvoiceOptions {
         }
 
         public Builder disableLineItems(Boolean disableLineItems) {
-            this.disableLineItems = Optional.of(disableLineItems);
+            this.disableLineItems = Optional.ofNullable(disableLineItems);
             return this;
         }
 

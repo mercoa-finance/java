@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BankAccountRequest.Builder.class)
 public final class BankAccountRequest implements IPaymentMethodBaseRequest {
     private final Optional<Boolean> defaultSource;
@@ -348,7 +348,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
          */
         @java.lang.Override
         public _FinalStage checkOptions(BankAccountCheckOptions checkOptions) {
-            this.checkOptions = Optional.of(checkOptions);
+            this.checkOptions = Optional.ofNullable(checkOptions);
             return this;
         }
 
@@ -365,7 +365,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
          */
         @java.lang.Override
         public _FinalStage plaid(PlaidLinkRequest plaid) {
-            this.plaid = Optional.of(plaid);
+            this.plaid = Optional.ofNullable(plaid);
             return this;
         }
 
@@ -382,7 +382,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
          */
         @java.lang.Override
         public _FinalStage bankName(String bankName) {
-            this.bankName = Optional.of(bankName);
+            this.bankName = Optional.ofNullable(bankName);
             return this;
         }
 
@@ -399,7 +399,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
          */
         @java.lang.Override
         public _FinalStage accountName(String accountName) {
-            this.accountName = Optional.of(accountName);
+            this.accountName = Optional.ofNullable(accountName);
             return this;
         }
 
@@ -416,7 +416,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
          */
         @java.lang.Override
         public _FinalStage metadata(Map<String, String> metadata) {
-            this.metadata = Optional.of(metadata);
+            this.metadata = Optional.ofNullable(metadata);
             return this;
         }
 
@@ -433,7 +433,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
          */
         @java.lang.Override
         public _FinalStage frozen(Boolean frozen) {
-            this.frozen = Optional.of(frozen);
+            this.frozen = Optional.ofNullable(frozen);
             return this;
         }
 
@@ -450,7 +450,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
          */
         @java.lang.Override
         public _FinalStage externalAccountingSystemId(String externalAccountingSystemId) {
-            this.externalAccountingSystemId = Optional.of(externalAccountingSystemId);
+            this.externalAccountingSystemId = Optional.ofNullable(externalAccountingSystemId);
             return this;
         }
 
@@ -467,7 +467,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
          */
         @java.lang.Override
         public _FinalStage defaultDestination(Boolean defaultDestination) {
-            this.defaultDestination = Optional.of(defaultDestination);
+            this.defaultDestination = Optional.ofNullable(defaultDestination);
             return this;
         }
 
@@ -484,7 +484,7 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
          */
         @java.lang.Override
         public _FinalStage defaultSource(Boolean defaultSource) {
-            this.defaultSource = Optional.of(defaultSource);
+            this.defaultSource = Optional.ofNullable(defaultSource);
             return this;
         }
 

@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = OrganizationRequest.Builder.class)
 public final class OrganizationRequest {
     private final Optional<String> name;
@@ -228,7 +228,7 @@ public final class OrganizationRequest {
         }
 
         public Builder name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -239,7 +239,7 @@ public final class OrganizationRequest {
         }
 
         public Builder logo(String logo) {
-            this.logo = Optional.of(logo);
+            this.logo = Optional.ofNullable(logo);
             return this;
         }
 
@@ -250,7 +250,7 @@ public final class OrganizationRequest {
         }
 
         public Builder websiteUrl(String websiteUrl) {
-            this.websiteUrl = Optional.of(websiteUrl);
+            this.websiteUrl = Optional.ofNullable(websiteUrl);
             return this;
         }
 
@@ -261,7 +261,7 @@ public final class OrganizationRequest {
         }
 
         public Builder supportEmail(String supportEmail) {
-            this.supportEmail = Optional.of(supportEmail);
+            this.supportEmail = Optional.ofNullable(supportEmail);
             return this;
         }
 
@@ -272,7 +272,7 @@ public final class OrganizationRequest {
         }
 
         public Builder paymentMethods(PaymentMethodsRequest paymentMethods) {
-            this.paymentMethods = Optional.of(paymentMethods);
+            this.paymentMethods = Optional.ofNullable(paymentMethods);
             return this;
         }
 
@@ -283,7 +283,7 @@ public final class OrganizationRequest {
         }
 
         public Builder emailProvider(EmailProviderRequest emailProvider) {
-            this.emailProvider = Optional.of(emailProvider);
+            this.emailProvider = Optional.ofNullable(emailProvider);
             return this;
         }
 
@@ -296,7 +296,7 @@ public final class OrganizationRequest {
 
         public Builder externalAccountingSystemProvider(
                 ExternalAccountingSystemProviderRequest externalAccountingSystemProvider) {
-            this.externalAccountingSystemProvider = Optional.of(externalAccountingSystemProvider);
+            this.externalAccountingSystemProvider = Optional.ofNullable(externalAccountingSystemProvider);
             return this;
         }
 
@@ -307,7 +307,7 @@ public final class OrganizationRequest {
         }
 
         public Builder colorScheme(ColorSchemeRequest colorScheme) {
-            this.colorScheme = Optional.of(colorScheme);
+            this.colorScheme = Optional.ofNullable(colorScheme);
             return this;
         }
 
@@ -318,7 +318,7 @@ public final class OrganizationRequest {
         }
 
         public Builder payeeOnboardingOptions(OnboardingOptionsRequest payeeOnboardingOptions) {
-            this.payeeOnboardingOptions = Optional.of(payeeOnboardingOptions);
+            this.payeeOnboardingOptions = Optional.ofNullable(payeeOnboardingOptions);
             return this;
         }
 
@@ -329,7 +329,7 @@ public final class OrganizationRequest {
         }
 
         public Builder payorOnboardingOptions(OnboardingOptionsRequest payorOnboardingOptions) {
-            this.payorOnboardingOptions = Optional.of(payorOnboardingOptions);
+            this.payorOnboardingOptions = Optional.ofNullable(payorOnboardingOptions);
             return this;
         }
 
@@ -340,7 +340,7 @@ public final class OrganizationRequest {
         }
 
         public Builder metadataSchema(List<MetadataSchema> metadataSchema) {
-            this.metadataSchema = Optional.of(metadataSchema);
+            this.metadataSchema = Optional.ofNullable(metadataSchema);
             return this;
         }
 

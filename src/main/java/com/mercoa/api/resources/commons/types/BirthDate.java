@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BirthDate.Builder.class)
 public final class BirthDate {
     private final Optional<String> day;
@@ -110,7 +110,7 @@ public final class BirthDate {
         }
 
         public Builder day(String day) {
-            this.day = Optional.of(day);
+            this.day = Optional.ofNullable(day);
             return this;
         }
 
@@ -121,7 +121,7 @@ public final class BirthDate {
         }
 
         public Builder month(String month) {
-            this.month = Optional.of(month);
+            this.month = Optional.ofNullable(month);
             return this;
         }
 
@@ -132,7 +132,7 @@ public final class BirthDate {
         }
 
         public Builder year(String year) {
-            this.year = Optional.of(year);
+            this.year = Optional.ofNullable(year);
             return this;
         }
 

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGroupFindRequest.Builder.class)
 public final class EntityGroupFindRequest {
     private final Optional<Integer> limit;
@@ -99,7 +99,7 @@ public final class EntityGroupFindRequest {
         }
 
         public Builder limit(Integer limit) {
-            this.limit = Optional.of(limit);
+            this.limit = Optional.ofNullable(limit);
             return this;
         }
 
@@ -110,7 +110,7 @@ public final class EntityGroupFindRequest {
         }
 
         public Builder startingAfter(String startingAfter) {
-            this.startingAfter = Optional.of(startingAfter);
+            this.startingAfter = Optional.ofNullable(startingAfter);
             return this;
         }
 

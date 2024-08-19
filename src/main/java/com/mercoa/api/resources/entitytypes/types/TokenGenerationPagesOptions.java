@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = TokenGenerationPagesOptions.Builder.class)
 public final class TokenGenerationPagesOptions {
     private final Optional<Boolean> paymentMethods;
@@ -157,7 +157,7 @@ public final class TokenGenerationPagesOptions {
         }
 
         public Builder paymentMethods(Boolean paymentMethods) {
-            this.paymentMethods = Optional.of(paymentMethods);
+            this.paymentMethods = Optional.ofNullable(paymentMethods);
             return this;
         }
 
@@ -168,7 +168,7 @@ public final class TokenGenerationPagesOptions {
         }
 
         public Builder representatives(Boolean representatives) {
-            this.representatives = Optional.of(representatives);
+            this.representatives = Optional.ofNullable(representatives);
             return this;
         }
 
@@ -179,7 +179,7 @@ public final class TokenGenerationPagesOptions {
         }
 
         public Builder notifications(Boolean notifications) {
-            this.notifications = Optional.of(notifications);
+            this.notifications = Optional.ofNullable(notifications);
             return this;
         }
 
@@ -190,7 +190,7 @@ public final class TokenGenerationPagesOptions {
         }
 
         public Builder counterparties(Boolean counterparties) {
-            this.counterparties = Optional.of(counterparties);
+            this.counterparties = Optional.ofNullable(counterparties);
             return this;
         }
 
@@ -201,7 +201,7 @@ public final class TokenGenerationPagesOptions {
         }
 
         public Builder approvals(Boolean approvals) {
-            this.approvals = Optional.of(approvals);
+            this.approvals = Optional.ofNullable(approvals);
             return this;
         }
 
@@ -212,7 +212,7 @@ public final class TokenGenerationPagesOptions {
         }
 
         public Builder emailLog(Boolean emailLog) {
-            this.emailLog = Optional.of(emailLog);
+            this.emailLog = Optional.ofNullable(emailLog);
             return this;
         }
 

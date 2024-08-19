@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PlaidLinkRequest.Builder.class)
 public final class PlaidLinkRequest {
     private final String accountId;
@@ -150,7 +150,7 @@ public final class PlaidLinkRequest {
          */
         @java.lang.Override
         public _FinalStage accessToken(String accessToken) {
-            this.accessToken = Optional.of(accessToken);
+            this.accessToken = Optional.ofNullable(accessToken);
             return this;
         }
 
@@ -167,7 +167,7 @@ public final class PlaidLinkRequest {
          */
         @java.lang.Override
         public _FinalStage publicToken(String publicToken) {
-            this.publicToken = Optional.of(publicToken);
+            this.publicToken = Optional.ofNullable(publicToken);
             return this;
         }
 

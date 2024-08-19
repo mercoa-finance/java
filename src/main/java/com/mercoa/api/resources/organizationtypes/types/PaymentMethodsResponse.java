@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PaymentMethodsResponse.Builder.class)
 public final class PaymentMethodsResponse {
     private final List<PaymentRailResponse> payerPayments;

@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityResponse.Builder.class)
 public final class EntityResponse implements IEntityResponse {
     private final String id;
@@ -590,7 +590,7 @@ public final class EntityResponse implements IEntityResponse {
          */
         @java.lang.Override
         public _FinalStage logo(String logo) {
-            this.logo = Optional.of(logo);
+            this.logo = Optional.ofNullable(logo);
             return this;
         }
 
@@ -607,7 +607,7 @@ public final class EntityResponse implements IEntityResponse {
          */
         @java.lang.Override
         public _FinalStage emailToAlias(List<String> emailToAlias) {
-            this.emailToAlias = Optional.of(emailToAlias);
+            this.emailToAlias = Optional.ofNullable(emailToAlias);
             return this;
         }
 
@@ -624,7 +624,7 @@ public final class EntityResponse implements IEntityResponse {
          */
         @java.lang.Override
         public _FinalStage emailTo(String emailTo) {
-            this.emailTo = Optional.of(emailTo);
+            this.emailTo = Optional.ofNullable(emailTo);
             return this;
         }
 
@@ -641,7 +641,7 @@ public final class EntityResponse implements IEntityResponse {
          */
         @java.lang.Override
         public _FinalStage foreignId(String foreignId) {
-            this.foreignId = Optional.of(foreignId);
+            this.foreignId = Optional.ofNullable(foreignId);
             return this;
         }
 

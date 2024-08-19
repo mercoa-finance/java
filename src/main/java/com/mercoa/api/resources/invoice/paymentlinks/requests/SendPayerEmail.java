@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = SendPayerEmail.Builder.class)
 public final class SendPayerEmail {
     private final Optional<Boolean> attachInvoice;
@@ -87,7 +87,7 @@ public final class SendPayerEmail {
         }
 
         public Builder attachInvoice(Boolean attachInvoice) {
-            this.attachInvoice = Optional.of(attachInvoice);
+            this.attachInvoice = Optional.ofNullable(attachInvoice);
             return this;
         }
 

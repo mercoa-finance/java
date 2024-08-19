@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = TokenGenerationOptions.Builder.class)
 public final class TokenGenerationOptions {
     private final Optional<String> expiresIn;
@@ -154,7 +154,7 @@ public final class TokenGenerationOptions {
         }
 
         public Builder expiresIn(String expiresIn) {
-            this.expiresIn = Optional.of(expiresIn);
+            this.expiresIn = Optional.ofNullable(expiresIn);
             return this;
         }
 
@@ -165,7 +165,7 @@ public final class TokenGenerationOptions {
         }
 
         public Builder invoice(TokenGenerationInvoiceOptions invoice) {
-            this.invoice = Optional.of(invoice);
+            this.invoice = Optional.ofNullable(invoice);
             return this;
         }
 
@@ -176,7 +176,7 @@ public final class TokenGenerationOptions {
         }
 
         public Builder pages(TokenGenerationPagesOptions pages) {
-            this.pages = Optional.of(pages);
+            this.pages = Optional.ofNullable(pages);
             return this;
         }
 
@@ -187,7 +187,7 @@ public final class TokenGenerationOptions {
         }
 
         public Builder style(TokenGenerationStyleOptions style) {
-            this.style = Optional.of(style);
+            this.style = Optional.ofNullable(style);
             return this;
         }
 
@@ -198,7 +198,7 @@ public final class TokenGenerationOptions {
         }
 
         public Builder vendors(TokenGenerationVendorOptions vendors) {
-            this.vendors = Optional.of(vendors);
+            this.vendors = Optional.ofNullable(vendors);
             return this;
         }
 
@@ -209,7 +209,7 @@ public final class TokenGenerationOptions {
         }
 
         public Builder entity(TokenGenerationEntityOptions entity) {
-            this.entity = Optional.of(entity);
+            this.entity = Optional.ofNullable(entity);
             return this;
         }
 

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = NotificationUpdateRequest.Builder.class)
 public final class NotificationUpdateRequest {
     private final Optional<NotificationStatus> status;
@@ -84,7 +84,7 @@ public final class NotificationUpdateRequest {
         }
 
         public Builder status(NotificationStatus status) {
-            this.status = Optional.of(status);
+            this.status = Optional.ofNullable(status);
             return this;
         }
 

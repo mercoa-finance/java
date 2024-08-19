@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = TokenGenerationEntityOptions.Builder.class)
 public final class TokenGenerationEntityOptions {
     private final Optional<Boolean> enableMercoaPayments;
@@ -88,7 +88,7 @@ public final class TokenGenerationEntityOptions {
         }
 
         public Builder enableMercoaPayments(Boolean enableMercoaPayments) {
-            this.enableMercoaPayments = Optional.of(enableMercoaPayments);
+            this.enableMercoaPayments = Optional.ofNullable(enableMercoaPayments);
             return this;
         }
 

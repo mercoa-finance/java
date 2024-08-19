@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BusinessProfileRequest.Builder.class)
 public final class BusinessProfileRequest {
     private final Optional<String> email;
@@ -374,7 +374,7 @@ public final class BusinessProfileRequest {
          */
         @java.lang.Override
         public _FinalStage maxTransactionSize(Double maxTransactionSize) {
-            this.maxTransactionSize = Optional.of(maxTransactionSize);
+            this.maxTransactionSize = Optional.ofNullable(maxTransactionSize);
             return this;
         }
 
@@ -391,7 +391,7 @@ public final class BusinessProfileRequest {
          */
         @java.lang.Override
         public _FinalStage averageTransactionSize(Double averageTransactionSize) {
-            this.averageTransactionSize = Optional.of(averageTransactionSize);
+            this.averageTransactionSize = Optional.ofNullable(averageTransactionSize);
             return this;
         }
 
@@ -408,7 +408,7 @@ public final class BusinessProfileRequest {
          */
         @java.lang.Override
         public _FinalStage averageMonthlyTransactionVolume(Double averageMonthlyTransactionVolume) {
-            this.averageMonthlyTransactionVolume = Optional.of(averageMonthlyTransactionVolume);
+            this.averageMonthlyTransactionVolume = Optional.ofNullable(averageMonthlyTransactionVolume);
             return this;
         }
 
@@ -425,7 +425,7 @@ public final class BusinessProfileRequest {
          */
         @java.lang.Override
         public _FinalStage industryCodes(IndustryCodes industryCodes) {
-            this.industryCodes = Optional.of(industryCodes);
+            this.industryCodes = Optional.ofNullable(industryCodes);
             return this;
         }
 
@@ -442,7 +442,7 @@ public final class BusinessProfileRequest {
          */
         @java.lang.Override
         public _FinalStage formationDate(OffsetDateTime formationDate) {
-            this.formationDate = Optional.of(formationDate);
+            this.formationDate = Optional.ofNullable(formationDate);
             return this;
         }
 
@@ -459,7 +459,7 @@ public final class BusinessProfileRequest {
          */
         @java.lang.Override
         public _FinalStage taxId(TaxId taxId) {
-            this.taxId = Optional.of(taxId);
+            this.taxId = Optional.ofNullable(taxId);
             return this;
         }
 
@@ -476,7 +476,7 @@ public final class BusinessProfileRequest {
          */
         @java.lang.Override
         public _FinalStage address(Address address) {
-            this.address = Optional.of(address);
+            this.address = Optional.ofNullable(address);
             return this;
         }
 
@@ -493,7 +493,7 @@ public final class BusinessProfileRequest {
          */
         @java.lang.Override
         public _FinalStage description(String description) {
-            this.description = Optional.of(description);
+            this.description = Optional.ofNullable(description);
             return this;
         }
 
@@ -510,7 +510,7 @@ public final class BusinessProfileRequest {
          */
         @java.lang.Override
         public _FinalStage website(String website) {
-            this.website = Optional.of(website);
+            this.website = Optional.ofNullable(website);
             return this;
         }
 
@@ -523,7 +523,7 @@ public final class BusinessProfileRequest {
 
         @java.lang.Override
         public _FinalStage doingBusinessAs(String doingBusinessAs) {
-            this.doingBusinessAs = Optional.of(doingBusinessAs);
+            this.doingBusinessAs = Optional.ofNullable(doingBusinessAs);
             return this;
         }
 
@@ -540,7 +540,7 @@ public final class BusinessProfileRequest {
          */
         @java.lang.Override
         public _FinalStage phone(PhoneNumber phone) {
-            this.phone = Optional.of(phone);
+            this.phone = Optional.ofNullable(phone);
             return this;
         }
 
@@ -553,7 +553,7 @@ public final class BusinessProfileRequest {
 
         @java.lang.Override
         public _FinalStage businessType(BusinessType businessType) {
-            this.businessType = Optional.of(businessType);
+            this.businessType = Optional.ofNullable(businessType);
             return this;
         }
 
@@ -570,7 +570,7 @@ public final class BusinessProfileRequest {
          */
         @java.lang.Override
         public _FinalStage email(String email) {
-            this.email = Optional.of(email);
+            this.email = Optional.ofNullable(email);
             return this;
         }
 

@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = UtilityPaymentMethodResponse.Builder.class)
 public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseResponse {
     private final String id;
@@ -395,7 +395,7 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
          */
         @java.lang.Override
         public _FinalStage externalAccountingSystemId(String externalAccountingSystemId) {
-            this.externalAccountingSystemId = Optional.of(externalAccountingSystemId);
+            this.externalAccountingSystemId = Optional.ofNullable(externalAccountingSystemId);
             return this;
         }
 

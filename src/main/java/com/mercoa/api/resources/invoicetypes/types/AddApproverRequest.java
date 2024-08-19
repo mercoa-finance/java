@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = AddApproverRequest.Builder.class)
 public final class AddApproverRequest {
     private final Optional<String> approvalSlotId;
@@ -120,7 +120,7 @@ public final class AddApproverRequest {
          */
         @java.lang.Override
         public _FinalStage approvalSlotId(String approvalSlotId) {
-            this.approvalSlotId = Optional.of(approvalSlotId);
+            this.approvalSlotId = Optional.ofNullable(approvalSlotId);
             return this;
         }
 

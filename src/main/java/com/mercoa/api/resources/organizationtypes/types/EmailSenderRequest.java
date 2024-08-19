@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EmailSenderRequest.Builder.class)
 public final class EmailSenderRequest {
     private final EmailSenderProvider provider;
@@ -164,7 +164,7 @@ public final class EmailSenderRequest {
 
         @java.lang.Override
         public _FinalStage apiKey(String apiKey) {
-            this.apiKey = Optional.of(apiKey);
+            this.apiKey = Optional.ofNullable(apiKey);
             return this;
         }
 

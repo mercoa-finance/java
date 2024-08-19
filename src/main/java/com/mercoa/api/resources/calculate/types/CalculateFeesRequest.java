@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CalculateFeesRequest.Builder.class)
 public final class CalculateFeesRequest {
     private final double amount;
@@ -220,7 +220,7 @@ public final class CalculateFeesRequest {
          */
         @java.lang.Override
         public _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions) {
-            this.paymentDestinationOptions = Optional.of(paymentDestinationOptions);
+            this.paymentDestinationOptions = Optional.ofNullable(paymentDestinationOptions);
             return this;
         }
 
@@ -237,7 +237,7 @@ public final class CalculateFeesRequest {
          */
         @java.lang.Override
         public _FinalStage currency(CurrencyCode currency) {
-            this.currency = Optional.of(currency);
+            this.currency = Optional.ofNullable(currency);
             return this;
         }
 

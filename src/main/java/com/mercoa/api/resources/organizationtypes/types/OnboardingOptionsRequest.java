@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = OnboardingOptionsRequest.Builder.class)
 public final class OnboardingOptionsRequest {
     private final Optional<Boolean> enableBusiness;
@@ -139,7 +139,7 @@ public final class OnboardingOptionsRequest {
         }
 
         public Builder enableBusiness(Boolean enableBusiness) {
-            this.enableBusiness = Optional.of(enableBusiness);
+            this.enableBusiness = Optional.ofNullable(enableBusiness);
             return this;
         }
 
@@ -150,7 +150,7 @@ public final class OnboardingOptionsRequest {
         }
 
         public Builder enableIndividual(Boolean enableIndividual) {
-            this.enableIndividual = Optional.of(enableIndividual);
+            this.enableIndividual = Optional.ofNullable(enableIndividual);
             return this;
         }
 
@@ -161,7 +161,7 @@ public final class OnboardingOptionsRequest {
         }
 
         public Builder paymentMethod(Boolean paymentMethod) {
-            this.paymentMethod = Optional.of(paymentMethod);
+            this.paymentMethod = Optional.ofNullable(paymentMethod);
             return this;
         }
 
@@ -172,7 +172,7 @@ public final class OnboardingOptionsRequest {
         }
 
         public Builder business(BusinessOnboardingOptions business) {
-            this.business = Optional.of(business);
+            this.business = Optional.ofNullable(business);
             return this;
         }
 
@@ -183,7 +183,7 @@ public final class OnboardingOptionsRequest {
         }
 
         public Builder individual(IndividualOnboardingOptions individual) {
-            this.individual = Optional.of(individual);
+            this.individual = Optional.ofNullable(individual);
             return this;
         }
 

@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CalculatePaymentTimingRequest.Builder.class)
 public final class CalculatePaymentTimingRequest {
     private final Optional<OffsetDateTime> estimatedDeductionDate;
@@ -208,7 +208,7 @@ public final class CalculatePaymentTimingRequest {
          */
         @java.lang.Override
         public _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions) {
-            this.paymentDestinationOptions = Optional.of(paymentDestinationOptions);
+            this.paymentDestinationOptions = Optional.ofNullable(paymentDestinationOptions);
             return this;
         }
 
@@ -225,7 +225,7 @@ public final class CalculatePaymentTimingRequest {
          */
         @java.lang.Override
         public _FinalStage processedAt(OffsetDateTime processedAt) {
-            this.processedAt = Optional.of(processedAt);
+            this.processedAt = Optional.ofNullable(processedAt);
             return this;
         }
 
@@ -242,7 +242,7 @@ public final class CalculatePaymentTimingRequest {
          */
         @java.lang.Override
         public _FinalStage estimatedDeductionDate(OffsetDateTime estimatedDeductionDate) {
-            this.estimatedDeductionDate = Optional.of(estimatedDeductionDate);
+            this.estimatedDeductionDate = Optional.ofNullable(estimatedDeductionDate);
             return this;
         }
 

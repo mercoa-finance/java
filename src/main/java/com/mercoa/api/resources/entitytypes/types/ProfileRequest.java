@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ProfileRequest.Builder.class)
 public final class ProfileRequest {
     private final Optional<BusinessProfileRequest> business;
@@ -104,7 +104,7 @@ public final class ProfileRequest {
         }
 
         public Builder business(BusinessProfileRequest business) {
-            this.business = Optional.of(business);
+            this.business = Optional.ofNullable(business);
             return this;
         }
 
@@ -115,7 +115,7 @@ public final class ProfileRequest {
         }
 
         public Builder individual(IndividualProfileRequest individual) {
-            this.individual = Optional.of(individual);
+            this.individual = Optional.ofNullable(individual);
             return this;
         }
 

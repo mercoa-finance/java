@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CustomPaymentMethodUpdateRequest.Builder.class)
 public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBaseRequest {
     private final Optional<Boolean> defaultSource;
@@ -259,7 +259,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
         }
 
         public Builder defaultSource(Boolean defaultSource) {
-            this.defaultSource = Optional.of(defaultSource);
+            this.defaultSource = Optional.ofNullable(defaultSource);
             return this;
         }
 
@@ -270,7 +270,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
         }
 
         public Builder defaultDestination(Boolean defaultDestination) {
-            this.defaultDestination = Optional.of(defaultDestination);
+            this.defaultDestination = Optional.ofNullable(defaultDestination);
             return this;
         }
 
@@ -281,7 +281,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
         }
 
         public Builder externalAccountingSystemId(String externalAccountingSystemId) {
-            this.externalAccountingSystemId = Optional.of(externalAccountingSystemId);
+            this.externalAccountingSystemId = Optional.ofNullable(externalAccountingSystemId);
             return this;
         }
 
@@ -292,7 +292,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
         }
 
         public Builder frozen(Boolean frozen) {
-            this.frozen = Optional.of(frozen);
+            this.frozen = Optional.ofNullable(frozen);
             return this;
         }
 
@@ -303,7 +303,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
         }
 
         public Builder metadata(Map<String, String> metadata) {
-            this.metadata = Optional.of(metadata);
+            this.metadata = Optional.ofNullable(metadata);
             return this;
         }
 
@@ -314,7 +314,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
         }
 
         public Builder foreignId(String foreignId) {
-            this.foreignId = Optional.of(foreignId);
+            this.foreignId = Optional.ofNullable(foreignId);
             return this;
         }
 
@@ -325,7 +325,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
         }
 
         public Builder accountName(String accountName) {
-            this.accountName = Optional.of(accountName);
+            this.accountName = Optional.ofNullable(accountName);
             return this;
         }
 
@@ -336,7 +336,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
         }
 
         public Builder accountNumber(String accountNumber) {
-            this.accountNumber = Optional.of(accountNumber);
+            this.accountNumber = Optional.ofNullable(accountNumber);
             return this;
         }
 
@@ -347,7 +347,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
         }
 
         public Builder availableBalance(Double availableBalance) {
-            this.availableBalance = Optional.of(availableBalance);
+            this.availableBalance = Optional.ofNullable(availableBalance);
             return this;
         }
 
@@ -358,7 +358,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
         }
 
         public Builder schemaId(String schemaId) {
-            this.schemaId = Optional.of(schemaId);
+            this.schemaId = Optional.ofNullable(schemaId);
             return this;
         }
 
@@ -369,7 +369,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
         }
 
         public Builder data(Map<String, String> data) {
-            this.data = Optional.of(data);
+            this.data = Optional.ofNullable(data);
             return this;
         }
 

@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = NotificationResponse.Builder.class)
 public final class NotificationResponse {
     private final String id;
@@ -196,7 +196,7 @@ public final class NotificationResponse {
          */
         @java.lang.Override
         public _FinalStage invoiceId(String invoiceId) {
-            this.invoiceId = Optional.of(invoiceId);
+            this.invoiceId = Optional.ofNullable(invoiceId);
             return this;
         }
 

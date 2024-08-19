@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = FindPayorCounterpartiesRequest.Builder.class)
 public final class FindPayorCounterpartiesRequest {
     private final Optional<String> name;
@@ -193,7 +193,7 @@ public final class FindPayorCounterpartiesRequest {
         }
 
         public Builder name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -204,7 +204,7 @@ public final class FindPayorCounterpartiesRequest {
         }
 
         public Builder networkType(CounterpartyNetworkType networkType) {
-            this.networkType = Optional.of(networkType);
+            this.networkType = Optional.ofNullable(networkType);
             return this;
         }
 
@@ -215,7 +215,7 @@ public final class FindPayorCounterpartiesRequest {
         }
 
         public Builder paymentMethods(Boolean paymentMethods) {
-            this.paymentMethods = Optional.of(paymentMethods);
+            this.paymentMethods = Optional.ofNullable(paymentMethods);
             return this;
         }
 
@@ -226,7 +226,7 @@ public final class FindPayorCounterpartiesRequest {
         }
 
         public Builder invoiceMetrics(Boolean invoiceMetrics) {
-            this.invoiceMetrics = Optional.of(invoiceMetrics);
+            this.invoiceMetrics = Optional.ofNullable(invoiceMetrics);
             return this;
         }
 
@@ -237,7 +237,7 @@ public final class FindPayorCounterpartiesRequest {
         }
 
         public Builder counterpartyId(String counterpartyId) {
-            this.counterpartyId = Optional.of(counterpartyId);
+            this.counterpartyId = Optional.ofNullable(counterpartyId);
             return this;
         }
 
@@ -248,7 +248,7 @@ public final class FindPayorCounterpartiesRequest {
         }
 
         public Builder limit(Integer limit) {
-            this.limit = Optional.of(limit);
+            this.limit = Optional.ofNullable(limit);
             return this;
         }
 
@@ -259,7 +259,7 @@ public final class FindPayorCounterpartiesRequest {
         }
 
         public Builder startingAfter(String startingAfter) {
-            this.startingAfter = Optional.of(startingAfter);
+            this.startingAfter = Optional.ofNullable(startingAfter);
             return this;
         }
 

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Responsibilities.Builder.class)
 public final class Responsibilities {
     private final Optional<String> jobTitle;
@@ -134,7 +134,7 @@ public final class Responsibilities {
         }
 
         public Builder jobTitle(String jobTitle) {
-            this.jobTitle = Optional.of(jobTitle);
+            this.jobTitle = Optional.ofNullable(jobTitle);
             return this;
         }
 
@@ -145,7 +145,7 @@ public final class Responsibilities {
         }
 
         public Builder isController(Boolean isController) {
-            this.isController = Optional.of(isController);
+            this.isController = Optional.ofNullable(isController);
             return this;
         }
 
@@ -156,7 +156,7 @@ public final class Responsibilities {
         }
 
         public Builder isOwner(Boolean isOwner) {
-            this.isOwner = Optional.of(isOwner);
+            this.isOwner = Optional.ofNullable(isOwner);
             return this;
         }
 
@@ -167,7 +167,7 @@ public final class Responsibilities {
         }
 
         public Builder ownershipPercentage(Integer ownershipPercentage) {
-            this.ownershipPercentage = Optional.of(ownershipPercentage);
+            this.ownershipPercentage = Optional.ofNullable(ownershipPercentage);
             return this;
         }
 

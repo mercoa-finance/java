@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CustomPaymentMethodSchemaRequest.Builder.class)
 public final class CustomPaymentMethodSchemaRequest {
     private final String name;
@@ -288,7 +288,7 @@ public final class CustomPaymentMethodSchemaRequest {
 
         @java.lang.Override
         public _FinalStage fees(CustomPaymentMethodSchemaFee fees) {
-            this.fees = Optional.of(fees);
+            this.fees = Optional.ofNullable(fees);
             return this;
         }
 
@@ -305,7 +305,7 @@ public final class CustomPaymentMethodSchemaRequest {
          */
         @java.lang.Override
         public _FinalStage minAmount(Double minAmount) {
-            this.minAmount = Optional.of(minAmount);
+            this.minAmount = Optional.ofNullable(minAmount);
             return this;
         }
 
@@ -322,7 +322,7 @@ public final class CustomPaymentMethodSchemaRequest {
          */
         @java.lang.Override
         public _FinalStage maxAmount(Double maxAmount) {
-            this.maxAmount = Optional.of(maxAmount);
+            this.maxAmount = Optional.ofNullable(maxAmount);
             return this;
         }
 
@@ -339,7 +339,7 @@ public final class CustomPaymentMethodSchemaRequest {
          */
         @java.lang.Override
         public _FinalStage estimatedProcessingTime(Integer estimatedProcessingTime) {
-            this.estimatedProcessingTime = Optional.of(estimatedProcessingTime);
+            this.estimatedProcessingTime = Optional.ofNullable(estimatedProcessingTime);
             return this;
         }
 
@@ -376,7 +376,7 @@ public final class CustomPaymentMethodSchemaRequest {
          */
         @java.lang.Override
         public _FinalStage supportedCurrencies(List<CurrencyCode> supportedCurrencies) {
-            this.supportedCurrencies = Optional.of(supportedCurrencies);
+            this.supportedCurrencies = Optional.ofNullable(supportedCurrencies);
             return this;
         }
 

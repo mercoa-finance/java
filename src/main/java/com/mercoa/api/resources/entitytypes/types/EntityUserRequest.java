@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityUserRequest.Builder.class)
 public final class EntityUserRequest {
     private final Optional<String> foreignId;
@@ -132,7 +132,7 @@ public final class EntityUserRequest {
         }
 
         public Builder foreignId(String foreignId) {
-            this.foreignId = Optional.of(foreignId);
+            this.foreignId = Optional.ofNullable(foreignId);
             return this;
         }
 
@@ -143,7 +143,7 @@ public final class EntityUserRequest {
         }
 
         public Builder email(String email) {
-            this.email = Optional.of(email);
+            this.email = Optional.ofNullable(email);
             return this;
         }
 
@@ -154,7 +154,7 @@ public final class EntityUserRequest {
         }
 
         public Builder name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -165,7 +165,7 @@ public final class EntityUserRequest {
         }
 
         public Builder roles(List<String> roles) {
-            this.roles = Optional.of(roles);
+            this.roles = Optional.ofNullable(roles);
             return this;
         }
 

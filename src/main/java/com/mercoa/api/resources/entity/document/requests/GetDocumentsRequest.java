@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GetDocumentsRequest.Builder.class)
 public final class GetDocumentsRequest {
     private final Optional<DocumentType> type;
@@ -88,7 +88,7 @@ public final class GetDocumentsRequest {
         }
 
         public Builder type(DocumentType type) {
-            this.type = Optional.of(type);
+            this.type = Optional.ofNullable(type);
             return this;
         }
 

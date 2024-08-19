@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = UtilityPaymentMethodRequest.Builder.class)
 public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequest {
     private final Optional<Boolean> defaultSource;
@@ -221,7 +221,7 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
          */
         @java.lang.Override
         public _FinalStage metadata(Map<String, String> metadata) {
-            this.metadata = Optional.of(metadata);
+            this.metadata = Optional.ofNullable(metadata);
             return this;
         }
 
@@ -238,7 +238,7 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
          */
         @java.lang.Override
         public _FinalStage frozen(Boolean frozen) {
-            this.frozen = Optional.of(frozen);
+            this.frozen = Optional.ofNullable(frozen);
             return this;
         }
 
@@ -255,7 +255,7 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
          */
         @java.lang.Override
         public _FinalStage externalAccountingSystemId(String externalAccountingSystemId) {
-            this.externalAccountingSystemId = Optional.of(externalAccountingSystemId);
+            this.externalAccountingSystemId = Optional.ofNullable(externalAccountingSystemId);
             return this;
         }
 
@@ -272,7 +272,7 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
          */
         @java.lang.Override
         public _FinalStage defaultDestination(Boolean defaultDestination) {
-            this.defaultDestination = Optional.of(defaultDestination);
+            this.defaultDestination = Optional.ofNullable(defaultDestination);
             return this;
         }
 
@@ -289,7 +289,7 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
          */
         @java.lang.Override
         public _FinalStage defaultSource(Boolean defaultSource) {
-            this.defaultSource = Optional.of(defaultSource);
+            this.defaultSource = Optional.ofNullable(defaultSource);
             return this;
         }
 

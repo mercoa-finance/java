@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GroupInvoiceMetricsRequest.Builder.class)
 public final class GroupInvoiceMetricsRequest {
     private final Optional<String> search;
@@ -367,7 +367,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder search(String search) {
-            this.search = Optional.of(search);
+            this.search = Optional.ofNullable(search);
             return this;
         }
 
@@ -378,7 +378,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder excludePayables(Boolean excludePayables) {
-            this.excludePayables = Optional.of(excludePayables);
+            this.excludePayables = Optional.ofNullable(excludePayables);
             return this;
         }
 
@@ -389,7 +389,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder excludeReceivables(Boolean excludeReceivables) {
-            this.excludeReceivables = Optional.of(excludeReceivables);
+            this.excludeReceivables = Optional.ofNullable(excludeReceivables);
             return this;
         }
 
@@ -400,7 +400,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder returnByDate(InvoiceMetricsPerDateGroupBy returnByDate) {
-            this.returnByDate = Optional.of(returnByDate);
+            this.returnByDate = Optional.ofNullable(returnByDate);
             return this;
         }
 
@@ -411,7 +411,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder payerId(String payerId) {
-            this.payerId = Optional.of(payerId);
+            this.payerId = Optional.ofNullable(payerId);
             return this;
         }
 
@@ -422,7 +422,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder vendorId(String vendorId) {
-            this.vendorId = Optional.of(vendorId);
+            this.vendorId = Optional.ofNullable(vendorId);
             return this;
         }
 
@@ -433,7 +433,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder approverId(String approverId) {
-            this.approverId = Optional.of(approverId);
+            this.approverId = Optional.ofNullable(approverId);
             return this;
         }
 
@@ -444,7 +444,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder invoiceId(String invoiceId) {
-            this.invoiceId = Optional.of(invoiceId);
+            this.invoiceId = Optional.ofNullable(invoiceId);
             return this;
         }
 
@@ -455,7 +455,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder status(InvoiceStatus status) {
-            this.status = Optional.of(status);
+            this.status = Optional.ofNullable(status);
             return this;
         }
 
@@ -466,7 +466,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder startDate(OffsetDateTime startDate) {
-            this.startDate = Optional.of(startDate);
+            this.startDate = Optional.ofNullable(startDate);
             return this;
         }
 
@@ -477,7 +477,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder endDate(OffsetDateTime endDate) {
-            this.endDate = Optional.of(endDate);
+            this.endDate = Optional.ofNullable(endDate);
             return this;
         }
 
@@ -488,7 +488,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder dateType(InvoiceDateFilter dateType) {
-            this.dateType = Optional.of(dateType);
+            this.dateType = Optional.ofNullable(dateType);
             return this;
         }
 
@@ -499,7 +499,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder dueDateStart(OffsetDateTime dueDateStart) {
-            this.dueDateStart = Optional.of(dueDateStart);
+            this.dueDateStart = Optional.ofNullable(dueDateStart);
             return this;
         }
 
@@ -510,7 +510,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder dueDateEnd(OffsetDateTime dueDateEnd) {
-            this.dueDateEnd = Optional.of(dueDateEnd);
+            this.dueDateEnd = Optional.ofNullable(dueDateEnd);
             return this;
         }
 
@@ -521,7 +521,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder createdDateStart(OffsetDateTime createdDateStart) {
-            this.createdDateStart = Optional.of(createdDateStart);
+            this.createdDateStart = Optional.ofNullable(createdDateStart);
             return this;
         }
 
@@ -532,7 +532,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder createdDateEnd(OffsetDateTime createdDateEnd) {
-            this.createdDateEnd = Optional.of(createdDateEnd);
+            this.createdDateEnd = Optional.ofNullable(createdDateEnd);
             return this;
         }
 
@@ -543,7 +543,7 @@ public final class GroupInvoiceMetricsRequest {
         }
 
         public Builder currency(CurrencyCode currency) {
-            this.currency = Optional.of(currency);
+            this.currency = Optional.ofNullable(currency);
             return this;
         }
 

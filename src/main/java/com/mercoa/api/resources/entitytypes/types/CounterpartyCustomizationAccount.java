@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CounterpartyCustomizationAccount.Builder.class)
 public final class CounterpartyCustomizationAccount {
     private final String accountId;
@@ -150,7 +150,7 @@ public final class CounterpartyCustomizationAccount {
          */
         @java.lang.Override
         public _FinalStage nameOnAccount(String nameOnAccount) {
-            this.nameOnAccount = Optional.of(nameOnAccount);
+            this.nameOnAccount = Optional.ofNullable(nameOnAccount);
             return this;
         }
 
@@ -167,7 +167,7 @@ public final class CounterpartyCustomizationAccount {
          */
         @java.lang.Override
         public _FinalStage postalCode(String postalCode) {
-            this.postalCode = Optional.of(postalCode);
+            this.postalCode = Optional.ofNullable(postalCode);
             return this;
         }
 

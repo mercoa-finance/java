@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PaymentYearSchedule.Builder.class)
 public final class PaymentYearSchedule implements IPaymentScheduleBase {
     private final Optional<Integer> repeatEvery;
@@ -183,7 +183,7 @@ public final class PaymentYearSchedule implements IPaymentScheduleBase {
          */
         @java.lang.Override
         public _FinalStage ends(PaymentScheduleEndCondition ends) {
-            this.ends = Optional.of(ends);
+            this.ends = Optional.ofNullable(ends);
             return this;
         }
 
@@ -200,7 +200,7 @@ public final class PaymentYearSchedule implements IPaymentScheduleBase {
          */
         @java.lang.Override
         public _FinalStage repeatEvery(Integer repeatEvery) {
-            this.repeatEvery = Optional.of(repeatEvery);
+            this.repeatEvery = Optional.ofNullable(repeatEvery);
             return this;
         }
 

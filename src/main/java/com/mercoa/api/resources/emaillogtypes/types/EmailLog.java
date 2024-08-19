@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EmailLog.Builder.class)
 public final class EmailLog {
     private final String id;
@@ -277,7 +277,7 @@ public final class EmailLog {
 
         @java.lang.Override
         public _FinalStage invoiceId(String invoiceId) {
-            this.invoiceId = Optional.of(invoiceId);
+            this.invoiceId = Optional.ofNullable(invoiceId);
             return this;
         }
 

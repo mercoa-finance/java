@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = FullName.Builder.class)
 public final class FullName {
     private final String firstName;
@@ -157,7 +157,7 @@ public final class FullName {
 
         @java.lang.Override
         public _FinalStage suffix(String suffix) {
-            this.suffix = Optional.of(suffix);
+            this.suffix = Optional.ofNullable(suffix);
             return this;
         }
 
@@ -170,7 +170,7 @@ public final class FullName {
 
         @java.lang.Override
         public _FinalStage middleName(String middleName) {
-            this.middleName = Optional.of(middleName);
+            this.middleName = Optional.ofNullable(middleName);
             return this;
         }
 

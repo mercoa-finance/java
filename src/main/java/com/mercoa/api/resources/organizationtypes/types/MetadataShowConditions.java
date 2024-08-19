@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = MetadataShowConditions.Builder.class)
 public final class MetadataShowConditions {
     private final Optional<Boolean> hasOptions;
@@ -194,7 +194,7 @@ public final class MetadataShowConditions {
         }
 
         public Builder hasOptions(Boolean hasOptions) {
-            this.hasOptions = Optional.of(hasOptions);
+            this.hasOptions = Optional.ofNullable(hasOptions);
             return this;
         }
 
@@ -205,7 +205,7 @@ public final class MetadataShowConditions {
         }
 
         public Builder hasDocument(Boolean hasDocument) {
-            this.hasDocument = Optional.of(hasDocument);
+            this.hasDocument = Optional.ofNullable(hasDocument);
             return this;
         }
 
@@ -216,7 +216,7 @@ public final class MetadataShowConditions {
         }
 
         public Builder hasNoLineItems(Boolean hasNoLineItems) {
-            this.hasNoLineItems = Optional.of(hasNoLineItems);
+            this.hasNoLineItems = Optional.ofNullable(hasNoLineItems);
             return this;
         }
 
@@ -227,7 +227,7 @@ public final class MetadataShowConditions {
         }
 
         public Builder paymentSourceTypes(List<PaymentMethodType> paymentSourceTypes) {
-            this.paymentSourceTypes = Optional.of(paymentSourceTypes);
+            this.paymentSourceTypes = Optional.ofNullable(paymentSourceTypes);
             return this;
         }
 
@@ -238,7 +238,7 @@ public final class MetadataShowConditions {
         }
 
         public Builder paymentSourceCustomSchemaIds(List<String> paymentSourceCustomSchemaIds) {
-            this.paymentSourceCustomSchemaIds = Optional.of(paymentSourceCustomSchemaIds);
+            this.paymentSourceCustomSchemaIds = Optional.ofNullable(paymentSourceCustomSchemaIds);
             return this;
         }
 
@@ -249,7 +249,7 @@ public final class MetadataShowConditions {
         }
 
         public Builder paymentDestinationTypes(List<PaymentMethodType> paymentDestinationTypes) {
-            this.paymentDestinationTypes = Optional.of(paymentDestinationTypes);
+            this.paymentDestinationTypes = Optional.ofNullable(paymentDestinationTypes);
             return this;
         }
 
@@ -260,7 +260,7 @@ public final class MetadataShowConditions {
         }
 
         public Builder paymentDestinationCustomSchemaIds(List<String> paymentDestinationCustomSchemaIds) {
-            this.paymentDestinationCustomSchemaIds = Optional.of(paymentDestinationCustomSchemaIds);
+            this.paymentDestinationCustomSchemaIds = Optional.ofNullable(paymentDestinationCustomSchemaIds);
             return this;
         }
 

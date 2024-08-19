@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CheckResponse.Builder.class)
 public final class CheckResponse implements IPaymentMethodBaseResponse {
     private final String id;
@@ -504,7 +504,7 @@ public final class CheckResponse implements IPaymentMethodBaseResponse {
 
         @java.lang.Override
         public _FinalStage addressLine2(String addressLine2) {
-            this.addressLine2 = Optional.of(addressLine2);
+            this.addressLine2 = Optional.ofNullable(addressLine2);
             return this;
         }
 
@@ -549,7 +549,7 @@ public final class CheckResponse implements IPaymentMethodBaseResponse {
          */
         @java.lang.Override
         public _FinalStage externalAccountingSystemId(String externalAccountingSystemId) {
-            this.externalAccountingSystemId = Optional.of(externalAccountingSystemId);
+            this.externalAccountingSystemId = Optional.ofNullable(externalAccountingSystemId);
             return this;
         }
 

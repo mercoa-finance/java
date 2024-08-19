@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = IndividualProfileRequest.Builder.class)
 public final class IndividualProfileRequest {
     private final Optional<String> email;
@@ -189,7 +189,7 @@ public final class IndividualProfileRequest {
 
         @java.lang.Override
         public _FinalStage governmentId(IndividualGovernmentId governmentId) {
-            this.governmentId = Optional.of(governmentId);
+            this.governmentId = Optional.ofNullable(governmentId);
             return this;
         }
 
@@ -202,7 +202,7 @@ public final class IndividualProfileRequest {
 
         @java.lang.Override
         public _FinalStage birthDate(BirthDate birthDate) {
-            this.birthDate = Optional.of(birthDate);
+            this.birthDate = Optional.ofNullable(birthDate);
             return this;
         }
 
@@ -215,7 +215,7 @@ public final class IndividualProfileRequest {
 
         @java.lang.Override
         public _FinalStage address(Address address) {
-            this.address = Optional.of(address);
+            this.address = Optional.ofNullable(address);
             return this;
         }
 
@@ -228,7 +228,7 @@ public final class IndividualProfileRequest {
 
         @java.lang.Override
         public _FinalStage phone(PhoneNumber phone) {
-            this.phone = Optional.of(phone);
+            this.phone = Optional.ofNullable(phone);
             return this;
         }
 
@@ -241,7 +241,7 @@ public final class IndividualProfileRequest {
 
         @java.lang.Override
         public _FinalStage email(String email) {
-            this.email = Optional.of(email);
+            this.email = Optional.ofNullable(email);
             return this;
         }
 

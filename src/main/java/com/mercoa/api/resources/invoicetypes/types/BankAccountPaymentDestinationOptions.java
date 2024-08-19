@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BankAccountPaymentDestinationOptions.Builder.class)
 public final class BankAccountPaymentDestinationOptions {
     private final Optional<BankDeliveryMethod> delivery;
@@ -105,7 +105,7 @@ public final class BankAccountPaymentDestinationOptions {
         }
 
         public Builder delivery(BankDeliveryMethod delivery) {
-            this.delivery = Optional.of(delivery);
+            this.delivery = Optional.ofNullable(delivery);
             return this;
         }
 
@@ -116,7 +116,7 @@ public final class BankAccountPaymentDestinationOptions {
         }
 
         public Builder description(String description) {
-            this.description = Optional.of(description);
+            this.description = Optional.ofNullable(description);
             return this;
         }
 

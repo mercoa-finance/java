@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = SyncExternalSystemRequest.Builder.class)
 public final class SyncExternalSystemRequest {
     private final Optional<SyncType> vendors;
@@ -120,7 +120,7 @@ public final class SyncExternalSystemRequest {
         }
 
         public Builder vendors(SyncType vendors) {
-            this.vendors = Optional.of(vendors);
+            this.vendors = Optional.ofNullable(vendors);
             return this;
         }
 
@@ -131,7 +131,7 @@ public final class SyncExternalSystemRequest {
         }
 
         public Builder bills(SyncType bills) {
-            this.bills = Optional.of(bills);
+            this.bills = Optional.ofNullable(bills);
             return this;
         }
 
@@ -142,7 +142,7 @@ public final class SyncExternalSystemRequest {
         }
 
         public Builder glAccounts(SyncType glAccounts) {
-            this.glAccounts = Optional.of(glAccounts);
+            this.glAccounts = Optional.ofNullable(glAccounts);
             return this;
         }
 

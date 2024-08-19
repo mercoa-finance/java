@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PaymentMethodBaseRequest.Builder.class)
 public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest {
     private final Optional<Boolean> defaultSource;
@@ -163,7 +163,7 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
         }
 
         public Builder defaultSource(Boolean defaultSource) {
-            this.defaultSource = Optional.of(defaultSource);
+            this.defaultSource = Optional.ofNullable(defaultSource);
             return this;
         }
 
@@ -174,7 +174,7 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
         }
 
         public Builder defaultDestination(Boolean defaultDestination) {
-            this.defaultDestination = Optional.of(defaultDestination);
+            this.defaultDestination = Optional.ofNullable(defaultDestination);
             return this;
         }
 
@@ -185,7 +185,7 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
         }
 
         public Builder externalAccountingSystemId(String externalAccountingSystemId) {
-            this.externalAccountingSystemId = Optional.of(externalAccountingSystemId);
+            this.externalAccountingSystemId = Optional.ofNullable(externalAccountingSystemId);
             return this;
         }
 
@@ -196,7 +196,7 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
         }
 
         public Builder frozen(Boolean frozen) {
-            this.frozen = Optional.of(frozen);
+            this.frozen = Optional.ofNullable(frozen);
             return this;
         }
 
@@ -207,7 +207,7 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
         }
 
         public Builder metadata(Map<String, String> metadata) {
-            this.metadata = Optional.of(metadata);
+            this.metadata = Optional.ofNullable(metadata);
             return this;
         }
 

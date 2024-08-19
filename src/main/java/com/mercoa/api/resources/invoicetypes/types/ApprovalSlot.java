@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ApprovalSlot.Builder.class)
 public final class ApprovalSlot {
     private final String approvalPolicyId;
@@ -298,7 +298,7 @@ public final class ApprovalSlot {
 
         @java.lang.Override
         public _FinalStage assignedUserId(String assignedUserId) {
-            this.assignedUserId = Optional.of(assignedUserId);
+            this.assignedUserId = Optional.ofNullable(assignedUserId);
             return this;
         }
 

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BankAccountCheckOptions.Builder.class)
 public final class BankAccountCheckOptions {
     private final Optional<Boolean> enabled;
@@ -237,7 +237,7 @@ public final class BankAccountCheckOptions {
          */
         @java.lang.Override
         public _FinalStage useSignatureImage(Boolean useSignatureImage) {
-            this.useSignatureImage = Optional.of(useSignatureImage);
+            this.useSignatureImage = Optional.ofNullable(useSignatureImage);
             return this;
         }
 
@@ -254,7 +254,7 @@ public final class BankAccountCheckOptions {
          */
         @java.lang.Override
         public _FinalStage signatureImage(String signatureImage) {
-            this.signatureImage = Optional.of(signatureImage);
+            this.signatureImage = Optional.ofNullable(signatureImage);
             return this;
         }
 
@@ -271,7 +271,7 @@ public final class BankAccountCheckOptions {
          */
         @java.lang.Override
         public _FinalStage accountNumberOverride(String accountNumberOverride) {
-            this.accountNumberOverride = Optional.of(accountNumberOverride);
+            this.accountNumberOverride = Optional.ofNullable(accountNumberOverride);
             return this;
         }
 
@@ -288,7 +288,7 @@ public final class BankAccountCheckOptions {
          */
         @java.lang.Override
         public _FinalStage routingNumberOverride(String routingNumberOverride) {
-            this.routingNumberOverride = Optional.of(routingNumberOverride);
+            this.routingNumberOverride = Optional.ofNullable(routingNumberOverride);
             return this;
         }
 
@@ -305,7 +305,7 @@ public final class BankAccountCheckOptions {
          */
         @java.lang.Override
         public _FinalStage initialCheckNumber(Integer initialCheckNumber) {
-            this.initialCheckNumber = Optional.of(initialCheckNumber);
+            this.initialCheckNumber = Optional.ofNullable(initialCheckNumber);
             return this;
         }
 
@@ -322,7 +322,7 @@ public final class BankAccountCheckOptions {
          */
         @java.lang.Override
         public _FinalStage enabled(Boolean enabled) {
-            this.enabled = Optional.of(enabled);
+            this.enabled = Optional.ofNullable(enabled);
             return this;
         }
 

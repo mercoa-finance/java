@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = MetadataSchema.Builder.class)
 public final class MetadataSchema {
     private final String key;
@@ -256,7 +256,7 @@ public final class MetadataSchema {
          */
         @java.lang.Override
         public _FinalStage showConditions(MetadataShowConditions showConditions) {
-            this.showConditions = Optional.of(showConditions);
+            this.showConditions = Optional.ofNullable(showConditions);
             return this;
         }
 
@@ -273,7 +273,7 @@ public final class MetadataSchema {
          */
         @java.lang.Override
         public _FinalStage validationRules(MetadataValidationRule validationRules) {
-            this.validationRules = Optional.of(validationRules);
+            this.validationRules = Optional.ofNullable(validationRules);
             return this;
         }
 
@@ -290,7 +290,7 @@ public final class MetadataSchema {
          */
         @java.lang.Override
         public _FinalStage allowMultiple(Boolean allowMultiple) {
-            this.allowMultiple = Optional.of(allowMultiple);
+            this.allowMultiple = Optional.ofNullable(allowMultiple);
             return this;
         }
 
@@ -307,7 +307,7 @@ public final class MetadataSchema {
          */
         @java.lang.Override
         public _FinalStage lineItem(Boolean lineItem) {
-            this.lineItem = Optional.of(lineItem);
+            this.lineItem = Optional.ofNullable(lineItem);
             return this;
         }
 
@@ -320,7 +320,7 @@ public final class MetadataSchema {
 
         @java.lang.Override
         public _FinalStage description(String description) {
-            this.description = Optional.of(description);
+            this.description = Optional.ofNullable(description);
             return this;
         }
 

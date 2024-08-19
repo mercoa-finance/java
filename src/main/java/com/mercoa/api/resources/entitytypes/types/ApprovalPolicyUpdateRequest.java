@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ApprovalPolicyUpdateRequest.Builder.class)
 public final class ApprovalPolicyUpdateRequest {
     private final Optional<List<Trigger>> trigger;
@@ -113,7 +113,7 @@ public final class ApprovalPolicyUpdateRequest {
         }
 
         public Builder trigger(List<Trigger> trigger) {
-            this.trigger = Optional.of(trigger);
+            this.trigger = Optional.ofNullable(trigger);
             return this;
         }
 
@@ -124,7 +124,7 @@ public final class ApprovalPolicyUpdateRequest {
         }
 
         public Builder rule(Rule rule) {
-            this.rule = Optional.of(rule);
+            this.rule = Optional.ofNullable(rule);
             return this;
         }
 
@@ -135,7 +135,7 @@ public final class ApprovalPolicyUpdateRequest {
         }
 
         public Builder upstreamPolicyId(String upstreamPolicyId) {
-            this.upstreamPolicyId = Optional.of(upstreamPolicyId);
+            this.upstreamPolicyId = Optional.ofNullable(upstreamPolicyId);
             return this;
         }
 

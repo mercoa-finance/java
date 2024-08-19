@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = UserNotificationPolicyRequest.Builder.class)
 public final class UserNotificationPolicyRequest {
     private final Optional<Boolean> disabled;
@@ -119,7 +119,7 @@ public final class UserNotificationPolicyRequest {
         }
 
         public Builder disabled(Boolean disabled) {
-            this.disabled = Optional.of(disabled);
+            this.disabled = Optional.ofNullable(disabled);
             return this;
         }
 
@@ -130,7 +130,7 @@ public final class UserNotificationPolicyRequest {
         }
 
         public Builder digest(Boolean digest) {
-            this.digest = Optional.of(digest);
+            this.digest = Optional.ofNullable(digest);
             return this;
         }
 
@@ -141,7 +141,7 @@ public final class UserNotificationPolicyRequest {
         }
 
         public Builder immediate(Boolean immediate) {
-            this.immediate = Optional.of(immediate);
+            this.immediate = Optional.ofNullable(immediate);
             return this;
         }
 

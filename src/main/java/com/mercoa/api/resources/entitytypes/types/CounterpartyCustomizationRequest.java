@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CounterpartyCustomizationRequest.Builder.class)
 public final class CounterpartyCustomizationRequest {
     private final String counterpartyId;
@@ -123,7 +123,7 @@ public final class CounterpartyCustomizationRequest {
          */
         @java.lang.Override
         public _FinalStage accounts(List<CounterpartyCustomizationAccount> accounts) {
-            this.accounts = Optional.of(accounts);
+            this.accounts = Optional.ofNullable(accounts);
             return this;
         }
 

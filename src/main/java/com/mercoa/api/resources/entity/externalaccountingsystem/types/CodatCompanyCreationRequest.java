@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CodatCompanyCreationRequest.Builder.class)
 public final class CodatCompanyCreationRequest {
     private final Optional<String> companyId;
@@ -87,7 +87,7 @@ public final class CodatCompanyCreationRequest {
         }
 
         public Builder companyId(String companyId) {
-            this.companyId = Optional.of(companyId);
+            this.companyId = Optional.ofNullable(companyId);
             return this;
         }
 

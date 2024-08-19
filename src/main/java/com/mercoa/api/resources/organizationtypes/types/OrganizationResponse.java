@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = OrganizationResponse.Builder.class)
 public final class OrganizationResponse {
     private final String id;
@@ -333,7 +333,7 @@ public final class OrganizationResponse {
 
         @java.lang.Override
         public _FinalStage metadataSchema(List<MetadataSchema> metadataSchema) {
-            this.metadataSchema = Optional.of(metadataSchema);
+            this.metadataSchema = Optional.ofNullable(metadataSchema);
             return this;
         }
 
@@ -346,7 +346,7 @@ public final class OrganizationResponse {
 
         @java.lang.Override
         public _FinalStage payorOnboardingOptions(OnboardingOptionsResponse payorOnboardingOptions) {
-            this.payorOnboardingOptions = Optional.of(payorOnboardingOptions);
+            this.payorOnboardingOptions = Optional.ofNullable(payorOnboardingOptions);
             return this;
         }
 
@@ -359,7 +359,7 @@ public final class OrganizationResponse {
 
         @java.lang.Override
         public _FinalStage payeeOnboardingOptions(OnboardingOptionsResponse payeeOnboardingOptions) {
-            this.payeeOnboardingOptions = Optional.of(payeeOnboardingOptions);
+            this.payeeOnboardingOptions = Optional.ofNullable(payeeOnboardingOptions);
             return this;
         }
 
@@ -372,7 +372,7 @@ public final class OrganizationResponse {
 
         @java.lang.Override
         public _FinalStage colorScheme(ColorSchemeResponse colorScheme) {
-            this.colorScheme = Optional.of(colorScheme);
+            this.colorScheme = Optional.ofNullable(colorScheme);
             return this;
         }
 
@@ -386,7 +386,7 @@ public final class OrganizationResponse {
         @java.lang.Override
         public _FinalStage externalAccountingSystemProvider(
                 ExternalAccountingSystemProviderResponse externalAccountingSystemProvider) {
-            this.externalAccountingSystemProvider = Optional.of(externalAccountingSystemProvider);
+            this.externalAccountingSystemProvider = Optional.ofNullable(externalAccountingSystemProvider);
             return this;
         }
 
@@ -400,7 +400,7 @@ public final class OrganizationResponse {
 
         @java.lang.Override
         public _FinalStage emailProvider(EmailProviderResponse emailProvider) {
-            this.emailProvider = Optional.of(emailProvider);
+            this.emailProvider = Optional.ofNullable(emailProvider);
             return this;
         }
 
@@ -413,7 +413,7 @@ public final class OrganizationResponse {
 
         @java.lang.Override
         public _FinalStage paymentMethods(PaymentMethodsResponse paymentMethods) {
-            this.paymentMethods = Optional.of(paymentMethods);
+            this.paymentMethods = Optional.ofNullable(paymentMethods);
             return this;
         }
 
@@ -426,7 +426,7 @@ public final class OrganizationResponse {
 
         @java.lang.Override
         public _FinalStage supportEmail(String supportEmail) {
-            this.supportEmail = Optional.of(supportEmail);
+            this.supportEmail = Optional.ofNullable(supportEmail);
             return this;
         }
 
@@ -439,7 +439,7 @@ public final class OrganizationResponse {
 
         @java.lang.Override
         public _FinalStage websiteUrl(String websiteUrl) {
-            this.websiteUrl = Optional.of(websiteUrl);
+            this.websiteUrl = Optional.ofNullable(websiteUrl);
             return this;
         }
 
@@ -452,7 +452,7 @@ public final class OrganizationResponse {
 
         @java.lang.Override
         public _FinalStage logoUrl(String logoUrl) {
-            this.logoUrl = Optional.of(logoUrl);
+            this.logoUrl = Optional.ofNullable(logoUrl);
             return this;
         }
 

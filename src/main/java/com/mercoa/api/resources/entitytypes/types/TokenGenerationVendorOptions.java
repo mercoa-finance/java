@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = TokenGenerationVendorOptions.Builder.class)
 public final class TokenGenerationVendorOptions {
     private final Optional<Boolean> disableCreation;
@@ -120,7 +120,7 @@ public final class TokenGenerationVendorOptions {
          */
         @java.lang.Override
         public _FinalStage disableCreation(Boolean disableCreation) {
-            this.disableCreation = Optional.of(disableCreation);
+            this.disableCreation = Optional.ofNullable(disableCreation);
             return this;
         }
 

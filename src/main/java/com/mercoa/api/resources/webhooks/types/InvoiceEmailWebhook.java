@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceEmailWebhook.Builder.class)
 public final class InvoiceEmailWebhook {
     private final String eventType;
@@ -144,7 +144,7 @@ public final class InvoiceEmailWebhook {
          */
         @java.lang.Override
         public _FinalStage existingInvoiceId(String existingInvoiceId) {
-            this.existingInvoiceId = Optional.of(existingInvoiceId);
+            this.existingInvoiceId = Optional.ofNullable(existingInvoiceId);
             return this;
         }
 
@@ -161,7 +161,7 @@ public final class InvoiceEmailWebhook {
          */
         @java.lang.Override
         public _FinalStage invoice(InvoiceResponse invoice) {
-            this.invoice = Optional.of(invoice);
+            this.invoice = Optional.ofNullable(invoice);
             return this;
         }
 

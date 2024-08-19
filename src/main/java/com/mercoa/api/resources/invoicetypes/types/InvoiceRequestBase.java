@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceRequestBase.Builder.class)
 public final class InvoiceRequestBase implements IInvoiceRequestBase {
     private final Optional<InvoiceStatus> status;
@@ -508,7 +508,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder status(InvoiceStatus status) {
-            this.status = Optional.of(status);
+            this.status = Optional.ofNullable(status);
             return this;
         }
 
@@ -519,7 +519,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder amount(Double amount) {
-            this.amount = Optional.of(amount);
+            this.amount = Optional.ofNullable(amount);
             return this;
         }
 
@@ -530,7 +530,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder currency(CurrencyCode currency) {
-            this.currency = Optional.of(currency);
+            this.currency = Optional.ofNullable(currency);
             return this;
         }
 
@@ -541,7 +541,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder invoiceDate(OffsetDateTime invoiceDate) {
-            this.invoiceDate = Optional.of(invoiceDate);
+            this.invoiceDate = Optional.ofNullable(invoiceDate);
             return this;
         }
 
@@ -552,7 +552,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder deductionDate(OffsetDateTime deductionDate) {
-            this.deductionDate = Optional.of(deductionDate);
+            this.deductionDate = Optional.ofNullable(deductionDate);
             return this;
         }
 
@@ -563,7 +563,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder settlementDate(OffsetDateTime settlementDate) {
-            this.settlementDate = Optional.of(settlementDate);
+            this.settlementDate = Optional.ofNullable(settlementDate);
             return this;
         }
 
@@ -574,7 +574,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder dueDate(OffsetDateTime dueDate) {
-            this.dueDate = Optional.of(dueDate);
+            this.dueDate = Optional.ofNullable(dueDate);
             return this;
         }
 
@@ -585,7 +585,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder invoiceNumber(String invoiceNumber) {
-            this.invoiceNumber = Optional.of(invoiceNumber);
+            this.invoiceNumber = Optional.ofNullable(invoiceNumber);
             return this;
         }
 
@@ -596,7 +596,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder noteToSelf(String noteToSelf) {
-            this.noteToSelf = Optional.of(noteToSelf);
+            this.noteToSelf = Optional.ofNullable(noteToSelf);
             return this;
         }
 
@@ -607,7 +607,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder serviceStartDate(OffsetDateTime serviceStartDate) {
-            this.serviceStartDate = Optional.of(serviceStartDate);
+            this.serviceStartDate = Optional.ofNullable(serviceStartDate);
             return this;
         }
 
@@ -618,7 +618,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder serviceEndDate(OffsetDateTime serviceEndDate) {
-            this.serviceEndDate = Optional.of(serviceEndDate);
+            this.serviceEndDate = Optional.ofNullable(serviceEndDate);
             return this;
         }
 
@@ -629,7 +629,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder payerId(String payerId) {
-            this.payerId = Optional.of(payerId);
+            this.payerId = Optional.ofNullable(payerId);
             return this;
         }
 
@@ -640,7 +640,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder paymentSourceId(String paymentSourceId) {
-            this.paymentSourceId = Optional.of(paymentSourceId);
+            this.paymentSourceId = Optional.ofNullable(paymentSourceId);
             return this;
         }
 
@@ -651,7 +651,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder vendorId(String vendorId) {
-            this.vendorId = Optional.of(vendorId);
+            this.vendorId = Optional.ofNullable(vendorId);
             return this;
         }
 
@@ -662,7 +662,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder paymentDestinationId(String paymentDestinationId) {
-            this.paymentDestinationId = Optional.of(paymentDestinationId);
+            this.paymentDestinationId = Optional.ofNullable(paymentDestinationId);
             return this;
         }
 
@@ -673,7 +673,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions) {
-            this.paymentDestinationOptions = Optional.of(paymentDestinationOptions);
+            this.paymentDestinationOptions = Optional.ofNullable(paymentDestinationOptions);
             return this;
         }
 
@@ -684,7 +684,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder approvers(List<ApprovalSlotAssignment> approvers) {
-            this.approvers = Optional.of(approvers);
+            this.approvers = Optional.ofNullable(approvers);
             return this;
         }
 
@@ -695,7 +695,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder metadata(Map<String, String> metadata) {
-            this.metadata = Optional.of(metadata);
+            this.metadata = Optional.ofNullable(metadata);
             return this;
         }
 
@@ -706,7 +706,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder foreignId(String foreignId) {
-            this.foreignId = Optional.of(foreignId);
+            this.foreignId = Optional.ofNullable(foreignId);
             return this;
         }
 
@@ -717,7 +717,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder document(String document) {
-            this.document = Optional.of(document);
+            this.document = Optional.ofNullable(document);
             return this;
         }
 
@@ -728,7 +728,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder uploadedImage(String uploadedImage) {
-            this.uploadedImage = Optional.of(uploadedImage);
+            this.uploadedImage = Optional.ofNullable(uploadedImage);
             return this;
         }
 
@@ -739,7 +739,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder creatorUserId(String creatorUserId) {
-            this.creatorUserId = Optional.of(creatorUserId);
+            this.creatorUserId = Optional.ofNullable(creatorUserId);
             return this;
         }
 
@@ -750,7 +750,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder failureType(InvoiceFailureType failureType) {
-            this.failureType = Optional.of(failureType);
+            this.failureType = Optional.ofNullable(failureType);
             return this;
         }
 
@@ -761,7 +761,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder fees(InvoiceFeesRequest fees) {
-            this.fees = Optional.of(fees);
+            this.fees = Optional.ofNullable(fees);
             return this;
         }
 
@@ -772,7 +772,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         }
 
         public Builder paymentSchedule(PaymentSchedule paymentSchedule) {
-            this.paymentSchedule = Optional.of(paymentSchedule);
+            this.paymentSchedule = Optional.ofNullable(paymentSchedule);
             return this;
         }
 

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GetOrganizationRequest.Builder.class)
 public final class GetOrganizationRequest {
     private final Optional<Boolean> paymentMethods;
@@ -192,7 +192,7 @@ public final class GetOrganizationRequest {
         }
 
         public Builder paymentMethods(Boolean paymentMethods) {
-            this.paymentMethods = Optional.of(paymentMethods);
+            this.paymentMethods = Optional.ofNullable(paymentMethods);
             return this;
         }
 
@@ -203,7 +203,7 @@ public final class GetOrganizationRequest {
         }
 
         public Builder emailProvider(Boolean emailProvider) {
-            this.emailProvider = Optional.of(emailProvider);
+            this.emailProvider = Optional.ofNullable(emailProvider);
             return this;
         }
 
@@ -214,7 +214,7 @@ public final class GetOrganizationRequest {
         }
 
         public Builder externalAccountingSystemProvider(Boolean externalAccountingSystemProvider) {
-            this.externalAccountingSystemProvider = Optional.of(externalAccountingSystemProvider);
+            this.externalAccountingSystemProvider = Optional.ofNullable(externalAccountingSystemProvider);
             return this;
         }
 
@@ -225,7 +225,7 @@ public final class GetOrganizationRequest {
         }
 
         public Builder colorScheme(Boolean colorScheme) {
-            this.colorScheme = Optional.of(colorScheme);
+            this.colorScheme = Optional.ofNullable(colorScheme);
             return this;
         }
 
@@ -236,7 +236,7 @@ public final class GetOrganizationRequest {
         }
 
         public Builder payeeOnboardingOptions(Boolean payeeOnboardingOptions) {
-            this.payeeOnboardingOptions = Optional.of(payeeOnboardingOptions);
+            this.payeeOnboardingOptions = Optional.ofNullable(payeeOnboardingOptions);
             return this;
         }
 
@@ -247,7 +247,7 @@ public final class GetOrganizationRequest {
         }
 
         public Builder payorOnboardingOptions(Boolean payorOnboardingOptions) {
-            this.payorOnboardingOptions = Optional.of(payorOnboardingOptions);
+            this.payorOnboardingOptions = Optional.ofNullable(payorOnboardingOptions);
             return this;
         }
 
@@ -258,7 +258,7 @@ public final class GetOrganizationRequest {
         }
 
         public Builder metadataSchema(Boolean metadataSchema) {
-            this.metadataSchema = Optional.of(metadataSchema);
+            this.metadataSchema = Optional.ofNullable(metadataSchema);
             return this;
         }
 

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = OcrJobResponse.Builder.class)
 public final class OcrJobResponse {
     private final String jobId;
@@ -135,7 +135,7 @@ public final class OcrJobResponse {
 
         @java.lang.Override
         public _FinalStage data(OcrResponse data) {
-            this.data = Optional.of(data);
+            this.data = Optional.ofNullable(data);
             return this;
         }
 

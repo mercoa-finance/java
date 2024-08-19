@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CommonOnboardingOptions.Builder.class)
 public final class CommonOnboardingOptions implements ICommonOnboardingOptions {
     private final OnboardingOption termsOfService;

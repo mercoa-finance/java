@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PaymentMethodBalanceResponse.Builder.class)
 public final class PaymentMethodBalanceResponse {
     private final double availableBalance;
@@ -179,7 +179,7 @@ public final class PaymentMethodBalanceResponse {
          */
         @java.lang.Override
         public _FinalStage updatedAt(OffsetDateTime updatedAt) {
-            this.updatedAt = Optional.of(updatedAt);
+            this.updatedAt = Optional.ofNullable(updatedAt);
             return this;
         }
 

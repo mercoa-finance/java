@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityAddPayeesRequest.Builder.class)
 public final class EntityAddPayeesRequest {
     private final List<String> payees;
@@ -123,7 +123,7 @@ public final class EntityAddPayeesRequest {
         }
 
         public Builder customizations(List<CounterpartyCustomizationRequest> customizations) {
-            this.customizations = Optional.of(customizations);
+            this.customizations = Optional.ofNullable(customizations);
             return this;
         }
 

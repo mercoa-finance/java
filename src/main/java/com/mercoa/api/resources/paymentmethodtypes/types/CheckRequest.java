@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CheckRequest.Builder.class)
 public final class CheckRequest implements IPaymentMethodBaseRequest {
     private final Optional<Boolean> defaultSource;
@@ -360,7 +360,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
 
         @java.lang.Override
         public _FinalStage addressLine2(String addressLine2) {
-            this.addressLine2 = Optional.of(addressLine2);
+            this.addressLine2 = Optional.ofNullable(addressLine2);
             return this;
         }
 
@@ -377,7 +377,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
          */
         @java.lang.Override
         public _FinalStage metadata(Map<String, String> metadata) {
-            this.metadata = Optional.of(metadata);
+            this.metadata = Optional.ofNullable(metadata);
             return this;
         }
 
@@ -394,7 +394,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
          */
         @java.lang.Override
         public _FinalStage frozen(Boolean frozen) {
-            this.frozen = Optional.of(frozen);
+            this.frozen = Optional.ofNullable(frozen);
             return this;
         }
 
@@ -411,7 +411,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
          */
         @java.lang.Override
         public _FinalStage externalAccountingSystemId(String externalAccountingSystemId) {
-            this.externalAccountingSystemId = Optional.of(externalAccountingSystemId);
+            this.externalAccountingSystemId = Optional.ofNullable(externalAccountingSystemId);
             return this;
         }
 
@@ -428,7 +428,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
          */
         @java.lang.Override
         public _FinalStage defaultDestination(Boolean defaultDestination) {
-            this.defaultDestination = Optional.of(defaultDestination);
+            this.defaultDestination = Optional.ofNullable(defaultDestination);
             return this;
         }
 
@@ -445,7 +445,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
          */
         @java.lang.Override
         public _FinalStage defaultSource(Boolean defaultSource) {
-            this.defaultSource = Optional.of(defaultSource);
+            this.defaultSource = Optional.ofNullable(defaultSource);
             return this;
         }
 

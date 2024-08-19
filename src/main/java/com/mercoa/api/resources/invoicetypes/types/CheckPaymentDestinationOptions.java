@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CheckPaymentDestinationOptions.Builder.class)
 public final class CheckPaymentDestinationOptions {
     private final Optional<CheckDeliveryMethod> delivery;
@@ -88,7 +88,7 @@ public final class CheckPaymentDestinationOptions {
         }
 
         public Builder delivery(CheckDeliveryMethod delivery) {
-            this.delivery = Optional.of(delivery);
+            this.delivery = Optional.ofNullable(delivery);
             return this;
         }
 

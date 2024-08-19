@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = OcrRequest.Builder.class)
 public final class OcrRequest {
     private final String mimeType;
@@ -182,7 +182,7 @@ public final class OcrRequest {
          */
         @java.lang.Override
         public _FinalStage entityId(String entityId) {
-            this.entityId = Optional.of(entityId);
+            this.entityId = Optional.ofNullable(entityId);
             return this;
         }
 
@@ -199,7 +199,7 @@ public final class OcrRequest {
          */
         @java.lang.Override
         public _FinalStage vendorNetwork(VendorNetwork vendorNetwork) {
-            this.vendorNetwork = Optional.of(vendorNetwork);
+            this.vendorNetwork = Optional.ofNullable(vendorNetwork);
             return this;
         }
 

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = RutterCompanyCreationRequest.Builder.class)
 public final class RutterCompanyCreationRequest {
     private final Optional<String> accessToken;
@@ -87,7 +87,7 @@ public final class RutterCompanyCreationRequest {
         }
 
         public Builder accessToken(String accessToken) {
-            this.accessToken = Optional.of(accessToken);
+            this.accessToken = Optional.ofNullable(accessToken);
             return this;
         }
 

@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceLineItemIndividualUpdateRequest.Builder.class)
 public final class InvoiceLineItemIndividualUpdateRequest {
     private final Optional<String> name;
@@ -162,7 +162,7 @@ public final class InvoiceLineItemIndividualUpdateRequest {
         }
 
         public Builder name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -173,7 +173,7 @@ public final class InvoiceLineItemIndividualUpdateRequest {
         }
 
         public Builder description(String description) {
-            this.description = Optional.of(description);
+            this.description = Optional.ofNullable(description);
             return this;
         }
 
@@ -184,7 +184,7 @@ public final class InvoiceLineItemIndividualUpdateRequest {
         }
 
         public Builder serviceStartDate(OffsetDateTime serviceStartDate) {
-            this.serviceStartDate = Optional.of(serviceStartDate);
+            this.serviceStartDate = Optional.ofNullable(serviceStartDate);
             return this;
         }
 
@@ -195,7 +195,7 @@ public final class InvoiceLineItemIndividualUpdateRequest {
         }
 
         public Builder serviceEndDate(OffsetDateTime serviceEndDate) {
-            this.serviceEndDate = Optional.of(serviceEndDate);
+            this.serviceEndDate = Optional.ofNullable(serviceEndDate);
             return this;
         }
 
@@ -206,7 +206,7 @@ public final class InvoiceLineItemIndividualUpdateRequest {
         }
 
         public Builder metadata(Map<String, String> metadata) {
-            this.metadata = Optional.of(metadata);
+            this.metadata = Optional.ofNullable(metadata);
             return this;
         }
 
@@ -217,7 +217,7 @@ public final class InvoiceLineItemIndividualUpdateRequest {
         }
 
         public Builder glAccountId(String glAccountId) {
-            this.glAccountId = Optional.of(glAccountId);
+            this.glAccountId = Optional.ofNullable(glAccountId);
             return this;
         }
 

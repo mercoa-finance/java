@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGroupUserRequest.Builder.class)
 public final class EntityGroupUserRequest {
     private final String foreignId;
@@ -165,7 +165,7 @@ public final class EntityGroupUserRequest {
          */
         @java.lang.Override
         public _FinalStage entities(List<EntityGroupUserEntityRequest> entities) {
-            this.entities = Optional.of(entities);
+            this.entities = Optional.ofNullable(entities);
             return this;
         }
 
@@ -178,7 +178,7 @@ public final class EntityGroupUserRequest {
 
         @java.lang.Override
         public _FinalStage name(String name) {
-            this.name = Optional.of(name);
+            this.name = Optional.ofNullable(name);
             return this;
         }
 
@@ -191,7 +191,7 @@ public final class EntityGroupUserRequest {
 
         @java.lang.Override
         public _FinalStage email(String email) {
-            this.email = Optional.of(email);
+            this.email = Optional.ofNullable(email);
             return this;
         }
 

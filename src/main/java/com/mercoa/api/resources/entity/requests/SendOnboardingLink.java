@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = SendOnboardingLink.Builder.class)
 public final class SendOnboardingLink {
     private final EntityOnboardingLinkType type;
@@ -151,7 +151,7 @@ public final class SendOnboardingLink {
          */
         @java.lang.Override
         public _FinalStage connectedEntityId(String connectedEntityId) {
-            this.connectedEntityId = Optional.of(connectedEntityId);
+            this.connectedEntityId = Optional.ofNullable(connectedEntityId);
             return this;
         }
 
@@ -168,7 +168,7 @@ public final class SendOnboardingLink {
          */
         @java.lang.Override
         public _FinalStage expiresIn(String expiresIn) {
-            this.expiresIn = Optional.of(expiresIn);
+            this.expiresIn = Optional.ofNullable(expiresIn);
             return this;
         }
 

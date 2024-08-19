@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CustomPaymentMethodSchemaField.Builder.class)
 public final class CustomPaymentMethodSchemaField {
     private final String name;
@@ -243,7 +243,7 @@ public final class CustomPaymentMethodSchemaField {
          */
         @java.lang.Override
         public _FinalStage options(List<String> options) {
-            this.options = Optional.of(options);
+            this.options = Optional.ofNullable(options);
             return this;
         }
 
@@ -260,7 +260,7 @@ public final class CustomPaymentMethodSchemaField {
          */
         @java.lang.Override
         public _FinalStage useAsAccountNumber(Boolean useAsAccountNumber) {
-            this.useAsAccountNumber = Optional.of(useAsAccountNumber);
+            this.useAsAccountNumber = Optional.ofNullable(useAsAccountNumber);
             return this;
         }
 
@@ -277,7 +277,7 @@ public final class CustomPaymentMethodSchemaField {
          */
         @java.lang.Override
         public _FinalStage useAsAccountName(Boolean useAsAccountName) {
-            this.useAsAccountName = Optional.of(useAsAccountName);
+            this.useAsAccountName = Optional.ofNullable(useAsAccountName);
             return this;
         }
 
@@ -290,7 +290,7 @@ public final class CustomPaymentMethodSchemaField {
 
         @java.lang.Override
         public _FinalStage displayName(String displayName) {
-            this.displayName = Optional.of(displayName);
+            this.displayName = Optional.ofNullable(displayName);
             return this;
         }
 

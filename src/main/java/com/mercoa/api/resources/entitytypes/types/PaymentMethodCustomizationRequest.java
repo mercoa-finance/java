@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PaymentMethodCustomizationRequest.Builder.class)
 public final class PaymentMethodCustomizationRequest {
     private final PaymentMethodType type;
@@ -153,7 +153,7 @@ public final class PaymentMethodCustomizationRequest {
          */
         @java.lang.Override
         public _FinalStage schemaId(String schemaId) {
-            this.schemaId = Optional.of(schemaId);
+            this.schemaId = Optional.ofNullable(schemaId);
             return this;
         }
 

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = IndustryCodes.Builder.class)
 public final class IndustryCodes {
     private final Optional<String> mcc;
@@ -84,7 +84,7 @@ public final class IndustryCodes {
         }
 
         public Builder mcc(String mcc) {
-            this.mcc = Optional.of(mcc);
+            this.mcc = Optional.ofNullable(mcc);
             return this;
         }
 

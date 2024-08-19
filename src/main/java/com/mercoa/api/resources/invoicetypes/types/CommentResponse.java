@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CommentResponse.Builder.class)
 public final class CommentResponse {
     private final String id;
@@ -215,7 +215,7 @@ public final class CommentResponse {
          */
         @java.lang.Override
         public _FinalStage associatedApprovalAction(AssociatedApprovalAction associatedApprovalAction) {
-            this.associatedApprovalAction = Optional.of(associatedApprovalAction);
+            this.associatedApprovalAction = Optional.ofNullable(associatedApprovalAction);
             return this;
         }
 
@@ -228,7 +228,7 @@ public final class CommentResponse {
 
         @java.lang.Override
         public _FinalStage user(EntityUserResponse user) {
-            this.user = Optional.of(user);
+            this.user = Optional.ofNullable(user);
             return this;
         }
 

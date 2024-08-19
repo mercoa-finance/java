@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BankAccountUpdateRequest.Builder.class)
 public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest {
     private final Optional<Boolean> defaultSource;
@@ -211,7 +211,7 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
         }
 
         public Builder defaultSource(Boolean defaultSource) {
-            this.defaultSource = Optional.of(defaultSource);
+            this.defaultSource = Optional.ofNullable(defaultSource);
             return this;
         }
 
@@ -222,7 +222,7 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
         }
 
         public Builder defaultDestination(Boolean defaultDestination) {
-            this.defaultDestination = Optional.of(defaultDestination);
+            this.defaultDestination = Optional.ofNullable(defaultDestination);
             return this;
         }
 
@@ -233,7 +233,7 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
         }
 
         public Builder externalAccountingSystemId(String externalAccountingSystemId) {
-            this.externalAccountingSystemId = Optional.of(externalAccountingSystemId);
+            this.externalAccountingSystemId = Optional.ofNullable(externalAccountingSystemId);
             return this;
         }
 
@@ -244,7 +244,7 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
         }
 
         public Builder frozen(Boolean frozen) {
-            this.frozen = Optional.of(frozen);
+            this.frozen = Optional.ofNullable(frozen);
             return this;
         }
 
@@ -255,7 +255,7 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
         }
 
         public Builder metadata(Map<String, String> metadata) {
-            this.metadata = Optional.of(metadata);
+            this.metadata = Optional.ofNullable(metadata);
             return this;
         }
 
@@ -266,7 +266,7 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
         }
 
         public Builder accountName(String accountName) {
-            this.accountName = Optional.of(accountName);
+            this.accountName = Optional.ofNullable(accountName);
             return this;
         }
 
@@ -277,7 +277,7 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
         }
 
         public Builder plaid(PlaidLinkRequest plaid) {
-            this.plaid = Optional.of(plaid);
+            this.plaid = Optional.ofNullable(plaid);
             return this;
         }
 
@@ -288,7 +288,7 @@ public final class BankAccountUpdateRequest implements IPaymentMethodBaseRequest
         }
 
         public Builder checkOptions(BankAccountCheckOptions checkOptions) {
-            this.checkOptions = Optional.of(checkOptions);
+            this.checkOptions = Optional.ofNullable(checkOptions);
             return this;
         }
 

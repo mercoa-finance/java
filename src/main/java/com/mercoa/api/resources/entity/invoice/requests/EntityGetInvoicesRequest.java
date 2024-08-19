@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGetInvoicesRequest.Builder.class)
 public final class EntityGetInvoicesRequest {
     private final Optional<Boolean> excludePayables;
@@ -422,7 +422,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder excludePayables(Boolean excludePayables) {
-            this.excludePayables = Optional.of(excludePayables);
+            this.excludePayables = Optional.ofNullable(excludePayables);
             return this;
         }
 
@@ -433,7 +433,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder excludeReceivables(Boolean excludeReceivables) {
-            this.excludeReceivables = Optional.of(excludeReceivables);
+            this.excludeReceivables = Optional.ofNullable(excludeReceivables);
             return this;
         }
 
@@ -444,7 +444,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder startDate(OffsetDateTime startDate) {
-            this.startDate = Optional.of(startDate);
+            this.startDate = Optional.ofNullable(startDate);
             return this;
         }
 
@@ -455,7 +455,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder endDate(OffsetDateTime endDate) {
-            this.endDate = Optional.of(endDate);
+            this.endDate = Optional.ofNullable(endDate);
             return this;
         }
 
@@ -466,7 +466,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder dateType(InvoiceDateFilter dateType) {
-            this.dateType = Optional.of(dateType);
+            this.dateType = Optional.ofNullable(dateType);
             return this;
         }
 
@@ -477,7 +477,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder orderBy(InvoiceOrderByField orderBy) {
-            this.orderBy = Optional.of(orderBy);
+            this.orderBy = Optional.ofNullable(orderBy);
             return this;
         }
 
@@ -488,7 +488,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder orderDirection(OrderDirection orderDirection) {
-            this.orderDirection = Optional.of(orderDirection);
+            this.orderDirection = Optional.ofNullable(orderDirection);
             return this;
         }
 
@@ -499,7 +499,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder limit(Integer limit) {
-            this.limit = Optional.of(limit);
+            this.limit = Optional.ofNullable(limit);
             return this;
         }
 
@@ -510,7 +510,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder startingAfter(String startingAfter) {
-            this.startingAfter = Optional.of(startingAfter);
+            this.startingAfter = Optional.ofNullable(startingAfter);
             return this;
         }
 
@@ -521,7 +521,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder metadata(InvoiceMetadataFilter metadata) {
-            this.metadata = Optional.of(metadata);
+            this.metadata = Optional.ofNullable(metadata);
             return this;
         }
 
@@ -532,7 +532,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder lineItemMetadata(InvoiceMetadataFilter lineItemMetadata) {
-            this.lineItemMetadata = Optional.of(lineItemMetadata);
+            this.lineItemMetadata = Optional.ofNullable(lineItemMetadata);
             return this;
         }
 
@@ -543,7 +543,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder lineItemGlAccountId(String lineItemGlAccountId) {
-            this.lineItemGlAccountId = Optional.of(lineItemGlAccountId);
+            this.lineItemGlAccountId = Optional.ofNullable(lineItemGlAccountId);
             return this;
         }
 
@@ -554,7 +554,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder search(String search) {
-            this.search = Optional.of(search);
+            this.search = Optional.ofNullable(search);
             return this;
         }
 
@@ -565,7 +565,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder payerId(String payerId) {
-            this.payerId = Optional.of(payerId);
+            this.payerId = Optional.ofNullable(payerId);
             return this;
         }
 
@@ -576,7 +576,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder vendorId(String vendorId) {
-            this.vendorId = Optional.of(vendorId);
+            this.vendorId = Optional.ofNullable(vendorId);
             return this;
         }
 
@@ -587,7 +587,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder approverId(String approverId) {
-            this.approverId = Optional.of(approverId);
+            this.approverId = Optional.ofNullable(approverId);
             return this;
         }
 
@@ -598,7 +598,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder approverAction(ApproverAction approverAction) {
-            this.approverAction = Optional.of(approverAction);
+            this.approverAction = Optional.ofNullable(approverAction);
             return this;
         }
 
@@ -609,7 +609,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder invoiceId(String invoiceId) {
-            this.invoiceId = Optional.of(invoiceId);
+            this.invoiceId = Optional.ofNullable(invoiceId);
             return this;
         }
 
@@ -620,7 +620,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder status(InvoiceStatus status) {
-            this.status = Optional.of(status);
+            this.status = Optional.ofNullable(status);
             return this;
         }
 
@@ -631,7 +631,7 @@ public final class EntityGetInvoicesRequest {
         }
 
         public Builder paymentType(List<PaymentType> paymentType) {
-            this.paymentType = Optional.of(paymentType);
+            this.paymentType = Optional.ofNullable(paymentType);
             return this;
         }
 

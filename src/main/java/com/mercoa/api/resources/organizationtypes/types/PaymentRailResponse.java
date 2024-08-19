@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PaymentRailResponse.Builder.class)
 public final class PaymentRailResponse {
     private final PaymentMethodType type;
@@ -179,7 +179,7 @@ public final class PaymentRailResponse {
          */
         @java.lang.Override
         public _FinalStage available(Boolean available) {
-            this.available = Optional.of(available);
+            this.available = Optional.ofNullable(available);
             return this;
         }
 

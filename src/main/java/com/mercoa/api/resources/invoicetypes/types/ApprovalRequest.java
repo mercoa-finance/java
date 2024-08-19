@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ApprovalRequest.Builder.class)
 public final class ApprovalRequest {
     private final Optional<String> text;
@@ -119,7 +119,7 @@ public final class ApprovalRequest {
          */
         @java.lang.Override
         public _FinalStage text(String text) {
-            this.text = Optional.of(text);
+            this.text = Optional.ofNullable(text);
             return this;
         }
 

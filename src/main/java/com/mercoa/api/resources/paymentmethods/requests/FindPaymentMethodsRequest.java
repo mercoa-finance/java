@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = FindPaymentMethodsRequest.Builder.class)
 public final class FindPaymentMethodsRequest {
     private final Optional<Integer> limit;
@@ -138,7 +138,7 @@ public final class FindPaymentMethodsRequest {
         }
 
         public Builder limit(Integer limit) {
-            this.limit = Optional.of(limit);
+            this.limit = Optional.ofNullable(limit);
             return this;
         }
 
@@ -149,7 +149,7 @@ public final class FindPaymentMethodsRequest {
         }
 
         public Builder startingAfter(String startingAfter) {
-            this.startingAfter = Optional.of(startingAfter);
+            this.startingAfter = Optional.ofNullable(startingAfter);
             return this;
         }
 
@@ -160,7 +160,7 @@ public final class FindPaymentMethodsRequest {
         }
 
         public Builder type(PaymentMethodType type) {
-            this.type = Optional.of(type);
+            this.type = Optional.ofNullable(type);
             return this;
         }
 
@@ -171,7 +171,7 @@ public final class FindPaymentMethodsRequest {
         }
 
         public Builder entityId(String entityId) {
-            this.entityId = Optional.of(entityId);
+            this.entityId = Optional.ofNullable(entityId);
             return this;
         }
 

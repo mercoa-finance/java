@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = DocumentResponse.Builder.class)
 public final class DocumentResponse {
     private final Optional<String> id;
@@ -171,7 +171,7 @@ public final class DocumentResponse {
          */
         @java.lang.Override
         public _FinalStage id(String id) {
-            this.id = Optional.of(id);
+            this.id = Optional.ofNullable(id);
             return this;
         }
 
