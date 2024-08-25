@@ -14,6 +14,7 @@ import com.mercoa.api.resources.entitygroup.user.requests.EntityFindEntityReques
 import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupUserRequest;
 import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupUserResponse;
 import com.mercoa.api.resources.entitygrouptypes.types.FindEntityGroupUserResponse;
+import com.mercoa.api.resources.entitytypes.types.TokenGenerationOptions;
 import java.io.IOException;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
@@ -273,6 +274,66 @@ public class UserClient {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return;
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            throw new MercoaApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new MercoaException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Generate a JWT token for an entity group with the given options. This token can be used to authenticate to any entity in the entity group as the user in the Mercoa API and iFrame.
+     */
+    public String getToken(String entityGroupId, String foreignId) {
+        return getToken(
+                entityGroupId, foreignId, TokenGenerationOptions.builder().build());
+    }
+
+    /**
+     * Generate a JWT token for an entity group with the given options. This token can be used to authenticate to any entity in the entity group as the user in the Mercoa API and iFrame.
+     */
+    public String getToken(String entityGroupId, String foreignId, TokenGenerationOptions request) {
+        return getToken(entityGroupId, foreignId, request, null);
+    }
+
+    /**
+     * Generate a JWT token for an entity group with the given options. This token can be used to authenticate to any entity in the entity group as the user in the Mercoa API and iFrame.
+     */
+    public String getToken(
+            String entityGroupId, String foreignId, TokenGenerationOptions request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entityGroup")
+                .addPathSegment(entityGroupId)
+                .addPathSegments("user")
+                .addPathSegment(foreignId)
+                .addPathSegments("token")
+                .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new MercoaException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             throw new MercoaApiException(

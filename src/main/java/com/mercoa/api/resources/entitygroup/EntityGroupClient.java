@@ -13,10 +13,12 @@ import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.entitygroup.invoice.InvoiceClient;
 import com.mercoa.api.resources.entitygroup.requests.EntityGroupFindRequest;
+import com.mercoa.api.resources.entitygroup.requests.EntityGroupGetRequest;
 import com.mercoa.api.resources.entitygroup.user.UserClient;
 import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupFindResponse;
 import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupRequest;
 import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupResponse;
+import com.mercoa.api.resources.entitytypes.types.TokenGenerationOptions;
 import java.io.IOException;
 import java.util.function.Supplier;
 import okhttp3.Headers;
@@ -96,6 +98,13 @@ public class EntityGroupClient {
     /**
      * Create an entity group
      */
+    public EntityGroupResponse create() {
+        return create(EntityGroupRequest.builder().build());
+    }
+
+    /**
+     * Create an entity group
+     */
     public EntityGroupResponse create(EntityGroupRequest request) {
         return create(request, null);
     }
@@ -144,24 +153,34 @@ public class EntityGroupClient {
      * Get an entity group
      */
     public EntityGroupResponse get(String entityGroupId) {
-        return get(entityGroupId, null);
+        return get(entityGroupId, EntityGroupGetRequest.builder().build());
     }
 
     /**
      * Get an entity group
      */
-    public EntityGroupResponse get(String entityGroupId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+    public EntityGroupResponse get(String entityGroupId, EntityGroupGetRequest request) {
+        return get(entityGroupId, request, null);
+    }
+
+    /**
+     * Get an entity group
+     */
+    public EntityGroupResponse get(String entityGroupId, EntityGroupGetRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("entityGroup")
-                .addPathSegment(entityGroupId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .addPathSegment(entityGroupId);
+        if (request.getEntityMetadata().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "entityMetadata", request.getEntityMetadata().get().toString());
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
+                .addHeader("Content-Type", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
@@ -179,6 +198,13 @@ public class EntityGroupClient {
         } catch (IOException e) {
             throw new MercoaException("Network error executing HTTP request", e);
         }
+    }
+
+    /**
+     * Update an entity group
+     */
+    public EntityGroupResponse update(String entityGroupId) {
+        return update(entityGroupId, EntityGroupRequest.builder().build());
     }
 
     /**
@@ -258,6 +284,65 @@ public class EntityGroupClient {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return;
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            throw new MercoaApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new MercoaException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Generate a JWT token for an entity group with the given options. This token can be used to authenticate to any entity in the entity group in the Mercoa API and iFrame.
+     * <p>&lt;Warning&gt;We recommend using <a href="/api-reference/entity-group/user/get-token">this endpoint</a>. This will enable features such as approvals and comments.&lt;/Warning&gt;</p>
+     */
+    public String getToken(String entityGroupId) {
+        return getToken(entityGroupId, TokenGenerationOptions.builder().build());
+    }
+
+    /**
+     * Generate a JWT token for an entity group with the given options. This token can be used to authenticate to any entity in the entity group in the Mercoa API and iFrame.
+     * <p>&lt;Warning&gt;We recommend using <a href="/api-reference/entity-group/user/get-token">this endpoint</a>. This will enable features such as approvals and comments.&lt;/Warning&gt;</p>
+     */
+    public String getToken(String entityGroupId, TokenGenerationOptions request) {
+        return getToken(entityGroupId, request, null);
+    }
+
+    /**
+     * Generate a JWT token for an entity group with the given options. This token can be used to authenticate to any entity in the entity group in the Mercoa API and iFrame.
+     * <p>&lt;Warning&gt;We recommend using <a href="/api-reference/entity-group/user/get-token">this endpoint</a>. This will enable features such as approvals and comments.&lt;/Warning&gt;</p>
+     */
+    public String getToken(String entityGroupId, TokenGenerationOptions request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entityGroup")
+                .addPathSegment(entityGroupId)
+                .addPathSegments("token")
+                .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new MercoaException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             throw new MercoaApiException(

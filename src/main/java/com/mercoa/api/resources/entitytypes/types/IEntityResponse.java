@@ -5,6 +5,7 @@ package com.mercoa.api.resources.entitytypes.types;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface IEntityResponse {
@@ -39,6 +40,8 @@ public interface IEntityResponse {
     boolean getIsNetworkPayor();
 
     boolean getIsNetworkPayee();
+
+    Optional<Map<String, String>> getMetadata();
 
     OffsetDateTime getCreatedAt();
 

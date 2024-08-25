@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,7 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGroupRequest.Builder.class)
 public final class EntityGroupRequest {
-    private final List<String> entityIds;
+    private final Optional<List<String>> entityIds;
 
     private final Optional<String> foreignId;
 
@@ -33,7 +32,7 @@ public final class EntityGroupRequest {
     private final Map<String, Object> additionalProperties;
 
     private EntityGroupRequest(
-            List<String> entityIds,
+            Optional<List<String>> entityIds,
             Optional<String> foreignId,
             Optional<String> name,
             Optional<String> emailToName,
@@ -46,7 +45,7 @@ public final class EntityGroupRequest {
     }
 
     @JsonProperty("entityIds")
-    public List<String> getEntityIds() {
+    public Optional<List<String>> getEntityIds() {
         return entityIds;
     }
 
@@ -99,7 +98,7 @@ public final class EntityGroupRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private List<String> entityIds = new ArrayList<>();
+        private Optional<List<String>> entityIds = Optional.empty();
 
         private Optional<String> foreignId = Optional.empty();
 
@@ -121,19 +120,13 @@ public final class EntityGroupRequest {
         }
 
         @JsonSetter(value = "entityIds", nulls = Nulls.SKIP)
+        public Builder entityIds(Optional<List<String>> entityIds) {
+            this.entityIds = entityIds;
+            return this;
+        }
+
         public Builder entityIds(List<String> entityIds) {
-            this.entityIds.clear();
-            this.entityIds.addAll(entityIds);
-            return this;
-        }
-
-        public Builder addEntityIds(String entityIds) {
-            this.entityIds.add(entityIds);
-            return this;
-        }
-
-        public Builder addAllEntityIds(List<String> entityIds) {
-            this.entityIds.addAll(entityIds);
+            this.entityIds = Optional.ofNullable(entityIds);
             return this;
         }
 

@@ -89,7 +89,7 @@ public final class FindPayeeCounterpartiesRequest {
     }
 
     /**
-     * @return Filter by counterparty ids
+     * @return Filter by counterparty ids (Foreign ID is supported)
      */
     @JsonProperty("counterpartyId")
     public Optional<String> getCounterpartyId() {

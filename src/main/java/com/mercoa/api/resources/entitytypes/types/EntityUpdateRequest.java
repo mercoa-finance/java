@@ -43,6 +43,8 @@ public final class EntityUpdateRequest {
 
     private final Optional<String> logo;
 
+    private final Optional<Map<String, String>> metadata;
+
     private final Map<String, Object> additionalProperties;
 
     private EntityUpdateRequest(
@@ -57,6 +59,7 @@ public final class EntityUpdateRequest {
             Optional<Boolean> isNetworkPayor,
             Optional<Boolean> isNetworkPayee,
             Optional<String> logo,
+            Optional<Map<String, String>> metadata,
             Map<String, Object> additionalProperties) {
         this.foreignId = foreignId;
         this.emailTo = emailTo;
@@ -69,6 +72,7 @@ public final class EntityUpdateRequest {
         this.isNetworkPayor = isNetworkPayor;
         this.isNetworkPayee = isNetworkPayee;
         this.logo = logo;
+        this.metadata = metadata;
         this.additionalProperties = additionalProperties;
     }
 
@@ -154,6 +158,14 @@ public final class EntityUpdateRequest {
         return logo;
     }
 
+    /**
+     * @return Simple key/value metadata associated with this entity. For more complex metadata, use the Metadata API.
+     */
+    @JsonProperty("metadata")
+    public Optional<Map<String, String>> getMetadata() {
+        return metadata;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -176,7 +188,8 @@ public final class EntityUpdateRequest {
                 && isPayee.equals(other.isPayee)
                 && isNetworkPayor.equals(other.isNetworkPayor)
                 && isNetworkPayee.equals(other.isNetworkPayee)
-                && logo.equals(other.logo);
+                && logo.equals(other.logo)
+                && metadata.equals(other.metadata);
     }
 
     @java.lang.Override
@@ -192,7 +205,8 @@ public final class EntityUpdateRequest {
                 this.isPayee,
                 this.isNetworkPayor,
                 this.isNetworkPayee,
-                this.logo);
+                this.logo,
+                this.metadata);
     }
 
     @java.lang.Override
@@ -228,6 +242,8 @@ public final class EntityUpdateRequest {
 
         private Optional<String> logo = Optional.empty();
 
+        private Optional<Map<String, String>> metadata = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -245,6 +261,7 @@ public final class EntityUpdateRequest {
             isNetworkPayor(other.getIsNetworkPayor());
             isNetworkPayee(other.getIsNetworkPayee());
             logo(other.getLogo());
+            metadata(other.getMetadata());
             return this;
         }
 
@@ -369,6 +386,17 @@ public final class EntityUpdateRequest {
             return this;
         }
 
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public Builder metadata(Optional<Map<String, String>> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        public Builder metadata(Map<String, String> metadata) {
+            this.metadata = Optional.ofNullable(metadata);
+            return this;
+        }
+
         public EntityUpdateRequest build() {
             return new EntityUpdateRequest(
                     foreignId,
@@ -382,6 +410,7 @@ public final class EntityUpdateRequest {
                     isNetworkPayor,
                     isNetworkPayee,
                     logo,
+                    metadata,
                     additionalProperties);
         }
     }

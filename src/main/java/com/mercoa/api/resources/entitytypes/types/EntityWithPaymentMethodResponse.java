@@ -55,6 +55,8 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
 
     private final boolean isNetworkPayee;
 
+    private final Optional<Map<String, String>> metadata;
+
     private final OffsetDateTime createdAt;
 
     private final OffsetDateTime updatedAt;
@@ -80,6 +82,7 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
             boolean isPayee,
             boolean isNetworkPayor,
             boolean isNetworkPayee,
+            Optional<Map<String, String>> metadata,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Optional<List<PaymentMethodResponse>> paymentMethods,
@@ -100,6 +103,7 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
         this.isPayee = isPayee;
         this.isNetworkPayor = isNetworkPayor;
         this.isNetworkPayee = isNetworkPayee;
+        this.metadata = metadata;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.paymentMethods = paymentMethods;
@@ -232,6 +236,15 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
         return isNetworkPayee;
     }
 
+    /**
+     * @return Simple key/value metadata associated with this entity. For more complex metadata, use the Metadata API.
+     */
+    @JsonProperty("metadata")
+    @java.lang.Override
+    public Optional<Map<String, String>> getMetadata() {
+        return metadata;
+    }
+
     @JsonProperty("createdAt")
     @java.lang.Override
     public OffsetDateTime getCreatedAt() {
@@ -277,6 +290,7 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
                 && isPayee == other.isPayee
                 && isNetworkPayor == other.isNetworkPayor
                 && isNetworkPayee == other.isNetworkPayee
+                && metadata.equals(other.metadata)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt)
                 && paymentMethods.equals(other.paymentMethods);
@@ -301,6 +315,7 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
                 this.isPayee,
                 this.isNetworkPayor,
                 this.isNetworkPayee,
+                this.metadata,
                 this.createdAt,
                 this.updatedAt,
                 this.paymentMethods);
@@ -392,6 +407,10 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
 
         _FinalStage logo(String logo);
 
+        _FinalStage metadata(Optional<Map<String, String>> metadata);
+
+        _FinalStage metadata(Map<String, String> metadata);
+
         _FinalStage paymentMethods(Optional<List<PaymentMethodResponse>> paymentMethods);
 
         _FinalStage paymentMethods(List<PaymentMethodResponse> paymentMethods);
@@ -444,6 +463,8 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
 
         private Optional<List<PaymentMethodResponse>> paymentMethods = Optional.empty();
 
+        private Optional<Map<String, String>> metadata = Optional.empty();
+
         private Optional<String> logo = Optional.empty();
 
         private Optional<List<String>> emailToAlias = Optional.empty();
@@ -475,6 +496,7 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
             isPayee(other.getIsPayee());
             isNetworkPayor(other.getIsNetworkPayor());
             isNetworkPayee(other.getIsNetworkPayee());
+            metadata(other.getMetadata());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             paymentMethods(other.getPaymentMethods());
@@ -617,6 +639,23 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
         }
 
         /**
+         * <p>Simple key/value metadata associated with this entity. For more complex metadata, use the Metadata API.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage metadata(Map<String, String> metadata) {
+            this.metadata = Optional.ofNullable(metadata);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public _FinalStage metadata(Optional<Map<String, String>> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        /**
          * <p>URL for the entity logo</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -703,6 +742,7 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
                     isPayee,
                     isNetworkPayor,
                     isNetworkPayee,
+                    metadata,
                     createdAt,
                     updatedAt,
                     paymentMethods,

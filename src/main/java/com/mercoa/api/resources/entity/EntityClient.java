@@ -22,6 +22,7 @@ import com.mercoa.api.resources.entity.metadata.MetadataClient;
 import com.mercoa.api.resources.entity.notificationpolicy.NotificationPolicyClient;
 import com.mercoa.api.resources.entity.paymentmethod.PaymentMethodClient;
 import com.mercoa.api.resources.entity.representative.RepresentativeClient;
+import com.mercoa.api.resources.entity.requests.EntityGetRequest;
 import com.mercoa.api.resources.entity.requests.FindEntities;
 import com.mercoa.api.resources.entity.requests.GenerateOnboardingLink;
 import com.mercoa.api.resources.entity.requests.PlaidLinkTokenRequest;
@@ -204,21 +205,27 @@ public class EntityClient {
     }
 
     public EntityResponse get(String entityId) {
-        return get(entityId, null);
+        return get(entityId, EntityGetRequest.builder().build());
     }
 
-    public EntityResponse get(String entityId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+    public EntityResponse get(String entityId, EntityGetRequest request) {
+        return get(entityId, request, null);
+    }
+
+    public EntityResponse get(String entityId, EntityGetRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .addPathSegment(entityId);
+        if (request.getMetadata().isPresent()) {
+            httpUrl.addQueryParameter("metadata", request.getMetadata().get().toString());
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
+                .addHeader("Content-Type", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
