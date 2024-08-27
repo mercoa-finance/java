@@ -38,7 +38,7 @@ public final class EntityAddPayeesRequest {
     }
 
     /**
-     * @return List of payee entity IDs to associate with the entity
+     * @return List of payee entity IDs or foreign IDs to associate with the entity
      */
     @JsonProperty("payees")
     public List<String> getPayees() {

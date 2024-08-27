@@ -31,7 +31,7 @@ public final class EntityHidePayeesRequest {
     }
 
     /**
-     * @return List of payee entity IDs to hide
+     * @return List of payee entity IDs or foreign IDs to hide
      */
     @JsonProperty("payees")
     public List<String> getPayees() {

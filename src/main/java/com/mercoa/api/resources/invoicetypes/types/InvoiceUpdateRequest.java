@@ -225,6 +225,9 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
         return serviceEndDate;
     }
 
+    /**
+     * @return ID or foreign ID of the payer of this invoice.
+     */
     @JsonProperty("payerId")
     @java.lang.Override
     public Optional<String> getPayerId() {
@@ -240,6 +243,9 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
         return paymentSourceId;
     }
 
+    /**
+     * @return ID or foreign ID of the vendor of this invoice.
+     */
     @JsonProperty("vendorId")
     @java.lang.Override
     public Optional<String> getVendorId() {
@@ -351,7 +357,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
     }
 
     /**
-     * @return ID of entity who created this invoice. If creating a payable invoice (AP), this must be the same as the payerId. If creating a receivable invoice (AR), this must be the same as the vendorId.
+     * @return ID or foreign ID of entity who created this invoice. If creating a payable invoice (AP), this must be the same as the payerId. If creating a receivable invoice (AR), this must be the same as the vendorId.
      */
     @JsonProperty("creatorEntityId")
     public Optional<String> getCreatorEntityId() {

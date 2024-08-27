@@ -221,7 +221,7 @@ public final class EntityGetInvoicesRequest {
     }
 
     /**
-     * @return Filter invoices by payer ID.
+     * @return Filter invoices by payer ID or payer foreign ID.
      */
     @JsonProperty("payerId")
     public Optional<String> getPayerId() {
@@ -229,7 +229,7 @@ public final class EntityGetInvoicesRequest {
     }
 
     /**
-     * @return Filter invoices by vendor ID.
+     * @return Filter invoices by vendor ID or vendor foreign ID.
      */
     @JsonProperty("vendorId")
     public Optional<String> getVendorId() {

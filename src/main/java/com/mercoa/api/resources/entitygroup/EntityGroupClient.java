@@ -15,6 +15,7 @@ import com.mercoa.api.resources.entitygroup.invoice.InvoiceClient;
 import com.mercoa.api.resources.entitygroup.requests.EntityGroupFindRequest;
 import com.mercoa.api.resources.entitygroup.requests.EntityGroupGetRequest;
 import com.mercoa.api.resources.entitygroup.user.UserClient;
+import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupEntityUpdateRequest;
 import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupFindResponse;
 import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupRequest;
 import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupResponse;
@@ -343,6 +344,122 @@ public class EntityGroupClient {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class);
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            throw new MercoaApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new MercoaException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Add entities to an entity group
+     */
+    public EntityGroupResponse addEntities(String entityGroupId) {
+        return addEntities(
+                entityGroupId, EntityGroupEntityUpdateRequest.builder().build());
+    }
+
+    /**
+     * Add entities to an entity group
+     */
+    public EntityGroupResponse addEntities(String entityGroupId, EntityGroupEntityUpdateRequest request) {
+        return addEntities(entityGroupId, request, null);
+    }
+
+    /**
+     * Add entities to an entity group
+     */
+    public EntityGroupResponse addEntities(
+            String entityGroupId, EntityGroupEntityUpdateRequest request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entityGroup")
+                .addPathSegment(entityGroupId)
+                .addPathSegments("addEntities")
+                .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new MercoaException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityGroupResponse.class);
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            throw new MercoaApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new MercoaException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Remove entities from an entity group
+     */
+    public EntityGroupResponse removeEntities(String entityGroupId) {
+        return removeEntities(
+                entityGroupId, EntityGroupEntityUpdateRequest.builder().build());
+    }
+
+    /**
+     * Remove entities from an entity group
+     */
+    public EntityGroupResponse removeEntities(String entityGroupId, EntityGroupEntityUpdateRequest request) {
+        return removeEntities(entityGroupId, request, null);
+    }
+
+    /**
+     * Remove entities from an entity group
+     */
+    public EntityGroupResponse removeEntities(
+            String entityGroupId, EntityGroupEntityUpdateRequest request, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entityGroup")
+                .addPathSegment(entityGroupId)
+                .addPathSegments("removeEntities")
+                .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new MercoaException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityGroupResponse.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             throw new MercoaApiException(

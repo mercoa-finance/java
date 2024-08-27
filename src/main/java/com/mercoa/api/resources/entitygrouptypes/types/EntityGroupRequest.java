@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGroupRequest.Builder.class)
-public final class EntityGroupRequest {
+public final class EntityGroupRequest implements IEntityGroupEntityUpdateRequest {
     private final Optional<List<String>> entityIds;
 
     private final Optional<String> foreignId;
@@ -44,7 +44,11 @@ public final class EntityGroupRequest {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return List of entity IDs or foreign IDs
+     */
     @JsonProperty("entityIds")
+    @java.lang.Override
     public Optional<List<String>> getEntityIds() {
         return entityIds;
     }

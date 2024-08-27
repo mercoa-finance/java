@@ -225,6 +225,9 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         return serviceEndDate;
     }
 
+    /**
+     * @return ID or foreign ID of the payer of this invoice.
+     */
     @JsonProperty("payerId")
     @java.lang.Override
     public Optional<String> getPayerId() {
@@ -240,6 +243,9 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
         return paymentSourceId;
     }
 
+    /**
+     * @return ID or foreign ID of the vendor of this invoice.
+     */
     @JsonProperty("vendorId")
     @java.lang.Override
     public Optional<String> getVendorId() {
@@ -858,6 +864,10 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>ID or foreign ID of the vendor of this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage vendorId(String vendorId) {
             this.vendorId = Optional.ofNullable(vendorId);
@@ -888,6 +898,10 @@ public final class InvoiceCreationRequest implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>ID or foreign ID of the payer of this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage payerId(String payerId) {
             this.payerId = Optional.ofNullable(payerId);

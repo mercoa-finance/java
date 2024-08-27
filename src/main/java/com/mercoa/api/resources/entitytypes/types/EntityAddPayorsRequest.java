@@ -38,7 +38,7 @@ public final class EntityAddPayorsRequest {
     }
 
     /**
-     * @return List of payor entity IDs to associate with the entity
+     * @return List of payor entity IDs or foreign IDs to associate with the entity
      */
     @JsonProperty("payors")
     public List<String> getPayors() {

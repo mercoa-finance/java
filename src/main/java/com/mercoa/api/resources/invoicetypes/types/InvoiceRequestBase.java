@@ -217,6 +217,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         return serviceEndDate;
     }
 
+    /**
+     * @return ID or foreign ID of the payer of this invoice.
+     */
     @JsonProperty("payerId")
     @java.lang.Override
     public Optional<String> getPayerId() {
@@ -232,6 +235,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         return paymentSourceId;
     }
 
+    /**
+     * @return ID or foreign ID of the vendor of this invoice.
+     */
     @JsonProperty("vendorId")
     @java.lang.Override
     public Optional<String> getVendorId() {
