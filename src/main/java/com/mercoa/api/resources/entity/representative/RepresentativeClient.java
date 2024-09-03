@@ -13,6 +13,7 @@ import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.entitytypes.types.RepresentativeRequest;
 import com.mercoa.api.resources.entitytypes.types.RepresentativeResponse;
+import com.mercoa.api.resources.entitytypes.types.RepresentativeUpdateRequest;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.Headers;
@@ -154,12 +155,23 @@ public class RepresentativeClient {
         }
     }
 
-    public RepresentativeResponse update(String entityId, String representativeId, RepresentativeRequest request) {
+    public RepresentativeResponse update(String entityId, String representativeId) {
+        return update(
+                entityId,
+                representativeId,
+                RepresentativeUpdateRequest.builder().build());
+    }
+
+    public RepresentativeResponse update(
+            String entityId, String representativeId, RepresentativeUpdateRequest request) {
         return update(entityId, representativeId, request, null);
     }
 
     public RepresentativeResponse update(
-            String entityId, String representativeId, RepresentativeRequest request, RequestOptions requestOptions) {
+            String entityId,
+            String representativeId,
+            RepresentativeUpdateRequest request,
+            RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("entity")

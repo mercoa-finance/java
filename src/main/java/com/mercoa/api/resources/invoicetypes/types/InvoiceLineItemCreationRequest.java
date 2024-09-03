@@ -30,6 +30,8 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
 
     private final Optional<Double> unitPrice;
 
+    private final Optional<InvoiceLineItemCategory> category;
+
     private final Optional<OffsetDateTime> serviceStartDate;
 
     private final Optional<OffsetDateTime> serviceEndDate;
@@ -49,6 +51,7 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
             Optional<String> name,
             Optional<Double> quantity,
             Optional<Double> unitPrice,
+            Optional<InvoiceLineItemCategory> category,
             Optional<OffsetDateTime> serviceStartDate,
             Optional<OffsetDateTime> serviceEndDate,
             Optional<Map<String, String>> metadata,
@@ -60,6 +63,7 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
         this.name = name;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
+        this.category = category;
         this.serviceStartDate = serviceStartDate;
         this.serviceEndDate = serviceEndDate;
         this.metadata = metadata;
@@ -97,6 +101,15 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
     @java.lang.Override
     public Optional<Double> getUnitPrice() {
         return unitPrice;
+    }
+
+    /**
+     * @return Category of the line item. Defaults to EXPENSE.
+     */
+    @JsonProperty("category")
+    @java.lang.Override
+    public Optional<InvoiceLineItemCategory> getCategory() {
+        return category;
     }
 
     @JsonProperty("serviceStartDate")
@@ -155,6 +168,7 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
                 && name.equals(other.name)
                 && quantity.equals(other.quantity)
                 && unitPrice.equals(other.unitPrice)
+                && category.equals(other.category)
                 && serviceStartDate.equals(other.serviceStartDate)
                 && serviceEndDate.equals(other.serviceEndDate)
                 && metadata.equals(other.metadata)
@@ -170,6 +184,7 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
                 this.name,
                 this.quantity,
                 this.unitPrice,
+                this.category,
                 this.serviceStartDate,
                 this.serviceEndDate,
                 this.metadata,
@@ -216,6 +231,10 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
 
         _FinalStage unitPrice(Double unitPrice);
 
+        _FinalStage category(Optional<InvoiceLineItemCategory> category);
+
+        _FinalStage category(InvoiceLineItemCategory category);
+
         _FinalStage serviceStartDate(Optional<OffsetDateTime> serviceStartDate);
 
         _FinalStage serviceStartDate(OffsetDateTime serviceStartDate);
@@ -247,6 +266,8 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
 
         private Optional<OffsetDateTime> serviceStartDate = Optional.empty();
 
+        private Optional<InvoiceLineItemCategory> category = Optional.empty();
+
         private Optional<Double> unitPrice = Optional.empty();
 
         private Optional<Double> quantity = Optional.empty();
@@ -266,6 +287,7 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
             name(other.getName());
             quantity(other.getQuantity());
             unitPrice(other.getUnitPrice());
+            category(other.getCategory());
             serviceStartDate(other.getServiceStartDate());
             serviceEndDate(other.getServiceEndDate());
             metadata(other.getMetadata());
@@ -350,6 +372,23 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
         }
 
         /**
+         * <p>Category of the line item. Defaults to EXPENSE.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage category(InvoiceLineItemCategory category) {
+            this.category = Optional.ofNullable(category);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "category", nulls = Nulls.SKIP)
+        public _FinalStage category(Optional<InvoiceLineItemCategory> category) {
+            this.category = category;
+            return this;
+        }
+
+        /**
          * <p>Unit price of the line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -416,6 +455,7 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
                     name,
                     quantity,
                     unitPrice,
+                    category,
                     serviceStartDate,
                     serviceEndDate,
                     metadata,

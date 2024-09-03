@@ -30,6 +30,8 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
 
     private final Optional<Double> unitPrice;
 
+    private final Optional<InvoiceLineItemCategory> category;
+
     private final Optional<OffsetDateTime> serviceStartDate;
 
     private final Optional<OffsetDateTime> serviceEndDate;
@@ -45,6 +47,7 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
             Optional<String> name,
             Optional<Double> quantity,
             Optional<Double> unitPrice,
+            Optional<InvoiceLineItemCategory> category,
             Optional<OffsetDateTime> serviceStartDate,
             Optional<OffsetDateTime> serviceEndDate,
             Optional<Map<String, String>> metadata,
@@ -54,6 +57,7 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
         this.name = name;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
+        this.category = category;
         this.serviceStartDate = serviceStartDate;
         this.serviceEndDate = serviceEndDate;
         this.metadata = metadata;
@@ -89,6 +93,15 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
     @java.lang.Override
     public Optional<Double> getUnitPrice() {
         return unitPrice;
+    }
+
+    /**
+     * @return Category of the line item. Defaults to EXPENSE.
+     */
+    @JsonProperty("category")
+    @java.lang.Override
+    public Optional<InvoiceLineItemCategory> getCategory() {
+        return category;
     }
 
     @JsonProperty("serviceStartDate")
@@ -134,6 +147,7 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
                 && name.equals(other.name)
                 && quantity.equals(other.quantity)
                 && unitPrice.equals(other.unitPrice)
+                && category.equals(other.category)
                 && serviceStartDate.equals(other.serviceStartDate)
                 && serviceEndDate.equals(other.serviceEndDate)
                 && metadata.equals(other.metadata)
@@ -147,6 +161,7 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
                 this.name,
                 this.quantity,
                 this.unitPrice,
+                this.category,
                 this.serviceStartDate,
                 this.serviceEndDate,
                 this.metadata,
@@ -172,6 +187,8 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
 
         private Optional<Double> unitPrice = Optional.empty();
 
+        private Optional<InvoiceLineItemCategory> category = Optional.empty();
+
         private Optional<OffsetDateTime> serviceStartDate = Optional.empty();
 
         private Optional<OffsetDateTime> serviceEndDate = Optional.empty();
@@ -190,6 +207,7 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
             name(other.getName());
             quantity(other.getQuantity());
             unitPrice(other.getUnitPrice());
+            category(other.getCategory());
             serviceStartDate(other.getServiceStartDate());
             serviceEndDate(other.getServiceEndDate());
             metadata(other.getMetadata());
@@ -238,6 +256,17 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
 
         public Builder unitPrice(Double unitPrice) {
             this.unitPrice = Optional.ofNullable(unitPrice);
+            return this;
+        }
+
+        @JsonSetter(value = "category", nulls = Nulls.SKIP)
+        public Builder category(Optional<InvoiceLineItemCategory> category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder category(InvoiceLineItemCategory category) {
+            this.category = Optional.ofNullable(category);
             return this;
         }
 
@@ -291,6 +320,7 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
                     name,
                     quantity,
                     unitPrice,
+                    category,
                     serviceStartDate,
                     serviceEndDate,
                     metadata,
