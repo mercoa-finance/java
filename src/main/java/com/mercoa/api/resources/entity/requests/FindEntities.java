@@ -35,6 +35,8 @@ public final class FindEntities {
 
     private final Optional<String> name;
 
+    private final Optional<Boolean> returnMetadata;
+
     private final Optional<Integer> limit;
 
     private final Optional<String> startingAfter;
@@ -49,6 +51,7 @@ public final class FindEntities {
             Optional<Boolean> isPayee,
             Optional<Boolean> isPayor,
             Optional<String> name,
+            Optional<Boolean> returnMetadata,
             Optional<Integer> limit,
             Optional<String> startingAfter,
             Map<String, Object> additionalProperties) {
@@ -59,6 +62,7 @@ public final class FindEntities {
         this.isPayee = isPayee;
         this.isPayor = isPayor;
         this.name = name;
+        this.returnMetadata = returnMetadata;
         this.limit = limit;
         this.startingAfter = startingAfter;
         this.additionalProperties = additionalProperties;
@@ -120,6 +124,14 @@ public final class FindEntities {
     }
 
     /**
+     * @return If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
+     */
+    @JsonProperty("returnMetadata")
+    public Optional<Boolean> getReturnMetadata() {
+        return returnMetadata;
+    }
+
+    /**
      * @return Number of entities to return. Limit can range between 1 and 100, and the default is 10.
      */
     @JsonProperty("limit")
@@ -154,6 +166,7 @@ public final class FindEntities {
                 && isPayee.equals(other.isPayee)
                 && isPayor.equals(other.isPayor)
                 && name.equals(other.name)
+                && returnMetadata.equals(other.returnMetadata)
                 && limit.equals(other.limit)
                 && startingAfter.equals(other.startingAfter);
     }
@@ -168,6 +181,7 @@ public final class FindEntities {
                 this.isPayee,
                 this.isPayor,
                 this.name,
+                this.returnMetadata,
                 this.limit,
                 this.startingAfter);
     }
@@ -197,6 +211,8 @@ public final class FindEntities {
 
         private Optional<String> name = Optional.empty();
 
+        private Optional<Boolean> returnMetadata = Optional.empty();
+
         private Optional<Integer> limit = Optional.empty();
 
         private Optional<String> startingAfter = Optional.empty();
@@ -214,6 +230,7 @@ public final class FindEntities {
             isPayee(other.getIsPayee());
             isPayor(other.getIsPayor());
             name(other.getName());
+            returnMetadata(other.getReturnMetadata());
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
             return this;
@@ -296,6 +313,17 @@ public final class FindEntities {
             return this;
         }
 
+        @JsonSetter(value = "returnMetadata", nulls = Nulls.SKIP)
+        public Builder returnMetadata(Optional<Boolean> returnMetadata) {
+            this.returnMetadata = returnMetadata;
+            return this;
+        }
+
+        public Builder returnMetadata(Boolean returnMetadata) {
+            this.returnMetadata = Optional.ofNullable(returnMetadata);
+            return this;
+        }
+
         @JsonSetter(value = "limit", nulls = Nulls.SKIP)
         public Builder limit(Optional<Integer> limit) {
             this.limit = limit;
@@ -327,6 +355,7 @@ public final class FindEntities {
                     isPayee,
                     isPayor,
                     name,
+                    returnMetadata,
                     limit,
                     startingAfter,
                     additionalProperties);

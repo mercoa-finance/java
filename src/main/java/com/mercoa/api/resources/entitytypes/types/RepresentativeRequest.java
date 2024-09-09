@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.commons.types.Address;
@@ -19,15 +20,16 @@ import com.mercoa.api.resources.commons.types.PhoneNumber;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = RepresentativeRequest.Builder.class)
 public final class RepresentativeRequest {
     private final FullName name;
 
-    private final PhoneNumber phone;
+    private final Optional<PhoneNumber> phone;
 
-    private final String email;
+    private final Optional<String> email;
 
     private final Address address;
 
@@ -41,8 +43,8 @@ public final class RepresentativeRequest {
 
     private RepresentativeRequest(
             FullName name,
-            PhoneNumber phone,
-            String email,
+            Optional<PhoneNumber> phone,
+            Optional<String> email,
             Address address,
             BirthDate birthDate,
             IndividualGovernmentId governmentId,
@@ -63,13 +65,19 @@ public final class RepresentativeRequest {
         return name;
     }
 
+    /**
+     * @return Either phone or email is required.
+     */
     @JsonProperty("phone")
-    public PhoneNumber getPhone() {
+    public Optional<PhoneNumber> getPhone() {
         return phone;
     }
 
+    /**
+     * @return Either phone or email is required.
+     */
     @JsonProperty("email")
-    public String getEmail() {
+    public Optional<String> getEmail() {
         return email;
     }
 
@@ -136,17 +144,9 @@ public final class RepresentativeRequest {
     }
 
     public interface NameStage {
-        PhoneStage name(FullName name);
+        AddressStage name(FullName name);
 
         Builder from(RepresentativeRequest other);
-    }
-
-    public interface PhoneStage {
-        EmailStage phone(PhoneNumber phone);
-    }
-
-    public interface EmailStage {
-        AddressStage email(String email);
     }
 
     public interface AddressStage {
@@ -167,23 +167,20 @@ public final class RepresentativeRequest {
 
     public interface _FinalStage {
         RepresentativeRequest build();
+
+        _FinalStage phone(Optional<PhoneNumber> phone);
+
+        _FinalStage phone(PhoneNumber phone);
+
+        _FinalStage email(Optional<String> email);
+
+        _FinalStage email(String email);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements NameStage,
-                    PhoneStage,
-                    EmailStage,
-                    AddressStage,
-                    BirthDateStage,
-                    GovernmentIdStage,
-                    ResponsibilitiesStage,
-                    _FinalStage {
+            implements NameStage, AddressStage, BirthDateStage, GovernmentIdStage, ResponsibilitiesStage, _FinalStage {
         private FullName name;
-
-        private PhoneNumber phone;
-
-        private String email;
 
         private Address address;
 
@@ -192,6 +189,10 @@ public final class RepresentativeRequest {
         private IndividualGovernmentId governmentId;
 
         private Responsibilities responsibilities;
+
+        private Optional<String> email = Optional.empty();
+
+        private Optional<PhoneNumber> phone = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -212,22 +213,8 @@ public final class RepresentativeRequest {
 
         @java.lang.Override
         @JsonSetter("name")
-        public PhoneStage name(FullName name) {
+        public AddressStage name(FullName name) {
             this.name = name;
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("phone")
-        public EmailStage phone(PhoneNumber phone) {
-            this.phone = phone;
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("email")
-        public AddressStage email(String email) {
-            this.email = email;
             return this;
         }
 
@@ -256,6 +243,40 @@ public final class RepresentativeRequest {
         @JsonSetter("responsibilities")
         public _FinalStage responsibilities(Responsibilities responsibilities) {
             this.responsibilities = responsibilities;
+            return this;
+        }
+
+        /**
+         * <p>Either phone or email is required.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage email(String email) {
+            this.email = Optional.ofNullable(email);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "email", nulls = Nulls.SKIP)
+        public _FinalStage email(Optional<String> email) {
+            this.email = email;
+            return this;
+        }
+
+        /**
+         * <p>Either phone or email is required.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage phone(PhoneNumber phone) {
+            this.phone = Optional.ofNullable(phone);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "phone", nulls = Nulls.SKIP)
+        public _FinalStage phone(Optional<PhoneNumber> phone) {
+            this.phone = phone;
             return this;
         }
 

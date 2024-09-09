@@ -17,8 +17,10 @@ import com.mercoa.api.resources.invoice.document.DocumentClient;
 import com.mercoa.api.resources.invoice.lineitem.LineItemClient;
 import com.mercoa.api.resources.invoice.paymentlinks.PaymentLinksClient;
 import com.mercoa.api.resources.invoice.requests.GetAllInvoicesRequest;
+import com.mercoa.api.resources.invoice.requests.InvoiceInvoiceGetEventsRequest;
 import com.mercoa.api.resources.invoicetypes.types.FindInvoiceResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceCreationRequest;
+import com.mercoa.api.resources.invoicetypes.types.InvoiceEventsResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceUpdateRequest;
 import java.io.IOException;
@@ -313,6 +315,61 @@ public class InvoiceClient {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return;
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            throw new MercoaApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new MercoaException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Get all events for an invoice
+     */
+    public InvoiceEventsResponse events(String invoiceId) {
+        return events(invoiceId, InvoiceInvoiceGetEventsRequest.builder().build());
+    }
+
+    /**
+     * Get all events for an invoice
+     */
+    public InvoiceEventsResponse events(String invoiceId, InvoiceInvoiceGetEventsRequest request) {
+        return events(invoiceId, request, null);
+    }
+
+    /**
+     * Get all events for an invoice
+     */
+    public InvoiceEventsResponse events(
+            String invoiceId, InvoiceInvoiceGetEventsRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("invoice")
+                .addPathSegment(invoiceId)
+                .addPathSegments("events");
+        if (request.getStartDate().isPresent()) {
+            httpUrl.addQueryParameter("startDate", request.getStartDate().get().toString());
+        }
+        if (request.getEndDate().isPresent()) {
+            httpUrl.addQueryParameter("endDate", request.getEndDate().get().toString());
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), InvoiceEventsResponse.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             throw new MercoaApiException(

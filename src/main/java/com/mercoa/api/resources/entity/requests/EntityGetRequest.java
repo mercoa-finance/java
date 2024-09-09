@@ -20,21 +20,21 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGetRequest.Builder.class)
 public final class EntityGetRequest {
-    private final Optional<Boolean> metadata;
+    private final Optional<Boolean> returnMetadata;
 
     private final Map<String, Object> additionalProperties;
 
-    private EntityGetRequest(Optional<Boolean> metadata, Map<String, Object> additionalProperties) {
-        this.metadata = metadata;
+    private EntityGetRequest(Optional<Boolean> returnMetadata, Map<String, Object> additionalProperties) {
+        this.returnMetadata = returnMetadata;
         this.additionalProperties = additionalProperties;
     }
 
     /**
      * @return If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
      */
-    @JsonProperty("metadata")
-    public Optional<Boolean> getMetadata() {
-        return metadata;
+    @JsonProperty("returnMetadata")
+    public Optional<Boolean> getReturnMetadata() {
+        return returnMetadata;
     }
 
     @java.lang.Override
@@ -49,12 +49,12 @@ public final class EntityGetRequest {
     }
 
     private boolean equalTo(EntityGetRequest other) {
-        return metadata.equals(other.metadata);
+        return returnMetadata.equals(other.returnMetadata);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.metadata);
+        return Objects.hash(this.returnMetadata);
     }
 
     @java.lang.Override
@@ -68,7 +68,7 @@ public final class EntityGetRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Boolean> metadata = Optional.empty();
+        private Optional<Boolean> returnMetadata = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -76,23 +76,23 @@ public final class EntityGetRequest {
         private Builder() {}
 
         public Builder from(EntityGetRequest other) {
-            metadata(other.getMetadata());
+            returnMetadata(other.getReturnMetadata());
             return this;
         }
 
-        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
-        public Builder metadata(Optional<Boolean> metadata) {
-            this.metadata = metadata;
+        @JsonSetter(value = "returnMetadata", nulls = Nulls.SKIP)
+        public Builder returnMetadata(Optional<Boolean> returnMetadata) {
+            this.returnMetadata = returnMetadata;
             return this;
         }
 
-        public Builder metadata(Boolean metadata) {
-            this.metadata = Optional.ofNullable(metadata);
+        public Builder returnMetadata(Boolean returnMetadata) {
+            this.returnMetadata = Optional.ofNullable(returnMetadata);
             return this;
         }
 
         public EntityGetRequest build() {
-            return new EntityGetRequest(metadata, additionalProperties);
+            return new EntityGetRequest(returnMetadata, additionalProperties);
         }
     }
 }

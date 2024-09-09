@@ -15,6 +15,7 @@ import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.EntityResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -33,6 +34,8 @@ public final class EntityGroupResponse {
 
     private final List<EntityResponse> entities;
 
+    private final Map<String, String> metadata;
+
     private final Map<String, Object> additionalProperties;
 
     private EntityGroupResponse(
@@ -41,12 +44,14 @@ public final class EntityGroupResponse {
             Optional<String> name,
             Optional<String> emailToName,
             List<EntityResponse> entities,
+            Map<String, String> metadata,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.foreignId = foreignId;
         this.name = name;
         this.emailToName = emailToName;
         this.entities = entities;
+        this.metadata = metadata;
         this.additionalProperties = additionalProperties;
     }
 
@@ -75,6 +80,11 @@ public final class EntityGroupResponse {
         return entities;
     }
 
+    @JsonProperty("metadata")
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -91,12 +101,13 @@ public final class EntityGroupResponse {
                 && foreignId.equals(other.foreignId)
                 && name.equals(other.name)
                 && emailToName.equals(other.emailToName)
-                && entities.equals(other.entities);
+                && entities.equals(other.entities)
+                && metadata.equals(other.metadata);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.id, this.foreignId, this.name, this.emailToName, this.entities);
+        return Objects.hash(this.id, this.foreignId, this.name, this.emailToName, this.entities, this.metadata);
     }
 
     @java.lang.Override
@@ -134,11 +145,19 @@ public final class EntityGroupResponse {
         _FinalStage addEntities(EntityResponse entities);
 
         _FinalStage addAllEntities(List<EntityResponse> entities);
+
+        _FinalStage metadata(Map<String, String> metadata);
+
+        _FinalStage putAllMetadata(Map<String, String> metadata);
+
+        _FinalStage metadata(String key, String value);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements IdStage, _FinalStage {
         private String id;
+
+        private Map<String, String> metadata = new LinkedHashMap<>();
 
         private List<EntityResponse> entities = new ArrayList<>();
 
@@ -160,6 +179,7 @@ public final class EntityGroupResponse {
             name(other.getName());
             emailToName(other.getEmailToName());
             entities(other.getEntities());
+            metadata(other.getMetadata());
             return this;
         }
 
@@ -167,6 +187,26 @@ public final class EntityGroupResponse {
         @JsonSetter("id")
         public _FinalStage id(String id) {
             this.id = id;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage metadata(String key, String value) {
+            this.metadata.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage putAllMetadata(Map<String, String> metadata) {
+            this.metadata.putAll(metadata);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public _FinalStage metadata(Map<String, String> metadata) {
+            this.metadata.clear();
+            this.metadata.putAll(metadata);
             return this;
         }
 
@@ -231,7 +271,7 @@ public final class EntityGroupResponse {
 
         @java.lang.Override
         public EntityGroupResponse build() {
-            return new EntityGroupResponse(id, foreignId, name, emailToName, entities, additionalProperties);
+            return new EntityGroupResponse(id, foreignId, name, emailToName, entities, metadata, additionalProperties);
         }
     }
 }

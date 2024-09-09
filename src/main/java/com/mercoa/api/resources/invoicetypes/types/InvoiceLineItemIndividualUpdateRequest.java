@@ -25,6 +25,8 @@ public final class InvoiceLineItemIndividualUpdateRequest {
 
     private final Optional<String> description;
 
+    private final Optional<InvoiceLineItemCategory> category;
+
     private final Optional<OffsetDateTime> serviceStartDate;
 
     private final Optional<OffsetDateTime> serviceEndDate;
@@ -38,6 +40,7 @@ public final class InvoiceLineItemIndividualUpdateRequest {
     private InvoiceLineItemIndividualUpdateRequest(
             Optional<String> name,
             Optional<String> description,
+            Optional<InvoiceLineItemCategory> category,
             Optional<OffsetDateTime> serviceStartDate,
             Optional<OffsetDateTime> serviceEndDate,
             Optional<Map<String, String>> metadata,
@@ -45,6 +48,7 @@ public final class InvoiceLineItemIndividualUpdateRequest {
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.description = description;
+        this.category = category;
         this.serviceStartDate = serviceStartDate;
         this.serviceEndDate = serviceEndDate;
         this.metadata = metadata;
@@ -60,6 +64,14 @@ public final class InvoiceLineItemIndividualUpdateRequest {
     @JsonProperty("description")
     public Optional<String> getDescription() {
         return description;
+    }
+
+    /**
+     * @return Category of the line item. Defaults to EXPENSE.
+     */
+    @JsonProperty("category")
+    public Optional<InvoiceLineItemCategory> getCategory() {
+        return category;
     }
 
     @JsonProperty("serviceStartDate")
@@ -100,6 +112,7 @@ public final class InvoiceLineItemIndividualUpdateRequest {
     private boolean equalTo(InvoiceLineItemIndividualUpdateRequest other) {
         return name.equals(other.name)
                 && description.equals(other.description)
+                && category.equals(other.category)
                 && serviceStartDate.equals(other.serviceStartDate)
                 && serviceEndDate.equals(other.serviceEndDate)
                 && metadata.equals(other.metadata)
@@ -111,6 +124,7 @@ public final class InvoiceLineItemIndividualUpdateRequest {
         return Objects.hash(
                 this.name,
                 this.description,
+                this.category,
                 this.serviceStartDate,
                 this.serviceEndDate,
                 this.metadata,
@@ -132,6 +146,8 @@ public final class InvoiceLineItemIndividualUpdateRequest {
 
         private Optional<String> description = Optional.empty();
 
+        private Optional<InvoiceLineItemCategory> category = Optional.empty();
+
         private Optional<OffsetDateTime> serviceStartDate = Optional.empty();
 
         private Optional<OffsetDateTime> serviceEndDate = Optional.empty();
@@ -148,6 +164,7 @@ public final class InvoiceLineItemIndividualUpdateRequest {
         public Builder from(InvoiceLineItemIndividualUpdateRequest other) {
             name(other.getName());
             description(other.getDescription());
+            category(other.getCategory());
             serviceStartDate(other.getServiceStartDate());
             serviceEndDate(other.getServiceEndDate());
             metadata(other.getMetadata());
@@ -174,6 +191,17 @@ public final class InvoiceLineItemIndividualUpdateRequest {
 
         public Builder description(String description) {
             this.description = Optional.ofNullable(description);
+            return this;
+        }
+
+        @JsonSetter(value = "category", nulls = Nulls.SKIP)
+        public Builder category(Optional<InvoiceLineItemCategory> category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder category(InvoiceLineItemCategory category) {
+            this.category = Optional.ofNullable(category);
             return this;
         }
 
@@ -223,7 +251,14 @@ public final class InvoiceLineItemIndividualUpdateRequest {
 
         public InvoiceLineItemIndividualUpdateRequest build() {
             return new InvoiceLineItemIndividualUpdateRequest(
-                    name, description, serviceStartDate, serviceEndDate, metadata, glAccountId, additionalProperties);
+                    name,
+                    description,
+                    category,
+                    serviceStartDate,
+                    serviceEndDate,
+                    metadata,
+                    glAccountId,
+                    additionalProperties);
         }
     }
 }

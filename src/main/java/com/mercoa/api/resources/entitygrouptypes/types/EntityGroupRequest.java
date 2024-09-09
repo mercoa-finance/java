@@ -29,6 +29,8 @@ public final class EntityGroupRequest implements IEntityGroupEntityUpdateRequest
 
     private final Optional<String> emailToName;
 
+    private final Optional<Map<String, String>> metadata;
+
     private final Map<String, Object> additionalProperties;
 
     private EntityGroupRequest(
@@ -36,11 +38,13 @@ public final class EntityGroupRequest implements IEntityGroupEntityUpdateRequest
             Optional<String> foreignId,
             Optional<String> name,
             Optional<String> emailToName,
+            Optional<Map<String, String>> metadata,
             Map<String, Object> additionalProperties) {
         this.entityIds = entityIds;
         this.foreignId = foreignId;
         this.name = name;
         this.emailToName = emailToName;
+        this.metadata = metadata;
         this.additionalProperties = additionalProperties;
     }
 
@@ -68,6 +72,14 @@ public final class EntityGroupRequest implements IEntityGroupEntityUpdateRequest
         return emailToName;
     }
 
+    /**
+     * @return Metadata key/value pairs to associate with this group. Will overwrite existing metadata.
+     */
+    @JsonProperty("metadata")
+    public Optional<Map<String, String>> getMetadata() {
+        return metadata;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -83,12 +95,13 @@ public final class EntityGroupRequest implements IEntityGroupEntityUpdateRequest
         return entityIds.equals(other.entityIds)
                 && foreignId.equals(other.foreignId)
                 && name.equals(other.name)
-                && emailToName.equals(other.emailToName);
+                && emailToName.equals(other.emailToName)
+                && metadata.equals(other.metadata);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.entityIds, this.foreignId, this.name, this.emailToName);
+        return Objects.hash(this.entityIds, this.foreignId, this.name, this.emailToName, this.metadata);
     }
 
     @java.lang.Override
@@ -110,6 +123,8 @@ public final class EntityGroupRequest implements IEntityGroupEntityUpdateRequest
 
         private Optional<String> emailToName = Optional.empty();
 
+        private Optional<Map<String, String>> metadata = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -120,6 +135,7 @@ public final class EntityGroupRequest implements IEntityGroupEntityUpdateRequest
             foreignId(other.getForeignId());
             name(other.getName());
             emailToName(other.getEmailToName());
+            metadata(other.getMetadata());
             return this;
         }
 
@@ -167,8 +183,19 @@ public final class EntityGroupRequest implements IEntityGroupEntityUpdateRequest
             return this;
         }
 
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public Builder metadata(Optional<Map<String, String>> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        public Builder metadata(Map<String, String> metadata) {
+            this.metadata = Optional.ofNullable(metadata);
+            return this;
+        }
+
         public EntityGroupRequest build() {
-            return new EntityGroupRequest(entityIds, foreignId, name, emailToName, additionalProperties);
+            return new EntityGroupRequest(entityIds, foreignId, name, emailToName, metadata, additionalProperties);
         }
     }
 }

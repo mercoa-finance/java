@@ -20,21 +20,21 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGroupGetRequest.Builder.class)
 public final class EntityGroupGetRequest {
-    private final Optional<Boolean> entityMetadata;
+    private final Optional<Boolean> returnEntityMetadata;
 
     private final Map<String, Object> additionalProperties;
 
-    private EntityGroupGetRequest(Optional<Boolean> entityMetadata, Map<String, Object> additionalProperties) {
-        this.entityMetadata = entityMetadata;
+    private EntityGroupGetRequest(Optional<Boolean> returnEntityMetadata, Map<String, Object> additionalProperties) {
+        this.returnEntityMetadata = returnEntityMetadata;
         this.additionalProperties = additionalProperties;
     }
 
     /**
      * @return If true, will return simple key/value metadata for entities in the group. For more complex metadata, use the Metadata API.
      */
-    @JsonProperty("entityMetadata")
-    public Optional<Boolean> getEntityMetadata() {
-        return entityMetadata;
+    @JsonProperty("returnEntityMetadata")
+    public Optional<Boolean> getReturnEntityMetadata() {
+        return returnEntityMetadata;
     }
 
     @java.lang.Override
@@ -49,12 +49,12 @@ public final class EntityGroupGetRequest {
     }
 
     private boolean equalTo(EntityGroupGetRequest other) {
-        return entityMetadata.equals(other.entityMetadata);
+        return returnEntityMetadata.equals(other.returnEntityMetadata);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.entityMetadata);
+        return Objects.hash(this.returnEntityMetadata);
     }
 
     @java.lang.Override
@@ -68,7 +68,7 @@ public final class EntityGroupGetRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Boolean> entityMetadata = Optional.empty();
+        private Optional<Boolean> returnEntityMetadata = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -76,23 +76,23 @@ public final class EntityGroupGetRequest {
         private Builder() {}
 
         public Builder from(EntityGroupGetRequest other) {
-            entityMetadata(other.getEntityMetadata());
+            returnEntityMetadata(other.getReturnEntityMetadata());
             return this;
         }
 
-        @JsonSetter(value = "entityMetadata", nulls = Nulls.SKIP)
-        public Builder entityMetadata(Optional<Boolean> entityMetadata) {
-            this.entityMetadata = entityMetadata;
+        @JsonSetter(value = "returnEntityMetadata", nulls = Nulls.SKIP)
+        public Builder returnEntityMetadata(Optional<Boolean> returnEntityMetadata) {
+            this.returnEntityMetadata = returnEntityMetadata;
             return this;
         }
 
-        public Builder entityMetadata(Boolean entityMetadata) {
-            this.entityMetadata = Optional.ofNullable(entityMetadata);
+        public Builder returnEntityMetadata(Boolean returnEntityMetadata) {
+            this.returnEntityMetadata = Optional.ofNullable(returnEntityMetadata);
             return this;
         }
 
         public EntityGroupGetRequest build() {
-            return new EntityGroupGetRequest(entityMetadata, additionalProperties);
+            return new EntityGroupGetRequest(returnEntityMetadata, additionalProperties);
         }
     }
 }

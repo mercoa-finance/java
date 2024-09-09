@@ -28,9 +28,9 @@ public final class RepresentativeResponse {
 
     private final FullName name;
 
-    private final PhoneNumber phone;
+    private final Optional<PhoneNumber> phone;
 
-    private final String email;
+    private final Optional<String> email;
 
     private final Address address;
 
@@ -51,8 +51,8 @@ public final class RepresentativeResponse {
     private RepresentativeResponse(
             String id,
             FullName name,
-            PhoneNumber phone,
-            String email,
+            Optional<PhoneNumber> phone,
+            Optional<String> email,
             Address address,
             boolean birthDateProvided,
             boolean governmentIdProvided,
@@ -86,12 +86,12 @@ public final class RepresentativeResponse {
     }
 
     @JsonProperty("phone")
-    public PhoneNumber getPhone() {
+    public Optional<PhoneNumber> getPhone() {
         return phone;
     }
 
     @JsonProperty("email")
-    public String getEmail() {
+    public Optional<String> getEmail() {
         return email;
     }
 
@@ -187,15 +187,7 @@ public final class RepresentativeResponse {
     }
 
     public interface NameStage {
-        PhoneStage name(FullName name);
-    }
-
-    public interface PhoneStage {
-        EmailStage phone(PhoneNumber phone);
-    }
-
-    public interface EmailStage {
-        AddressStage email(String email);
+        AddressStage name(FullName name);
     }
 
     public interface AddressStage {
@@ -225,6 +217,14 @@ public final class RepresentativeResponse {
     public interface _FinalStage {
         RepresentativeResponse build();
 
+        _FinalStage phone(Optional<PhoneNumber> phone);
+
+        _FinalStage phone(PhoneNumber phone);
+
+        _FinalStage email(Optional<String> email);
+
+        _FinalStage email(String email);
+
         _FinalStage disabledOn(Optional<OffsetDateTime> disabledOn);
 
         _FinalStage disabledOn(OffsetDateTime disabledOn);
@@ -234,8 +234,6 @@ public final class RepresentativeResponse {
     public static final class Builder
             implements IdStage,
                     NameStage,
-                    PhoneStage,
-                    EmailStage,
                     AddressStage,
                     BirthDateProvidedStage,
                     GovernmentIdProvidedStage,
@@ -246,10 +244,6 @@ public final class RepresentativeResponse {
         private String id;
 
         private FullName name;
-
-        private PhoneNumber phone;
-
-        private String email;
 
         private Address address;
 
@@ -264,6 +258,10 @@ public final class RepresentativeResponse {
         private OffsetDateTime updatedOn;
 
         private Optional<OffsetDateTime> disabledOn = Optional.empty();
+
+        private Optional<String> email = Optional.empty();
+
+        private Optional<PhoneNumber> phone = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -295,22 +293,8 @@ public final class RepresentativeResponse {
 
         @java.lang.Override
         @JsonSetter("name")
-        public PhoneStage name(FullName name) {
+        public AddressStage name(FullName name) {
             this.name = name;
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("phone")
-        public EmailStage phone(PhoneNumber phone) {
-            this.phone = phone;
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("email")
-        public AddressStage email(String email) {
-            this.email = email;
             return this;
         }
 
@@ -366,6 +350,32 @@ public final class RepresentativeResponse {
         @JsonSetter(value = "disabledOn", nulls = Nulls.SKIP)
         public _FinalStage disabledOn(Optional<OffsetDateTime> disabledOn) {
             this.disabledOn = disabledOn;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage email(String email) {
+            this.email = Optional.ofNullable(email);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "email", nulls = Nulls.SKIP)
+        public _FinalStage email(Optional<String> email) {
+            this.email = email;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage phone(PhoneNumber phone) {
+            this.phone = Optional.ofNullable(phone);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "phone", nulls = Nulls.SKIP)
+        public _FinalStage phone(Optional<PhoneNumber> phone) {
+            this.phone = phone;
             return this;
         }
 

@@ -31,6 +31,8 @@ public final class FindPayorCounterpartiesRequest {
 
     private final Optional<String> counterpartyId;
 
+    private final Optional<Boolean> returnMetadata;
+
     private final Optional<Integer> limit;
 
     private final Optional<String> startingAfter;
@@ -43,6 +45,7 @@ public final class FindPayorCounterpartiesRequest {
             Optional<Boolean> paymentMethods,
             Optional<Boolean> invoiceMetrics,
             Optional<String> counterpartyId,
+            Optional<Boolean> returnMetadata,
             Optional<Integer> limit,
             Optional<String> startingAfter,
             Map<String, Object> additionalProperties) {
@@ -51,6 +54,7 @@ public final class FindPayorCounterpartiesRequest {
         this.paymentMethods = paymentMethods;
         this.invoiceMetrics = invoiceMetrics;
         this.counterpartyId = counterpartyId;
+        this.returnMetadata = returnMetadata;
         this.limit = limit;
         this.startingAfter = startingAfter;
         this.additionalProperties = additionalProperties;
@@ -97,6 +101,14 @@ public final class FindPayorCounterpartiesRequest {
     }
 
     /**
+     * @return If true, will return simple key/value metadata for the counterparties.
+     */
+    @JsonProperty("returnMetadata")
+    public Optional<Boolean> getReturnMetadata() {
+        return returnMetadata;
+    }
+
+    /**
      * @return Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
      */
     @JsonProperty("limit")
@@ -129,6 +141,7 @@ public final class FindPayorCounterpartiesRequest {
                 && paymentMethods.equals(other.paymentMethods)
                 && invoiceMetrics.equals(other.invoiceMetrics)
                 && counterpartyId.equals(other.counterpartyId)
+                && returnMetadata.equals(other.returnMetadata)
                 && limit.equals(other.limit)
                 && startingAfter.equals(other.startingAfter);
     }
@@ -141,6 +154,7 @@ public final class FindPayorCounterpartiesRequest {
                 this.paymentMethods,
                 this.invoiceMetrics,
                 this.counterpartyId,
+                this.returnMetadata,
                 this.limit,
                 this.startingAfter);
     }
@@ -166,6 +180,8 @@ public final class FindPayorCounterpartiesRequest {
 
         private Optional<String> counterpartyId = Optional.empty();
 
+        private Optional<Boolean> returnMetadata = Optional.empty();
+
         private Optional<Integer> limit = Optional.empty();
 
         private Optional<String> startingAfter = Optional.empty();
@@ -181,6 +197,7 @@ public final class FindPayorCounterpartiesRequest {
             paymentMethods(other.getPaymentMethods());
             invoiceMetrics(other.getInvoiceMetrics());
             counterpartyId(other.getCounterpartyId());
+            returnMetadata(other.getReturnMetadata());
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
             return this;
@@ -241,6 +258,17 @@ public final class FindPayorCounterpartiesRequest {
             return this;
         }
 
+        @JsonSetter(value = "returnMetadata", nulls = Nulls.SKIP)
+        public Builder returnMetadata(Optional<Boolean> returnMetadata) {
+            this.returnMetadata = returnMetadata;
+            return this;
+        }
+
+        public Builder returnMetadata(Boolean returnMetadata) {
+            this.returnMetadata = Optional.ofNullable(returnMetadata);
+            return this;
+        }
+
         @JsonSetter(value = "limit", nulls = Nulls.SKIP)
         public Builder limit(Optional<Integer> limit) {
             this.limit = limit;
@@ -270,6 +298,7 @@ public final class FindPayorCounterpartiesRequest {
                     paymentMethods,
                     invoiceMetrics,
                     counterpartyId,
+                    returnMetadata,
                     limit,
                     startingAfter,
                     additionalProperties);

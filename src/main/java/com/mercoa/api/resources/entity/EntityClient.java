@@ -22,12 +22,14 @@ import com.mercoa.api.resources.entity.metadata.MetadataClient;
 import com.mercoa.api.resources.entity.notificationpolicy.NotificationPolicyClient;
 import com.mercoa.api.resources.entity.paymentmethod.PaymentMethodClient;
 import com.mercoa.api.resources.entity.representative.RepresentativeClient;
+import com.mercoa.api.resources.entity.requests.EntityEntityGetEventsRequest;
 import com.mercoa.api.resources.entity.requests.EntityGetRequest;
 import com.mercoa.api.resources.entity.requests.FindEntities;
 import com.mercoa.api.resources.entity.requests.GenerateOnboardingLink;
 import com.mercoa.api.resources.entity.requests.PlaidLinkTokenRequest;
 import com.mercoa.api.resources.entity.requests.SendOnboardingLink;
 import com.mercoa.api.resources.entity.user.UserClient;
+import com.mercoa.api.resources.entitytypes.types.EntityEventsResponse;
 import com.mercoa.api.resources.entitytypes.types.EntityRequest;
 import com.mercoa.api.resources.entitytypes.types.EntityResponse;
 import com.mercoa.api.resources.entitytypes.types.EntityUpdateRequest;
@@ -131,6 +133,10 @@ public class EntityClient {
         if (request.getName().isPresent()) {
             httpUrl.addQueryParameter("name", request.getName().get());
         }
+        if (request.getReturnMetadata().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "returnMetadata", request.getReturnMetadata().get().toString());
+        }
         if (request.getLimit().isPresent()) {
             httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
         }
@@ -217,8 +223,9 @@ public class EntityClient {
                 .newBuilder()
                 .addPathSegments("entity")
                 .addPathSegment(entityId);
-        if (request.getMetadata().isPresent()) {
-            httpUrl.addQueryParameter("metadata", request.getMetadata().get().toString());
+        if (request.getReturnMetadata().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "returnMetadata", request.getReturnMetadata().get().toString());
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -614,6 +621,61 @@ public class EntityClient {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return;
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            throw new MercoaApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new MercoaException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Get all events for an entity
+     */
+    public EntityEventsResponse events(String entityId) {
+        return events(entityId, EntityEntityGetEventsRequest.builder().build());
+    }
+
+    /**
+     * Get all events for an entity
+     */
+    public EntityEventsResponse events(String entityId, EntityEntityGetEventsRequest request) {
+        return events(entityId, request, null);
+    }
+
+    /**
+     * Get all events for an entity
+     */
+    public EntityEventsResponse events(
+            String entityId, EntityEntityGetEventsRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entity")
+                .addPathSegment(entityId)
+                .addPathSegments("events");
+        if (request.getStartDate().isPresent()) {
+            httpUrl.addQueryParameter("startDate", request.getStartDate().get().toString());
+        }
+        if (request.getEndDate().isPresent()) {
+            httpUrl.addQueryParameter("endDate", request.getEndDate().get().toString());
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityEventsResponse.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             throw new MercoaApiException(
