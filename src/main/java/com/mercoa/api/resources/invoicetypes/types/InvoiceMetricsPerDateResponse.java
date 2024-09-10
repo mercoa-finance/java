@@ -9,17 +9,22 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceMetricsPerDateResponse.Builder.class)
 public final class InvoiceMetricsPerDateResponse {
+    private final Optional<List<Map<String, String>>> group;
+
     private final OffsetDateTime date;
 
     private final double totalAmount;
@@ -33,18 +38,28 @@ public final class InvoiceMetricsPerDateResponse {
     private final Map<String, Object> additionalProperties;
 
     private InvoiceMetricsPerDateResponse(
+            Optional<List<Map<String, String>>> group,
             OffsetDateTime date,
             double totalAmount,
             int totalCount,
             double averageAmount,
             CurrencyCode currency,
             Map<String, Object> additionalProperties) {
+        this.group = group;
         this.date = date;
         this.totalAmount = totalAmount;
         this.totalCount = totalCount;
         this.averageAmount = averageAmount;
         this.currency = currency;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return If groupBy is provided, this will be the group by value.
+     */
+    @JsonProperty("group")
+    public Optional<List<Map<String, String>>> getGroup() {
+        return group;
     }
 
     @JsonProperty("date")
@@ -84,7 +99,8 @@ public final class InvoiceMetricsPerDateResponse {
     }
 
     private boolean equalTo(InvoiceMetricsPerDateResponse other) {
-        return date.equals(other.date)
+        return group.equals(other.group)
+                && date.equals(other.date)
                 && totalAmount == other.totalAmount
                 && totalCount == other.totalCount
                 && averageAmount == other.averageAmount
@@ -93,7 +109,8 @@ public final class InvoiceMetricsPerDateResponse {
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.date, this.totalAmount, this.totalCount, this.averageAmount, this.currency);
+        return Objects.hash(
+                this.group, this.date, this.totalAmount, this.totalCount, this.averageAmount, this.currency);
     }
 
     @java.lang.Override
@@ -129,6 +146,10 @@ public final class InvoiceMetricsPerDateResponse {
 
     public interface _FinalStage {
         InvoiceMetricsPerDateResponse build();
+
+        _FinalStage group(Optional<List<Map<String, String>>> group);
+
+        _FinalStage group(List<Map<String, String>> group);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -144,6 +165,8 @@ public final class InvoiceMetricsPerDateResponse {
 
         private CurrencyCode currency;
 
+        private Optional<List<Map<String, String>>> group = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -151,6 +174,7 @@ public final class InvoiceMetricsPerDateResponse {
 
         @java.lang.Override
         public Builder from(InvoiceMetricsPerDateResponse other) {
+            group(other.getGroup());
             date(other.getDate());
             totalAmount(other.getTotalAmount());
             totalCount(other.getTotalCount());
@@ -194,10 +218,27 @@ public final class InvoiceMetricsPerDateResponse {
             return this;
         }
 
+        /**
+         * <p>If groupBy is provided, this will be the group by value.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage group(List<Map<String, String>> group) {
+            this.group = Optional.ofNullable(group);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "group", nulls = Nulls.SKIP)
+        public _FinalStage group(Optional<List<Map<String, String>>> group) {
+            this.group = group;
+            return this;
+        }
+
         @java.lang.Override
         public InvoiceMetricsPerDateResponse build() {
             return new InvoiceMetricsPerDateResponse(
-                    date, totalAmount, totalCount, averageAmount, currency, additionalProperties);
+                    group, date, totalAmount, totalCount, averageAmount, currency, additionalProperties);
         }
     }
 }

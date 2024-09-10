@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.EntityStatus;
+import com.mercoa.api.resources.invoicetypes.types.MetadataFilter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -35,6 +36,8 @@ public final class FindEntities {
 
     private final Optional<String> name;
 
+    private final Optional<MetadataFilter> metadata;
+
     private final Optional<Boolean> returnMetadata;
 
     private final Optional<Integer> limit;
@@ -51,6 +54,7 @@ public final class FindEntities {
             Optional<Boolean> isPayee,
             Optional<Boolean> isPayor,
             Optional<String> name,
+            Optional<MetadataFilter> metadata,
             Optional<Boolean> returnMetadata,
             Optional<Integer> limit,
             Optional<String> startingAfter,
@@ -62,6 +66,7 @@ public final class FindEntities {
         this.isPayee = isPayee;
         this.isPayor = isPayor;
         this.name = name;
+        this.metadata = metadata;
         this.returnMetadata = returnMetadata;
         this.limit = limit;
         this.startingAfter = startingAfter;
@@ -124,7 +129,15 @@ public final class FindEntities {
     }
 
     /**
-     * @return If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
+     * @return Filter entities by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+     */
+    @JsonProperty("metadata")
+    public Optional<MetadataFilter> getMetadata() {
+        return metadata;
+    }
+
+    /**
+     * @return If true, will return simple key/value metadata for the entities. For more complex metadata, use the Metadata API.
      */
     @JsonProperty("returnMetadata")
     public Optional<Boolean> getReturnMetadata() {
@@ -166,6 +179,7 @@ public final class FindEntities {
                 && isPayee.equals(other.isPayee)
                 && isPayor.equals(other.isPayor)
                 && name.equals(other.name)
+                && metadata.equals(other.metadata)
                 && returnMetadata.equals(other.returnMetadata)
                 && limit.equals(other.limit)
                 && startingAfter.equals(other.startingAfter);
@@ -181,6 +195,7 @@ public final class FindEntities {
                 this.isPayee,
                 this.isPayor,
                 this.name,
+                this.metadata,
                 this.returnMetadata,
                 this.limit,
                 this.startingAfter);
@@ -211,6 +226,8 @@ public final class FindEntities {
 
         private Optional<String> name = Optional.empty();
 
+        private Optional<MetadataFilter> metadata = Optional.empty();
+
         private Optional<Boolean> returnMetadata = Optional.empty();
 
         private Optional<Integer> limit = Optional.empty();
@@ -230,6 +247,7 @@ public final class FindEntities {
             isPayee(other.getIsPayee());
             isPayor(other.getIsPayor());
             name(other.getName());
+            metadata(other.getMetadata());
             returnMetadata(other.getReturnMetadata());
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
@@ -313,6 +331,17 @@ public final class FindEntities {
             return this;
         }
 
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public Builder metadata(Optional<MetadataFilter> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        public Builder metadata(MetadataFilter metadata) {
+            this.metadata = Optional.ofNullable(metadata);
+            return this;
+        }
+
         @JsonSetter(value = "returnMetadata", nulls = Nulls.SKIP)
         public Builder returnMetadata(Optional<Boolean> returnMetadata) {
             this.returnMetadata = returnMetadata;
@@ -355,6 +384,7 @@ public final class FindEntities {
                     isPayee,
                     isPayor,
                     name,
+                    metadata,
                     returnMetadata,
                     limit,
                     startingAfter,

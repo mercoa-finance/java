@@ -13,6 +13,8 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceDateFilter;
+import com.mercoa.api.resources.invoicetypes.types.InvoiceMetricsGroupBy;
+import com.mercoa.api.resources.invoicetypes.types.InvoiceMetricsPerDateFrequency;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceMetricsPerDateGroupBy;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
 import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
@@ -33,6 +35,10 @@ public final class GroupInvoiceMetricsRequest {
 
     private final Optional<InvoiceMetricsPerDateGroupBy> returnByDate;
 
+    private final Optional<InvoiceMetricsPerDateFrequency> returnByDateFrequency;
+
+    private final Optional<InvoiceMetricsGroupBy> groupBy;
+
     private final Optional<String> payerId;
 
     private final Optional<String> vendorId;
@@ -49,14 +55,6 @@ public final class GroupInvoiceMetricsRequest {
 
     private final Optional<InvoiceDateFilter> dateType;
 
-    private final Optional<OffsetDateTime> dueDateStart;
-
-    private final Optional<OffsetDateTime> dueDateEnd;
-
-    private final Optional<OffsetDateTime> createdDateStart;
-
-    private final Optional<OffsetDateTime> createdDateEnd;
-
     private final Optional<CurrencyCode> currency;
 
     private final Map<String, Object> additionalProperties;
@@ -66,6 +64,8 @@ public final class GroupInvoiceMetricsRequest {
             Optional<Boolean> excludePayables,
             Optional<Boolean> excludeReceivables,
             Optional<InvoiceMetricsPerDateGroupBy> returnByDate,
+            Optional<InvoiceMetricsPerDateFrequency> returnByDateFrequency,
+            Optional<InvoiceMetricsGroupBy> groupBy,
             Optional<String> payerId,
             Optional<String> vendorId,
             Optional<String> approverId,
@@ -74,16 +74,14 @@ public final class GroupInvoiceMetricsRequest {
             Optional<OffsetDateTime> startDate,
             Optional<OffsetDateTime> endDate,
             Optional<InvoiceDateFilter> dateType,
-            Optional<OffsetDateTime> dueDateStart,
-            Optional<OffsetDateTime> dueDateEnd,
-            Optional<OffsetDateTime> createdDateStart,
-            Optional<OffsetDateTime> createdDateEnd,
             Optional<CurrencyCode> currency,
             Map<String, Object> additionalProperties) {
         this.search = search;
         this.excludePayables = excludePayables;
         this.excludeReceivables = excludeReceivables;
         this.returnByDate = returnByDate;
+        this.returnByDateFrequency = returnByDateFrequency;
+        this.groupBy = groupBy;
         this.payerId = payerId;
         this.vendorId = vendorId;
         this.approverId = approverId;
@@ -92,10 +90,6 @@ public final class GroupInvoiceMetricsRequest {
         this.startDate = startDate;
         this.endDate = endDate;
         this.dateType = dateType;
-        this.dueDateStart = dueDateStart;
-        this.dueDateEnd = dueDateEnd;
-        this.createdDateStart = createdDateStart;
-        this.createdDateEnd = createdDateEnd;
         this.currency = currency;
         this.additionalProperties = additionalProperties;
     }
@@ -130,6 +124,22 @@ public final class GroupInvoiceMetricsRequest {
     @JsonProperty("returnByDate")
     public Optional<InvoiceMetricsPerDateGroupBy> getReturnByDate() {
         return returnByDate;
+    }
+
+    /**
+     * @return Return invoice metrics grouped by date. Defaults to daily.
+     */
+    @JsonProperty("returnByDateFrequency")
+    public Optional<InvoiceMetricsPerDateFrequency> getReturnByDateFrequency() {
+        return returnByDateFrequency;
+    }
+
+    /**
+     * @return Return invoice metrics grouped by.
+     */
+    @JsonProperty("groupBy")
+    public Optional<InvoiceMetricsGroupBy> getGroupBy() {
+        return groupBy;
     }
 
     /**
@@ -197,38 +207,6 @@ public final class GroupInvoiceMetricsRequest {
     }
 
     /**
-     * @return DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice dueDate filter.
-     */
-    @JsonProperty("dueDateStart")
-    public Optional<OffsetDateTime> getDueDateStart() {
-        return dueDateStart;
-    }
-
-    /**
-     * @return DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice dueDate filter.
-     */
-    @JsonProperty("dueDateEnd")
-    public Optional<OffsetDateTime> getDueDateEnd() {
-        return dueDateEnd;
-    }
-
-    /**
-     * @return DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice created on date filter.
-     */
-    @JsonProperty("createdDateStart")
-    public Optional<OffsetDateTime> getCreatedDateStart() {
-        return createdDateStart;
-    }
-
-    /**
-     * @return DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice created date filter.
-     */
-    @JsonProperty("createdDateEnd")
-    public Optional<OffsetDateTime> getCreatedDateEnd() {
-        return createdDateEnd;
-    }
-
-    /**
      * @return Currency to filter on
      */
     @JsonProperty("currency")
@@ -252,6 +230,8 @@ public final class GroupInvoiceMetricsRequest {
                 && excludePayables.equals(other.excludePayables)
                 && excludeReceivables.equals(other.excludeReceivables)
                 && returnByDate.equals(other.returnByDate)
+                && returnByDateFrequency.equals(other.returnByDateFrequency)
+                && groupBy.equals(other.groupBy)
                 && payerId.equals(other.payerId)
                 && vendorId.equals(other.vendorId)
                 && approverId.equals(other.approverId)
@@ -260,10 +240,6 @@ public final class GroupInvoiceMetricsRequest {
                 && startDate.equals(other.startDate)
                 && endDate.equals(other.endDate)
                 && dateType.equals(other.dateType)
-                && dueDateStart.equals(other.dueDateStart)
-                && dueDateEnd.equals(other.dueDateEnd)
-                && createdDateStart.equals(other.createdDateStart)
-                && createdDateEnd.equals(other.createdDateEnd)
                 && currency.equals(other.currency);
     }
 
@@ -274,6 +250,8 @@ public final class GroupInvoiceMetricsRequest {
                 this.excludePayables,
                 this.excludeReceivables,
                 this.returnByDate,
+                this.returnByDateFrequency,
+                this.groupBy,
                 this.payerId,
                 this.vendorId,
                 this.approverId,
@@ -282,10 +260,6 @@ public final class GroupInvoiceMetricsRequest {
                 this.startDate,
                 this.endDate,
                 this.dateType,
-                this.dueDateStart,
-                this.dueDateEnd,
-                this.createdDateStart,
-                this.createdDateEnd,
                 this.currency);
     }
 
@@ -308,6 +282,10 @@ public final class GroupInvoiceMetricsRequest {
 
         private Optional<InvoiceMetricsPerDateGroupBy> returnByDate = Optional.empty();
 
+        private Optional<InvoiceMetricsPerDateFrequency> returnByDateFrequency = Optional.empty();
+
+        private Optional<InvoiceMetricsGroupBy> groupBy = Optional.empty();
+
         private Optional<String> payerId = Optional.empty();
 
         private Optional<String> vendorId = Optional.empty();
@@ -324,14 +302,6 @@ public final class GroupInvoiceMetricsRequest {
 
         private Optional<InvoiceDateFilter> dateType = Optional.empty();
 
-        private Optional<OffsetDateTime> dueDateStart = Optional.empty();
-
-        private Optional<OffsetDateTime> dueDateEnd = Optional.empty();
-
-        private Optional<OffsetDateTime> createdDateStart = Optional.empty();
-
-        private Optional<OffsetDateTime> createdDateEnd = Optional.empty();
-
         private Optional<CurrencyCode> currency = Optional.empty();
 
         @JsonAnySetter
@@ -344,6 +314,8 @@ public final class GroupInvoiceMetricsRequest {
             excludePayables(other.getExcludePayables());
             excludeReceivables(other.getExcludeReceivables());
             returnByDate(other.getReturnByDate());
+            returnByDateFrequency(other.getReturnByDateFrequency());
+            groupBy(other.getGroupBy());
             payerId(other.getPayerId());
             vendorId(other.getVendorId());
             approverId(other.getApproverId());
@@ -352,10 +324,6 @@ public final class GroupInvoiceMetricsRequest {
             startDate(other.getStartDate());
             endDate(other.getEndDate());
             dateType(other.getDateType());
-            dueDateStart(other.getDueDateStart());
-            dueDateEnd(other.getDueDateEnd());
-            createdDateStart(other.getCreatedDateStart());
-            createdDateEnd(other.getCreatedDateEnd());
             currency(other.getCurrency());
             return this;
         }
@@ -401,6 +369,28 @@ public final class GroupInvoiceMetricsRequest {
 
         public Builder returnByDate(InvoiceMetricsPerDateGroupBy returnByDate) {
             this.returnByDate = Optional.ofNullable(returnByDate);
+            return this;
+        }
+
+        @JsonSetter(value = "returnByDateFrequency", nulls = Nulls.SKIP)
+        public Builder returnByDateFrequency(Optional<InvoiceMetricsPerDateFrequency> returnByDateFrequency) {
+            this.returnByDateFrequency = returnByDateFrequency;
+            return this;
+        }
+
+        public Builder returnByDateFrequency(InvoiceMetricsPerDateFrequency returnByDateFrequency) {
+            this.returnByDateFrequency = Optional.ofNullable(returnByDateFrequency);
+            return this;
+        }
+
+        @JsonSetter(value = "groupBy", nulls = Nulls.SKIP)
+        public Builder groupBy(Optional<InvoiceMetricsGroupBy> groupBy) {
+            this.groupBy = groupBy;
+            return this;
+        }
+
+        public Builder groupBy(InvoiceMetricsGroupBy groupBy) {
+            this.groupBy = Optional.ofNullable(groupBy);
             return this;
         }
 
@@ -492,50 +482,6 @@ public final class GroupInvoiceMetricsRequest {
             return this;
         }
 
-        @JsonSetter(value = "dueDateStart", nulls = Nulls.SKIP)
-        public Builder dueDateStart(Optional<OffsetDateTime> dueDateStart) {
-            this.dueDateStart = dueDateStart;
-            return this;
-        }
-
-        public Builder dueDateStart(OffsetDateTime dueDateStart) {
-            this.dueDateStart = Optional.ofNullable(dueDateStart);
-            return this;
-        }
-
-        @JsonSetter(value = "dueDateEnd", nulls = Nulls.SKIP)
-        public Builder dueDateEnd(Optional<OffsetDateTime> dueDateEnd) {
-            this.dueDateEnd = dueDateEnd;
-            return this;
-        }
-
-        public Builder dueDateEnd(OffsetDateTime dueDateEnd) {
-            this.dueDateEnd = Optional.ofNullable(dueDateEnd);
-            return this;
-        }
-
-        @JsonSetter(value = "createdDateStart", nulls = Nulls.SKIP)
-        public Builder createdDateStart(Optional<OffsetDateTime> createdDateStart) {
-            this.createdDateStart = createdDateStart;
-            return this;
-        }
-
-        public Builder createdDateStart(OffsetDateTime createdDateStart) {
-            this.createdDateStart = Optional.ofNullable(createdDateStart);
-            return this;
-        }
-
-        @JsonSetter(value = "createdDateEnd", nulls = Nulls.SKIP)
-        public Builder createdDateEnd(Optional<OffsetDateTime> createdDateEnd) {
-            this.createdDateEnd = createdDateEnd;
-            return this;
-        }
-
-        public Builder createdDateEnd(OffsetDateTime createdDateEnd) {
-            this.createdDateEnd = Optional.ofNullable(createdDateEnd);
-            return this;
-        }
-
         @JsonSetter(value = "currency", nulls = Nulls.SKIP)
         public Builder currency(Optional<CurrencyCode> currency) {
             this.currency = currency;
@@ -553,6 +499,8 @@ public final class GroupInvoiceMetricsRequest {
                     excludePayables,
                     excludeReceivables,
                     returnByDate,
+                    returnByDateFrequency,
+                    groupBy,
                     payerId,
                     vendorId,
                     approverId,
@@ -561,10 +509,6 @@ public final class GroupInvoiceMetricsRequest {
                     startDate,
                     endDate,
                     dateType,
-                    dueDateStart,
-                    dueDateEnd,
-                    createdDateStart,
-                    createdDateEnd,
                     currency,
                     additionalProperties);
         }

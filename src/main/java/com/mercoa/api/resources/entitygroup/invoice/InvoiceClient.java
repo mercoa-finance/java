@@ -177,6 +177,14 @@ public class InvoiceClient {
             httpUrl.addQueryParameter(
                     "returnByDate", request.getReturnByDate().get().toString());
         }
+        if (request.getReturnByDateFrequency().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "returnByDateFrequency",
+                    request.getReturnByDateFrequency().get().toString());
+        }
+        if (request.getGroupBy().isPresent()) {
+            httpUrl.addQueryParameter("groupBy", request.getGroupBy().get().toString());
+        }
         if (request.getPayerId().isPresent()) {
             httpUrl.addQueryParameter("payerId", request.getPayerId().get());
         }
@@ -200,22 +208,6 @@ public class InvoiceClient {
         }
         if (request.getDateType().isPresent()) {
             httpUrl.addQueryParameter("dateType", request.getDateType().get().toString());
-        }
-        if (request.getDueDateStart().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "dueDateStart", request.getDueDateStart().get().toString());
-        }
-        if (request.getDueDateEnd().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "dueDateEnd", request.getDueDateEnd().get().toString());
-        }
-        if (request.getCreatedDateStart().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "createdDateStart", request.getCreatedDateStart().get().toString());
-        }
-        if (request.getCreatedDateEnd().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "createdDateEnd", request.getCreatedDateEnd().get().toString());
         }
         if (request.getCurrency().isPresent()) {
             httpUrl.addQueryParameter("currency", request.getCurrency().get().toString());

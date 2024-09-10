@@ -76,6 +76,9 @@ public class CounterpartyClient {
             httpUrl.addQueryParameter(
                     "counterpartyId", request.getCounterpartyId().get());
         }
+        if (request.getMetadata().isPresent()) {
+            httpUrl.addQueryParameter("metadata", request.getMetadata().get().toString());
+        }
         if (request.getReturnMetadata().isPresent()) {
             httpUrl.addQueryParameter(
                     "returnMetadata", request.getReturnMetadata().get().toString());
@@ -154,6 +157,9 @@ public class CounterpartyClient {
         if (request.getCounterpartyId().isPresent()) {
             httpUrl.addQueryParameter(
                     "counterpartyId", request.getCounterpartyId().get());
+        }
+        if (request.getMetadata().isPresent()) {
+            httpUrl.addQueryParameter("metadata", request.getMetadata().get().toString());
         }
         if (request.getReturnMetadata().isPresent()) {
             httpUrl.addQueryParameter(

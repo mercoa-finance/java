@@ -146,21 +146,21 @@ public class InvoiceClient {
     }
 
     /**
-     * Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
+     * Get invoice metrics for an entity with the given filters. Invoices will always be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
      */
     public List<InvoiceMetricsResponse> metrics(String entityId) {
         return metrics(entityId, InvoiceMetricsRequest.builder().build());
     }
 
     /**
-     * Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
+     * Get invoice metrics for an entity with the given filters. Invoices will always be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
      */
     public List<InvoiceMetricsResponse> metrics(String entityId, InvoiceMetricsRequest request) {
         return metrics(entityId, request, null);
     }
 
     /**
-     * Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
+     * Get invoice metrics for an entity with the given filters. Invoices will always be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
      */
     public List<InvoiceMetricsResponse> metrics(
             String entityId, InvoiceMetricsRequest request, RequestOptions requestOptions) {
@@ -183,6 +183,14 @@ public class InvoiceClient {
         if (request.getReturnByDate().isPresent()) {
             httpUrl.addQueryParameter(
                     "returnByDate", request.getReturnByDate().get().toString());
+        }
+        if (request.getReturnByDateFrequency().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "returnByDateFrequency",
+                    request.getReturnByDateFrequency().get().toString());
+        }
+        if (request.getGroupBy().isPresent()) {
+            httpUrl.addQueryParameter("groupBy", request.getGroupBy().get().toString());
         }
         if (request.getPayerId().isPresent()) {
             httpUrl.addQueryParameter("payerId", request.getPayerId().get());
@@ -207,22 +215,6 @@ public class InvoiceClient {
         }
         if (request.getDateType().isPresent()) {
             httpUrl.addQueryParameter("dateType", request.getDateType().get().toString());
-        }
-        if (request.getDueDateStart().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "dueDateStart", request.getDueDateStart().get().toString());
-        }
-        if (request.getDueDateEnd().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "dueDateEnd", request.getDueDateEnd().get().toString());
-        }
-        if (request.getCreatedDateStart().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "createdDateStart", request.getCreatedDateStart().get().toString());
-        }
-        if (request.getCreatedDateEnd().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "createdDateEnd", request.getCreatedDateEnd().get().toString());
         }
         if (request.getCurrency().isPresent()) {
             httpUrl.addQueryParameter("currency", request.getCurrency().get().toString());

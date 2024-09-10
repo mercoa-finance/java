@@ -15,9 +15,9 @@ import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.commons.types.OrderDirection;
 import com.mercoa.api.resources.invoicetypes.types.ApproverAction;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceDateFilter;
-import com.mercoa.api.resources.invoicetypes.types.InvoiceMetadataFilter;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceOrderByField;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
+import com.mercoa.api.resources.invoicetypes.types.MetadataFilter;
 import com.mercoa.api.resources.invoicetypes.types.PaymentType;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -47,7 +47,7 @@ public final class EntityGetInvoicesRequest {
 
     private final Optional<String> startingAfter;
 
-    private final Optional<InvoiceMetadataFilter> metadata;
+    private final Optional<MetadataFilter> metadata;
 
     private final Optional<String> search;
 
@@ -77,7 +77,7 @@ public final class EntityGetInvoicesRequest {
             Optional<OrderDirection> orderDirection,
             Optional<Integer> limit,
             Optional<String> startingAfter,
-            Optional<InvoiceMetadataFilter> metadata,
+            Optional<MetadataFilter> metadata,
             Optional<String> search,
             Optional<String> payerId,
             Optional<String> vendorId,
@@ -184,7 +184,7 @@ public final class EntityGetInvoicesRequest {
      * @return Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
      */
     @JsonProperty("metadata")
-    public Optional<InvoiceMetadataFilter> getMetadata() {
+    public Optional<MetadataFilter> getMetadata() {
         return metadata;
     }
 
@@ -336,7 +336,7 @@ public final class EntityGetInvoicesRequest {
 
         private Optional<String> startingAfter = Optional.empty();
 
-        private Optional<InvoiceMetadataFilter> metadata = Optional.empty();
+        private Optional<MetadataFilter> metadata = Optional.empty();
 
         private Optional<String> search = Optional.empty();
 
@@ -481,12 +481,12 @@ public final class EntityGetInvoicesRequest {
         }
 
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
-        public Builder metadata(Optional<InvoiceMetadataFilter> metadata) {
+        public Builder metadata(Optional<MetadataFilter> metadata) {
             this.metadata = metadata;
             return this;
         }
 
-        public Builder metadata(InvoiceMetadataFilter metadata) {
+        public Builder metadata(MetadataFilter metadata) {
             this.metadata = Optional.ofNullable(metadata);
             return this;
         }

@@ -133,6 +133,9 @@ public class EntityClient {
         if (request.getName().isPresent()) {
             httpUrl.addQueryParameter("name", request.getName().get());
         }
+        if (request.getMetadata().isPresent()) {
+            httpUrl.addQueryParameter("metadata", request.getMetadata().get().toString());
+        }
         if (request.getReturnMetadata().isPresent()) {
             httpUrl.addQueryParameter(
                     "returnMetadata", request.getReturnMetadata().get().toString());

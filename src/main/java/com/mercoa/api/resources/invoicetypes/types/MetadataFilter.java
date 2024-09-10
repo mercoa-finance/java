@@ -11,20 +11,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.resources.commons.types.StringOrStringArray;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = InvoiceMetadataFilter.Builder.class)
-public final class InvoiceMetadataFilter {
+@JsonDeserialize(builder = MetadataFilter.Builder.class)
+public final class MetadataFilter {
     private final String key;
 
-    private final String value;
+    private final StringOrStringArray value;
 
     private final Map<String, Object> additionalProperties;
 
-    private InvoiceMetadataFilter(String key, String value, Map<String, Object> additionalProperties) {
+    private MetadataFilter(String key, StringOrStringArray value, Map<String, Object> additionalProperties) {
         this.key = key;
         this.value = value;
         this.additionalProperties = additionalProperties;
@@ -35,15 +36,18 @@ public final class InvoiceMetadataFilter {
         return key;
     }
 
+    /**
+     * @return If multiple values are provided, the filter will match if any of the values match (OR filter)
+     */
     @JsonProperty("value")
-    public String getValue() {
+    public StringOrStringArray getValue() {
         return value;
     }
 
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof InvoiceMetadataFilter && equalTo((InvoiceMetadataFilter) other);
+        return other instanceof MetadataFilter && equalTo((MetadataFilter) other);
     }
 
     @JsonAnyGetter
@@ -51,7 +55,7 @@ public final class InvoiceMetadataFilter {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(InvoiceMetadataFilter other) {
+    private boolean equalTo(MetadataFilter other) {
         return key.equals(other.key) && value.equals(other.value);
     }
 
@@ -72,22 +76,22 @@ public final class InvoiceMetadataFilter {
     public interface KeyStage {
         ValueStage key(String key);
 
-        Builder from(InvoiceMetadataFilter other);
+        Builder from(MetadataFilter other);
     }
 
     public interface ValueStage {
-        _FinalStage value(String value);
+        _FinalStage value(StringOrStringArray value);
     }
 
     public interface _FinalStage {
-        InvoiceMetadataFilter build();
+        MetadataFilter build();
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements KeyStage, ValueStage, _FinalStage {
         private String key;
 
-        private String value;
+        private StringOrStringArray value;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -95,7 +99,7 @@ public final class InvoiceMetadataFilter {
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(InvoiceMetadataFilter other) {
+        public Builder from(MetadataFilter other) {
             key(other.getKey());
             value(other.getValue());
             return this;
@@ -108,16 +112,20 @@ public final class InvoiceMetadataFilter {
             return this;
         }
 
+        /**
+         * <p>If multiple values are provided, the filter will match if any of the values match (OR filter)</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("value")
-        public _FinalStage value(String value) {
+        public _FinalStage value(StringOrStringArray value) {
             this.value = value;
             return this;
         }
 
         @java.lang.Override
-        public InvoiceMetadataFilter build() {
-            return new InvoiceMetadataFilter(key, value, additionalProperties);
+        public MetadataFilter build() {
+            return new MetadataFilter(key, value, additionalProperties);
         }
     }
 }

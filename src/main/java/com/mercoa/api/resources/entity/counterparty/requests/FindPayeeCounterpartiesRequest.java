@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.CounterpartyNetworkType;
+import com.mercoa.api.resources.invoicetypes.types.MetadataFilter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -31,6 +32,8 @@ public final class FindPayeeCounterpartiesRequest {
 
     private final Optional<String> counterpartyId;
 
+    private final Optional<MetadataFilter> metadata;
+
     private final Optional<Boolean> returnMetadata;
 
     private final Optional<Integer> limit;
@@ -45,6 +48,7 @@ public final class FindPayeeCounterpartiesRequest {
             Optional<Boolean> paymentMethods,
             Optional<Boolean> invoiceMetrics,
             Optional<String> counterpartyId,
+            Optional<MetadataFilter> metadata,
             Optional<Boolean> returnMetadata,
             Optional<Integer> limit,
             Optional<String> startingAfter,
@@ -54,6 +58,7 @@ public final class FindPayeeCounterpartiesRequest {
         this.paymentMethods = paymentMethods;
         this.invoiceMetrics = invoiceMetrics;
         this.counterpartyId = counterpartyId;
+        this.metadata = metadata;
         this.returnMetadata = returnMetadata;
         this.limit = limit;
         this.startingAfter = startingAfter;
@@ -101,7 +106,15 @@ public final class FindPayeeCounterpartiesRequest {
     }
 
     /**
-     * @return If true, will return simple key/value metadata for the counterparties.
+     * @return Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+     */
+    @JsonProperty("metadata")
+    public Optional<MetadataFilter> getMetadata() {
+        return metadata;
+    }
+
+    /**
+     * @return If true, will return simple key/value metadata for the counterparties. For more complex metadata, use the Metadata API.
      */
     @JsonProperty("returnMetadata")
     public Optional<Boolean> getReturnMetadata() {
@@ -141,6 +154,7 @@ public final class FindPayeeCounterpartiesRequest {
                 && paymentMethods.equals(other.paymentMethods)
                 && invoiceMetrics.equals(other.invoiceMetrics)
                 && counterpartyId.equals(other.counterpartyId)
+                && metadata.equals(other.metadata)
                 && returnMetadata.equals(other.returnMetadata)
                 && limit.equals(other.limit)
                 && startingAfter.equals(other.startingAfter);
@@ -154,6 +168,7 @@ public final class FindPayeeCounterpartiesRequest {
                 this.paymentMethods,
                 this.invoiceMetrics,
                 this.counterpartyId,
+                this.metadata,
                 this.returnMetadata,
                 this.limit,
                 this.startingAfter);
@@ -180,6 +195,8 @@ public final class FindPayeeCounterpartiesRequest {
 
         private Optional<String> counterpartyId = Optional.empty();
 
+        private Optional<MetadataFilter> metadata = Optional.empty();
+
         private Optional<Boolean> returnMetadata = Optional.empty();
 
         private Optional<Integer> limit = Optional.empty();
@@ -197,6 +214,7 @@ public final class FindPayeeCounterpartiesRequest {
             paymentMethods(other.getPaymentMethods());
             invoiceMetrics(other.getInvoiceMetrics());
             counterpartyId(other.getCounterpartyId());
+            metadata(other.getMetadata());
             returnMetadata(other.getReturnMetadata());
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
@@ -258,6 +276,17 @@ public final class FindPayeeCounterpartiesRequest {
             return this;
         }
 
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public Builder metadata(Optional<MetadataFilter> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        public Builder metadata(MetadataFilter metadata) {
+            this.metadata = Optional.ofNullable(metadata);
+            return this;
+        }
+
         @JsonSetter(value = "returnMetadata", nulls = Nulls.SKIP)
         public Builder returnMetadata(Optional<Boolean> returnMetadata) {
             this.returnMetadata = returnMetadata;
@@ -298,6 +327,7 @@ public final class FindPayeeCounterpartiesRequest {
                     paymentMethods,
                     invoiceMetrics,
                     counterpartyId,
+                    metadata,
                     returnMetadata,
                     limit,
                     startingAfter,

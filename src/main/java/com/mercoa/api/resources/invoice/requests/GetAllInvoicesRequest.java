@@ -15,9 +15,9 @@ import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.commons.types.OrderDirection;
 import com.mercoa.api.resources.invoicetypes.types.ApproverAction;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceDateFilter;
-import com.mercoa.api.resources.invoicetypes.types.InvoiceMetadataFilter;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceOrderByField;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
+import com.mercoa.api.resources.invoicetypes.types.MetadataFilter;
 import com.mercoa.api.resources.invoicetypes.types.PaymentType;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -47,9 +47,9 @@ public final class GetAllInvoicesRequest {
 
     private final Optional<String> search;
 
-    private final Optional<InvoiceMetadataFilter> metadata;
+    private final Optional<MetadataFilter> metadata;
 
-    private final Optional<InvoiceMetadataFilter> lineItemMetadata;
+    private final Optional<MetadataFilter> lineItemMetadata;
 
     private final Optional<String> lineItemGlAccountId;
 
@@ -79,8 +79,8 @@ public final class GetAllInvoicesRequest {
             Optional<Integer> limit,
             Optional<String> startingAfter,
             Optional<String> search,
-            Optional<InvoiceMetadataFilter> metadata,
-            Optional<InvoiceMetadataFilter> lineItemMetadata,
+            Optional<MetadataFilter> metadata,
+            Optional<MetadataFilter> lineItemMetadata,
             Optional<String> lineItemGlAccountId,
             Optional<String> payerId,
             Optional<String> vendorId,
@@ -188,7 +188,7 @@ public final class GetAllInvoicesRequest {
      * @return Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
      */
     @JsonProperty("metadata")
-    public Optional<InvoiceMetadataFilter> getMetadata() {
+    public Optional<MetadataFilter> getMetadata() {
         return metadata;
     }
 
@@ -196,7 +196,7 @@ public final class GetAllInvoicesRequest {
      * @return Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
      */
     @JsonProperty("lineItemMetadata")
-    public Optional<InvoiceMetadataFilter> getLineItemMetadata() {
+    public Optional<MetadataFilter> getLineItemMetadata() {
         return lineItemMetadata;
     }
 
@@ -350,9 +350,9 @@ public final class GetAllInvoicesRequest {
 
         private Optional<String> search = Optional.empty();
 
-        private Optional<InvoiceMetadataFilter> metadata = Optional.empty();
+        private Optional<MetadataFilter> metadata = Optional.empty();
 
-        private Optional<InvoiceMetadataFilter> lineItemMetadata = Optional.empty();
+        private Optional<MetadataFilter> lineItemMetadata = Optional.empty();
 
         private Optional<String> lineItemGlAccountId = Optional.empty();
 
@@ -498,23 +498,23 @@ public final class GetAllInvoicesRequest {
         }
 
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
-        public Builder metadata(Optional<InvoiceMetadataFilter> metadata) {
+        public Builder metadata(Optional<MetadataFilter> metadata) {
             this.metadata = metadata;
             return this;
         }
 
-        public Builder metadata(InvoiceMetadataFilter metadata) {
+        public Builder metadata(MetadataFilter metadata) {
             this.metadata = Optional.ofNullable(metadata);
             return this;
         }
 
         @JsonSetter(value = "lineItemMetadata", nulls = Nulls.SKIP)
-        public Builder lineItemMetadata(Optional<InvoiceMetadataFilter> lineItemMetadata) {
+        public Builder lineItemMetadata(Optional<MetadataFilter> lineItemMetadata) {
             this.lineItemMetadata = lineItemMetadata;
             return this;
         }
 
-        public Builder lineItemMetadata(InvoiceMetadataFilter lineItemMetadata) {
+        public Builder lineItemMetadata(MetadataFilter lineItemMetadata) {
             this.lineItemMetadata = Optional.ofNullable(lineItemMetadata);
             return this;
         }
