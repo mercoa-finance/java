@@ -38,7 +38,7 @@ public final class FindEntities {
 
     private final Optional<MetadataFilter> metadata;
 
-    private final Optional<Boolean> returnMetadata;
+    private final Optional<String> returnMetadata;
 
     private final Optional<Integer> limit;
 
@@ -55,7 +55,7 @@ public final class FindEntities {
             Optional<Boolean> isPayor,
             Optional<String> name,
             Optional<MetadataFilter> metadata,
-            Optional<Boolean> returnMetadata,
+            Optional<String> returnMetadata,
             Optional<Integer> limit,
             Optional<String> startingAfter,
             Map<String, Object> additionalProperties) {
@@ -137,10 +137,10 @@ public final class FindEntities {
     }
 
     /**
-     * @return If true, will return simple key/value metadata for the entities. For more complex metadata, use the Metadata API.
+     * @return Return simple key/value metadata for the specified keys for the entities. For more complex metadata, use the Metadata API.
      */
     @JsonProperty("returnMetadata")
-    public Optional<Boolean> getReturnMetadata() {
+    public Optional<String> getReturnMetadata() {
         return returnMetadata;
     }
 
@@ -228,7 +228,7 @@ public final class FindEntities {
 
         private Optional<MetadataFilter> metadata = Optional.empty();
 
-        private Optional<Boolean> returnMetadata = Optional.empty();
+        private Optional<String> returnMetadata = Optional.empty();
 
         private Optional<Integer> limit = Optional.empty();
 
@@ -343,12 +343,12 @@ public final class FindEntities {
         }
 
         @JsonSetter(value = "returnMetadata", nulls = Nulls.SKIP)
-        public Builder returnMetadata(Optional<Boolean> returnMetadata) {
+        public Builder returnMetadata(Optional<String> returnMetadata) {
             this.returnMetadata = returnMetadata;
             return this;
         }
 
-        public Builder returnMetadata(Boolean returnMetadata) {
+        public Builder returnMetadata(String returnMetadata) {
             this.returnMetadata = Optional.ofNullable(returnMetadata);
             return this;
         }

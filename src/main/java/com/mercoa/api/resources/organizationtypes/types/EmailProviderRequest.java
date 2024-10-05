@@ -9,11 +9,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EmailProviderRequest.Builder.class)
@@ -22,12 +25,18 @@ public final class EmailProviderRequest {
 
     private final String inboxDomain;
 
+    private final Optional<List<String>> alternativeInboxDomains;
+
     private final Map<String, Object> additionalProperties;
 
     private EmailProviderRequest(
-            EmailSenderRequest sender, String inboxDomain, Map<String, Object> additionalProperties) {
+            EmailSenderRequest sender,
+            String inboxDomain,
+            Optional<List<String>> alternativeInboxDomains,
+            Map<String, Object> additionalProperties) {
         this.sender = sender;
         this.inboxDomain = inboxDomain;
+        this.alternativeInboxDomains = alternativeInboxDomains;
         this.additionalProperties = additionalProperties;
     }
 
@@ -39,6 +48,11 @@ public final class EmailProviderRequest {
     @JsonProperty("inboxDomain")
     public String getInboxDomain() {
         return inboxDomain;
+    }
+
+    @JsonProperty("alternativeInboxDomains")
+    public Optional<List<String>> getAlternativeInboxDomains() {
+        return alternativeInboxDomains;
     }
 
     @java.lang.Override
@@ -53,12 +67,14 @@ public final class EmailProviderRequest {
     }
 
     private boolean equalTo(EmailProviderRequest other) {
-        return sender.equals(other.sender) && inboxDomain.equals(other.inboxDomain);
+        return sender.equals(other.sender)
+                && inboxDomain.equals(other.inboxDomain)
+                && alternativeInboxDomains.equals(other.alternativeInboxDomains);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.sender, this.inboxDomain);
+        return Objects.hash(this.sender, this.inboxDomain, this.alternativeInboxDomains);
     }
 
     @java.lang.Override
@@ -82,6 +98,10 @@ public final class EmailProviderRequest {
 
     public interface _FinalStage {
         EmailProviderRequest build();
+
+        _FinalStage alternativeInboxDomains(Optional<List<String>> alternativeInboxDomains);
+
+        _FinalStage alternativeInboxDomains(List<String> alternativeInboxDomains);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -89,6 +109,8 @@ public final class EmailProviderRequest {
         private EmailSenderRequest sender;
 
         private String inboxDomain;
+
+        private Optional<List<String>> alternativeInboxDomains = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -99,6 +121,7 @@ public final class EmailProviderRequest {
         public Builder from(EmailProviderRequest other) {
             sender(other.getSender());
             inboxDomain(other.getInboxDomain());
+            alternativeInboxDomains(other.getAlternativeInboxDomains());
             return this;
         }
 
@@ -117,8 +140,21 @@ public final class EmailProviderRequest {
         }
 
         @java.lang.Override
+        public _FinalStage alternativeInboxDomains(List<String> alternativeInboxDomains) {
+            this.alternativeInboxDomains = Optional.ofNullable(alternativeInboxDomains);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "alternativeInboxDomains", nulls = Nulls.SKIP)
+        public _FinalStage alternativeInboxDomains(Optional<List<String>> alternativeInboxDomains) {
+            this.alternativeInboxDomains = alternativeInboxDomains;
+            return this;
+        }
+
+        @java.lang.Override
         public EmailProviderRequest build() {
-            return new EmailProviderRequest(sender, inboxDomain, additionalProperties);
+            return new EmailProviderRequest(sender, inboxDomain, alternativeInboxDomains, additionalProperties);
         }
     }
 }

@@ -25,6 +25,8 @@ public final class NotificationPolicyRequest {
 
     private final Optional<List<String>> additionalRoles;
 
+    private final Optional<List<String>> additionalUsers;
+
     private final Optional<Boolean> notifyPayeeCounterparty;
 
     private final Optional<Boolean> notifyPayorCounterparty;
@@ -34,11 +36,13 @@ public final class NotificationPolicyRequest {
     private NotificationPolicyRequest(
             Optional<Boolean> disabled,
             Optional<List<String>> additionalRoles,
+            Optional<List<String>> additionalUsers,
             Optional<Boolean> notifyPayeeCounterparty,
             Optional<Boolean> notifyPayorCounterparty,
             Map<String, Object> additionalProperties) {
         this.disabled = disabled;
         this.additionalRoles = additionalRoles;
+        this.additionalUsers = additionalUsers;
         this.notifyPayeeCounterparty = notifyPayeeCounterparty;
         this.notifyPayorCounterparty = notifyPayorCounterparty;
         this.additionalProperties = additionalProperties;
@@ -58,6 +62,14 @@ public final class NotificationPolicyRequest {
     @JsonProperty("additionalRoles")
     public Optional<List<String>> getAdditionalRoles() {
         return additionalRoles;
+    }
+
+    /**
+     * @return List of user IDs that should receive notifications in addition to the default users for this notification type
+     */
+    @JsonProperty("additionalUsers")
+    public Optional<List<String>> getAdditionalUsers() {
+        return additionalUsers;
     }
 
     /**
@@ -90,6 +102,7 @@ public final class NotificationPolicyRequest {
     private boolean equalTo(NotificationPolicyRequest other) {
         return disabled.equals(other.disabled)
                 && additionalRoles.equals(other.additionalRoles)
+                && additionalUsers.equals(other.additionalUsers)
                 && notifyPayeeCounterparty.equals(other.notifyPayeeCounterparty)
                 && notifyPayorCounterparty.equals(other.notifyPayorCounterparty);
     }
@@ -97,7 +110,11 @@ public final class NotificationPolicyRequest {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.disabled, this.additionalRoles, this.notifyPayeeCounterparty, this.notifyPayorCounterparty);
+                this.disabled,
+                this.additionalRoles,
+                this.additionalUsers,
+                this.notifyPayeeCounterparty,
+                this.notifyPayorCounterparty);
     }
 
     @java.lang.Override
@@ -115,6 +132,8 @@ public final class NotificationPolicyRequest {
 
         private Optional<List<String>> additionalRoles = Optional.empty();
 
+        private Optional<List<String>> additionalUsers = Optional.empty();
+
         private Optional<Boolean> notifyPayeeCounterparty = Optional.empty();
 
         private Optional<Boolean> notifyPayorCounterparty = Optional.empty();
@@ -127,6 +146,7 @@ public final class NotificationPolicyRequest {
         public Builder from(NotificationPolicyRequest other) {
             disabled(other.getDisabled());
             additionalRoles(other.getAdditionalRoles());
+            additionalUsers(other.getAdditionalUsers());
             notifyPayeeCounterparty(other.getNotifyPayeeCounterparty());
             notifyPayorCounterparty(other.getNotifyPayorCounterparty());
             return this;
@@ -154,6 +174,17 @@ public final class NotificationPolicyRequest {
             return this;
         }
 
+        @JsonSetter(value = "additionalUsers", nulls = Nulls.SKIP)
+        public Builder additionalUsers(Optional<List<String>> additionalUsers) {
+            this.additionalUsers = additionalUsers;
+            return this;
+        }
+
+        public Builder additionalUsers(List<String> additionalUsers) {
+            this.additionalUsers = Optional.ofNullable(additionalUsers);
+            return this;
+        }
+
         @JsonSetter(value = "notifyPayeeCounterparty", nulls = Nulls.SKIP)
         public Builder notifyPayeeCounterparty(Optional<Boolean> notifyPayeeCounterparty) {
             this.notifyPayeeCounterparty = notifyPayeeCounterparty;
@@ -178,7 +209,12 @@ public final class NotificationPolicyRequest {
 
         public NotificationPolicyRequest build() {
             return new NotificationPolicyRequest(
-                    disabled, additionalRoles, notifyPayeeCounterparty, notifyPayorCounterparty, additionalProperties);
+                    disabled,
+                    additionalRoles,
+                    additionalUsers,
+                    notifyPayeeCounterparty,
+                    notifyPayorCounterparty,
+                    additionalProperties);
         }
     }
 }

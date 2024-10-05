@@ -174,8 +174,7 @@ public class EntityGroupClient {
                 .addPathSegment(entityGroupId);
         if (request.getReturnEntityMetadata().isPresent()) {
             httpUrl.addQueryParameter(
-                    "returnEntityMetadata",
-                    request.getReturnEntityMetadata().get().toString());
+                    "returnEntityMetadata", request.getReturnEntityMetadata().get());
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())

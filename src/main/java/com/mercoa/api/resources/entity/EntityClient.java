@@ -16,6 +16,7 @@ import com.mercoa.api.resources.entity.counterparty.CounterpartyClient;
 import com.mercoa.api.resources.entity.customization.CustomizationClient;
 import com.mercoa.api.resources.entity.document.DocumentClient;
 import com.mercoa.api.resources.entity.emaillog.EmailLogClient;
+import com.mercoa.api.resources.entity.emailtemplate.EmailTemplateClient;
 import com.mercoa.api.resources.entity.externalaccountingsystem.ExternalAccountingSystemClient;
 import com.mercoa.api.resources.entity.invoice.InvoiceClient;
 import com.mercoa.api.resources.entity.metadata.MetadataClient;
@@ -60,6 +61,8 @@ public class EntityClient {
 
     protected final Supplier<DocumentClient> documentClient;
 
+    protected final Supplier<EmailTemplateClient> emailTemplateClient;
+
     protected final Supplier<ExternalAccountingSystemClient> externalAccountingSystemClient;
 
     protected final Supplier<InvoiceClient> invoiceClient;
@@ -80,6 +83,7 @@ public class EntityClient {
         this.counterpartyClient = Suppliers.memoize(() -> new CounterpartyClient(clientOptions));
         this.customizationClient = Suppliers.memoize(() -> new CustomizationClient(clientOptions));
         this.documentClient = Suppliers.memoize(() -> new DocumentClient(clientOptions));
+        this.emailTemplateClient = Suppliers.memoize(() -> new EmailTemplateClient(clientOptions));
         this.externalAccountingSystemClient =
                 Suppliers.memoize(() -> new ExternalAccountingSystemClient(clientOptions));
         this.invoiceClient = Suppliers.memoize(() -> new InvoiceClient(clientOptions));
@@ -138,7 +142,7 @@ public class EntityClient {
         }
         if (request.getReturnMetadata().isPresent()) {
             httpUrl.addQueryParameter(
-                    "returnMetadata", request.getReturnMetadata().get().toString());
+                    "returnMetadata", request.getReturnMetadata().get());
         }
         if (request.getLimit().isPresent()) {
             httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
@@ -228,7 +232,7 @@ public class EntityClient {
                 .addPathSegment(entityId);
         if (request.getReturnMetadata().isPresent()) {
             httpUrl.addQueryParameter(
-                    "returnMetadata", request.getReturnMetadata().get().toString());
+                    "returnMetadata", request.getReturnMetadata().get());
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
@@ -712,6 +716,10 @@ public class EntityClient {
 
     public DocumentClient document() {
         return this.documentClient.get();
+    }
+
+    public EmailTemplateClient emailTemplate() {
+        return this.emailTemplateClient.get();
     }
 
     public ExternalAccountingSystemClient externalAccountingSystem() {

@@ -25,6 +25,8 @@ public final class NotificationPolicyResponse {
 
     private final List<String> additionalRoles;
 
+    private final List<String> additionalUsers;
+
     private final boolean notifyPayeeCounterparty;
 
     private final boolean notifyPayorCounterparty;
@@ -36,12 +38,14 @@ public final class NotificationPolicyResponse {
     private NotificationPolicyResponse(
             boolean disabled,
             List<String> additionalRoles,
+            List<String> additionalUsers,
             boolean notifyPayeeCounterparty,
             boolean notifyPayorCounterparty,
             NotificationType type,
             Map<String, Object> additionalProperties) {
         this.disabled = disabled;
         this.additionalRoles = additionalRoles;
+        this.additionalUsers = additionalUsers;
         this.notifyPayeeCounterparty = notifyPayeeCounterparty;
         this.notifyPayorCounterparty = notifyPayorCounterparty;
         this.type = type;
@@ -62,6 +66,14 @@ public final class NotificationPolicyResponse {
     @JsonProperty("additionalRoles")
     public List<String> getAdditionalRoles() {
         return additionalRoles;
+    }
+
+    /**
+     * @return List of user IDs that should receive notifications in addition to the default users for this notification type
+     */
+    @JsonProperty("additionalUsers")
+    public List<String> getAdditionalUsers() {
+        return additionalUsers;
     }
 
     /**
@@ -99,6 +111,7 @@ public final class NotificationPolicyResponse {
     private boolean equalTo(NotificationPolicyResponse other) {
         return disabled == other.disabled
                 && additionalRoles.equals(other.additionalRoles)
+                && additionalUsers.equals(other.additionalUsers)
                 && notifyPayeeCounterparty == other.notifyPayeeCounterparty
                 && notifyPayorCounterparty == other.notifyPayorCounterparty
                 && type.equals(other.type);
@@ -109,6 +122,7 @@ public final class NotificationPolicyResponse {
         return Objects.hash(
                 this.disabled,
                 this.additionalRoles,
+                this.additionalUsers,
                 this.notifyPayeeCounterparty,
                 this.notifyPayorCounterparty,
                 this.type);
@@ -149,6 +163,12 @@ public final class NotificationPolicyResponse {
         _FinalStage addAdditionalRoles(String additionalRoles);
 
         _FinalStage addAllAdditionalRoles(List<String> additionalRoles);
+
+        _FinalStage additionalUsers(List<String> additionalUsers);
+
+        _FinalStage addAdditionalUsers(String additionalUsers);
+
+        _FinalStage addAllAdditionalUsers(List<String> additionalUsers);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -166,6 +186,8 @@ public final class NotificationPolicyResponse {
 
         private NotificationType type;
 
+        private List<String> additionalUsers = new ArrayList<>();
+
         private List<String> additionalRoles = new ArrayList<>();
 
         @JsonAnySetter
@@ -177,6 +199,7 @@ public final class NotificationPolicyResponse {
         public Builder from(NotificationPolicyResponse other) {
             disabled(other.getDisabled());
             additionalRoles(other.getAdditionalRoles());
+            additionalUsers(other.getAdditionalUsers());
             notifyPayeeCounterparty(other.getNotifyPayeeCounterparty());
             notifyPayorCounterparty(other.getNotifyPayorCounterparty());
             type(other.getType());
@@ -224,6 +247,34 @@ public final class NotificationPolicyResponse {
         }
 
         /**
+         * <p>List of user IDs that should receive notifications in addition to the default users for this notification type</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addAllAdditionalUsers(List<String> additionalUsers) {
+            this.additionalUsers.addAll(additionalUsers);
+            return this;
+        }
+
+        /**
+         * <p>List of user IDs that should receive notifications in addition to the default users for this notification type</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addAdditionalUsers(String additionalUsers) {
+            this.additionalUsers.add(additionalUsers);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "additionalUsers", nulls = Nulls.SKIP)
+        public _FinalStage additionalUsers(List<String> additionalUsers) {
+            this.additionalUsers.clear();
+            this.additionalUsers.addAll(additionalUsers);
+            return this;
+        }
+
+        /**
          * <p>List of user roles that should receive notifications in addition to the default users for this notification type</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -256,6 +307,7 @@ public final class NotificationPolicyResponse {
             return new NotificationPolicyResponse(
                     disabled,
                     additionalRoles,
+                    additionalUsers,
                     notifyPayeeCounterparty,
                     notifyPayorCounterparty,
                     type,

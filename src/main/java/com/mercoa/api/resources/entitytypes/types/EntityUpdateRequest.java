@@ -45,6 +45,8 @@ public final class EntityUpdateRequest {
 
     private final Optional<Map<String, String>> metadata;
 
+    private final Optional<String> connectedEntityId;
+
     private final Map<String, Object> additionalProperties;
 
     private EntityUpdateRequest(
@@ -60,6 +62,7 @@ public final class EntityUpdateRequest {
             Optional<Boolean> isNetworkPayee,
             Optional<String> logo,
             Optional<Map<String, String>> metadata,
+            Optional<String> connectedEntityId,
             Map<String, Object> additionalProperties) {
         this.foreignId = foreignId;
         this.emailTo = emailTo;
@@ -73,6 +76,7 @@ public final class EntityUpdateRequest {
         this.isNetworkPayee = isNetworkPayee;
         this.logo = logo;
         this.metadata = metadata;
+        this.connectedEntityId = connectedEntityId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -166,6 +170,14 @@ public final class EntityUpdateRequest {
         return metadata;
     }
 
+    /**
+     * @return The ID of the entity that this entity is connected to. This is used to trigger notifications to the connected entity when this entity is updated.
+     */
+    @JsonProperty("connectedEntityId")
+    public Optional<String> getConnectedEntityId() {
+        return connectedEntityId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -189,7 +201,8 @@ public final class EntityUpdateRequest {
                 && isNetworkPayor.equals(other.isNetworkPayor)
                 && isNetworkPayee.equals(other.isNetworkPayee)
                 && logo.equals(other.logo)
-                && metadata.equals(other.metadata);
+                && metadata.equals(other.metadata)
+                && connectedEntityId.equals(other.connectedEntityId);
     }
 
     @java.lang.Override
@@ -206,7 +219,8 @@ public final class EntityUpdateRequest {
                 this.isNetworkPayor,
                 this.isNetworkPayee,
                 this.logo,
-                this.metadata);
+                this.metadata,
+                this.connectedEntityId);
     }
 
     @java.lang.Override
@@ -244,6 +258,8 @@ public final class EntityUpdateRequest {
 
         private Optional<Map<String, String>> metadata = Optional.empty();
 
+        private Optional<String> connectedEntityId = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -262,6 +278,7 @@ public final class EntityUpdateRequest {
             isNetworkPayee(other.getIsNetworkPayee());
             logo(other.getLogo());
             metadata(other.getMetadata());
+            connectedEntityId(other.getConnectedEntityId());
             return this;
         }
 
@@ -397,6 +414,17 @@ public final class EntityUpdateRequest {
             return this;
         }
 
+        @JsonSetter(value = "connectedEntityId", nulls = Nulls.SKIP)
+        public Builder connectedEntityId(Optional<String> connectedEntityId) {
+            this.connectedEntityId = connectedEntityId;
+            return this;
+        }
+
+        public Builder connectedEntityId(String connectedEntityId) {
+            this.connectedEntityId = Optional.ofNullable(connectedEntityId);
+            return this;
+        }
+
         public EntityUpdateRequest build() {
             return new EntityUpdateRequest(
                     foreignId,
@@ -411,6 +439,7 @@ public final class EntityUpdateRequest {
                     isNetworkPayee,
                     logo,
                     metadata,
+                    connectedEntityId,
                     additionalProperties);
         }
     }

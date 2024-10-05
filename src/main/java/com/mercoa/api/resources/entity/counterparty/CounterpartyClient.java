@@ -81,7 +81,7 @@ public class CounterpartyClient {
         }
         if (request.getReturnMetadata().isPresent()) {
             httpUrl.addQueryParameter(
-                    "returnMetadata", request.getReturnMetadata().get().toString());
+                    "returnMetadata", request.getReturnMetadata().get());
         }
         if (request.getLimit().isPresent()) {
             httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
@@ -163,7 +163,7 @@ public class CounterpartyClient {
         }
         if (request.getReturnMetadata().isPresent()) {
             httpUrl.addQueryParameter(
-                    "returnMetadata", request.getReturnMetadata().get().toString());
+                    "returnMetadata", request.getReturnMetadata().get());
         }
         if (request.getLimit().isPresent()) {
             httpUrl.addQueryParameter("limit", request.getLimit().get().toString());

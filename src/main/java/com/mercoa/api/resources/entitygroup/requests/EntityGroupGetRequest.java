@@ -20,20 +20,20 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGroupGetRequest.Builder.class)
 public final class EntityGroupGetRequest {
-    private final Optional<Boolean> returnEntityMetadata;
+    private final Optional<String> returnEntityMetadata;
 
     private final Map<String, Object> additionalProperties;
 
-    private EntityGroupGetRequest(Optional<Boolean> returnEntityMetadata, Map<String, Object> additionalProperties) {
+    private EntityGroupGetRequest(Optional<String> returnEntityMetadata, Map<String, Object> additionalProperties) {
         this.returnEntityMetadata = returnEntityMetadata;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return If true, will return simple key/value metadata for entities in the group. For more complex metadata, use the Metadata API.
+     * @return Return simple key/value metadata for the specified keys for the entities in the group. For more complex metadata, use the Metadata API.
      */
     @JsonProperty("returnEntityMetadata")
-    public Optional<Boolean> getReturnEntityMetadata() {
+    public Optional<String> getReturnEntityMetadata() {
         return returnEntityMetadata;
     }
 
@@ -68,7 +68,7 @@ public final class EntityGroupGetRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Boolean> returnEntityMetadata = Optional.empty();
+        private Optional<String> returnEntityMetadata = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -81,12 +81,12 @@ public final class EntityGroupGetRequest {
         }
 
         @JsonSetter(value = "returnEntityMetadata", nulls = Nulls.SKIP)
-        public Builder returnEntityMetadata(Optional<Boolean> returnEntityMetadata) {
+        public Builder returnEntityMetadata(Optional<String> returnEntityMetadata) {
             this.returnEntityMetadata = returnEntityMetadata;
             return this;
         }
 
-        public Builder returnEntityMetadata(Boolean returnEntityMetadata) {
+        public Builder returnEntityMetadata(String returnEntityMetadata) {
             this.returnEntityMetadata = Optional.ofNullable(returnEntityMetadata);
             return this;
         }
