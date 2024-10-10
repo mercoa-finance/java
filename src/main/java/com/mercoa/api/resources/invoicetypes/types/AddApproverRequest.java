@@ -41,6 +41,9 @@ public final class AddApproverRequest {
         return approvalSlotId;
     }
 
+    /**
+     * @return The ID or the Foreign ID of the user to add to the approval slot.
+     */
     @JsonProperty("userId")
     public String getUserId() {
         return userId;
@@ -107,6 +110,10 @@ public final class AddApproverRequest {
             return this;
         }
 
+        /**
+         * <p>The ID or the Foreign ID of the user to add to the approval slot.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("userId")
         public _FinalStage userId(String userId) {

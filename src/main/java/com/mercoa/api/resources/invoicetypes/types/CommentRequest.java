@@ -37,6 +37,9 @@ public final class CommentRequest {
         return text;
     }
 
+    /**
+     * @return The ID or the Foreign ID of the user who created the comment.
+     */
     @JsonProperty("userId")
     public Optional<String> getUserId() {
         return userId;
@@ -110,6 +113,10 @@ public final class CommentRequest {
             return this;
         }
 
+        /**
+         * <p>The ID or the Foreign ID of the user who created the comment.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage userId(String userId) {
             this.userId = Optional.ofNullable(userId);

@@ -42,6 +42,8 @@ public final class BusinessProfileResponse {
 
     private final boolean taxIdProvided;
 
+    private final Optional<TaxId> taxId;
+
     private final Optional<IndustryCodes> industryCodes;
 
     private final Optional<Double> averageMonthlyTransactionVolume;
@@ -63,6 +65,7 @@ public final class BusinessProfileResponse {
             Optional<Address> address,
             Optional<Boolean> ownersProvided,
             boolean taxIdProvided,
+            Optional<TaxId> taxId,
             Optional<IndustryCodes> industryCodes,
             Optional<Double> averageMonthlyTransactionVolume,
             Optional<Double> averageTransactionSize,
@@ -78,6 +81,7 @@ public final class BusinessProfileResponse {
         this.address = address;
         this.ownersProvided = ownersProvided;
         this.taxIdProvided = taxIdProvided;
+        this.taxId = taxId;
         this.industryCodes = industryCodes;
         this.averageMonthlyTransactionVolume = averageMonthlyTransactionVolume;
         this.averageTransactionSize = averageTransactionSize;
@@ -138,6 +142,11 @@ public final class BusinessProfileResponse {
         return taxIdProvided;
     }
 
+    @JsonProperty("taxId")
+    public Optional<TaxId> getTaxId() {
+        return taxId;
+    }
+
     @JsonProperty("industryCodes")
     public Optional<IndustryCodes> getIndustryCodes() {
         return industryCodes;
@@ -180,6 +189,7 @@ public final class BusinessProfileResponse {
                 && address.equals(other.address)
                 && ownersProvided.equals(other.ownersProvided)
                 && taxIdProvided == other.taxIdProvided
+                && taxId.equals(other.taxId)
                 && industryCodes.equals(other.industryCodes)
                 && averageMonthlyTransactionVolume.equals(other.averageMonthlyTransactionVolume)
                 && averageTransactionSize.equals(other.averageTransactionSize)
@@ -199,6 +209,7 @@ public final class BusinessProfileResponse {
                 this.address,
                 this.ownersProvided,
                 this.taxIdProvided,
+                this.taxId,
                 this.industryCodes,
                 this.averageMonthlyTransactionVolume,
                 this.averageTransactionSize,
@@ -259,6 +270,10 @@ public final class BusinessProfileResponse {
 
         _FinalStage ownersProvided(Boolean ownersProvided);
 
+        _FinalStage taxId(Optional<TaxId> taxId);
+
+        _FinalStage taxId(TaxId taxId);
+
         _FinalStage industryCodes(Optional<IndustryCodes> industryCodes);
 
         _FinalStage industryCodes(IndustryCodes industryCodes);
@@ -289,6 +304,8 @@ public final class BusinessProfileResponse {
         private Optional<Double> averageMonthlyTransactionVolume = Optional.empty();
 
         private Optional<IndustryCodes> industryCodes = Optional.empty();
+
+        private Optional<TaxId> taxId = Optional.empty();
 
         private Optional<Boolean> ownersProvided = Optional.empty();
 
@@ -323,6 +340,7 @@ public final class BusinessProfileResponse {
             address(other.getAddress());
             ownersProvided(other.getOwnersProvided());
             taxIdProvided(other.getTaxIdProvided());
+            taxId(other.getTaxId());
             industryCodes(other.getIndustryCodes());
             averageMonthlyTransactionVolume(other.getAverageMonthlyTransactionVolume());
             averageTransactionSize(other.getAverageTransactionSize());
@@ -393,6 +411,19 @@ public final class BusinessProfileResponse {
         @JsonSetter(value = "industryCodes", nulls = Nulls.SKIP)
         public _FinalStage industryCodes(Optional<IndustryCodes> industryCodes) {
             this.industryCodes = industryCodes;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage taxId(TaxId taxId) {
+            this.taxId = Optional.ofNullable(taxId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "taxId", nulls = Nulls.SKIP)
+        public _FinalStage taxId(Optional<TaxId> taxId) {
+            this.taxId = taxId;
             return this;
         }
 
@@ -517,6 +548,7 @@ public final class BusinessProfileResponse {
                     address,
                     ownersProvided,
                     taxIdProvided,
+                    taxId,
                     industryCodes,
                     averageMonthlyTransactionVolume,
                     averageTransactionSize,

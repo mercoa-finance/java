@@ -316,7 +316,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
     }
 
     /**
-     * @return ID of entity user who created this invoice.
+     * @return User ID or Foreign ID of entity user who created this invoice.
      */
     @JsonProperty("creatorUserId")
     @java.lang.Override
@@ -730,7 +730,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
         }
 
         /**
-         * <p>ID of entity user who created this invoice.</p>
+         * <p>User ID or Foreign ID of entity user who created this invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

@@ -15,10 +15,12 @@ import com.mercoa.api.resources.entitygroup.invoice.InvoiceClient;
 import com.mercoa.api.resources.entitygroup.requests.EntityGroupFindRequest;
 import com.mercoa.api.resources.entitygroup.requests.EntityGroupGetRequest;
 import com.mercoa.api.resources.entitygroup.user.UserClient;
-import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupEntityUpdateRequest;
+import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupAddEntitiesRequest;
+import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupCreateRequest;
 import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupFindResponse;
-import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupRequest;
+import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupRemoveEntitiesRequest;
 import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupResponse;
+import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupUpdateRequest;
 import com.mercoa.api.resources.entitytypes.types.TokenGenerationOptions;
 import java.io.IOException;
 import java.util.function.Supplier;
@@ -100,20 +102,20 @@ public class EntityGroupClient {
      * Create an entity group
      */
     public EntityGroupResponse create() {
-        return create(EntityGroupRequest.builder().build());
+        return create(EntityGroupCreateRequest.builder().build());
     }
 
     /**
      * Create an entity group
      */
-    public EntityGroupResponse create(EntityGroupRequest request) {
+    public EntityGroupResponse create(EntityGroupCreateRequest request) {
         return create(request, null);
     }
 
     /**
      * Create an entity group
      */
-    public EntityGroupResponse create(EntityGroupRequest request, RequestOptions requestOptions) {
+    public EntityGroupResponse create(EntityGroupCreateRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("entityGroup")
@@ -205,20 +207,21 @@ public class EntityGroupClient {
      * Update an entity group
      */
     public EntityGroupResponse update(String entityGroupId) {
-        return update(entityGroupId, EntityGroupRequest.builder().build());
+        return update(entityGroupId, EntityGroupUpdateRequest.builder().build());
     }
 
     /**
      * Update an entity group
      */
-    public EntityGroupResponse update(String entityGroupId, EntityGroupRequest request) {
+    public EntityGroupResponse update(String entityGroupId, EntityGroupUpdateRequest request) {
         return update(entityGroupId, request, null);
     }
 
     /**
      * Update an entity group
      */
-    public EntityGroupResponse update(String entityGroupId, EntityGroupRequest request, RequestOptions requestOptions) {
+    public EntityGroupResponse update(
+            String entityGroupId, EntityGroupUpdateRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("entityGroup")
@@ -358,15 +361,7 @@ public class EntityGroupClient {
     /**
      * Add entities to an entity group
      */
-    public EntityGroupResponse addEntities(String entityGroupId) {
-        return addEntities(
-                entityGroupId, EntityGroupEntityUpdateRequest.builder().build());
-    }
-
-    /**
-     * Add entities to an entity group
-     */
-    public EntityGroupResponse addEntities(String entityGroupId, EntityGroupEntityUpdateRequest request) {
+    public EntityGroupResponse addEntities(String entityGroupId, EntityGroupAddEntitiesRequest request) {
         return addEntities(entityGroupId, request, null);
     }
 
@@ -374,7 +369,7 @@ public class EntityGroupClient {
      * Add entities to an entity group
      */
     public EntityGroupResponse addEntities(
-            String entityGroupId, EntityGroupEntityUpdateRequest request, RequestOptions requestOptions) {
+            String entityGroupId, EntityGroupAddEntitiesRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("entityGroup")
@@ -416,15 +411,7 @@ public class EntityGroupClient {
     /**
      * Remove entities from an entity group
      */
-    public EntityGroupResponse removeEntities(String entityGroupId) {
-        return removeEntities(
-                entityGroupId, EntityGroupEntityUpdateRequest.builder().build());
-    }
-
-    /**
-     * Remove entities from an entity group
-     */
-    public EntityGroupResponse removeEntities(String entityGroupId, EntityGroupEntityUpdateRequest request) {
+    public EntityGroupResponse removeEntities(String entityGroupId, EntityGroupRemoveEntitiesRequest request) {
         return removeEntities(entityGroupId, request, null);
     }
 
@@ -432,7 +419,7 @@ public class EntityGroupClient {
      * Remove entities from an entity group
      */
     public EntityGroupResponse removeEntities(
-            String entityGroupId, EntityGroupEntityUpdateRequest request, RequestOptions requestOptions) {
+            String entityGroupId, EntityGroupRemoveEntitiesRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("entityGroup")

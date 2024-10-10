@@ -316,7 +316,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
     }
 
     /**
-     * @return ID of entity user who created this invoice.
+     * @return User ID or Foreign ID of entity user who created this invoice.
      */
     @JsonProperty("creatorUserId")
     @java.lang.Override

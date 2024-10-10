@@ -19,10 +19,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = EntityGroupRequest.Builder.class)
-public final class EntityGroupRequest implements IEntityGroupEntityUpdateRequest {
-    private final Optional<List<String>> entityIds;
-
+@JsonDeserialize(builder = EntityGroupCreateRequest.Builder.class)
+public final class EntityGroupCreateRequest implements IEntityGroupUpdateRequest {
     private final Optional<String> foreignId;
 
     private final Optional<String> name;
@@ -31,43 +29,39 @@ public final class EntityGroupRequest implements IEntityGroupEntityUpdateRequest
 
     private final Optional<Map<String, String>> metadata;
 
+    private final Optional<List<String>> entityIds;
+
     private final Map<String, Object> additionalProperties;
 
-    private EntityGroupRequest(
-            Optional<List<String>> entityIds,
+    private EntityGroupCreateRequest(
             Optional<String> foreignId,
             Optional<String> name,
             Optional<String> emailToName,
             Optional<Map<String, String>> metadata,
+            Optional<List<String>> entityIds,
             Map<String, Object> additionalProperties) {
-        this.entityIds = entityIds;
         this.foreignId = foreignId;
         this.name = name;
         this.emailToName = emailToName;
         this.metadata = metadata;
+        this.entityIds = entityIds;
         this.additionalProperties = additionalProperties;
     }
 
-    /**
-     * @return List of entity IDs or foreign IDs
-     */
-    @JsonProperty("entityIds")
-    @java.lang.Override
-    public Optional<List<String>> getEntityIds() {
-        return entityIds;
-    }
-
     @JsonProperty("foreignId")
+    @java.lang.Override
     public Optional<String> getForeignId() {
         return foreignId;
     }
 
     @JsonProperty("name")
+    @java.lang.Override
     public Optional<String> getName() {
         return name;
     }
 
     @JsonProperty("emailToName")
+    @java.lang.Override
     public Optional<String> getEmailToName() {
         return emailToName;
     }
@@ -76,14 +70,23 @@ public final class EntityGroupRequest implements IEntityGroupEntityUpdateRequest
      * @return Metadata key/value pairs to associate with this group. Will overwrite existing metadata.
      */
     @JsonProperty("metadata")
+    @java.lang.Override
     public Optional<Map<String, String>> getMetadata() {
         return metadata;
+    }
+
+    /**
+     * @return List of entity IDs or foreign IDs
+     */
+    @JsonProperty("entityIds")
+    public Optional<List<String>> getEntityIds() {
+        return entityIds;
     }
 
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof EntityGroupRequest && equalTo((EntityGroupRequest) other);
+        return other instanceof EntityGroupCreateRequest && equalTo((EntityGroupCreateRequest) other);
     }
 
     @JsonAnyGetter
@@ -91,17 +94,17 @@ public final class EntityGroupRequest implements IEntityGroupEntityUpdateRequest
         return this.additionalProperties;
     }
 
-    private boolean equalTo(EntityGroupRequest other) {
-        return entityIds.equals(other.entityIds)
-                && foreignId.equals(other.foreignId)
+    private boolean equalTo(EntityGroupCreateRequest other) {
+        return foreignId.equals(other.foreignId)
                 && name.equals(other.name)
                 && emailToName.equals(other.emailToName)
-                && metadata.equals(other.metadata);
+                && metadata.equals(other.metadata)
+                && entityIds.equals(other.entityIds);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.entityIds, this.foreignId, this.name, this.emailToName, this.metadata);
+        return Objects.hash(this.foreignId, this.name, this.emailToName, this.metadata, this.entityIds);
     }
 
     @java.lang.Override
@@ -115,8 +118,6 @@ public final class EntityGroupRequest implements IEntityGroupEntityUpdateRequest
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<List<String>> entityIds = Optional.empty();
-
         private Optional<String> foreignId = Optional.empty();
 
         private Optional<String> name = Optional.empty();
@@ -125,28 +126,19 @@ public final class EntityGroupRequest implements IEntityGroupEntityUpdateRequest
 
         private Optional<Map<String, String>> metadata = Optional.empty();
 
+        private Optional<List<String>> entityIds = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        public Builder from(EntityGroupRequest other) {
-            entityIds(other.getEntityIds());
+        public Builder from(EntityGroupCreateRequest other) {
             foreignId(other.getForeignId());
             name(other.getName());
             emailToName(other.getEmailToName());
             metadata(other.getMetadata());
-            return this;
-        }
-
-        @JsonSetter(value = "entityIds", nulls = Nulls.SKIP)
-        public Builder entityIds(Optional<List<String>> entityIds) {
-            this.entityIds = entityIds;
-            return this;
-        }
-
-        public Builder entityIds(List<String> entityIds) {
-            this.entityIds = Optional.ofNullable(entityIds);
+            entityIds(other.getEntityIds());
             return this;
         }
 
@@ -194,8 +186,20 @@ public final class EntityGroupRequest implements IEntityGroupEntityUpdateRequest
             return this;
         }
 
-        public EntityGroupRequest build() {
-            return new EntityGroupRequest(entityIds, foreignId, name, emailToName, metadata, additionalProperties);
+        @JsonSetter(value = "entityIds", nulls = Nulls.SKIP)
+        public Builder entityIds(Optional<List<String>> entityIds) {
+            this.entityIds = entityIds;
+            return this;
+        }
+
+        public Builder entityIds(List<String> entityIds) {
+            this.entityIds = Optional.ofNullable(entityIds);
+            return this;
+        }
+
+        public EntityGroupCreateRequest build() {
+            return new EntityGroupCreateRequest(
+                    foreignId, name, emailToName, metadata, entityIds, additionalProperties);
         }
     }
 }

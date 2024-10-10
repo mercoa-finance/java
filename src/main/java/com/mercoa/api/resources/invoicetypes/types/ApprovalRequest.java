@@ -40,6 +40,9 @@ public final class ApprovalRequest {
         return text;
     }
 
+    /**
+     * @return The ID or the Foreign ID of the user
+     */
     @JsonProperty("userId")
     public String getUserId() {
         return userId;
@@ -106,6 +109,10 @@ public final class ApprovalRequest {
             return this;
         }
 
+        /**
+         * <p>The ID or the Foreign ID of the user</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("userId")
         public _FinalStage userId(String userId) {

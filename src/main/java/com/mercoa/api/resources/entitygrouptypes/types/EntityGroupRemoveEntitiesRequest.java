@@ -12,37 +12,36 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = EntityGroupEntityUpdateRequest.Builder.class)
-public final class EntityGroupEntityUpdateRequest implements IEntityGroupEntityUpdateRequest {
-    private final Optional<List<String>> entityIds;
+@JsonDeserialize(builder = EntityGroupRemoveEntitiesRequest.Builder.class)
+public final class EntityGroupRemoveEntitiesRequest {
+    private final List<String> entityIds;
 
     private final Map<String, Object> additionalProperties;
 
-    private EntityGroupEntityUpdateRequest(Optional<List<String>> entityIds, Map<String, Object> additionalProperties) {
+    private EntityGroupRemoveEntitiesRequest(List<String> entityIds, Map<String, Object> additionalProperties) {
         this.entityIds = entityIds;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return List of entity IDs or foreign IDs
+     * @return List of entity IDs or foreign IDs to remove from the group
      */
     @JsonProperty("entityIds")
-    @java.lang.Override
-    public Optional<List<String>> getEntityIds() {
+    public List<String> getEntityIds() {
         return entityIds;
     }
 
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof EntityGroupEntityUpdateRequest && equalTo((EntityGroupEntityUpdateRequest) other);
+        return other instanceof EntityGroupRemoveEntitiesRequest && equalTo((EntityGroupRemoveEntitiesRequest) other);
     }
 
     @JsonAnyGetter
@@ -50,7 +49,7 @@ public final class EntityGroupEntityUpdateRequest implements IEntityGroupEntityU
         return this.additionalProperties;
     }
 
-    private boolean equalTo(EntityGroupEntityUpdateRequest other) {
+    private boolean equalTo(EntityGroupRemoveEntitiesRequest other) {
         return entityIds.equals(other.entityIds);
     }
 
@@ -70,31 +69,37 @@ public final class EntityGroupEntityUpdateRequest implements IEntityGroupEntityU
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<List<String>> entityIds = Optional.empty();
+        private List<String> entityIds = new ArrayList<>();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        public Builder from(EntityGroupEntityUpdateRequest other) {
+        public Builder from(EntityGroupRemoveEntitiesRequest other) {
             entityIds(other.getEntityIds());
             return this;
         }
 
         @JsonSetter(value = "entityIds", nulls = Nulls.SKIP)
-        public Builder entityIds(Optional<List<String>> entityIds) {
-            this.entityIds = entityIds;
-            return this;
-        }
-
         public Builder entityIds(List<String> entityIds) {
-            this.entityIds = Optional.ofNullable(entityIds);
+            this.entityIds.clear();
+            this.entityIds.addAll(entityIds);
             return this;
         }
 
-        public EntityGroupEntityUpdateRequest build() {
-            return new EntityGroupEntityUpdateRequest(entityIds, additionalProperties);
+        public Builder addEntityIds(String entityIds) {
+            this.entityIds.add(entityIds);
+            return this;
+        }
+
+        public Builder addAllEntityIds(List<String> entityIds) {
+            this.entityIds.addAll(entityIds);
+            return this;
+        }
+
+        public EntityGroupRemoveEntitiesRequest build() {
+            return new EntityGroupRemoveEntitiesRequest(entityIds, additionalProperties);
         }
     }
 }
