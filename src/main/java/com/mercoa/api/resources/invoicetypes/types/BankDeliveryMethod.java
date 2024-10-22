@@ -8,7 +8,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum BankDeliveryMethod {
     ACH_STANDARD("ACH_STANDARD"),
 
-    ACH_SAME_DAY("ACH_SAME_DAY");
+    ACH_SAME_DAY("ACH_SAME_DAY"),
+
+    ACH_ACCELERATED("ACH_ACCELERATED");
 
     private final String value;
 

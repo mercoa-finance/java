@@ -90,6 +90,11 @@ public class OrganizationClient {
             httpUrl.addQueryParameter(
                     "metadataSchema", request.getMetadataSchema().get().toString());
         }
+        if (request.getNotificationEmailTemplate().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "notificationEmailTemplate",
+                    request.getNotificationEmailTemplate().get().toString());
+        }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)

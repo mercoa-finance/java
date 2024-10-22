@@ -3,90 +3,39 @@
  */
 package com.mercoa.api.resources.calculate.types;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.resources.invoicetypes.types.PaymentDestinationOptions;
-import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import java.util.Objects;
-import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = CalculatePaymentTimingRequest.Builder.class)
+@JsonDeserialize(using = CalculatePaymentTimingRequest.Deserializer.class)
 public final class CalculatePaymentTimingRequest {
-    private final Optional<OffsetDateTime> estimatedDeductionDate;
+    private final Object value;
 
-    private final Optional<OffsetDateTime> processedAt;
+    private final int type;
 
-    private final String paymentSourceId;
-
-    private final String paymentDestinationId;
-
-    private final Optional<PaymentDestinationOptions> paymentDestinationOptions;
-
-    private final Map<String, Object> additionalProperties;
-
-    private CalculatePaymentTimingRequest(
-            Optional<OffsetDateTime> estimatedDeductionDate,
-            Optional<OffsetDateTime> processedAt,
-            String paymentSourceId,
-            String paymentDestinationId,
-            Optional<PaymentDestinationOptions> paymentDestinationOptions,
-            Map<String, Object> additionalProperties) {
-        this.estimatedDeductionDate = estimatedDeductionDate;
-        this.processedAt = processedAt;
-        this.paymentSourceId = paymentSourceId;
-        this.paymentDestinationId = paymentDestinationId;
-        this.paymentDestinationOptions = paymentDestinationOptions;
-        this.additionalProperties = additionalProperties;
+    private CalculatePaymentTimingRequest(Object value, int type) {
+        this.value = value;
+        this.type = type;
     }
 
-    /**
-     * @return Date the payment is scheduled to be deducted from the payer's account. Use this field if the payment has not yet been deducted.
-     */
-    @JsonProperty("estimatedDeductionDate")
-    public Optional<OffsetDateTime> getEstimatedDeductionDate() {
-        return estimatedDeductionDate;
+    @JsonValue
+    public Object get() {
+        return this.value;
     }
 
-    /**
-     * @return Date the payment was processed. Use this field if the payment has already been deducted.
-     */
-    @JsonProperty("processedAt")
-    public Optional<OffsetDateTime> getProcessedAt() {
-        return processedAt;
-    }
-
-    /**
-     * @return ID of payment source.
-     */
-    @JsonProperty("paymentSourceId")
-    public String getPaymentSourceId() {
-        return paymentSourceId;
-    }
-
-    /**
-     * @return ID of payment destination.
-     */
-    @JsonProperty("paymentDestinationId")
-    public String getPaymentDestinationId() {
-        return paymentDestinationId;
-    }
-
-    /**
-     * @return Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.
-     */
-    @JsonProperty("paymentDestinationOptions")
-    public Optional<PaymentDestinationOptions> getPaymentDestinationOptions() {
-        return paymentDestinationOptions;
+    public <T> T visit(Visitor<T> visitor) {
+        if (this.type == 0) {
+            return visitor.visit((EstimatedTiming) this.value);
+        } else if (this.type == 1) {
+            return visitor.visit((InvoiceTiming) this.value);
+        }
+        throw new IllegalStateException("Failed to visit value. This should never happen.");
     }
 
     @java.lang.Override
@@ -95,173 +44,51 @@ public final class CalculatePaymentTimingRequest {
         return other instanceof CalculatePaymentTimingRequest && equalTo((CalculatePaymentTimingRequest) other);
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
     private boolean equalTo(CalculatePaymentTimingRequest other) {
-        return estimatedDeductionDate.equals(other.estimatedDeductionDate)
-                && processedAt.equals(other.processedAt)
-                && paymentSourceId.equals(other.paymentSourceId)
-                && paymentDestinationId.equals(other.paymentDestinationId)
-                && paymentDestinationOptions.equals(other.paymentDestinationOptions);
+        return value.equals(other.value);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(
-                this.estimatedDeductionDate,
-                this.processedAt,
-                this.paymentSourceId,
-                this.paymentDestinationId,
-                this.paymentDestinationOptions);
+        return Objects.hash(this.value);
     }
 
     @java.lang.Override
     public String toString() {
-        return ObjectMappers.stringify(this);
+        return this.value.toString();
     }
 
-    public static PaymentSourceIdStage builder() {
-        return new Builder();
+    public static CalculatePaymentTimingRequest of(EstimatedTiming value) {
+        return new CalculatePaymentTimingRequest(value, 0);
     }
 
-    public interface PaymentSourceIdStage {
-        PaymentDestinationIdStage paymentSourceId(String paymentSourceId);
-
-        Builder from(CalculatePaymentTimingRequest other);
+    public static CalculatePaymentTimingRequest of(InvoiceTiming value) {
+        return new CalculatePaymentTimingRequest(value, 1);
     }
 
-    public interface PaymentDestinationIdStage {
-        _FinalStage paymentDestinationId(String paymentDestinationId);
+    public interface Visitor<T> {
+        T visit(EstimatedTiming value);
+
+        T visit(InvoiceTiming value);
     }
 
-    public interface _FinalStage {
-        CalculatePaymentTimingRequest build();
-
-        _FinalStage estimatedDeductionDate(Optional<OffsetDateTime> estimatedDeductionDate);
-
-        _FinalStage estimatedDeductionDate(OffsetDateTime estimatedDeductionDate);
-
-        _FinalStage processedAt(Optional<OffsetDateTime> processedAt);
-
-        _FinalStage processedAt(OffsetDateTime processedAt);
-
-        _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions);
-
-        _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions);
-    }
-
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements PaymentSourceIdStage, PaymentDestinationIdStage, _FinalStage {
-        private String paymentSourceId;
-
-        private String paymentDestinationId;
-
-        private Optional<PaymentDestinationOptions> paymentDestinationOptions = Optional.empty();
-
-        private Optional<OffsetDateTime> processedAt = Optional.empty();
-
-        private Optional<OffsetDateTime> estimatedDeductionDate = Optional.empty();
-
-        @JsonAnySetter
-        private Map<String, Object> additionalProperties = new HashMap<>();
-
-        private Builder() {}
-
-        @java.lang.Override
-        public Builder from(CalculatePaymentTimingRequest other) {
-            estimatedDeductionDate(other.getEstimatedDeductionDate());
-            processedAt(other.getProcessedAt());
-            paymentSourceId(other.getPaymentSourceId());
-            paymentDestinationId(other.getPaymentDestinationId());
-            paymentDestinationOptions(other.getPaymentDestinationOptions());
-            return this;
-        }
-
-        /**
-         * <p>ID of payment source.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("paymentSourceId")
-        public PaymentDestinationIdStage paymentSourceId(String paymentSourceId) {
-            this.paymentSourceId = paymentSourceId;
-            return this;
-        }
-
-        /**
-         * <p>ID of payment destination.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("paymentDestinationId")
-        public _FinalStage paymentDestinationId(String paymentDestinationId) {
-            this.paymentDestinationId = paymentDestinationId;
-            return this;
-        }
-
-        /**
-         * <p>Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions) {
-            this.paymentDestinationOptions = Optional.ofNullable(paymentDestinationOptions);
-            return this;
+    static final class Deserializer extends StdDeserializer<CalculatePaymentTimingRequest> {
+        Deserializer() {
+            super(CalculatePaymentTimingRequest.class);
         }
 
         @java.lang.Override
-        @JsonSetter(value = "paymentDestinationOptions", nulls = Nulls.SKIP)
-        public _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions) {
-            this.paymentDestinationOptions = paymentDestinationOptions;
-            return this;
-        }
-
-        /**
-         * <p>Date the payment was processed. Use this field if the payment has already been deducted.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage processedAt(OffsetDateTime processedAt) {
-            this.processedAt = Optional.ofNullable(processedAt);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "processedAt", nulls = Nulls.SKIP)
-        public _FinalStage processedAt(Optional<OffsetDateTime> processedAt) {
-            this.processedAt = processedAt;
-            return this;
-        }
-
-        /**
-         * <p>Date the payment is scheduled to be deducted from the payer's account. Use this field if the payment has not yet been deducted.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage estimatedDeductionDate(OffsetDateTime estimatedDeductionDate) {
-            this.estimatedDeductionDate = Optional.ofNullable(estimatedDeductionDate);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "estimatedDeductionDate", nulls = Nulls.SKIP)
-        public _FinalStage estimatedDeductionDate(Optional<OffsetDateTime> estimatedDeductionDate) {
-            this.estimatedDeductionDate = estimatedDeductionDate;
-            return this;
-        }
-
-        @java.lang.Override
-        public CalculatePaymentTimingRequest build() {
-            return new CalculatePaymentTimingRequest(
-                    estimatedDeductionDate,
-                    processedAt,
-                    paymentSourceId,
-                    paymentDestinationId,
-                    paymentDestinationOptions,
-                    additionalProperties);
+        public CalculatePaymentTimingRequest deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+            Object value = p.readValueAs(Object.class);
+            try {
+                return of(ObjectMappers.JSON_MAPPER.convertValue(value, EstimatedTiming.class));
+            } catch (IllegalArgumentException e) {
+            }
+            try {
+                return of(ObjectMappers.JSON_MAPPER.convertValue(value, InvoiceTiming.class));
+            } catch (IllegalArgumentException e) {
+            }
+            throw new JsonParseException(p, "Failed to deserialize");
         }
     }
 }

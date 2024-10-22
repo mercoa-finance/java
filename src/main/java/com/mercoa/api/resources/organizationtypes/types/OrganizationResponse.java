@@ -47,6 +47,8 @@ public final class OrganizationResponse {
 
     private final Optional<List<MetadataSchema>> metadataSchema;
 
+    private final Optional<NotificationEmailTemplateResponse> notificationEmailTemplate;
+
     private final Map<String, Object> additionalProperties;
 
     private OrganizationResponse(
@@ -63,6 +65,7 @@ public final class OrganizationResponse {
             Optional<OnboardingOptionsResponse> payeeOnboardingOptions,
             Optional<OnboardingOptionsResponse> payorOnboardingOptions,
             Optional<List<MetadataSchema>> metadataSchema,
+            Optional<NotificationEmailTemplateResponse> notificationEmailTemplate,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.sandbox = sandbox;
@@ -77,6 +80,7 @@ public final class OrganizationResponse {
         this.payeeOnboardingOptions = payeeOnboardingOptions;
         this.payorOnboardingOptions = payorOnboardingOptions;
         this.metadataSchema = metadataSchema;
+        this.notificationEmailTemplate = notificationEmailTemplate;
         this.additionalProperties = additionalProperties;
     }
 
@@ -145,6 +149,11 @@ public final class OrganizationResponse {
         return metadataSchema;
     }
 
+    @JsonProperty("notificationEmailTemplate")
+    public Optional<NotificationEmailTemplateResponse> getNotificationEmailTemplate() {
+        return notificationEmailTemplate;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -169,7 +178,8 @@ public final class OrganizationResponse {
                 && colorScheme.equals(other.colorScheme)
                 && payeeOnboardingOptions.equals(other.payeeOnboardingOptions)
                 && payorOnboardingOptions.equals(other.payorOnboardingOptions)
-                && metadataSchema.equals(other.metadataSchema);
+                && metadataSchema.equals(other.metadataSchema)
+                && notificationEmailTemplate.equals(other.notificationEmailTemplate);
     }
 
     @java.lang.Override
@@ -187,7 +197,8 @@ public final class OrganizationResponse {
                 this.colorScheme,
                 this.payeeOnboardingOptions,
                 this.payorOnboardingOptions,
-                this.metadataSchema);
+                this.metadataSchema,
+                this.notificationEmailTemplate);
     }
 
     @java.lang.Override
@@ -257,6 +268,10 @@ public final class OrganizationResponse {
         _FinalStage metadataSchema(Optional<List<MetadataSchema>> metadataSchema);
 
         _FinalStage metadataSchema(List<MetadataSchema> metadataSchema);
+
+        _FinalStage notificationEmailTemplate(Optional<NotificationEmailTemplateResponse> notificationEmailTemplate);
+
+        _FinalStage notificationEmailTemplate(NotificationEmailTemplateResponse notificationEmailTemplate);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -266,6 +281,8 @@ public final class OrganizationResponse {
         private boolean sandbox;
 
         private String name;
+
+        private Optional<NotificationEmailTemplateResponse> notificationEmailTemplate = Optional.empty();
 
         private Optional<List<MetadataSchema>> metadataSchema = Optional.empty();
 
@@ -307,6 +324,7 @@ public final class OrganizationResponse {
             payeeOnboardingOptions(other.getPayeeOnboardingOptions());
             payorOnboardingOptions(other.getPayorOnboardingOptions());
             metadataSchema(other.getMetadataSchema());
+            notificationEmailTemplate(other.getNotificationEmailTemplate());
             return this;
         }
 
@@ -328,6 +346,20 @@ public final class OrganizationResponse {
         @JsonSetter("name")
         public _FinalStage name(String name) {
             this.name = name;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage notificationEmailTemplate(NotificationEmailTemplateResponse notificationEmailTemplate) {
+            this.notificationEmailTemplate = Optional.ofNullable(notificationEmailTemplate);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "notificationEmailTemplate", nulls = Nulls.SKIP)
+        public _FinalStage notificationEmailTemplate(
+                Optional<NotificationEmailTemplateResponse> notificationEmailTemplate) {
+            this.notificationEmailTemplate = notificationEmailTemplate;
             return this;
         }
 
@@ -479,6 +511,7 @@ public final class OrganizationResponse {
                     payeeOnboardingOptions,
                     payorOnboardingOptions,
                     metadataSchema,
+                    notificationEmailTemplate,
                     additionalProperties);
         }
     }

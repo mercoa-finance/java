@@ -51,6 +51,8 @@ public class EntityClient {
 
     protected final Supplier<EmailLogClient> emailLogClient;
 
+    protected final Supplier<PaymentMethodClient> paymentMethodClient;
+
     protected final Supplier<UserClient> userClient;
 
     protected final Supplier<ApprovalPolicyClient> approvalPolicyClient;
@@ -71,13 +73,12 @@ public class EntityClient {
 
     protected final Supplier<NotificationPolicyClient> notificationPolicyClient;
 
-    protected final Supplier<PaymentMethodClient> paymentMethodClient;
-
     protected final Supplier<RepresentativeClient> representativeClient;
 
     public EntityClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.emailLogClient = Suppliers.memoize(() -> new EmailLogClient(clientOptions));
+        this.paymentMethodClient = Suppliers.memoize(() -> new PaymentMethodClient(clientOptions));
         this.userClient = Suppliers.memoize(() -> new UserClient(clientOptions));
         this.approvalPolicyClient = Suppliers.memoize(() -> new ApprovalPolicyClient(clientOptions));
         this.counterpartyClient = Suppliers.memoize(() -> new CounterpartyClient(clientOptions));
@@ -89,7 +90,6 @@ public class EntityClient {
         this.invoiceClient = Suppliers.memoize(() -> new InvoiceClient(clientOptions));
         this.metadataClient = Suppliers.memoize(() -> new MetadataClient(clientOptions));
         this.notificationPolicyClient = Suppliers.memoize(() -> new NotificationPolicyClient(clientOptions));
-        this.paymentMethodClient = Suppliers.memoize(() -> new PaymentMethodClient(clientOptions));
         this.representativeClient = Suppliers.memoize(() -> new RepresentativeClient(clientOptions));
     }
 
@@ -698,6 +698,10 @@ public class EntityClient {
         return this.emailLogClient.get();
     }
 
+    public PaymentMethodClient paymentMethod() {
+        return this.paymentMethodClient.get();
+    }
+
     public UserClient user() {
         return this.userClient.get();
     }
@@ -736,10 +740,6 @@ public class EntityClient {
 
     public NotificationPolicyClient notificationPolicy() {
         return this.notificationPolicyClient.get();
-    }
-
-    public PaymentMethodClient paymentMethod() {
-        return this.paymentMethodClient.get();
     }
 
     public RepresentativeClient representative() {

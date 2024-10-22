@@ -34,6 +34,8 @@ public final class GetOrganizationRequest {
 
     private final Optional<Boolean> metadataSchema;
 
+    private final Optional<Boolean> notificationEmailTemplate;
+
     private final Map<String, Object> additionalProperties;
 
     private GetOrganizationRequest(
@@ -44,6 +46,7 @@ public final class GetOrganizationRequest {
             Optional<Boolean> payeeOnboardingOptions,
             Optional<Boolean> payorOnboardingOptions,
             Optional<Boolean> metadataSchema,
+            Optional<Boolean> notificationEmailTemplate,
             Map<String, Object> additionalProperties) {
         this.paymentMethods = paymentMethods;
         this.emailProvider = emailProvider;
@@ -52,6 +55,7 @@ public final class GetOrganizationRequest {
         this.payeeOnboardingOptions = payeeOnboardingOptions;
         this.payorOnboardingOptions = payorOnboardingOptions;
         this.metadataSchema = metadataSchema;
+        this.notificationEmailTemplate = notificationEmailTemplate;
         this.additionalProperties = additionalProperties;
     }
 
@@ -111,6 +115,14 @@ public final class GetOrganizationRequest {
         return metadataSchema;
     }
 
+    /**
+     * @return include notification-email-template in response
+     */
+    @JsonProperty("notificationEmailTemplate")
+    public Optional<Boolean> getNotificationEmailTemplate() {
+        return notificationEmailTemplate;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -129,7 +141,8 @@ public final class GetOrganizationRequest {
                 && colorScheme.equals(other.colorScheme)
                 && payeeOnboardingOptions.equals(other.payeeOnboardingOptions)
                 && payorOnboardingOptions.equals(other.payorOnboardingOptions)
-                && metadataSchema.equals(other.metadataSchema);
+                && metadataSchema.equals(other.metadataSchema)
+                && notificationEmailTemplate.equals(other.notificationEmailTemplate);
     }
 
     @java.lang.Override
@@ -141,7 +154,8 @@ public final class GetOrganizationRequest {
                 this.colorScheme,
                 this.payeeOnboardingOptions,
                 this.payorOnboardingOptions,
-                this.metadataSchema);
+                this.metadataSchema,
+                this.notificationEmailTemplate);
     }
 
     @java.lang.Override
@@ -169,6 +183,8 @@ public final class GetOrganizationRequest {
 
         private Optional<Boolean> metadataSchema = Optional.empty();
 
+        private Optional<Boolean> notificationEmailTemplate = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -182,6 +198,7 @@ public final class GetOrganizationRequest {
             payeeOnboardingOptions(other.getPayeeOnboardingOptions());
             payorOnboardingOptions(other.getPayorOnboardingOptions());
             metadataSchema(other.getMetadataSchema());
+            notificationEmailTemplate(other.getNotificationEmailTemplate());
             return this;
         }
 
@@ -262,6 +279,17 @@ public final class GetOrganizationRequest {
             return this;
         }
 
+        @JsonSetter(value = "notificationEmailTemplate", nulls = Nulls.SKIP)
+        public Builder notificationEmailTemplate(Optional<Boolean> notificationEmailTemplate) {
+            this.notificationEmailTemplate = notificationEmailTemplate;
+            return this;
+        }
+
+        public Builder notificationEmailTemplate(Boolean notificationEmailTemplate) {
+            this.notificationEmailTemplate = Optional.ofNullable(notificationEmailTemplate);
+            return this;
+        }
+
         public GetOrganizationRequest build() {
             return new GetOrganizationRequest(
                     paymentMethods,
@@ -271,6 +299,7 @@ public final class GetOrganizationRequest {
                     payeeOnboardingOptions,
                     payorOnboardingOptions,
                     metadataSchema,
+                    notificationEmailTemplate,
                     additionalProperties);
         }
     }

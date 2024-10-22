@@ -43,6 +43,8 @@ public final class OrganizationRequest {
 
     private final Optional<List<MetadataSchema>> metadataSchema;
 
+    private final Optional<NotificationEmailTemplateRequest> notificationEmailTemplate;
+
     private final Map<String, Object> additionalProperties;
 
     private OrganizationRequest(
@@ -57,6 +59,7 @@ public final class OrganizationRequest {
             Optional<OnboardingOptionsRequest> payeeOnboardingOptions,
             Optional<OnboardingOptionsRequest> payorOnboardingOptions,
             Optional<List<MetadataSchema>> metadataSchema,
+            Optional<NotificationEmailTemplateRequest> notificationEmailTemplate,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.logo = logo;
@@ -69,6 +72,7 @@ public final class OrganizationRequest {
         this.payeeOnboardingOptions = payeeOnboardingOptions;
         this.payorOnboardingOptions = payorOnboardingOptions;
         this.metadataSchema = metadataSchema;
+        this.notificationEmailTemplate = notificationEmailTemplate;
         this.additionalProperties = additionalProperties;
     }
 
@@ -127,6 +131,11 @@ public final class OrganizationRequest {
         return metadataSchema;
     }
 
+    @JsonProperty("notificationEmailTemplate")
+    public Optional<NotificationEmailTemplateRequest> getNotificationEmailTemplate() {
+        return notificationEmailTemplate;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -149,7 +158,8 @@ public final class OrganizationRequest {
                 && colorScheme.equals(other.colorScheme)
                 && payeeOnboardingOptions.equals(other.payeeOnboardingOptions)
                 && payorOnboardingOptions.equals(other.payorOnboardingOptions)
-                && metadataSchema.equals(other.metadataSchema);
+                && metadataSchema.equals(other.metadataSchema)
+                && notificationEmailTemplate.equals(other.notificationEmailTemplate);
     }
 
     @java.lang.Override
@@ -165,7 +175,8 @@ public final class OrganizationRequest {
                 this.colorScheme,
                 this.payeeOnboardingOptions,
                 this.payorOnboardingOptions,
-                this.metadataSchema);
+                this.metadataSchema,
+                this.notificationEmailTemplate);
     }
 
     @java.lang.Override
@@ -201,6 +212,8 @@ public final class OrganizationRequest {
 
         private Optional<List<MetadataSchema>> metadataSchema = Optional.empty();
 
+        private Optional<NotificationEmailTemplateRequest> notificationEmailTemplate = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -218,6 +231,7 @@ public final class OrganizationRequest {
             payeeOnboardingOptions(other.getPayeeOnboardingOptions());
             payorOnboardingOptions(other.getPayorOnboardingOptions());
             metadataSchema(other.getMetadataSchema());
+            notificationEmailTemplate(other.getNotificationEmailTemplate());
             return this;
         }
 
@@ -344,6 +358,17 @@ public final class OrganizationRequest {
             return this;
         }
 
+        @JsonSetter(value = "notificationEmailTemplate", nulls = Nulls.SKIP)
+        public Builder notificationEmailTemplate(Optional<NotificationEmailTemplateRequest> notificationEmailTemplate) {
+            this.notificationEmailTemplate = notificationEmailTemplate;
+            return this;
+        }
+
+        public Builder notificationEmailTemplate(NotificationEmailTemplateRequest notificationEmailTemplate) {
+            this.notificationEmailTemplate = Optional.ofNullable(notificationEmailTemplate);
+            return this;
+        }
+
         public OrganizationRequest build() {
             return new OrganizationRequest(
                     name,
@@ -357,6 +382,7 @@ public final class OrganizationRequest {
                     payeeOnboardingOptions,
                     payorOnboardingOptions,
                     metadataSchema,
+                    notificationEmailTemplate,
                     additionalProperties);
         }
     }
