@@ -9,21 +9,28 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.resources.commons.types.DocumentType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = UploadDocumentRequest.Builder.class)
 public final class UploadDocumentRequest {
     private final String document;
 
+    private final Optional<DocumentType> type;
+
     private final Map<String, Object> additionalProperties;
 
-    private UploadDocumentRequest(String document, Map<String, Object> additionalProperties) {
+    private UploadDocumentRequest(
+            String document, Optional<DocumentType> type, Map<String, Object> additionalProperties) {
         this.document = document;
+        this.type = type;
         this.additionalProperties = additionalProperties;
     }
 
@@ -33,6 +40,14 @@ public final class UploadDocumentRequest {
     @JsonProperty("document")
     public String getDocument() {
         return document;
+    }
+
+    /**
+     * @return Specify Document Type, defaults to INVOICE
+     */
+    @JsonProperty("type")
+    public Optional<DocumentType> getType() {
+        return type;
     }
 
     @java.lang.Override
@@ -47,12 +62,12 @@ public final class UploadDocumentRequest {
     }
 
     private boolean equalTo(UploadDocumentRequest other) {
-        return document.equals(other.document);
+        return document.equals(other.document) && type.equals(other.type);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.document);
+        return Objects.hash(this.document, this.type);
     }
 
     @java.lang.Override
@@ -72,11 +87,17 @@ public final class UploadDocumentRequest {
 
     public interface _FinalStage {
         UploadDocumentRequest build();
+
+        _FinalStage type(Optional<DocumentType> type);
+
+        _FinalStage type(DocumentType type);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements DocumentStage, _FinalStage {
         private String document;
+
+        private Optional<DocumentType> type = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -86,6 +107,7 @@ public final class UploadDocumentRequest {
         @java.lang.Override
         public Builder from(UploadDocumentRequest other) {
             document(other.getDocument());
+            type(other.getType());
             return this;
         }
 
@@ -100,9 +122,26 @@ public final class UploadDocumentRequest {
             return this;
         }
 
+        /**
+         * <p>Specify Document Type, defaults to INVOICE</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage type(DocumentType type) {
+            this.type = Optional.ofNullable(type);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "type", nulls = Nulls.SKIP)
+        public _FinalStage type(Optional<DocumentType> type) {
+            this.type = type;
+            return this;
+        }
+
         @java.lang.Override
         public UploadDocumentRequest build() {
-            return new UploadDocumentRequest(document, additionalProperties);
+            return new UploadDocumentRequest(document, type, additionalProperties);
         }
     }
 }

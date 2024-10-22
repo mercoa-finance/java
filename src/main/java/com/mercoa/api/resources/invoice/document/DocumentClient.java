@@ -13,6 +13,7 @@ import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.commons.types.DocumentResponse;
 import com.mercoa.api.resources.emaillogtypes.types.EmailLogResponse;
+import com.mercoa.api.resources.invoice.document.requests.GetDocumentsRequest;
 import com.mercoa.api.resources.invoice.document.requests.UploadDocumentRequest;
 import java.io.IOException;
 import java.util.List;
@@ -35,25 +36,34 @@ public class DocumentClient {
      * Get attachments (scanned/uploaded PDFs and images) associated with this invoice
      */
     public List<DocumentResponse> getAll(String invoiceId) {
-        return getAll(invoiceId, null);
+        return getAll(invoiceId, GetDocumentsRequest.builder().build());
     }
 
     /**
      * Get attachments (scanned/uploaded PDFs and images) associated with this invoice
      */
-    public List<DocumentResponse> getAll(String invoiceId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+    public List<DocumentResponse> getAll(String invoiceId, GetDocumentsRequest request) {
+        return getAll(invoiceId, request, null);
+    }
+
+    /**
+     * Get attachments (scanned/uploaded PDFs and images) associated with this invoice
+     */
+    public List<DocumentResponse> getAll(String invoiceId, GetDocumentsRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("invoice")
                 .addPathSegment(invoiceId)
-                .addPathSegments("documents")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .addPathSegments("documents");
+        if (request.getType().isPresent()) {
+            httpUrl.addQueryParameter("type", request.getType().get().toString());
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
+                .addHeader("Content-Type", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);

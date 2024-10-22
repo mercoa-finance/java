@@ -12,7 +12,9 @@ public enum DocumentType {
 
     W_9("W9"),
 
-    CHECK("CHECK");
+    CHECK("CHECK"),
+
+    OTHER("OTHER");
 
     private final String value;
 
