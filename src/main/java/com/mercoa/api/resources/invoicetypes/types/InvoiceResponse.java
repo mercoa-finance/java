@@ -77,6 +77,8 @@ public final class InvoiceResponse {
 
     private final boolean paymentDestinationConfirmed;
 
+    private final Optional<Boolean> batchPayment;
+
     private final boolean hasDocuments;
 
     private final boolean hasSourceEmail;
@@ -134,6 +136,7 @@ public final class InvoiceResponse {
             Optional<String> paymentDestinationId,
             Optional<PaymentDestinationOptions> paymentDestinationOptions,
             boolean paymentDestinationConfirmed,
+            Optional<Boolean> batchPayment,
             boolean hasDocuments,
             boolean hasSourceEmail,
             Optional<List<CommentResponse>> comments,
@@ -174,6 +177,7 @@ public final class InvoiceResponse {
         this.paymentDestinationId = paymentDestinationId;
         this.paymentDestinationOptions = paymentDestinationOptions;
         this.paymentDestinationConfirmed = paymentDestinationConfirmed;
+        this.batchPayment = batchPayment;
         this.hasDocuments = hasDocuments;
         this.hasSourceEmail = hasSourceEmail;
         this.comments = comments;
@@ -340,6 +344,14 @@ public final class InvoiceResponse {
     }
 
     /**
+     * @return If true, this invoice will be paid as a batch payment. Batches are automatically determined by Mercoa based on the payment source, destination, and scheduled payment date.
+     */
+    @JsonProperty("batchPayment")
+    public Optional<Boolean> getBatchPayment() {
+        return batchPayment;
+    }
+
+    /**
      * @return True if the invoice has documents attached.
      */
     @JsonProperty("hasDocuments")
@@ -477,6 +489,7 @@ public final class InvoiceResponse {
                 && paymentDestinationId.equals(other.paymentDestinationId)
                 && paymentDestinationOptions.equals(other.paymentDestinationOptions)
                 && paymentDestinationConfirmed == other.paymentDestinationConfirmed
+                && batchPayment.equals(other.batchPayment)
                 && hasDocuments == other.hasDocuments
                 && hasSourceEmail == other.hasSourceEmail
                 && comments.equals(other.comments)
@@ -521,6 +534,7 @@ public final class InvoiceResponse {
                 this.paymentDestinationId,
                 this.paymentDestinationOptions,
                 this.paymentDestinationConfirmed,
+                this.batchPayment,
                 this.hasDocuments,
                 this.hasSourceEmail,
                 this.comments,
@@ -664,6 +678,10 @@ public final class InvoiceResponse {
 
         _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions);
 
+        _FinalStage batchPayment(Optional<Boolean> batchPayment);
+
+        _FinalStage batchPayment(Boolean batchPayment);
+
         _FinalStage comments(Optional<List<CommentResponse>> comments);
 
         _FinalStage comments(List<CommentResponse> comments);
@@ -761,6 +779,8 @@ public final class InvoiceResponse {
 
         private Optional<List<CommentResponse>> comments = Optional.empty();
 
+        private Optional<Boolean> batchPayment = Optional.empty();
+
         private Optional<PaymentDestinationOptions> paymentDestinationOptions = Optional.empty();
 
         private Optional<String> paymentDestinationId = Optional.empty();
@@ -834,6 +854,7 @@ public final class InvoiceResponse {
             paymentDestinationId(other.getPaymentDestinationId());
             paymentDestinationOptions(other.getPaymentDestinationOptions());
             paymentDestinationConfirmed(other.getPaymentDestinationConfirmed());
+            batchPayment(other.getBatchPayment());
             hasDocuments(other.getHasDocuments());
             hasSourceEmail(other.getHasSourceEmail());
             comments(other.getComments());
@@ -1106,6 +1127,23 @@ public final class InvoiceResponse {
         @JsonSetter(value = "comments", nulls = Nulls.SKIP)
         public _FinalStage comments(Optional<List<CommentResponse>> comments) {
             this.comments = comments;
+            return this;
+        }
+
+        /**
+         * <p>If true, this invoice will be paid as a batch payment. Batches are automatically determined by Mercoa based on the payment source, destination, and scheduled payment date.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage batchPayment(Boolean batchPayment) {
+            this.batchPayment = Optional.ofNullable(batchPayment);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "batchPayment", nulls = Nulls.SKIP)
+        public _FinalStage batchPayment(Optional<Boolean> batchPayment) {
+            this.batchPayment = batchPayment;
             return this;
         }
 
@@ -1441,6 +1479,7 @@ public final class InvoiceResponse {
                     paymentDestinationId,
                     paymentDestinationOptions,
                     paymentDestinationConfirmed,
+                    batchPayment,
                     hasDocuments,
                     hasSourceEmail,
                     comments,

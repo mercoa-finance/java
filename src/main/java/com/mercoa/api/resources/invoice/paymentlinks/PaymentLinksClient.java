@@ -8,7 +8,9 @@ import com.mercoa.api.core.MercoaApiException;
 import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
+import com.mercoa.api.resources.invoice.paymentlinks.requests.PayerLinkRequest;
 import com.mercoa.api.resources.invoice.paymentlinks.requests.SendPayerEmail;
+import com.mercoa.api.resources.invoice.paymentlinks.requests.VendorLinkRequest;
 import java.io.IOException;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
@@ -29,25 +31,34 @@ public class PaymentLinksClient {
      * Get temporary link for payer to send payment
      */
     public String getPayerLink(String invoiceId) {
-        return getPayerLink(invoiceId, null);
+        return getPayerLink(invoiceId, PayerLinkRequest.builder().build());
     }
 
     /**
      * Get temporary link for payer to send payment
      */
-    public String getPayerLink(String invoiceId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+    public String getPayerLink(String invoiceId, PayerLinkRequest request) {
+        return getPayerLink(invoiceId, request, null);
+    }
+
+    /**
+     * Get temporary link for payer to send payment
+     */
+    public String getPayerLink(String invoiceId, PayerLinkRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("invoice")
                 .addPathSegment(invoiceId)
-                .addPathSegments("payerLink")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .addPathSegments("payerLink");
+        if (request.getExpiresIn().isPresent()) {
+            httpUrl.addQueryParameter("expiresIn", request.getExpiresIn().get());
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
+                .addHeader("Content-Type", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);
@@ -122,25 +133,34 @@ public class PaymentLinksClient {
      * Get temporary link for vendor to accept payment
      */
     public String getVendorLink(String invoiceId) {
-        return getVendorLink(invoiceId, null);
+        return getVendorLink(invoiceId, VendorLinkRequest.builder().build());
     }
 
     /**
      * Get temporary link for vendor to accept payment
      */
-    public String getVendorLink(String invoiceId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+    public String getVendorLink(String invoiceId, VendorLinkRequest request) {
+        return getVendorLink(invoiceId, request, null);
+    }
+
+    /**
+     * Get temporary link for vendor to accept payment
+     */
+    public String getVendorLink(String invoiceId, VendorLinkRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("invoice")
                 .addPathSegment(invoiceId)
-                .addPathSegments("vendorLink")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+                .addPathSegments("vendorLink");
+        if (request.getExpiresIn().isPresent()) {
+            httpUrl.addQueryParameter("expiresIn", request.getExpiresIn().get());
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
+                .addHeader("Content-Type", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);

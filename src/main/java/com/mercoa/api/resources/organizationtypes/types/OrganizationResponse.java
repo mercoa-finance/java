@@ -49,6 +49,8 @@ public final class OrganizationResponse {
 
     private final Optional<NotificationEmailTemplateResponse> notificationEmailTemplate;
 
+    private final Optional<String> organizationEntityId;
+
     private final Map<String, Object> additionalProperties;
 
     private OrganizationResponse(
@@ -66,6 +68,7 @@ public final class OrganizationResponse {
             Optional<OnboardingOptionsResponse> payorOnboardingOptions,
             Optional<List<MetadataSchema>> metadataSchema,
             Optional<NotificationEmailTemplateResponse> notificationEmailTemplate,
+            Optional<String> organizationEntityId,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.sandbox = sandbox;
@@ -81,6 +84,7 @@ public final class OrganizationResponse {
         this.payorOnboardingOptions = payorOnboardingOptions;
         this.metadataSchema = metadataSchema;
         this.notificationEmailTemplate = notificationEmailTemplate;
+        this.organizationEntityId = organizationEntityId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -154,6 +158,11 @@ public final class OrganizationResponse {
         return notificationEmailTemplate;
     }
 
+    @JsonProperty("organizationEntityId")
+    public Optional<String> getOrganizationEntityId() {
+        return organizationEntityId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -179,7 +188,8 @@ public final class OrganizationResponse {
                 && payeeOnboardingOptions.equals(other.payeeOnboardingOptions)
                 && payorOnboardingOptions.equals(other.payorOnboardingOptions)
                 && metadataSchema.equals(other.metadataSchema)
-                && notificationEmailTemplate.equals(other.notificationEmailTemplate);
+                && notificationEmailTemplate.equals(other.notificationEmailTemplate)
+                && organizationEntityId.equals(other.organizationEntityId);
     }
 
     @java.lang.Override
@@ -198,7 +208,8 @@ public final class OrganizationResponse {
                 this.payeeOnboardingOptions,
                 this.payorOnboardingOptions,
                 this.metadataSchema,
-                this.notificationEmailTemplate);
+                this.notificationEmailTemplate,
+                this.organizationEntityId);
     }
 
     @java.lang.Override
@@ -272,6 +283,10 @@ public final class OrganizationResponse {
         _FinalStage notificationEmailTemplate(Optional<NotificationEmailTemplateResponse> notificationEmailTemplate);
 
         _FinalStage notificationEmailTemplate(NotificationEmailTemplateResponse notificationEmailTemplate);
+
+        _FinalStage organizationEntityId(Optional<String> organizationEntityId);
+
+        _FinalStage organizationEntityId(String organizationEntityId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -281,6 +296,8 @@ public final class OrganizationResponse {
         private boolean sandbox;
 
         private String name;
+
+        private Optional<String> organizationEntityId = Optional.empty();
 
         private Optional<NotificationEmailTemplateResponse> notificationEmailTemplate = Optional.empty();
 
@@ -325,6 +342,7 @@ public final class OrganizationResponse {
             payorOnboardingOptions(other.getPayorOnboardingOptions());
             metadataSchema(other.getMetadataSchema());
             notificationEmailTemplate(other.getNotificationEmailTemplate());
+            organizationEntityId(other.getOrganizationEntityId());
             return this;
         }
 
@@ -346,6 +364,19 @@ public final class OrganizationResponse {
         @JsonSetter("name")
         public _FinalStage name(String name) {
             this.name = name;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage organizationEntityId(String organizationEntityId) {
+            this.organizationEntityId = Optional.ofNullable(organizationEntityId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "organizationEntityId", nulls = Nulls.SKIP)
+        public _FinalStage organizationEntityId(Optional<String> organizationEntityId) {
+            this.organizationEntityId = organizationEntityId;
             return this;
         }
 
@@ -512,6 +543,7 @@ public final class OrganizationResponse {
                     payorOnboardingOptions,
                     metadataSchema,
                     notificationEmailTemplate,
+                    organizationEntityId,
                     additionalProperties);
         }
     }

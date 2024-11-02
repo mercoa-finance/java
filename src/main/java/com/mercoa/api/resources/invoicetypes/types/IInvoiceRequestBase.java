@@ -58,5 +58,7 @@ public interface IInvoiceRequestBase {
 
     Optional<InvoiceFeesRequest> getFees();
 
+    Optional<Boolean> getBatchPayment();
+
     Optional<PaymentSchedule> getPaymentSchedule();
 }

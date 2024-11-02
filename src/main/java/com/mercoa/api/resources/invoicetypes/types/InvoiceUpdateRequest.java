@@ -71,6 +71,8 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
 
     private final Optional<InvoiceFeesRequest> fees;
 
+    private final Optional<Boolean> batchPayment;
+
     private final Optional<PaymentSchedule> paymentSchedule;
 
     private final Optional<List<InvoiceLineItemUpdateRequest>> lineItems;
@@ -104,6 +106,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
             Optional<String> creatorUserId,
             Optional<InvoiceFailureType> failureType,
             Optional<InvoiceFeesRequest> fees,
+            Optional<Boolean> batchPayment,
             Optional<PaymentSchedule> paymentSchedule,
             Optional<List<InvoiceLineItemUpdateRequest>> lineItems,
             Optional<String> creatorEntityId,
@@ -132,6 +135,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
         this.creatorUserId = creatorUserId;
         this.failureType = failureType;
         this.fees = fees;
+        this.batchPayment = batchPayment;
         this.paymentSchedule = paymentSchedule;
         this.lineItems = lineItems;
         this.creatorEntityId = creatorEntityId;
@@ -343,6 +347,15 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
     }
 
     /**
+     * @return If true, this invoice will be paid as a batch payment. Batches are automatically determined by Mercoa based on the payment source, destination, and scheduled payment date.
+     */
+    @JsonProperty("batchPayment")
+    @java.lang.Override
+    public Optional<Boolean> getBatchPayment() {
+        return batchPayment;
+    }
+
+    /**
      * @return If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.
      */
     @JsonProperty("paymentSchedule")
@@ -400,6 +413,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
                 && creatorUserId.equals(other.creatorUserId)
                 && failureType.equals(other.failureType)
                 && fees.equals(other.fees)
+                && batchPayment.equals(other.batchPayment)
                 && paymentSchedule.equals(other.paymentSchedule)
                 && lineItems.equals(other.lineItems)
                 && creatorEntityId.equals(other.creatorEntityId);
@@ -432,6 +446,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
                 this.creatorUserId,
                 this.failureType,
                 this.fees,
+                this.batchPayment,
                 this.paymentSchedule,
                 this.lineItems,
                 this.creatorEntityId);
@@ -496,6 +511,8 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
 
         private Optional<InvoiceFeesRequest> fees = Optional.empty();
 
+        private Optional<Boolean> batchPayment = Optional.empty();
+
         private Optional<PaymentSchedule> paymentSchedule = Optional.empty();
 
         private Optional<List<InvoiceLineItemUpdateRequest>> lineItems = Optional.empty();
@@ -532,6 +549,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
             creatorUserId(other.getCreatorUserId());
             failureType(other.getFailureType());
             fees(other.getFees());
+            batchPayment(other.getBatchPayment());
             paymentSchedule(other.getPaymentSchedule());
             lineItems(other.getLineItems());
             creatorEntityId(other.getCreatorEntityId());
@@ -802,6 +820,17 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
             return this;
         }
 
+        @JsonSetter(value = "batchPayment", nulls = Nulls.SKIP)
+        public Builder batchPayment(Optional<Boolean> batchPayment) {
+            this.batchPayment = batchPayment;
+            return this;
+        }
+
+        public Builder batchPayment(Boolean batchPayment) {
+            this.batchPayment = Optional.ofNullable(batchPayment);
+            return this;
+        }
+
         @JsonSetter(value = "paymentSchedule", nulls = Nulls.SKIP)
         public Builder paymentSchedule(Optional<PaymentSchedule> paymentSchedule) {
             this.paymentSchedule = paymentSchedule;
@@ -861,6 +890,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
                     creatorUserId,
                     failureType,
                     fees,
+                    batchPayment,
                     paymentSchedule,
                     lineItems,
                     creatorEntityId,

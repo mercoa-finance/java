@@ -71,6 +71,8 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
 
     private final Optional<InvoiceFeesRequest> fees;
 
+    private final Optional<Boolean> batchPayment;
+
     private final Optional<PaymentSchedule> paymentSchedule;
 
     private final Optional<List<InvoiceLineItemCreationRequest>> lineItems;
@@ -104,6 +106,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
             Optional<String> creatorUserId,
             Optional<InvoiceFailureType> failureType,
             Optional<InvoiceFeesRequest> fees,
+            Optional<Boolean> batchPayment,
             Optional<PaymentSchedule> paymentSchedule,
             Optional<List<InvoiceLineItemCreationRequest>> lineItems,
             String creatorEntityId,
@@ -132,6 +135,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
         this.creatorUserId = creatorUserId;
         this.failureType = failureType;
         this.fees = fees;
+        this.batchPayment = batchPayment;
         this.paymentSchedule = paymentSchedule;
         this.lineItems = lineItems;
         this.creatorEntityId = creatorEntityId;
@@ -343,6 +347,15 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
     }
 
     /**
+     * @return If true, this invoice will be paid as a batch payment. Batches are automatically determined by Mercoa based on the payment source, destination, and scheduled payment date.
+     */
+    @JsonProperty("batchPayment")
+    @java.lang.Override
+    public Optional<Boolean> getBatchPayment() {
+        return batchPayment;
+    }
+
+    /**
      * @return If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.
      */
     @JsonProperty("paymentSchedule")
@@ -400,6 +413,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
                 && creatorUserId.equals(other.creatorUserId)
                 && failureType.equals(other.failureType)
                 && fees.equals(other.fees)
+                && batchPayment.equals(other.batchPayment)
                 && paymentSchedule.equals(other.paymentSchedule)
                 && lineItems.equals(other.lineItems)
                 && creatorEntityId.equals(other.creatorEntityId);
@@ -432,6 +446,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
                 this.creatorUserId,
                 this.failureType,
                 this.fees,
+                this.batchPayment,
                 this.paymentSchedule,
                 this.lineItems,
                 this.creatorEntityId);
@@ -551,6 +566,10 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
 
         _FinalStage fees(InvoiceFeesRequest fees);
 
+        _FinalStage batchPayment(Optional<Boolean> batchPayment);
+
+        _FinalStage batchPayment(Boolean batchPayment);
+
         _FinalStage paymentSchedule(Optional<PaymentSchedule> paymentSchedule);
 
         _FinalStage paymentSchedule(PaymentSchedule paymentSchedule);
@@ -567,6 +586,8 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
         private Optional<List<InvoiceLineItemCreationRequest>> lineItems = Optional.empty();
 
         private Optional<PaymentSchedule> paymentSchedule = Optional.empty();
+
+        private Optional<Boolean> batchPayment = Optional.empty();
 
         private Optional<InvoiceFeesRequest> fees = Optional.empty();
 
@@ -647,6 +668,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
             creatorUserId(other.getCreatorUserId());
             failureType(other.getFailureType());
             fees(other.getFees());
+            batchPayment(other.getBatchPayment());
             paymentSchedule(other.getPaymentSchedule());
             lineItems(other.getLineItems());
             creatorEntityId(other.getCreatorEntityId());
@@ -691,6 +713,23 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
         @JsonSetter(value = "paymentSchedule", nulls = Nulls.SKIP)
         public _FinalStage paymentSchedule(Optional<PaymentSchedule> paymentSchedule) {
             this.paymentSchedule = paymentSchedule;
+            return this;
+        }
+
+        /**
+         * <p>If true, this invoice will be paid as a batch payment. Batches are automatically determined by Mercoa based on the payment source, destination, and scheduled payment date.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage batchPayment(Boolean batchPayment) {
+            this.batchPayment = Optional.ofNullable(batchPayment);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "batchPayment", nulls = Nulls.SKIP)
+        public _FinalStage batchPayment(Optional<Boolean> batchPayment) {
+            this.batchPayment = batchPayment;
             return this;
         }
 
@@ -1113,6 +1152,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
                     creatorUserId,
                     failureType,
                     fees,
+                    batchPayment,
                     paymentSchedule,
                     lineItems,
                     creatorEntityId,

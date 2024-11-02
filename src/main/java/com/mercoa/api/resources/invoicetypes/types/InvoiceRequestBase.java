@@ -71,6 +71,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
     private final Optional<InvoiceFeesRequest> fees;
 
+    private final Optional<Boolean> batchPayment;
+
     private final Optional<PaymentSchedule> paymentSchedule;
 
     private final Map<String, Object> additionalProperties;
@@ -100,6 +102,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             Optional<String> creatorUserId,
             Optional<InvoiceFailureType> failureType,
             Optional<InvoiceFeesRequest> fees,
+            Optional<Boolean> batchPayment,
             Optional<PaymentSchedule> paymentSchedule,
             Map<String, Object> additionalProperties) {
         this.status = status;
@@ -126,6 +129,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         this.creatorUserId = creatorUserId;
         this.failureType = failureType;
         this.fees = fees;
+        this.batchPayment = batchPayment;
         this.paymentSchedule = paymentSchedule;
         this.additionalProperties = additionalProperties;
     }
@@ -335,6 +339,15 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
     }
 
     /**
+     * @return If true, this invoice will be paid as a batch payment. Batches are automatically determined by Mercoa based on the payment source, destination, and scheduled payment date.
+     */
+    @JsonProperty("batchPayment")
+    @java.lang.Override
+    public Optional<Boolean> getBatchPayment() {
+        return batchPayment;
+    }
+
+    /**
      * @return If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.
      */
     @JsonProperty("paymentSchedule")
@@ -379,6 +392,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 && creatorUserId.equals(other.creatorUserId)
                 && failureType.equals(other.failureType)
                 && fees.equals(other.fees)
+                && batchPayment.equals(other.batchPayment)
                 && paymentSchedule.equals(other.paymentSchedule);
     }
 
@@ -409,6 +423,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 this.creatorUserId,
                 this.failureType,
                 this.fees,
+                this.batchPayment,
                 this.paymentSchedule);
     }
 
@@ -471,6 +486,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
         private Optional<InvoiceFeesRequest> fees = Optional.empty();
 
+        private Optional<Boolean> batchPayment = Optional.empty();
+
         private Optional<PaymentSchedule> paymentSchedule = Optional.empty();
 
         @JsonAnySetter
@@ -503,6 +520,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             creatorUserId(other.getCreatorUserId());
             failureType(other.getFailureType());
             fees(other.getFees());
+            batchPayment(other.getBatchPayment());
             paymentSchedule(other.getPaymentSchedule());
             return this;
         }
@@ -771,6 +789,17 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        @JsonSetter(value = "batchPayment", nulls = Nulls.SKIP)
+        public Builder batchPayment(Optional<Boolean> batchPayment) {
+            this.batchPayment = batchPayment;
+            return this;
+        }
+
+        public Builder batchPayment(Boolean batchPayment) {
+            this.batchPayment = Optional.ofNullable(batchPayment);
+            return this;
+        }
+
         @JsonSetter(value = "paymentSchedule", nulls = Nulls.SKIP)
         public Builder paymentSchedule(Optional<PaymentSchedule> paymentSchedule) {
             this.paymentSchedule = paymentSchedule;
@@ -808,6 +837,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                     creatorUserId,
                     failureType,
                     fees,
+                    batchPayment,
                     paymentSchedule,
                     additionalProperties);
         }
