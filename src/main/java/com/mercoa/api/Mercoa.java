@@ -11,6 +11,7 @@ import com.mercoa.api.resources.custompaymentmethodschema.CustomPaymentMethodSch
 import com.mercoa.api.resources.entity.EntityClient;
 import com.mercoa.api.resources.entitygroup.EntityGroupClient;
 import com.mercoa.api.resources.invoice.InvoiceClient;
+import com.mercoa.api.resources.invoicetemplate.InvoiceTemplateClient;
 import com.mercoa.api.resources.ocr.OcrClient;
 import com.mercoa.api.resources.organization.OrganizationClient;
 import com.mercoa.api.resources.paymentmethods.PaymentMethodsClient;
@@ -22,6 +23,8 @@ public class Mercoa {
     protected final Supplier<EntityGroupClient> entityGroupClient;
 
     protected final Supplier<EntityClient> entityClient;
+
+    protected final Supplier<InvoiceTemplateClient> invoiceTemplateClient;
 
     protected final Supplier<InvoiceClient> invoiceClient;
 
@@ -41,6 +44,7 @@ public class Mercoa {
         this.clientOptions = clientOptions;
         this.entityGroupClient = Suppliers.memoize(() -> new EntityGroupClient(clientOptions));
         this.entityClient = Suppliers.memoize(() -> new EntityClient(clientOptions));
+        this.invoiceTemplateClient = Suppliers.memoize(() -> new InvoiceTemplateClient(clientOptions));
         this.invoiceClient = Suppliers.memoize(() -> new InvoiceClient(clientOptions));
         this.organizationClient = Suppliers.memoize(() -> new OrganizationClient(clientOptions));
         this.bankLookupClient = Suppliers.memoize(() -> new BankLookupClient(clientOptions));
@@ -57,6 +61,10 @@ public class Mercoa {
 
     public EntityClient entity() {
         return this.entityClient.get();
+    }
+
+    public InvoiceTemplateClient invoiceTemplate() {
+        return this.invoiceTemplateClient.get();
     }
 
     public InvoiceClient invoice() {

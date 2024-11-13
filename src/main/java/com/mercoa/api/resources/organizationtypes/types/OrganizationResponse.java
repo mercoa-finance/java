@@ -49,6 +49,8 @@ public final class OrganizationResponse {
 
     private final Optional<NotificationEmailTemplateResponse> notificationEmailTemplate;
 
+    private final Optional<List<String>> customDomains;
+
     private final Optional<String> organizationEntityId;
 
     private final Map<String, Object> additionalProperties;
@@ -68,6 +70,7 @@ public final class OrganizationResponse {
             Optional<OnboardingOptionsResponse> payorOnboardingOptions,
             Optional<List<MetadataSchema>> metadataSchema,
             Optional<NotificationEmailTemplateResponse> notificationEmailTemplate,
+            Optional<List<String>> customDomains,
             Optional<String> organizationEntityId,
             Map<String, Object> additionalProperties) {
         this.id = id;
@@ -84,6 +87,7 @@ public final class OrganizationResponse {
         this.payorOnboardingOptions = payorOnboardingOptions;
         this.metadataSchema = metadataSchema;
         this.notificationEmailTemplate = notificationEmailTemplate;
+        this.customDomains = customDomains;
         this.organizationEntityId = organizationEntityId;
         this.additionalProperties = additionalProperties;
     }
@@ -158,6 +162,11 @@ public final class OrganizationResponse {
         return notificationEmailTemplate;
     }
 
+    @JsonProperty("customDomains")
+    public Optional<List<String>> getCustomDomains() {
+        return customDomains;
+    }
+
     @JsonProperty("organizationEntityId")
     public Optional<String> getOrganizationEntityId() {
         return organizationEntityId;
@@ -189,6 +198,7 @@ public final class OrganizationResponse {
                 && payorOnboardingOptions.equals(other.payorOnboardingOptions)
                 && metadataSchema.equals(other.metadataSchema)
                 && notificationEmailTemplate.equals(other.notificationEmailTemplate)
+                && customDomains.equals(other.customDomains)
                 && organizationEntityId.equals(other.organizationEntityId);
     }
 
@@ -209,6 +219,7 @@ public final class OrganizationResponse {
                 this.payorOnboardingOptions,
                 this.metadataSchema,
                 this.notificationEmailTemplate,
+                this.customDomains,
                 this.organizationEntityId);
     }
 
@@ -284,6 +295,10 @@ public final class OrganizationResponse {
 
         _FinalStage notificationEmailTemplate(NotificationEmailTemplateResponse notificationEmailTemplate);
 
+        _FinalStage customDomains(Optional<List<String>> customDomains);
+
+        _FinalStage customDomains(List<String> customDomains);
+
         _FinalStage organizationEntityId(Optional<String> organizationEntityId);
 
         _FinalStage organizationEntityId(String organizationEntityId);
@@ -298,6 +313,8 @@ public final class OrganizationResponse {
         private String name;
 
         private Optional<String> organizationEntityId = Optional.empty();
+
+        private Optional<List<String>> customDomains = Optional.empty();
 
         private Optional<NotificationEmailTemplateResponse> notificationEmailTemplate = Optional.empty();
 
@@ -342,6 +359,7 @@ public final class OrganizationResponse {
             payorOnboardingOptions(other.getPayorOnboardingOptions());
             metadataSchema(other.getMetadataSchema());
             notificationEmailTemplate(other.getNotificationEmailTemplate());
+            customDomains(other.getCustomDomains());
             organizationEntityId(other.getOrganizationEntityId());
             return this;
         }
@@ -377,6 +395,19 @@ public final class OrganizationResponse {
         @JsonSetter(value = "organizationEntityId", nulls = Nulls.SKIP)
         public _FinalStage organizationEntityId(Optional<String> organizationEntityId) {
             this.organizationEntityId = organizationEntityId;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage customDomains(List<String> customDomains) {
+            this.customDomains = Optional.ofNullable(customDomains);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "customDomains", nulls = Nulls.SKIP)
+        public _FinalStage customDomains(Optional<List<String>> customDomains) {
+            this.customDomains = customDomains;
             return this;
         }
 
@@ -543,6 +574,7 @@ public final class OrganizationResponse {
                     payorOnboardingOptions,
                     metadataSchema,
                     notificationEmailTemplate,
+                    customDomains,
                     organizationEntityId,
                     additionalProperties);
         }

@@ -32,6 +32,8 @@ public final class BusinessOnboardingOptions implements ICommonOnboardingOptions
 
     private final OnboardingOption w9;
 
+    private final OnboardingOption bankStatement;
+
     private final OnboardingOption type;
 
     private final OnboardingOption doingBusinessAs;
@@ -66,6 +68,7 @@ public final class BusinessOnboardingOptions implements ICommonOnboardingOptions
             OnboardingOption phone,
             OnboardingOption tenNinetyNine,
             OnboardingOption w9,
+            OnboardingOption bankStatement,
             OnboardingOption type,
             OnboardingOption doingBusinessAs,
             OnboardingOption ein,
@@ -86,6 +89,7 @@ public final class BusinessOnboardingOptions implements ICommonOnboardingOptions
         this.phone = phone;
         this.tenNinetyNine = tenNinetyNine;
         this.w9 = w9;
+        this.bankStatement = bankStatement;
         this.type = type;
         this.doingBusinessAs = doingBusinessAs;
         this.ein = ein;
@@ -141,6 +145,12 @@ public final class BusinessOnboardingOptions implements ICommonOnboardingOptions
     @java.lang.Override
     public OnboardingOption getW9() {
         return w9;
+    }
+
+    @JsonProperty("bankStatement")
+    @java.lang.Override
+    public OnboardingOption getBankStatement() {
+        return bankStatement;
     }
 
     @JsonProperty("type")
@@ -222,6 +232,7 @@ public final class BusinessOnboardingOptions implements ICommonOnboardingOptions
                 && phone.equals(other.phone)
                 && tenNinetyNine.equals(other.tenNinetyNine)
                 && w9.equals(other.w9)
+                && bankStatement.equals(other.bankStatement)
                 && type.equals(other.type)
                 && doingBusinessAs.equals(other.doingBusinessAs)
                 && ein.equals(other.ein)
@@ -246,6 +257,7 @@ public final class BusinessOnboardingOptions implements ICommonOnboardingOptions
                 this.phone,
                 this.tenNinetyNine,
                 this.w9,
+                this.bankStatement,
                 this.type,
                 this.doingBusinessAs,
                 this.ein,
@@ -296,7 +308,11 @@ public final class BusinessOnboardingOptions implements ICommonOnboardingOptions
     }
 
     public interface W9Stage {
-        TypeStage w9(OnboardingOption w9);
+        BankStatementStage w9(OnboardingOption w9);
+    }
+
+    public interface BankStatementStage {
+        TypeStage bankStatement(OnboardingOption bankStatement);
     }
 
     public interface TypeStage {
@@ -360,6 +376,7 @@ public final class BusinessOnboardingOptions implements ICommonOnboardingOptions
                     PhoneStage,
                     TenNinetyNineStage,
                     W9Stage,
+                    BankStatementStage,
                     TypeStage,
                     DoingBusinessAsStage,
                     EinStage,
@@ -386,6 +403,8 @@ public final class BusinessOnboardingOptions implements ICommonOnboardingOptions
         private OnboardingOption tenNinetyNine;
 
         private OnboardingOption w9;
+
+        private OnboardingOption bankStatement;
 
         private OnboardingOption type;
 
@@ -425,6 +444,7 @@ public final class BusinessOnboardingOptions implements ICommonOnboardingOptions
             phone(other.getPhone());
             tenNinetyNine(other.getTenNinetyNine());
             w9(other.getW9());
+            bankStatement(other.getBankStatement());
             type(other.getType());
             doingBusinessAs(other.getDoingBusinessAs());
             ein(other.getEin());
@@ -484,8 +504,15 @@ public final class BusinessOnboardingOptions implements ICommonOnboardingOptions
 
         @java.lang.Override
         @JsonSetter("w9")
-        public TypeStage w9(OnboardingOption w9) {
+        public BankStatementStage w9(OnboardingOption w9) {
             this.w9 = w9;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("bankStatement")
+        public TypeStage bankStatement(OnboardingOption bankStatement) {
+            this.bankStatement = bankStatement;
             return this;
         }
 
@@ -584,6 +611,7 @@ public final class BusinessOnboardingOptions implements ICommonOnboardingOptions
                     phone,
                     tenNinetyNine,
                     w9,
+                    bankStatement,
                     type,
                     doingBusinessAs,
                     ein,

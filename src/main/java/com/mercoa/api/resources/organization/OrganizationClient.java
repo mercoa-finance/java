@@ -95,6 +95,10 @@ public class OrganizationClient {
                     "notificationEmailTemplate",
                     request.getNotificationEmailTemplate().get().toString());
         }
+        if (request.getCustomDomains().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "customDomains", request.getCustomDomains().get().toString());
+        }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)

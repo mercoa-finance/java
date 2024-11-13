@@ -10,14 +10,17 @@ import com.mercoa.api.core.MercoaApiException;
 import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
+import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.entity.counterparty.requests.FindPayeeCounterpartiesRequest;
 import com.mercoa.api.resources.entity.counterparty.requests.FindPayorCounterpartiesRequest;
+import com.mercoa.api.resources.entity.counterparty.vendorcredit.VendorCreditClient;
 import com.mercoa.api.resources.entitytypes.types.EntityAddPayeesRequest;
 import com.mercoa.api.resources.entitytypes.types.EntityAddPayorsRequest;
 import com.mercoa.api.resources.entitytypes.types.EntityHidePayeesRequest;
 import com.mercoa.api.resources.entitytypes.types.EntityHidePayorsRequest;
 import com.mercoa.api.resources.entitytypes.types.FindCounterpartiesResponse;
 import java.io.IOException;
+import java.util.function.Supplier;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -29,8 +32,11 @@ import okhttp3.ResponseBody;
 public class CounterpartyClient {
     protected final ClientOptions clientOptions;
 
+    protected final Supplier<VendorCreditClient> vendorCreditClient;
+
     public CounterpartyClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.vendorCreditClient = Suppliers.memoize(() -> new VendorCreditClient(clientOptions));
     }
 
     /**
@@ -391,5 +397,9 @@ public class CounterpartyClient {
         } catch (IOException e) {
             throw new MercoaException("Network error executing HTTP request", e);
         }
+    }
+
+    public VendorCreditClient vendorCredit() {
+        return this.vendorCreditClient.get();
     }
 }

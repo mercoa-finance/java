@@ -49,6 +49,8 @@ import okhttp3.ResponseBody;
 public class EntityClient {
     protected final ClientOptions clientOptions;
 
+    protected final Supplier<CounterpartyClient> counterpartyClient;
+
     protected final Supplier<EmailLogClient> emailLogClient;
 
     protected final Supplier<PaymentMethodClient> paymentMethodClient;
@@ -56,8 +58,6 @@ public class EntityClient {
     protected final Supplier<UserClient> userClient;
 
     protected final Supplier<ApprovalPolicyClient> approvalPolicyClient;
-
-    protected final Supplier<CounterpartyClient> counterpartyClient;
 
     protected final Supplier<CustomizationClient> customizationClient;
 
@@ -77,11 +77,11 @@ public class EntityClient {
 
     public EntityClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.counterpartyClient = Suppliers.memoize(() -> new CounterpartyClient(clientOptions));
         this.emailLogClient = Suppliers.memoize(() -> new EmailLogClient(clientOptions));
         this.paymentMethodClient = Suppliers.memoize(() -> new PaymentMethodClient(clientOptions));
         this.userClient = Suppliers.memoize(() -> new UserClient(clientOptions));
         this.approvalPolicyClient = Suppliers.memoize(() -> new ApprovalPolicyClient(clientOptions));
-        this.counterpartyClient = Suppliers.memoize(() -> new CounterpartyClient(clientOptions));
         this.customizationClient = Suppliers.memoize(() -> new CustomizationClient(clientOptions));
         this.documentClient = Suppliers.memoize(() -> new DocumentClient(clientOptions));
         this.emailTemplateClient = Suppliers.memoize(() -> new EmailTemplateClient(clientOptions));
@@ -694,6 +694,10 @@ public class EntityClient {
         }
     }
 
+    public CounterpartyClient counterparty() {
+        return this.counterpartyClient.get();
+    }
+
     public EmailLogClient emailLog() {
         return this.emailLogClient.get();
     }
@@ -708,10 +712,6 @@ public class EntityClient {
 
     public ApprovalPolicyClient approvalPolicy() {
         return this.approvalPolicyClient.get();
-    }
-
-    public CounterpartyClient counterparty() {
-        return this.counterpartyClient.get();
     }
 
     public CustomizationClient customization() {

@@ -45,6 +45,8 @@ public final class OrganizationRequest {
 
     private final Optional<NotificationEmailTemplateRequest> notificationEmailTemplate;
 
+    private final Optional<List<String>> customDomains;
+
     private final Map<String, Object> additionalProperties;
 
     private OrganizationRequest(
@@ -60,6 +62,7 @@ public final class OrganizationRequest {
             Optional<OnboardingOptionsRequest> payorOnboardingOptions,
             Optional<List<MetadataSchema>> metadataSchema,
             Optional<NotificationEmailTemplateRequest> notificationEmailTemplate,
+            Optional<List<String>> customDomains,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.logo = logo;
@@ -73,6 +76,7 @@ public final class OrganizationRequest {
         this.payorOnboardingOptions = payorOnboardingOptions;
         this.metadataSchema = metadataSchema;
         this.notificationEmailTemplate = notificationEmailTemplate;
+        this.customDomains = customDomains;
         this.additionalProperties = additionalProperties;
     }
 
@@ -136,6 +140,11 @@ public final class OrganizationRequest {
         return notificationEmailTemplate;
     }
 
+    @JsonProperty("customDomains")
+    public Optional<List<String>> getCustomDomains() {
+        return customDomains;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -159,7 +168,8 @@ public final class OrganizationRequest {
                 && payeeOnboardingOptions.equals(other.payeeOnboardingOptions)
                 && payorOnboardingOptions.equals(other.payorOnboardingOptions)
                 && metadataSchema.equals(other.metadataSchema)
-                && notificationEmailTemplate.equals(other.notificationEmailTemplate);
+                && notificationEmailTemplate.equals(other.notificationEmailTemplate)
+                && customDomains.equals(other.customDomains);
     }
 
     @java.lang.Override
@@ -176,7 +186,8 @@ public final class OrganizationRequest {
                 this.payeeOnboardingOptions,
                 this.payorOnboardingOptions,
                 this.metadataSchema,
-                this.notificationEmailTemplate);
+                this.notificationEmailTemplate,
+                this.customDomains);
     }
 
     @java.lang.Override
@@ -214,6 +225,8 @@ public final class OrganizationRequest {
 
         private Optional<NotificationEmailTemplateRequest> notificationEmailTemplate = Optional.empty();
 
+        private Optional<List<String>> customDomains = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -232,6 +245,7 @@ public final class OrganizationRequest {
             payorOnboardingOptions(other.getPayorOnboardingOptions());
             metadataSchema(other.getMetadataSchema());
             notificationEmailTemplate(other.getNotificationEmailTemplate());
+            customDomains(other.getCustomDomains());
             return this;
         }
 
@@ -369,6 +383,17 @@ public final class OrganizationRequest {
             return this;
         }
 
+        @JsonSetter(value = "customDomains", nulls = Nulls.SKIP)
+        public Builder customDomains(Optional<List<String>> customDomains) {
+            this.customDomains = customDomains;
+            return this;
+        }
+
+        public Builder customDomains(List<String> customDomains) {
+            this.customDomains = Optional.ofNullable(customDomains);
+            return this;
+        }
+
         public OrganizationRequest build() {
             return new OrganizationRequest(
                     name,
@@ -383,6 +408,7 @@ public final class OrganizationRequest {
                     payorOnboardingOptions,
                     metadataSchema,
                     notificationEmailTemplate,
+                    customDomains,
                     additionalProperties);
         }
     }

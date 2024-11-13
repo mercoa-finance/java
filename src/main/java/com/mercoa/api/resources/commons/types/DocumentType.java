@@ -14,6 +14,8 @@ public enum DocumentType {
 
     CHECK("CHECK"),
 
+    BANK_STATEMENT("BANK_STATEMENT"),
+
     OTHER("OTHER");
 
     private final String value;

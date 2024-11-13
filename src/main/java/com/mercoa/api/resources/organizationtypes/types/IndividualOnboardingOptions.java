@@ -32,6 +32,8 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
 
     private final OnboardingOption w9;
 
+    private final OnboardingOption bankStatement;
+
     private final OnboardingOption dateOfBirth;
 
     private final OnboardingOption ssn;
@@ -46,6 +48,7 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
             OnboardingOption phone,
             OnboardingOption tenNinetyNine,
             OnboardingOption w9,
+            OnboardingOption bankStatement,
             OnboardingOption dateOfBirth,
             OnboardingOption ssn,
             Map<String, Object> additionalProperties) {
@@ -56,6 +59,7 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
         this.phone = phone;
         this.tenNinetyNine = tenNinetyNine;
         this.w9 = w9;
+        this.bankStatement = bankStatement;
         this.dateOfBirth = dateOfBirth;
         this.ssn = ssn;
         this.additionalProperties = additionalProperties;
@@ -103,6 +107,12 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
         return w9;
     }
 
+    @JsonProperty("bankStatement")
+    @java.lang.Override
+    public OnboardingOption getBankStatement() {
+        return bankStatement;
+    }
+
     @JsonProperty("dateOfBirth")
     public OnboardingOption getDateOfBirth() {
         return dateOfBirth;
@@ -132,6 +142,7 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
                 && phone.equals(other.phone)
                 && tenNinetyNine.equals(other.tenNinetyNine)
                 && w9.equals(other.w9)
+                && bankStatement.equals(other.bankStatement)
                 && dateOfBirth.equals(other.dateOfBirth)
                 && ssn.equals(other.ssn);
     }
@@ -146,6 +157,7 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
                 this.phone,
                 this.tenNinetyNine,
                 this.w9,
+                this.bankStatement,
                 this.dateOfBirth,
                 this.ssn);
     }
@@ -186,7 +198,11 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
     }
 
     public interface W9Stage {
-        DateOfBirthStage w9(OnboardingOption w9);
+        BankStatementStage w9(OnboardingOption w9);
+    }
+
+    public interface BankStatementStage {
+        DateOfBirthStage bankStatement(OnboardingOption bankStatement);
     }
 
     public interface DateOfBirthStage {
@@ -210,6 +226,7 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
                     PhoneStage,
                     TenNinetyNineStage,
                     W9Stage,
+                    BankStatementStage,
                     DateOfBirthStage,
                     SsnStage,
                     _FinalStage {
@@ -226,6 +243,8 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
         private OnboardingOption tenNinetyNine;
 
         private OnboardingOption w9;
+
+        private OnboardingOption bankStatement;
 
         private OnboardingOption dateOfBirth;
 
@@ -245,6 +264,7 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
             phone(other.getPhone());
             tenNinetyNine(other.getTenNinetyNine());
             w9(other.getW9());
+            bankStatement(other.getBankStatement());
             dateOfBirth(other.getDateOfBirth());
             ssn(other.getSsn());
             return this;
@@ -294,8 +314,15 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
 
         @java.lang.Override
         @JsonSetter("w9")
-        public DateOfBirthStage w9(OnboardingOption w9) {
+        public BankStatementStage w9(OnboardingOption w9) {
             this.w9 = w9;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("bankStatement")
+        public DateOfBirthStage bankStatement(OnboardingOption bankStatement) {
+            this.bankStatement = bankStatement;
             return this;
         }
 
@@ -323,6 +350,7 @@ public final class IndividualOnboardingOptions implements ICommonOnboardingOptio
                     phone,
                     tenNinetyNine,
                     w9,
+                    bankStatement,
                     dateOfBirth,
                     ssn,
                     additionalProperties);

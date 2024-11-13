@@ -17,4 +17,6 @@ public interface ICommonOnboardingOptions {
     OnboardingOption getTenNinetyNine();
 
     OnboardingOption getW9();
+
+    OnboardingOption getBankStatement();
 }
