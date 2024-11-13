@@ -12,9 +12,7 @@ public enum InvoiceMetricsPerDateGroupBy {
 
     INVOICE_DATE("INVOICE_DATE"),
 
-    DEDUCTION_DATE("DEDUCTION_DATE"),
-
-    NEXT_PAYMENT_DATE("NEXT_PAYMENT_DATE");
+    DEDUCTION_DATE("DEDUCTION_DATE");
 
     private final String value;
 

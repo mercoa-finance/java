@@ -154,6 +154,10 @@ public class InvoiceTemplateClient {
         }
     }
 
+    public InvoiceTemplateResponse create() {
+        return create(InvoiceTemplateCreationRequest.builder().build());
+    }
+
     public InvoiceTemplateResponse create(InvoiceTemplateCreationRequest request) {
         return create(request, null);
     }

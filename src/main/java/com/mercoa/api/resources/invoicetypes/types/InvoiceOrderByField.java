@@ -24,9 +24,7 @@ public enum InvoiceOrderByField {
 
     VENDOR_NAME("VENDOR_NAME"),
 
-    PAYER_NAME("PAYER_NAME"),
-
-    NEXT_PAYMENT_DATE("NEXT_PAYMENT_DATE");
+    PAYER_NAME("PAYER_NAME");
 
     private final String value;
 

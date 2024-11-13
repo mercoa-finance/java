@@ -39,8 +39,6 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
 
     private final Optional<OffsetDateTime> deductionDate;
 
-    private final Optional<OffsetDateTime> nextDeductionDate;
-
     private final Optional<OffsetDateTime> dueDate;
 
     private final Optional<String> invoiceNumber;
@@ -107,7 +105,6 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
             Optional<CurrencyCode> currency,
             Optional<OffsetDateTime> invoiceDate,
             Optional<OffsetDateTime> deductionDate,
-            Optional<OffsetDateTime> nextDeductionDate,
             Optional<OffsetDateTime> dueDate,
             Optional<String> invoiceNumber,
             Optional<String> noteToSelf,
@@ -143,7 +140,6 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
         this.currency = currency;
         this.invoiceDate = invoiceDate;
         this.deductionDate = deductionDate;
-        this.nextDeductionDate = nextDeductionDate;
         this.dueDate = dueDate;
         this.invoiceNumber = invoiceNumber;
         this.noteToSelf = noteToSelf;
@@ -216,15 +212,6 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
     @java.lang.Override
     public Optional<OffsetDateTime> getDeductionDate() {
         return deductionDate;
-    }
-
-    /**
-     * @return If this is a recurring invoice, this will be the next date when funds are scheduled to be deducted from payer's account.
-     */
-    @JsonProperty("nextDeductionDate")
-    @java.lang.Override
-    public Optional<OffsetDateTime> getNextDeductionDate() {
-        return nextDeductionDate;
     }
 
     /**
@@ -448,7 +435,6 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
                 && currency.equals(other.currency)
                 && invoiceDate.equals(other.invoiceDate)
                 && deductionDate.equals(other.deductionDate)
-                && nextDeductionDate.equals(other.nextDeductionDate)
                 && dueDate.equals(other.dueDate)
                 && invoiceNumber.equals(other.invoiceNumber)
                 && noteToSelf.equals(other.noteToSelf)
@@ -488,7 +474,6 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
                 this.currency,
                 this.invoiceDate,
                 this.deductionDate,
-                this.nextDeductionDate,
                 this.dueDate,
                 this.invoiceNumber,
                 this.noteToSelf,
@@ -573,10 +558,6 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
         _FinalStage deductionDate(Optional<OffsetDateTime> deductionDate);
 
         _FinalStage deductionDate(OffsetDateTime deductionDate);
-
-        _FinalStage nextDeductionDate(Optional<OffsetDateTime> nextDeductionDate);
-
-        _FinalStage nextDeductionDate(OffsetDateTime nextDeductionDate);
 
         _FinalStage dueDate(Optional<OffsetDateTime> dueDate);
 
@@ -750,8 +731,6 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
 
         private Optional<OffsetDateTime> dueDate = Optional.empty();
 
-        private Optional<OffsetDateTime> nextDeductionDate = Optional.empty();
-
         private Optional<OffsetDateTime> deductionDate = Optional.empty();
 
         private Optional<OffsetDateTime> invoiceDate = Optional.empty();
@@ -772,7 +751,6 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
             currency(other.getCurrency());
             invoiceDate(other.getInvoiceDate());
             deductionDate(other.getDeductionDate());
-            nextDeductionDate(other.getNextDeductionDate());
             dueDate(other.getDueDate());
             invoiceNumber(other.getInvoiceNumber());
             noteToSelf(other.getNoteToSelf());
@@ -1225,23 +1203,6 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
         }
 
         /**
-         * <p>If this is a recurring invoice, this will be the next date when funds are scheduled to be deducted from payer's account.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage nextDeductionDate(OffsetDateTime nextDeductionDate) {
-            this.nextDeductionDate = Optional.ofNullable(nextDeductionDate);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "nextDeductionDate", nulls = Nulls.SKIP)
-        public _FinalStage nextDeductionDate(Optional<OffsetDateTime> nextDeductionDate) {
-            this.nextDeductionDate = nextDeductionDate;
-            return this;
-        }
-
-        /**
          * <p>Initial date when funds are scheduled to be deducted from payer's account. The actual deduction date may differ from this date, and will be reflected in the processedAt field.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1317,7 +1278,6 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
                     currency,
                     invoiceDate,
                     deductionDate,
-                    nextDeductionDate,
                     dueDate,
                     invoiceNumber,
                     noteToSelf,
