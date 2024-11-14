@@ -24,6 +24,8 @@ public interface IInvoiceResponseBase {
 
     Optional<OffsetDateTime> getDeductionDate();
 
+    Optional<OffsetDateTime> getNextDeductionDate();
+
     Optional<OffsetDateTime> getDueDate();
 
     Optional<String> getInvoiceNumber();
