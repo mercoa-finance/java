@@ -39,6 +39,9 @@ public final class ApprovalSlotAssignment {
         return approvalSlotId;
     }
 
+    /**
+     * @return The ID of the user who is assigned to the approval slot. To assign all eligible users to an approval slot, use &quot;ANY&quot;.
+     */
     @JsonProperty("assignedUserId")
     public String getAssignedUserId() {
         return assignedUserId;
@@ -116,6 +119,10 @@ public final class ApprovalSlotAssignment {
             return this;
         }
 
+        /**
+         * <p>The ID of the user who is assigned to the approval slot. To assign all eligible users to an approval slot, use &quot;ANY&quot;.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("assignedUserId")
         public _FinalStage assignedUserId(String assignedUserId) {

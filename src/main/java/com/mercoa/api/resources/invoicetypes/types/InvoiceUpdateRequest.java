@@ -75,6 +75,8 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
 
     private final Optional<PaymentSchedule> paymentSchedule;
 
+    private final Optional<List<String>> vendorCreditIds;
+
     private final Optional<List<InvoiceLineItemUpdateRequest>> lineItems;
 
     private final Optional<String> creatorEntityId;
@@ -108,6 +110,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
             Optional<InvoiceFeesRequest> fees,
             Optional<Boolean> batchPayment,
             Optional<PaymentSchedule> paymentSchedule,
+            Optional<List<String>> vendorCreditIds,
             Optional<List<InvoiceLineItemUpdateRequest>> lineItems,
             Optional<String> creatorEntityId,
             Map<String, Object> additionalProperties) {
@@ -137,6 +140,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
         this.fees = fees;
         this.batchPayment = batchPayment;
         this.paymentSchedule = paymentSchedule;
+        this.vendorCreditIds = vendorCreditIds;
         this.lineItems = lineItems;
         this.creatorEntityId = creatorEntityId;
         this.additionalProperties = additionalProperties;
@@ -364,6 +368,15 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
         return paymentSchedule;
     }
 
+    /**
+     * @return The IDs of the vendor credits to be applied to this invoice. Passing this field will un-apply any previously applied vendor credits.
+     */
+    @JsonProperty("vendorCreditIds")
+    @java.lang.Override
+    public Optional<List<String>> getVendorCreditIds() {
+        return vendorCreditIds;
+    }
+
     @JsonProperty("lineItems")
     public Optional<List<InvoiceLineItemUpdateRequest>> getLineItems() {
         return lineItems;
@@ -415,6 +428,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
                 && fees.equals(other.fees)
                 && batchPayment.equals(other.batchPayment)
                 && paymentSchedule.equals(other.paymentSchedule)
+                && vendorCreditIds.equals(other.vendorCreditIds)
                 && lineItems.equals(other.lineItems)
                 && creatorEntityId.equals(other.creatorEntityId);
     }
@@ -448,6 +462,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
                 this.fees,
                 this.batchPayment,
                 this.paymentSchedule,
+                this.vendorCreditIds,
                 this.lineItems,
                 this.creatorEntityId);
     }
@@ -515,6 +530,8 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
 
         private Optional<PaymentSchedule> paymentSchedule = Optional.empty();
 
+        private Optional<List<String>> vendorCreditIds = Optional.empty();
+
         private Optional<List<InvoiceLineItemUpdateRequest>> lineItems = Optional.empty();
 
         private Optional<String> creatorEntityId = Optional.empty();
@@ -551,6 +568,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
             fees(other.getFees());
             batchPayment(other.getBatchPayment());
             paymentSchedule(other.getPaymentSchedule());
+            vendorCreditIds(other.getVendorCreditIds());
             lineItems(other.getLineItems());
             creatorEntityId(other.getCreatorEntityId());
             return this;
@@ -842,6 +860,17 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
             return this;
         }
 
+        @JsonSetter(value = "vendorCreditIds", nulls = Nulls.SKIP)
+        public Builder vendorCreditIds(Optional<List<String>> vendorCreditIds) {
+            this.vendorCreditIds = vendorCreditIds;
+            return this;
+        }
+
+        public Builder vendorCreditIds(List<String> vendorCreditIds) {
+            this.vendorCreditIds = Optional.ofNullable(vendorCreditIds);
+            return this;
+        }
+
         @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
         public Builder lineItems(Optional<List<InvoiceLineItemUpdateRequest>> lineItems) {
             this.lineItems = lineItems;
@@ -892,6 +921,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
                     fees,
                     batchPayment,
                     paymentSchedule,
+                    vendorCreditIds,
                     lineItems,
                     creatorEntityId,
                     additionalProperties);

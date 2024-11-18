@@ -75,6 +75,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
     private final Optional<PaymentSchedule> paymentSchedule;
 
+    private final Optional<List<String>> vendorCreditIds;
+
     private final Map<String, Object> additionalProperties;
 
     private InvoiceRequestBase(
@@ -104,6 +106,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             Optional<InvoiceFeesRequest> fees,
             Optional<Boolean> batchPayment,
             Optional<PaymentSchedule> paymentSchedule,
+            Optional<List<String>> vendorCreditIds,
             Map<String, Object> additionalProperties) {
         this.status = status;
         this.amount = amount;
@@ -131,6 +134,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         this.fees = fees;
         this.batchPayment = batchPayment;
         this.paymentSchedule = paymentSchedule;
+        this.vendorCreditIds = vendorCreditIds;
         this.additionalProperties = additionalProperties;
     }
 
@@ -356,6 +360,15 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         return paymentSchedule;
     }
 
+    /**
+     * @return The IDs of the vendor credits to be applied to this invoice. Passing this field will un-apply any previously applied vendor credits.
+     */
+    @JsonProperty("vendorCreditIds")
+    @java.lang.Override
+    public Optional<List<String>> getVendorCreditIds() {
+        return vendorCreditIds;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -393,7 +406,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 && failureType.equals(other.failureType)
                 && fees.equals(other.fees)
                 && batchPayment.equals(other.batchPayment)
-                && paymentSchedule.equals(other.paymentSchedule);
+                && paymentSchedule.equals(other.paymentSchedule)
+                && vendorCreditIds.equals(other.vendorCreditIds);
     }
 
     @java.lang.Override
@@ -424,7 +438,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 this.failureType,
                 this.fees,
                 this.batchPayment,
-                this.paymentSchedule);
+                this.paymentSchedule,
+                this.vendorCreditIds);
     }
 
     @java.lang.Override
@@ -490,6 +505,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
         private Optional<PaymentSchedule> paymentSchedule = Optional.empty();
 
+        private Optional<List<String>> vendorCreditIds = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -522,6 +539,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             fees(other.getFees());
             batchPayment(other.getBatchPayment());
             paymentSchedule(other.getPaymentSchedule());
+            vendorCreditIds(other.getVendorCreditIds());
             return this;
         }
 
@@ -811,6 +829,17 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        @JsonSetter(value = "vendorCreditIds", nulls = Nulls.SKIP)
+        public Builder vendorCreditIds(Optional<List<String>> vendorCreditIds) {
+            this.vendorCreditIds = vendorCreditIds;
+            return this;
+        }
+
+        public Builder vendorCreditIds(List<String> vendorCreditIds) {
+            this.vendorCreditIds = Optional.ofNullable(vendorCreditIds);
+            return this;
+        }
+
         public InvoiceRequestBase build() {
             return new InvoiceRequestBase(
                     status,
@@ -839,6 +868,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                     fees,
                     batchPayment,
                     paymentSchedule,
+                    vendorCreditIds,
                     additionalProperties);
         }
     }

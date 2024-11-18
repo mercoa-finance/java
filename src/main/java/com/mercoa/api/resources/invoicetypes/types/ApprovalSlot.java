@@ -74,6 +74,9 @@ public final class ApprovalSlot {
         return approvalSlotId;
     }
 
+    /**
+     * @return The ID of the user who is assigned to the approval slot. If undefined, the approval slot is assigned to all eligible approvers.
+     */
     @JsonProperty("assignedUserId")
     public Optional<String> getAssignedUserId() {
         return assignedUserId;
@@ -296,6 +299,10 @@ public final class ApprovalSlot {
             return this;
         }
 
+        /**
+         * <p>The ID of the user who is assigned to the approval slot. If undefined, the approval slot is assigned to all eligible approvers.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage assignedUserId(String assignedUserId) {
             this.assignedUserId = Optional.ofNullable(assignedUserId);

@@ -12,56 +12,74 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityCustomizationRequest.Builder.class)
 public final class EntityCustomizationRequest {
-    private final List<MetadataCustomizationRequest> metadata;
+    private final Optional<List<MetadataCustomizationRequest>> metadata;
 
-    private final List<PaymentMethodCustomizationRequest> paymentSource;
+    private final Optional<List<PaymentMethodCustomizationRequest>> paymentSource;
 
-    private final List<PaymentMethodCustomizationRequest> backupDisbursement;
+    private final Optional<List<PaymentMethodCustomizationRequest>> backupDisbursement;
 
-    private final List<PaymentMethodCustomizationRequest> paymentDestination;
+    private final Optional<List<PaymentMethodCustomizationRequest>> paymentDestination;
+
+    private final Optional<OcrCustomizationRequest> ocr;
+
+    private final Optional<NotificationCustomizationRequest> notifications;
 
     private final Map<String, Object> additionalProperties;
 
     private EntityCustomizationRequest(
-            List<MetadataCustomizationRequest> metadata,
-            List<PaymentMethodCustomizationRequest> paymentSource,
-            List<PaymentMethodCustomizationRequest> backupDisbursement,
-            List<PaymentMethodCustomizationRequest> paymentDestination,
+            Optional<List<MetadataCustomizationRequest>> metadata,
+            Optional<List<PaymentMethodCustomizationRequest>> paymentSource,
+            Optional<List<PaymentMethodCustomizationRequest>> backupDisbursement,
+            Optional<List<PaymentMethodCustomizationRequest>> paymentDestination,
+            Optional<OcrCustomizationRequest> ocr,
+            Optional<NotificationCustomizationRequest> notifications,
             Map<String, Object> additionalProperties) {
         this.metadata = metadata;
         this.paymentSource = paymentSource;
         this.backupDisbursement = backupDisbursement;
         this.paymentDestination = paymentDestination;
+        this.ocr = ocr;
+        this.notifications = notifications;
         this.additionalProperties = additionalProperties;
     }
 
     @JsonProperty("metadata")
-    public List<MetadataCustomizationRequest> getMetadata() {
+    public Optional<List<MetadataCustomizationRequest>> getMetadata() {
         return metadata;
     }
 
     @JsonProperty("paymentSource")
-    public List<PaymentMethodCustomizationRequest> getPaymentSource() {
+    public Optional<List<PaymentMethodCustomizationRequest>> getPaymentSource() {
         return paymentSource;
     }
 
     @JsonProperty("backupDisbursement")
-    public List<PaymentMethodCustomizationRequest> getBackupDisbursement() {
+    public Optional<List<PaymentMethodCustomizationRequest>> getBackupDisbursement() {
         return backupDisbursement;
     }
 
     @JsonProperty("paymentDestination")
-    public List<PaymentMethodCustomizationRequest> getPaymentDestination() {
+    public Optional<List<PaymentMethodCustomizationRequest>> getPaymentDestination() {
         return paymentDestination;
+    }
+
+    @JsonProperty("ocr")
+    public Optional<OcrCustomizationRequest> getOcr() {
+        return ocr;
+    }
+
+    @JsonProperty("notifications")
+    public Optional<NotificationCustomizationRequest> getNotifications() {
+        return notifications;
     }
 
     @java.lang.Override
@@ -79,12 +97,20 @@ public final class EntityCustomizationRequest {
         return metadata.equals(other.metadata)
                 && paymentSource.equals(other.paymentSource)
                 && backupDisbursement.equals(other.backupDisbursement)
-                && paymentDestination.equals(other.paymentDestination);
+                && paymentDestination.equals(other.paymentDestination)
+                && ocr.equals(other.ocr)
+                && notifications.equals(other.notifications);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.metadata, this.paymentSource, this.backupDisbursement, this.paymentDestination);
+        return Objects.hash(
+                this.metadata,
+                this.paymentSource,
+                this.backupDisbursement,
+                this.paymentDestination,
+                this.ocr,
+                this.notifications);
     }
 
     @java.lang.Override
@@ -98,13 +124,17 @@ public final class EntityCustomizationRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private List<MetadataCustomizationRequest> metadata = new ArrayList<>();
+        private Optional<List<MetadataCustomizationRequest>> metadata = Optional.empty();
 
-        private List<PaymentMethodCustomizationRequest> paymentSource = new ArrayList<>();
+        private Optional<List<PaymentMethodCustomizationRequest>> paymentSource = Optional.empty();
 
-        private List<PaymentMethodCustomizationRequest> backupDisbursement = new ArrayList<>();
+        private Optional<List<PaymentMethodCustomizationRequest>> backupDisbursement = Optional.empty();
 
-        private List<PaymentMethodCustomizationRequest> paymentDestination = new ArrayList<>();
+        private Optional<List<PaymentMethodCustomizationRequest>> paymentDestination = Optional.empty();
+
+        private Optional<OcrCustomizationRequest> ocr = Optional.empty();
+
+        private Optional<NotificationCustomizationRequest> notifications = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -116,80 +146,86 @@ public final class EntityCustomizationRequest {
             paymentSource(other.getPaymentSource());
             backupDisbursement(other.getBackupDisbursement());
             paymentDestination(other.getPaymentDestination());
+            ocr(other.getOcr());
+            notifications(other.getNotifications());
             return this;
         }
 
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public Builder metadata(Optional<List<MetadataCustomizationRequest>> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
         public Builder metadata(List<MetadataCustomizationRequest> metadata) {
-            this.metadata.clear();
-            this.metadata.addAll(metadata);
-            return this;
-        }
-
-        public Builder addMetadata(MetadataCustomizationRequest metadata) {
-            this.metadata.add(metadata);
-            return this;
-        }
-
-        public Builder addAllMetadata(List<MetadataCustomizationRequest> metadata) {
-            this.metadata.addAll(metadata);
+            this.metadata = Optional.ofNullable(metadata);
             return this;
         }
 
         @JsonSetter(value = "paymentSource", nulls = Nulls.SKIP)
+        public Builder paymentSource(Optional<List<PaymentMethodCustomizationRequest>> paymentSource) {
+            this.paymentSource = paymentSource;
+            return this;
+        }
+
         public Builder paymentSource(List<PaymentMethodCustomizationRequest> paymentSource) {
-            this.paymentSource.clear();
-            this.paymentSource.addAll(paymentSource);
-            return this;
-        }
-
-        public Builder addPaymentSource(PaymentMethodCustomizationRequest paymentSource) {
-            this.paymentSource.add(paymentSource);
-            return this;
-        }
-
-        public Builder addAllPaymentSource(List<PaymentMethodCustomizationRequest> paymentSource) {
-            this.paymentSource.addAll(paymentSource);
+            this.paymentSource = Optional.ofNullable(paymentSource);
             return this;
         }
 
         @JsonSetter(value = "backupDisbursement", nulls = Nulls.SKIP)
+        public Builder backupDisbursement(Optional<List<PaymentMethodCustomizationRequest>> backupDisbursement) {
+            this.backupDisbursement = backupDisbursement;
+            return this;
+        }
+
         public Builder backupDisbursement(List<PaymentMethodCustomizationRequest> backupDisbursement) {
-            this.backupDisbursement.clear();
-            this.backupDisbursement.addAll(backupDisbursement);
-            return this;
-        }
-
-        public Builder addBackupDisbursement(PaymentMethodCustomizationRequest backupDisbursement) {
-            this.backupDisbursement.add(backupDisbursement);
-            return this;
-        }
-
-        public Builder addAllBackupDisbursement(List<PaymentMethodCustomizationRequest> backupDisbursement) {
-            this.backupDisbursement.addAll(backupDisbursement);
+            this.backupDisbursement = Optional.ofNullable(backupDisbursement);
             return this;
         }
 
         @JsonSetter(value = "paymentDestination", nulls = Nulls.SKIP)
+        public Builder paymentDestination(Optional<List<PaymentMethodCustomizationRequest>> paymentDestination) {
+            this.paymentDestination = paymentDestination;
+            return this;
+        }
+
         public Builder paymentDestination(List<PaymentMethodCustomizationRequest> paymentDestination) {
-            this.paymentDestination.clear();
-            this.paymentDestination.addAll(paymentDestination);
+            this.paymentDestination = Optional.ofNullable(paymentDestination);
             return this;
         }
 
-        public Builder addPaymentDestination(PaymentMethodCustomizationRequest paymentDestination) {
-            this.paymentDestination.add(paymentDestination);
+        @JsonSetter(value = "ocr", nulls = Nulls.SKIP)
+        public Builder ocr(Optional<OcrCustomizationRequest> ocr) {
+            this.ocr = ocr;
             return this;
         }
 
-        public Builder addAllPaymentDestination(List<PaymentMethodCustomizationRequest> paymentDestination) {
-            this.paymentDestination.addAll(paymentDestination);
+        public Builder ocr(OcrCustomizationRequest ocr) {
+            this.ocr = Optional.ofNullable(ocr);
+            return this;
+        }
+
+        @JsonSetter(value = "notifications", nulls = Nulls.SKIP)
+        public Builder notifications(Optional<NotificationCustomizationRequest> notifications) {
+            this.notifications = notifications;
+            return this;
+        }
+
+        public Builder notifications(NotificationCustomizationRequest notifications) {
+            this.notifications = Optional.ofNullable(notifications);
             return this;
         }
 
         public EntityCustomizationRequest build() {
             return new EntityCustomizationRequest(
-                    metadata, paymentSource, backupDisbursement, paymentDestination, additionalProperties);
+                    metadata,
+                    paymentSource,
+                    backupDisbursement,
+                    paymentDestination,
+                    ocr,
+                    notifications,
+                    additionalProperties);
         }
     }
 }

@@ -10,6 +10,8 @@ import com.mercoa.api.core.MercoaApiException;
 import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
+import com.mercoa.api.resources.entity.counterparty.vendorcredit.requests.CalculateVendorCreditUsageRequest;
+import com.mercoa.api.resources.vendorcredittypes.types.CalculateVendorCreditUsageResponse;
 import com.mercoa.api.resources.vendorcredittypes.types.FindVendorCreditResponse;
 import com.mercoa.api.resources.vendorcredittypes.types.VendorCreditRequest;
 import com.mercoa.api.resources.vendorcredittypes.types.VendorCreditResponse;
@@ -180,6 +182,59 @@ public class VendorCreditClient {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return;
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            throw new MercoaApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new MercoaException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Estimate the usage of vendor credits on an invoice of a given amount
+     */
+    public CalculateVendorCreditUsageResponse estimateUsage(
+            String entityId, String counterpartyId, CalculateVendorCreditUsageRequest request) {
+        return estimateUsage(entityId, counterpartyId, request, null);
+    }
+
+    /**
+     * Estimate the usage of vendor credits on an invoice of a given amount
+     */
+    public CalculateVendorCreditUsageResponse estimateUsage(
+            String entityId,
+            String counterpartyId,
+            CalculateVendorCreditUsageRequest request,
+            RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entity")
+                .addPathSegment(entityId)
+                .addPathSegments("counterparty")
+                .addPathSegment(counterpartyId)
+                .addPathSegments("vendor-credits/estimate-usage");
+        httpUrl.addQueryParameter("amount", Double.toString(request.getAmount()));
+        if (request.getCurrency().isPresent()) {
+            httpUrl.addQueryParameter("currency", request.getCurrency().get().toString());
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(
+                        responseBody.string(), CalculateVendorCreditUsageResponse.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             throw new MercoaApiException(

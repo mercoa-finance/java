@@ -17,6 +17,7 @@ import com.mercoa.api.resources.entitytypes.types.CounterpartyResponse;
 import com.mercoa.api.resources.entitytypes.types.EntityUserResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
+import com.mercoa.api.resources.transaction.types.TransactionResponseWithoutInvoices;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,7 +110,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
     private final Optional<InvoiceFailureType> failureType;
 
-    private final Optional<InvoiceFailureReason> failureReason;
+    private final Optional<List<TransactionResponseWithoutInvoices>> transactions;
+
+    private final Optional<List<String>> vendorCreditIds;
 
     private final Map<String, Object> additionalProperties;
 
@@ -154,7 +157,8 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             Optional<OffsetDateTime> settlementDate,
             Optional<String> foreignId,
             Optional<InvoiceFailureType> failureType,
-            Optional<InvoiceFailureReason> failureReason,
+            Optional<List<TransactionResponseWithoutInvoices>> transactions,
+            Optional<List<String>> vendorCreditIds,
             Map<String, Object> additionalProperties) {
         this.status = status;
         this.amount = amount;
@@ -196,7 +200,8 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
         this.settlementDate = settlementDate;
         this.foreignId = foreignId;
         this.failureType = failureType;
-        this.failureReason = failureReason;
+        this.transactions = transactions;
+        this.vendorCreditIds = vendorCreditIds;
         this.additionalProperties = additionalProperties;
     }
 
@@ -493,11 +498,19 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
     }
 
     /**
-     * @return If the invoice failed to be paid, this field will be populated with the reason of failure.
+     * @return Transactions associated with this invoice.
      */
-    @JsonProperty("failureReason")
-    public Optional<InvoiceFailureReason> getFailureReason() {
-        return failureReason;
+    @JsonProperty("transactions")
+    public Optional<List<TransactionResponseWithoutInvoices>> getTransactions() {
+        return transactions;
+    }
+
+    /**
+     * @return The IDs of the vendor credits that are currently applied to this invoice.
+     */
+    @JsonProperty("vendorCreditIds")
+    public Optional<List<String>> getVendorCreditIds() {
+        return vendorCreditIds;
     }
 
     @java.lang.Override
@@ -552,7 +565,8 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
                 && settlementDate.equals(other.settlementDate)
                 && foreignId.equals(other.foreignId)
                 && failureType.equals(other.failureType)
-                && failureReason.equals(other.failureReason);
+                && transactions.equals(other.transactions)
+                && vendorCreditIds.equals(other.vendorCreditIds);
     }
 
     @java.lang.Override
@@ -598,7 +612,8 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
                 this.settlementDate,
                 this.foreignId,
                 this.failureType,
-                this.failureReason);
+                this.transactions,
+                this.vendorCreditIds);
     }
 
     @java.lang.Override
@@ -781,9 +796,13 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         _FinalStage failureType(InvoiceFailureType failureType);
 
-        _FinalStage failureReason(Optional<InvoiceFailureReason> failureReason);
+        _FinalStage transactions(Optional<List<TransactionResponseWithoutInvoices>> transactions);
 
-        _FinalStage failureReason(InvoiceFailureReason failureReason);
+        _FinalStage transactions(List<TransactionResponseWithoutInvoices> transactions);
+
+        _FinalStage vendorCreditIds(Optional<List<String>> vendorCreditIds);
+
+        _FinalStage vendorCreditIds(List<String> vendorCreditIds);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -810,7 +829,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         private String id;
 
-        private Optional<InvoiceFailureReason> failureReason = Optional.empty();
+        private Optional<List<String>> vendorCreditIds = Optional.empty();
+
+        private Optional<List<TransactionResponseWithoutInvoices>> transactions = Optional.empty();
 
         private Optional<InvoiceFailureType> failureType = Optional.empty();
 
@@ -925,7 +946,8 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             settlementDate(other.getSettlementDate());
             foreignId(other.getForeignId());
             failureType(other.getFailureType());
-            failureReason(other.getFailureReason());
+            transactions(other.getTransactions());
+            vendorCreditIds(other.getVendorCreditIds());
             return this;
         }
 
@@ -991,19 +1013,36 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
         }
 
         /**
-         * <p>If the invoice failed to be paid, this field will be populated with the reason of failure.</p>
+         * <p>The IDs of the vendor credits that are currently applied to this invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage failureReason(InvoiceFailureReason failureReason) {
-            this.failureReason = Optional.ofNullable(failureReason);
+        public _FinalStage vendorCreditIds(List<String> vendorCreditIds) {
+            this.vendorCreditIds = Optional.ofNullable(vendorCreditIds);
             return this;
         }
 
         @java.lang.Override
-        @JsonSetter(value = "failureReason", nulls = Nulls.SKIP)
-        public _FinalStage failureReason(Optional<InvoiceFailureReason> failureReason) {
-            this.failureReason = failureReason;
+        @JsonSetter(value = "vendorCreditIds", nulls = Nulls.SKIP)
+        public _FinalStage vendorCreditIds(Optional<List<String>> vendorCreditIds) {
+            this.vendorCreditIds = vendorCreditIds;
+            return this;
+        }
+
+        /**
+         * <p>Transactions associated with this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage transactions(List<TransactionResponseWithoutInvoices> transactions) {
+            this.transactions = Optional.ofNullable(transactions);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "transactions", nulls = Nulls.SKIP)
+        public _FinalStage transactions(Optional<List<TransactionResponseWithoutInvoices>> transactions) {
+            this.transactions = transactions;
             return this;
         }
 
@@ -1568,7 +1607,8 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
                     settlementDate,
                     foreignId,
                     failureType,
-                    failureReason,
+                    transactions,
+                    vendorCreditIds,
                     additionalProperties);
         }
     }

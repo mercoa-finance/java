@@ -29,6 +29,10 @@ public final class EntityCustomizationResponse {
 
     private final List<PaymentMethodCustomizationRequest> paymentDestination;
 
+    private final OcrCustomizationRequest ocr;
+
+    private final NotificationCustomizationRequest notifications;
+
     private final Map<String, Object> additionalProperties;
 
     private EntityCustomizationResponse(
@@ -36,11 +40,15 @@ public final class EntityCustomizationResponse {
             List<PaymentMethodCustomizationRequest> paymentSource,
             List<PaymentMethodCustomizationRequest> backupDisbursement,
             List<PaymentMethodCustomizationRequest> paymentDestination,
+            OcrCustomizationRequest ocr,
+            NotificationCustomizationRequest notifications,
             Map<String, Object> additionalProperties) {
         this.metadata = metadata;
         this.paymentSource = paymentSource;
         this.backupDisbursement = backupDisbursement;
         this.paymentDestination = paymentDestination;
+        this.ocr = ocr;
+        this.notifications = notifications;
         this.additionalProperties = additionalProperties;
     }
 
@@ -64,6 +72,16 @@ public final class EntityCustomizationResponse {
         return paymentDestination;
     }
 
+    @JsonProperty("ocr")
+    public OcrCustomizationRequest getOcr() {
+        return ocr;
+    }
+
+    @JsonProperty("notifications")
+    public NotificationCustomizationRequest getNotifications() {
+        return notifications;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -79,12 +97,20 @@ public final class EntityCustomizationResponse {
         return metadata.equals(other.metadata)
                 && paymentSource.equals(other.paymentSource)
                 && backupDisbursement.equals(other.backupDisbursement)
-                && paymentDestination.equals(other.paymentDestination);
+                && paymentDestination.equals(other.paymentDestination)
+                && ocr.equals(other.ocr)
+                && notifications.equals(other.notifications);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.metadata, this.paymentSource, this.backupDisbursement, this.paymentDestination);
+        return Objects.hash(
+                this.metadata,
+                this.paymentSource,
+                this.backupDisbursement,
+                this.paymentDestination,
+                this.ocr,
+                this.notifications);
     }
 
     @java.lang.Override
@@ -92,104 +118,182 @@ public final class EntityCustomizationResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static OcrStage builder() {
         return new Builder();
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private List<MetadataCustomizationRequest> metadata = new ArrayList<>();
+    public interface OcrStage {
+        NotificationsStage ocr(OcrCustomizationRequest ocr);
 
-        private List<PaymentMethodCustomizationRequest> paymentSource = new ArrayList<>();
+        Builder from(EntityCustomizationResponse other);
+    }
+
+    public interface NotificationsStage {
+        _FinalStage notifications(NotificationCustomizationRequest notifications);
+    }
+
+    public interface _FinalStage {
+        EntityCustomizationResponse build();
+
+        _FinalStage metadata(List<MetadataCustomizationRequest> metadata);
+
+        _FinalStage addMetadata(MetadataCustomizationRequest metadata);
+
+        _FinalStage addAllMetadata(List<MetadataCustomizationRequest> metadata);
+
+        _FinalStage paymentSource(List<PaymentMethodCustomizationRequest> paymentSource);
+
+        _FinalStage addPaymentSource(PaymentMethodCustomizationRequest paymentSource);
+
+        _FinalStage addAllPaymentSource(List<PaymentMethodCustomizationRequest> paymentSource);
+
+        _FinalStage backupDisbursement(List<PaymentMethodCustomizationRequest> backupDisbursement);
+
+        _FinalStage addBackupDisbursement(PaymentMethodCustomizationRequest backupDisbursement);
+
+        _FinalStage addAllBackupDisbursement(List<PaymentMethodCustomizationRequest> backupDisbursement);
+
+        _FinalStage paymentDestination(List<PaymentMethodCustomizationRequest> paymentDestination);
+
+        _FinalStage addPaymentDestination(PaymentMethodCustomizationRequest paymentDestination);
+
+        _FinalStage addAllPaymentDestination(List<PaymentMethodCustomizationRequest> paymentDestination);
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class Builder implements OcrStage, NotificationsStage, _FinalStage {
+        private OcrCustomizationRequest ocr;
+
+        private NotificationCustomizationRequest notifications;
+
+        private List<PaymentMethodCustomizationRequest> paymentDestination = new ArrayList<>();
 
         private List<PaymentMethodCustomizationRequest> backupDisbursement = new ArrayList<>();
 
-        private List<PaymentMethodCustomizationRequest> paymentDestination = new ArrayList<>();
+        private List<PaymentMethodCustomizationRequest> paymentSource = new ArrayList<>();
+
+        private List<MetadataCustomizationRequest> metadata = new ArrayList<>();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(EntityCustomizationResponse other) {
             metadata(other.getMetadata());
             paymentSource(other.getPaymentSource());
             backupDisbursement(other.getBackupDisbursement());
             paymentDestination(other.getPaymentDestination());
+            ocr(other.getOcr());
+            notifications(other.getNotifications());
             return this;
         }
 
-        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
-        public Builder metadata(List<MetadataCustomizationRequest> metadata) {
-            this.metadata.clear();
-            this.metadata.addAll(metadata);
+        @java.lang.Override
+        @JsonSetter("ocr")
+        public NotificationsStage ocr(OcrCustomizationRequest ocr) {
+            this.ocr = ocr;
             return this;
         }
 
-        public Builder addMetadata(MetadataCustomizationRequest metadata) {
-            this.metadata.add(metadata);
+        @java.lang.Override
+        @JsonSetter("notifications")
+        public _FinalStage notifications(NotificationCustomizationRequest notifications) {
+            this.notifications = notifications;
             return this;
         }
 
-        public Builder addAllMetadata(List<MetadataCustomizationRequest> metadata) {
-            this.metadata.addAll(metadata);
+        @java.lang.Override
+        public _FinalStage addAllPaymentDestination(List<PaymentMethodCustomizationRequest> paymentDestination) {
+            this.paymentDestination.addAll(paymentDestination);
             return this;
         }
 
-        @JsonSetter(value = "paymentSource", nulls = Nulls.SKIP)
-        public Builder paymentSource(List<PaymentMethodCustomizationRequest> paymentSource) {
-            this.paymentSource.clear();
-            this.paymentSource.addAll(paymentSource);
+        @java.lang.Override
+        public _FinalStage addPaymentDestination(PaymentMethodCustomizationRequest paymentDestination) {
+            this.paymentDestination.add(paymentDestination);
             return this;
         }
 
-        public Builder addPaymentSource(PaymentMethodCustomizationRequest paymentSource) {
-            this.paymentSource.add(paymentSource);
-            return this;
-        }
-
-        public Builder addAllPaymentSource(List<PaymentMethodCustomizationRequest> paymentSource) {
-            this.paymentSource.addAll(paymentSource);
-            return this;
-        }
-
-        @JsonSetter(value = "backupDisbursement", nulls = Nulls.SKIP)
-        public Builder backupDisbursement(List<PaymentMethodCustomizationRequest> backupDisbursement) {
-            this.backupDisbursement.clear();
-            this.backupDisbursement.addAll(backupDisbursement);
-            return this;
-        }
-
-        public Builder addBackupDisbursement(PaymentMethodCustomizationRequest backupDisbursement) {
-            this.backupDisbursement.add(backupDisbursement);
-            return this;
-        }
-
-        public Builder addAllBackupDisbursement(List<PaymentMethodCustomizationRequest> backupDisbursement) {
-            this.backupDisbursement.addAll(backupDisbursement);
-            return this;
-        }
-
+        @java.lang.Override
         @JsonSetter(value = "paymentDestination", nulls = Nulls.SKIP)
-        public Builder paymentDestination(List<PaymentMethodCustomizationRequest> paymentDestination) {
+        public _FinalStage paymentDestination(List<PaymentMethodCustomizationRequest> paymentDestination) {
             this.paymentDestination.clear();
             this.paymentDestination.addAll(paymentDestination);
             return this;
         }
 
-        public Builder addPaymentDestination(PaymentMethodCustomizationRequest paymentDestination) {
-            this.paymentDestination.add(paymentDestination);
+        @java.lang.Override
+        public _FinalStage addAllBackupDisbursement(List<PaymentMethodCustomizationRequest> backupDisbursement) {
+            this.backupDisbursement.addAll(backupDisbursement);
             return this;
         }
 
-        public Builder addAllPaymentDestination(List<PaymentMethodCustomizationRequest> paymentDestination) {
-            this.paymentDestination.addAll(paymentDestination);
+        @java.lang.Override
+        public _FinalStage addBackupDisbursement(PaymentMethodCustomizationRequest backupDisbursement) {
+            this.backupDisbursement.add(backupDisbursement);
             return this;
         }
 
+        @java.lang.Override
+        @JsonSetter(value = "backupDisbursement", nulls = Nulls.SKIP)
+        public _FinalStage backupDisbursement(List<PaymentMethodCustomizationRequest> backupDisbursement) {
+            this.backupDisbursement.clear();
+            this.backupDisbursement.addAll(backupDisbursement);
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage addAllPaymentSource(List<PaymentMethodCustomizationRequest> paymentSource) {
+            this.paymentSource.addAll(paymentSource);
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage addPaymentSource(PaymentMethodCustomizationRequest paymentSource) {
+            this.paymentSource.add(paymentSource);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "paymentSource", nulls = Nulls.SKIP)
+        public _FinalStage paymentSource(List<PaymentMethodCustomizationRequest> paymentSource) {
+            this.paymentSource.clear();
+            this.paymentSource.addAll(paymentSource);
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage addAllMetadata(List<MetadataCustomizationRequest> metadata) {
+            this.metadata.addAll(metadata);
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage addMetadata(MetadataCustomizationRequest metadata) {
+            this.metadata.add(metadata);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public _FinalStage metadata(List<MetadataCustomizationRequest> metadata) {
+            this.metadata.clear();
+            this.metadata.addAll(metadata);
+            return this;
+        }
+
+        @java.lang.Override
         public EntityCustomizationResponse build() {
             return new EntityCustomizationResponse(
-                    metadata, paymentSource, backupDisbursement, paymentDestination, additionalProperties);
+                    metadata,
+                    paymentSource,
+                    backupDisbursement,
+                    paymentDestination,
+                    ocr,
+                    notifications,
+                    additionalProperties);
         }
     }
 }

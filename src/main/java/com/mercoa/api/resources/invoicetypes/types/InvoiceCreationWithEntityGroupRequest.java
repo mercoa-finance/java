@@ -75,6 +75,8 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
 
     private final Optional<PaymentSchedule> paymentSchedule;
 
+    private final Optional<List<String>> vendorCreditIds;
+
     private final Optional<List<InvoiceLineItemCreationRequest>> lineItems;
 
     private final String creatorEntityGroupId;
@@ -108,6 +110,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             Optional<InvoiceFeesRequest> fees,
             Optional<Boolean> batchPayment,
             Optional<PaymentSchedule> paymentSchedule,
+            Optional<List<String>> vendorCreditIds,
             Optional<List<InvoiceLineItemCreationRequest>> lineItems,
             String creatorEntityGroupId,
             Map<String, Object> additionalProperties) {
@@ -137,6 +140,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
         this.fees = fees;
         this.batchPayment = batchPayment;
         this.paymentSchedule = paymentSchedule;
+        this.vendorCreditIds = vendorCreditIds;
         this.lineItems = lineItems;
         this.creatorEntityGroupId = creatorEntityGroupId;
         this.additionalProperties = additionalProperties;
@@ -364,6 +368,15 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
         return paymentSchedule;
     }
 
+    /**
+     * @return The IDs of the vendor credits to be applied to this invoice. Passing this field will un-apply any previously applied vendor credits.
+     */
+    @JsonProperty("vendorCreditIds")
+    @java.lang.Override
+    public Optional<List<String>> getVendorCreditIds() {
+        return vendorCreditIds;
+    }
+
     @JsonProperty("lineItems")
     public Optional<List<InvoiceLineItemCreationRequest>> getLineItems() {
         return lineItems;
@@ -416,6 +429,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
                 && fees.equals(other.fees)
                 && batchPayment.equals(other.batchPayment)
                 && paymentSchedule.equals(other.paymentSchedule)
+                && vendorCreditIds.equals(other.vendorCreditIds)
                 && lineItems.equals(other.lineItems)
                 && creatorEntityGroupId.equals(other.creatorEntityGroupId);
     }
@@ -449,6 +463,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
                 this.fees,
                 this.batchPayment,
                 this.paymentSchedule,
+                this.vendorCreditIds,
                 this.lineItems,
                 this.creatorEntityGroupId);
     }
@@ -575,6 +590,10 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
 
         _FinalStage paymentSchedule(PaymentSchedule paymentSchedule);
 
+        _FinalStage vendorCreditIds(Optional<List<String>> vendorCreditIds);
+
+        _FinalStage vendorCreditIds(List<String> vendorCreditIds);
+
         _FinalStage lineItems(Optional<List<InvoiceLineItemCreationRequest>> lineItems);
 
         _FinalStage lineItems(List<InvoiceLineItemCreationRequest> lineItems);
@@ -585,6 +604,8 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
         private String creatorEntityGroupId;
 
         private Optional<List<InvoiceLineItemCreationRequest>> lineItems = Optional.empty();
+
+        private Optional<List<String>> vendorCreditIds = Optional.empty();
 
         private Optional<PaymentSchedule> paymentSchedule = Optional.empty();
 
@@ -671,6 +692,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             fees(other.getFees());
             batchPayment(other.getBatchPayment());
             paymentSchedule(other.getPaymentSchedule());
+            vendorCreditIds(other.getVendorCreditIds());
             lineItems(other.getLineItems());
             creatorEntityGroupId(other.getCreatorEntityGroupId());
             return this;
@@ -697,6 +719,23 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
         @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
         public _FinalStage lineItems(Optional<List<InvoiceLineItemCreationRequest>> lineItems) {
             this.lineItems = lineItems;
+            return this;
+        }
+
+        /**
+         * <p>The IDs of the vendor credits to be applied to this invoice. Passing this field will un-apply any previously applied vendor credits.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage vendorCreditIds(List<String> vendorCreditIds) {
+            this.vendorCreditIds = Optional.ofNullable(vendorCreditIds);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "vendorCreditIds", nulls = Nulls.SKIP)
+        public _FinalStage vendorCreditIds(Optional<List<String>> vendorCreditIds) {
+            this.vendorCreditIds = vendorCreditIds;
             return this;
         }
 
@@ -1155,6 +1194,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
                     fees,
                     batchPayment,
                     paymentSchedule,
+                    vendorCreditIds,
                     lineItems,
                     creatorEntityGroupId,
                     additionalProperties);

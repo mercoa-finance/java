@@ -73,6 +73,13 @@ public class CustomizationClient {
     /**
      * Update entity customization. This lets you turn off metadata and payment methods for an entity.
      */
+    public EntityCustomizationResponse update(String entityId) {
+        return update(entityId, EntityCustomizationRequest.builder().build());
+    }
+
+    /**
+     * Update entity customization. This lets you turn off metadata and payment methods for an entity.
+     */
     public EntityCustomizationResponse update(String entityId, EntityCustomizationRequest request) {
         return update(entityId, request, null);
     }

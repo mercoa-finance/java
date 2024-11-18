@@ -61,4 +61,6 @@ public interface IInvoiceRequestBase {
     Optional<Boolean> getBatchPayment();
 
     Optional<PaymentSchedule> getPaymentSchedule();
+
+    Optional<List<String>> getVendorCreditIds();
 }
