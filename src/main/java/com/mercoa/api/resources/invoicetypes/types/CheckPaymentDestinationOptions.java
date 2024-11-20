@@ -22,11 +22,16 @@ import java.util.Optional;
 public final class CheckPaymentDestinationOptions {
     private final Optional<CheckDeliveryMethod> delivery;
 
+    private final Optional<Boolean> printDescription;
+
     private final Map<String, Object> additionalProperties;
 
     private CheckPaymentDestinationOptions(
-            Optional<CheckDeliveryMethod> delivery, Map<String, Object> additionalProperties) {
+            Optional<CheckDeliveryMethod> delivery,
+            Optional<Boolean> printDescription,
+            Map<String, Object> additionalProperties) {
         this.delivery = delivery;
+        this.printDescription = printDescription;
         this.additionalProperties = additionalProperties;
     }
 
@@ -36,6 +41,14 @@ public final class CheckPaymentDestinationOptions {
     @JsonProperty("delivery")
     public Optional<CheckDeliveryMethod> getDelivery() {
         return delivery;
+    }
+
+    /**
+     * @return If true, prints the invoice description (noteToSelf) on the check note. Defaults to false.
+     */
+    @JsonProperty("printDescription")
+    public Optional<Boolean> getPrintDescription() {
+        return printDescription;
     }
 
     @java.lang.Override
@@ -50,12 +63,12 @@ public final class CheckPaymentDestinationOptions {
     }
 
     private boolean equalTo(CheckPaymentDestinationOptions other) {
-        return delivery.equals(other.delivery);
+        return delivery.equals(other.delivery) && printDescription.equals(other.printDescription);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.delivery);
+        return Objects.hash(this.delivery, this.printDescription);
     }
 
     @java.lang.Override
@@ -71,6 +84,8 @@ public final class CheckPaymentDestinationOptions {
     public static final class Builder {
         private Optional<CheckDeliveryMethod> delivery = Optional.empty();
 
+        private Optional<Boolean> printDescription = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -78,6 +93,7 @@ public final class CheckPaymentDestinationOptions {
 
         public Builder from(CheckPaymentDestinationOptions other) {
             delivery(other.getDelivery());
+            printDescription(other.getPrintDescription());
             return this;
         }
 
@@ -92,8 +108,19 @@ public final class CheckPaymentDestinationOptions {
             return this;
         }
 
+        @JsonSetter(value = "printDescription", nulls = Nulls.SKIP)
+        public Builder printDescription(Optional<Boolean> printDescription) {
+            this.printDescription = printDescription;
+            return this;
+        }
+
+        public Builder printDescription(Boolean printDescription) {
+            this.printDescription = Optional.ofNullable(printDescription);
+            return this;
+        }
+
         public CheckPaymentDestinationOptions build() {
-            return new CheckPaymentDestinationOptions(delivery, additionalProperties);
+            return new CheckPaymentDestinationOptions(delivery, printDescription, additionalProperties);
         }
     }
 }

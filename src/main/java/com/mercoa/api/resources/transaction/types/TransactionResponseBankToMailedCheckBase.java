@@ -18,7 +18,10 @@ import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = TransactionResponseBankToMailedCheckBase.Builder.class)
-public final class TransactionResponseBankToMailedCheckBase implements ITransactionResponseBase {
+public final class TransactionResponseBankToMailedCheckBase
+        implements ITransactionResponseBankToMailedCheckBase, ITransactionResponseBase {
+    private final int checkNumber;
+
     private final String id;
 
     private final TransactionStatus status;
@@ -27,23 +30,30 @@ public final class TransactionResponseBankToMailedCheckBase implements ITransact
 
     private final OffsetDateTime updatedAt;
 
-    private final int checkNumber;
-
     private final Map<String, Object> additionalProperties;
 
     private TransactionResponseBankToMailedCheckBase(
+            int checkNumber,
             String id,
             TransactionStatus status,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
-            int checkNumber,
             Map<String, Object> additionalProperties) {
+        this.checkNumber = checkNumber;
         this.id = id;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.checkNumber = checkNumber;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return The number of the check
+     */
+    @JsonProperty("checkNumber")
+    @java.lang.Override
+    public int getCheckNumber() {
+        return checkNumber;
     }
 
     @JsonProperty("id")
@@ -70,14 +80,6 @@ public final class TransactionResponseBankToMailedCheckBase implements ITransact
         return updatedAt;
     }
 
-    /**
-     * @return The number of the check
-     */
-    @JsonProperty("checkNumber")
-    public int getCheckNumber() {
-        return checkNumber;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -91,16 +93,16 @@ public final class TransactionResponseBankToMailedCheckBase implements ITransact
     }
 
     private boolean equalTo(TransactionResponseBankToMailedCheckBase other) {
-        return id.equals(other.id)
+        return checkNumber == other.checkNumber
+                && id.equals(other.id)
                 && status.equals(other.status)
                 && createdAt.equals(other.createdAt)
-                && updatedAt.equals(other.updatedAt)
-                && checkNumber == other.checkNumber;
+                && updatedAt.equals(other.updatedAt);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.id, this.status, this.createdAt, this.updatedAt, this.checkNumber);
+        return Objects.hash(this.checkNumber, this.id, this.status, this.createdAt, this.updatedAt);
     }
 
     @java.lang.Override
@@ -108,14 +110,18 @@ public final class TransactionResponseBankToMailedCheckBase implements ITransact
         return ObjectMappers.stringify(this);
     }
 
-    public static IdStage builder() {
+    public static CheckNumberStage builder() {
         return new Builder();
+    }
+
+    public interface CheckNumberStage {
+        IdStage checkNumber(int checkNumber);
+
+        Builder from(TransactionResponseBankToMailedCheckBase other);
     }
 
     public interface IdStage {
         StatusStage id(String id);
-
-        Builder from(TransactionResponseBankToMailedCheckBase other);
     }
 
     public interface StatusStage {
@@ -127,11 +133,7 @@ public final class TransactionResponseBankToMailedCheckBase implements ITransact
     }
 
     public interface UpdatedAtStage {
-        CheckNumberStage updatedAt(OffsetDateTime updatedAt);
-    }
-
-    public interface CheckNumberStage {
-        _FinalStage checkNumber(int checkNumber);
+        _FinalStage updatedAt(OffsetDateTime updatedAt);
     }
 
     public interface _FinalStage {
@@ -140,7 +142,9 @@ public final class TransactionResponseBankToMailedCheckBase implements ITransact
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements IdStage, StatusStage, CreatedAtStage, UpdatedAtStage, CheckNumberStage, _FinalStage {
+            implements CheckNumberStage, IdStage, StatusStage, CreatedAtStage, UpdatedAtStage, _FinalStage {
+        private int checkNumber;
+
         private String id;
 
         private TransactionStatus status;
@@ -149,8 +153,6 @@ public final class TransactionResponseBankToMailedCheckBase implements ITransact
 
         private OffsetDateTime updatedAt;
 
-        private int checkNumber;
-
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -158,11 +160,22 @@ public final class TransactionResponseBankToMailedCheckBase implements ITransact
 
         @java.lang.Override
         public Builder from(TransactionResponseBankToMailedCheckBase other) {
+            checkNumber(other.getCheckNumber());
             id(other.getId());
             status(other.getStatus());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
-            checkNumber(other.getCheckNumber());
+            return this;
+        }
+
+        /**
+         * <p>The number of the check</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("checkNumber")
+        public IdStage checkNumber(int checkNumber) {
+            this.checkNumber = checkNumber;
             return this;
         }
 
@@ -189,26 +202,15 @@ public final class TransactionResponseBankToMailedCheckBase implements ITransact
 
         @java.lang.Override
         @JsonSetter("updatedAt")
-        public CheckNumberStage updatedAt(OffsetDateTime updatedAt) {
+        public _FinalStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = updatedAt;
-            return this;
-        }
-
-        /**
-         * <p>The number of the check</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("checkNumber")
-        public _FinalStage checkNumber(int checkNumber) {
-            this.checkNumber = checkNumber;
             return this;
         }
 
         @java.lang.Override
         public TransactionResponseBankToMailedCheckBase build() {
             return new TransactionResponseBankToMailedCheckBase(
-                    id, status, createdAt, updatedAt, checkNumber, additionalProperties);
+                    checkNumber, id, status, createdAt, updatedAt, additionalProperties);
         }
     }
 }
