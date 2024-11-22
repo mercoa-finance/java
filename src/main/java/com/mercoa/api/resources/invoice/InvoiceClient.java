@@ -122,6 +122,10 @@ public class InvoiceClient {
         if (request.getVendorId().isPresent()) {
             httpUrl.addQueryParameter("vendorId", request.getVendorId().get());
         }
+        if (request.getCreatorUserId().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "creatorUserId", request.getCreatorUserId().get());
+        }
         if (request.getApproverId().isPresent()) {
             httpUrl.addQueryParameter("approverId", request.getApproverId().get());
         }

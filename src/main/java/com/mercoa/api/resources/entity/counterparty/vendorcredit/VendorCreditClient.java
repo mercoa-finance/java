@@ -220,6 +220,15 @@ public class VendorCreditClient {
         if (request.getCurrency().isPresent()) {
             httpUrl.addQueryParameter("currency", request.getCurrency().get().toString());
         }
+        if (request.getExcludedInvoiceIds().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "excludedInvoiceIds", request.getExcludedInvoiceIds().get().toString());
+        }
+        if (request.getIncludedVendorCreditIds().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "includedVendorCreditIds",
+                    request.getIncludedVendorCreditIds().get().toString());
+        }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)

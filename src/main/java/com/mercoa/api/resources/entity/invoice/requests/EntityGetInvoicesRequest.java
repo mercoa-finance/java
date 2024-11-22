@@ -59,6 +59,8 @@ public final class EntityGetInvoicesRequest {
 
     private final Optional<String> vendorId;
 
+    private final Optional<String> creatorUserId;
+
     private final Optional<String> approverId;
 
     private final Optional<ApproverAction> approverAction;
@@ -87,6 +89,7 @@ public final class EntityGetInvoicesRequest {
             Optional<String> search,
             Optional<String> payerId,
             Optional<String> vendorId,
+            Optional<String> creatorUserId,
             Optional<String> approverId,
             Optional<ApproverAction> approverAction,
             Optional<String> invoiceId,
@@ -108,6 +111,7 @@ public final class EntityGetInvoicesRequest {
         this.search = search;
         this.payerId = payerId;
         this.vendorId = vendorId;
+        this.creatorUserId = creatorUserId;
         this.approverId = approverId;
         this.approverAction = approverAction;
         this.invoiceId = invoiceId;
@@ -237,6 +241,14 @@ public final class EntityGetInvoicesRequest {
     }
 
     /**
+     * @return Filter invoices by the ID or foreign ID of the user that created the invoice.
+     */
+    @JsonProperty("creatorUserId")
+    public Optional<String> getCreatorUserId() {
+        return creatorUserId;
+    }
+
+    /**
      * @return Filter invoices by assigned approver user ID.
      */
     @JsonProperty("approverId")
@@ -303,6 +315,7 @@ public final class EntityGetInvoicesRequest {
                 && search.equals(other.search)
                 && payerId.equals(other.payerId)
                 && vendorId.equals(other.vendorId)
+                && creatorUserId.equals(other.creatorUserId)
                 && approverId.equals(other.approverId)
                 && approverAction.equals(other.approverAction)
                 && invoiceId.equals(other.invoiceId)
@@ -328,6 +341,7 @@ public final class EntityGetInvoicesRequest {
                 this.search,
                 this.payerId,
                 this.vendorId,
+                this.creatorUserId,
                 this.approverId,
                 this.approverAction,
                 this.invoiceId,
@@ -376,6 +390,8 @@ public final class EntityGetInvoicesRequest {
 
         private Optional<String> vendorId = Optional.empty();
 
+        private Optional<String> creatorUserId = Optional.empty();
+
         private Optional<String> approverId = Optional.empty();
 
         private Optional<ApproverAction> approverAction = Optional.empty();
@@ -407,6 +423,7 @@ public final class EntityGetInvoicesRequest {
             search(other.getSearch());
             payerId(other.getPayerId());
             vendorId(other.getVendorId());
+            creatorUserId(other.getCreatorUserId());
             approverId(other.getApproverId());
             approverAction(other.getApproverAction());
             invoiceId(other.getInvoiceId());
@@ -580,6 +597,17 @@ public final class EntityGetInvoicesRequest {
             return this;
         }
 
+        @JsonSetter(value = "creatorUserId", nulls = Nulls.SKIP)
+        public Builder creatorUserId(Optional<String> creatorUserId) {
+            this.creatorUserId = creatorUserId;
+            return this;
+        }
+
+        public Builder creatorUserId(String creatorUserId) {
+            this.creatorUserId = Optional.ofNullable(creatorUserId);
+            return this;
+        }
+
         @JsonSetter(value = "approverId", nulls = Nulls.SKIP)
         public Builder approverId(Optional<String> approverId) {
             this.approverId = approverId;
@@ -652,6 +680,7 @@ public final class EntityGetInvoicesRequest {
                     search,
                     payerId,
                     vendorId,
+                    creatorUserId,
                     approverId,
                     approverAction,
                     invoiceId,

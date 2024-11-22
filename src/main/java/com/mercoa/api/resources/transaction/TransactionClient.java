@@ -83,6 +83,10 @@ public class TransactionClient {
         if (request.getVendorId().isPresent()) {
             httpUrl.addQueryParameter("vendorId", request.getVendorId().get());
         }
+        if (request.getCreatorUserId().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "creatorUserId", request.getCreatorUserId().get());
+        }
         if (request.getInvoiceId().isPresent()) {
             httpUrl.addQueryParameter("invoiceId", request.getInvoiceId().get());
         }

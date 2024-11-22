@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,12 +26,22 @@ public final class CalculateVendorCreditUsageRequest {
 
     private final Optional<CurrencyCode> currency;
 
+    private final Optional<List<String>> excludedInvoiceIds;
+
+    private final Optional<List<String>> includedVendorCreditIds;
+
     private final Map<String, Object> additionalProperties;
 
     private CalculateVendorCreditUsageRequest(
-            double amount, Optional<CurrencyCode> currency, Map<String, Object> additionalProperties) {
+            double amount,
+            Optional<CurrencyCode> currency,
+            Optional<List<String>> excludedInvoiceIds,
+            Optional<List<String>> includedVendorCreditIds,
+            Map<String, Object> additionalProperties) {
         this.amount = amount;
         this.currency = currency;
+        this.excludedInvoiceIds = excludedInvoiceIds;
+        this.includedVendorCreditIds = includedVendorCreditIds;
         this.additionalProperties = additionalProperties;
     }
 
@@ -50,6 +61,22 @@ public final class CalculateVendorCreditUsageRequest {
         return currency;
     }
 
+    /**
+     * @return List of invoice IDs to exclude from the calculation. If not provided or an empty list, no invoices will be excluded. This is useful for recalculating vendor credit usage on invoices that already have vendor credits applied.
+     */
+    @JsonProperty("excludedInvoiceIds")
+    public Optional<List<String>> getExcludedInvoiceIds() {
+        return excludedInvoiceIds;
+    }
+
+    /**
+     * @return List of vendor credit IDs to include in the calculation. If not provided, all applicable vendor credits will be included, while an empty list will not include ANY vendor credits. This is useful for recalculating vendor credit usage on invoices that have a fixed list of applied vendor credits (e.g. a SCHEDULED or PENDING invoice).
+     */
+    @JsonProperty("includedVendorCreditIds")
+    public Optional<List<String>> getIncludedVendorCreditIds() {
+        return includedVendorCreditIds;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -62,12 +89,15 @@ public final class CalculateVendorCreditUsageRequest {
     }
 
     private boolean equalTo(CalculateVendorCreditUsageRequest other) {
-        return amount == other.amount && currency.equals(other.currency);
+        return amount == other.amount
+                && currency.equals(other.currency)
+                && excludedInvoiceIds.equals(other.excludedInvoiceIds)
+                && includedVendorCreditIds.equals(other.includedVendorCreditIds);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.amount, this.currency);
+        return Objects.hash(this.amount, this.currency, this.excludedInvoiceIds, this.includedVendorCreditIds);
     }
 
     @java.lang.Override
@@ -91,11 +121,23 @@ public final class CalculateVendorCreditUsageRequest {
         _FinalStage currency(Optional<CurrencyCode> currency);
 
         _FinalStage currency(CurrencyCode currency);
+
+        _FinalStage excludedInvoiceIds(Optional<List<String>> excludedInvoiceIds);
+
+        _FinalStage excludedInvoiceIds(List<String> excludedInvoiceIds);
+
+        _FinalStage includedVendorCreditIds(Optional<List<String>> includedVendorCreditIds);
+
+        _FinalStage includedVendorCreditIds(List<String> includedVendorCreditIds);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements AmountStage, _FinalStage {
         private double amount;
+
+        private Optional<List<String>> includedVendorCreditIds = Optional.empty();
+
+        private Optional<List<String>> excludedInvoiceIds = Optional.empty();
 
         private Optional<CurrencyCode> currency = Optional.empty();
 
@@ -108,6 +150,8 @@ public final class CalculateVendorCreditUsageRequest {
         public Builder from(CalculateVendorCreditUsageRequest other) {
             amount(other.getAmount());
             currency(other.getCurrency());
+            excludedInvoiceIds(other.getExcludedInvoiceIds());
+            includedVendorCreditIds(other.getIncludedVendorCreditIds());
             return this;
         }
 
@@ -119,6 +163,40 @@ public final class CalculateVendorCreditUsageRequest {
         @JsonSetter("amount")
         public _FinalStage amount(double amount) {
             this.amount = amount;
+            return this;
+        }
+
+        /**
+         * <p>List of vendor credit IDs to include in the calculation. If not provided, all applicable vendor credits will be included, while an empty list will not include ANY vendor credits. This is useful for recalculating vendor credit usage on invoices that have a fixed list of applied vendor credits (e.g. a SCHEDULED or PENDING invoice).</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage includedVendorCreditIds(List<String> includedVendorCreditIds) {
+            this.includedVendorCreditIds = Optional.ofNullable(includedVendorCreditIds);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "includedVendorCreditIds", nulls = Nulls.SKIP)
+        public _FinalStage includedVendorCreditIds(Optional<List<String>> includedVendorCreditIds) {
+            this.includedVendorCreditIds = includedVendorCreditIds;
+            return this;
+        }
+
+        /**
+         * <p>List of invoice IDs to exclude from the calculation. If not provided or an empty list, no invoices will be excluded. This is useful for recalculating vendor credit usage on invoices that already have vendor credits applied.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage excludedInvoiceIds(List<String> excludedInvoiceIds) {
+            this.excludedInvoiceIds = Optional.ofNullable(excludedInvoiceIds);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "excludedInvoiceIds", nulls = Nulls.SKIP)
+        public _FinalStage excludedInvoiceIds(Optional<List<String>> excludedInvoiceIds) {
+            this.excludedInvoiceIds = excludedInvoiceIds;
             return this;
         }
 
@@ -141,7 +219,8 @@ public final class CalculateVendorCreditUsageRequest {
 
         @java.lang.Override
         public CalculateVendorCreditUsageRequest build() {
-            return new CalculateVendorCreditUsageRequest(amount, currency, additionalProperties);
+            return new CalculateVendorCreditUsageRequest(
+                    amount, currency, excludedInvoiceIds, includedVendorCreditIds, additionalProperties);
         }
     }
 }
