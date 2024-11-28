@@ -10,7 +10,9 @@ public enum TransactionType {
 
     BANK_ACCOUNT_TO_MAILED_CHECK("bankAccountToMailedCheck"),
 
-    CUSTOM("custom");
+    CUSTOM("custom"),
+
+    OFF_PLATFORM("offPlatform");
 
     private final String value;
 

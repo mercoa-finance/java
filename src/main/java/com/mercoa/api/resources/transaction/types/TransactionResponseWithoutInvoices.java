@@ -39,6 +39,10 @@ public final class TransactionResponseWithoutInvoices {
         return new TransactionResponseWithoutInvoices(new CustomValue(value));
     }
 
+    public static TransactionResponseWithoutInvoices offPlatform(TransactionResponseBase value) {
+        return new TransactionResponseWithoutInvoices(new OffPlatformValue(value));
+    }
+
     public boolean isBankAccountToBankAccount() {
         return value instanceof BankAccountToBankAccountValue;
     }
@@ -49,6 +53,10 @@ public final class TransactionResponseWithoutInvoices {
 
     public boolean isCustom() {
         return value instanceof CustomValue;
+    }
+
+    public boolean isOffPlatform() {
+        return value instanceof OffPlatformValue;
     }
 
     public boolean _isUnknown() {
@@ -76,6 +84,13 @@ public final class TransactionResponseWithoutInvoices {
         return Optional.empty();
     }
 
+    public Optional<TransactionResponseBase> getOffPlatform() {
+        if (isOffPlatform()) {
+            return Optional.of(((OffPlatformValue) value).value);
+        }
+        return Optional.empty();
+    }
+
     public Optional<Object> _getUnknown() {
         if (_isUnknown()) {
             return Optional.of(((_UnknownValue) value).value);
@@ -95,6 +110,8 @@ public final class TransactionResponseWithoutInvoices {
 
         T visitCustom(TransactionResponseBase custom);
 
+        T visitOffPlatform(TransactionResponseBase offPlatform);
+
         T _visitUnknown(Object unknownType);
     }
 
@@ -102,7 +119,8 @@ public final class TransactionResponseWithoutInvoices {
     @JsonSubTypes({
         @JsonSubTypes.Type(BankAccountToBankAccountValue.class),
         @JsonSubTypes.Type(BankAccountToMailedCheckValue.class),
-        @JsonSubTypes.Type(CustomValue.class)
+        @JsonSubTypes.Type(CustomValue.class),
+        @JsonSubTypes.Type(OffPlatformValue.class)
     })
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
@@ -209,6 +227,44 @@ public final class TransactionResponseWithoutInvoices {
         }
 
         private boolean equalTo(CustomValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "TransactionResponseWithoutInvoices{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("offPlatform")
+    private static final class OffPlatformValue implements Value {
+        @JsonUnwrapped
+        private TransactionResponseBase value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private OffPlatformValue() {}
+
+        private OffPlatformValue(TransactionResponseBase value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitOffPlatform(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof OffPlatformValue && equalTo((OffPlatformValue) other);
+        }
+
+        private boolean equalTo(OffPlatformValue other) {
             return value.equals(other.value);
         }
 

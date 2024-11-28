@@ -28,6 +28,10 @@ public final class ColorSchemeRequest {
 
     private final Optional<Integer> roundedCorners;
 
+    private final Optional<String> fontFamily;
+
+    private final Optional<String> fontSize;
+
     private final Map<String, Object> additionalProperties;
 
     private ColorSchemeRequest(
@@ -35,11 +39,15 @@ public final class ColorSchemeRequest {
             Optional<String> secondaryColor,
             Optional<String> logoBackgroundColor,
             Optional<Integer> roundedCorners,
+            Optional<String> fontFamily,
+            Optional<String> fontSize,
             Map<String, Object> additionalProperties) {
         this.primaryColor = primaryColor;
         this.secondaryColor = secondaryColor;
         this.logoBackgroundColor = logoBackgroundColor;
         this.roundedCorners = roundedCorners;
+        this.fontFamily = fontFamily;
+        this.fontSize = fontSize;
         this.additionalProperties = additionalProperties;
     }
 
@@ -63,6 +71,16 @@ public final class ColorSchemeRequest {
         return roundedCorners;
     }
 
+    @JsonProperty("fontFamily")
+    public Optional<String> getFontFamily() {
+        return fontFamily;
+    }
+
+    @JsonProperty("fontSize")
+    public Optional<String> getFontSize() {
+        return fontSize;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -78,12 +96,20 @@ public final class ColorSchemeRequest {
         return primaryColor.equals(other.primaryColor)
                 && secondaryColor.equals(other.secondaryColor)
                 && logoBackgroundColor.equals(other.logoBackgroundColor)
-                && roundedCorners.equals(other.roundedCorners);
+                && roundedCorners.equals(other.roundedCorners)
+                && fontFamily.equals(other.fontFamily)
+                && fontSize.equals(other.fontSize);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.primaryColor, this.secondaryColor, this.logoBackgroundColor, this.roundedCorners);
+        return Objects.hash(
+                this.primaryColor,
+                this.secondaryColor,
+                this.logoBackgroundColor,
+                this.roundedCorners,
+                this.fontFamily,
+                this.fontSize);
     }
 
     @java.lang.Override
@@ -105,6 +131,10 @@ public final class ColorSchemeRequest {
 
         private Optional<Integer> roundedCorners = Optional.empty();
 
+        private Optional<String> fontFamily = Optional.empty();
+
+        private Optional<String> fontSize = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -115,6 +145,8 @@ public final class ColorSchemeRequest {
             secondaryColor(other.getSecondaryColor());
             logoBackgroundColor(other.getLogoBackgroundColor());
             roundedCorners(other.getRoundedCorners());
+            fontFamily(other.getFontFamily());
+            fontSize(other.getFontSize());
             return this;
         }
 
@@ -162,9 +194,37 @@ public final class ColorSchemeRequest {
             return this;
         }
 
+        @JsonSetter(value = "fontFamily", nulls = Nulls.SKIP)
+        public Builder fontFamily(Optional<String> fontFamily) {
+            this.fontFamily = fontFamily;
+            return this;
+        }
+
+        public Builder fontFamily(String fontFamily) {
+            this.fontFamily = Optional.ofNullable(fontFamily);
+            return this;
+        }
+
+        @JsonSetter(value = "fontSize", nulls = Nulls.SKIP)
+        public Builder fontSize(Optional<String> fontSize) {
+            this.fontSize = fontSize;
+            return this;
+        }
+
+        public Builder fontSize(String fontSize) {
+            this.fontSize = Optional.ofNullable(fontSize);
+            return this;
+        }
+
         public ColorSchemeRequest build() {
             return new ColorSchemeRequest(
-                    primaryColor, secondaryColor, logoBackgroundColor, roundedCorners, additionalProperties);
+                    primaryColor,
+                    secondaryColor,
+                    logoBackgroundColor,
+                    roundedCorners,
+                    fontFamily,
+                    fontSize,
+                    additionalProperties);
         }
     }
 }
