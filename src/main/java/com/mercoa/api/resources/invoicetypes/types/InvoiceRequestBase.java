@@ -77,6 +77,10 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
     private final Optional<List<String>> vendorCreditIds;
 
+    private final Optional<Double> taxAmount;
+
+    private final Optional<Double> shippingAmount;
+
     private final Map<String, Object> additionalProperties;
 
     private InvoiceRequestBase(
@@ -107,6 +111,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             Optional<Boolean> batchPayment,
             Optional<PaymentSchedule> paymentSchedule,
             Optional<List<String>> vendorCreditIds,
+            Optional<Double> taxAmount,
+            Optional<Double> shippingAmount,
             Map<String, Object> additionalProperties) {
         this.status = status;
         this.amount = amount;
@@ -135,6 +141,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         this.batchPayment = batchPayment;
         this.paymentSchedule = paymentSchedule;
         this.vendorCreditIds = vendorCreditIds;
+        this.taxAmount = taxAmount;
+        this.shippingAmount = shippingAmount;
         this.additionalProperties = additionalProperties;
     }
 
@@ -369,6 +377,24 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         return vendorCreditIds;
     }
 
+    /**
+     * @return Tax amount for this invoice.
+     */
+    @JsonProperty("taxAmount")
+    @java.lang.Override
+    public Optional<Double> getTaxAmount() {
+        return taxAmount;
+    }
+
+    /**
+     * @return Shipping amount for this invoice.
+     */
+    @JsonProperty("shippingAmount")
+    @java.lang.Override
+    public Optional<Double> getShippingAmount() {
+        return shippingAmount;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -407,7 +433,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 && fees.equals(other.fees)
                 && batchPayment.equals(other.batchPayment)
                 && paymentSchedule.equals(other.paymentSchedule)
-                && vendorCreditIds.equals(other.vendorCreditIds);
+                && vendorCreditIds.equals(other.vendorCreditIds)
+                && taxAmount.equals(other.taxAmount)
+                && shippingAmount.equals(other.shippingAmount);
     }
 
     @java.lang.Override
@@ -439,7 +467,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 this.fees,
                 this.batchPayment,
                 this.paymentSchedule,
-                this.vendorCreditIds);
+                this.vendorCreditIds,
+                this.taxAmount,
+                this.shippingAmount);
     }
 
     @java.lang.Override
@@ -507,6 +537,10 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
         private Optional<List<String>> vendorCreditIds = Optional.empty();
 
+        private Optional<Double> taxAmount = Optional.empty();
+
+        private Optional<Double> shippingAmount = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -540,6 +574,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             batchPayment(other.getBatchPayment());
             paymentSchedule(other.getPaymentSchedule());
             vendorCreditIds(other.getVendorCreditIds());
+            taxAmount(other.getTaxAmount());
+            shippingAmount(other.getShippingAmount());
             return this;
         }
 
@@ -840,6 +876,28 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        @JsonSetter(value = "taxAmount", nulls = Nulls.SKIP)
+        public Builder taxAmount(Optional<Double> taxAmount) {
+            this.taxAmount = taxAmount;
+            return this;
+        }
+
+        public Builder taxAmount(Double taxAmount) {
+            this.taxAmount = Optional.ofNullable(taxAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "shippingAmount", nulls = Nulls.SKIP)
+        public Builder shippingAmount(Optional<Double> shippingAmount) {
+            this.shippingAmount = shippingAmount;
+            return this;
+        }
+
+        public Builder shippingAmount(Double shippingAmount) {
+            this.shippingAmount = Optional.ofNullable(shippingAmount);
+            return this;
+        }
+
         public InvoiceRequestBase build() {
             return new InvoiceRequestBase(
                     status,
@@ -869,6 +927,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                     batchPayment,
                     paymentSchedule,
                     vendorCreditIds,
+                    taxAmount,
+                    shippingAmount,
                     additionalProperties);
         }
     }

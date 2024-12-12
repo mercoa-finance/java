@@ -24,6 +24,8 @@ import java.util.Optional;
 public final class FindPayeeCounterpartiesRequest {
     private final Optional<String> name;
 
+    private final Optional<String> search;
+
     private final Optional<CounterpartyNetworkType> networkType;
 
     private final Optional<Boolean> paymentMethods;
@@ -44,6 +46,7 @@ public final class FindPayeeCounterpartiesRequest {
 
     private FindPayeeCounterpartiesRequest(
             Optional<String> name,
+            Optional<String> search,
             Optional<CounterpartyNetworkType> networkType,
             Optional<Boolean> paymentMethods,
             Optional<Boolean> invoiceMetrics,
@@ -54,6 +57,7 @@ public final class FindPayeeCounterpartiesRequest {
             Optional<String> startingAfter,
             Map<String, Object> additionalProperties) {
         this.name = name;
+        this.search = search;
         this.networkType = networkType;
         this.paymentMethods = paymentMethods;
         this.invoiceMetrics = invoiceMetrics;
@@ -66,11 +70,19 @@ public final class FindPayeeCounterpartiesRequest {
     }
 
     /**
-     * @return Filter by counterparty name
+     * @return Use search instead. Deprecated. Filter counterparties by name. Partial matches are supported.
      */
     @JsonProperty("name")
     public Optional<String> getName() {
         return name;
+    }
+
+    /**
+     * @return Filter counterparties by name or email. Partial matches are supported.
+     */
+    @JsonProperty("search")
+    public Optional<String> getSearch() {
+        return search;
     }
 
     /**
@@ -150,6 +162,7 @@ public final class FindPayeeCounterpartiesRequest {
 
     private boolean equalTo(FindPayeeCounterpartiesRequest other) {
         return name.equals(other.name)
+                && search.equals(other.search)
                 && networkType.equals(other.networkType)
                 && paymentMethods.equals(other.paymentMethods)
                 && invoiceMetrics.equals(other.invoiceMetrics)
@@ -164,6 +177,7 @@ public final class FindPayeeCounterpartiesRequest {
     public int hashCode() {
         return Objects.hash(
                 this.name,
+                this.search,
                 this.networkType,
                 this.paymentMethods,
                 this.invoiceMetrics,
@@ -186,6 +200,8 @@ public final class FindPayeeCounterpartiesRequest {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
         private Optional<String> name = Optional.empty();
+
+        private Optional<String> search = Optional.empty();
 
         private Optional<CounterpartyNetworkType> networkType = Optional.empty();
 
@@ -210,6 +226,7 @@ public final class FindPayeeCounterpartiesRequest {
 
         public Builder from(FindPayeeCounterpartiesRequest other) {
             name(other.getName());
+            search(other.getSearch());
             networkType(other.getNetworkType());
             paymentMethods(other.getPaymentMethods());
             invoiceMetrics(other.getInvoiceMetrics());
@@ -229,6 +246,17 @@ public final class FindPayeeCounterpartiesRequest {
 
         public Builder name(String name) {
             this.name = Optional.ofNullable(name);
+            return this;
+        }
+
+        @JsonSetter(value = "search", nulls = Nulls.SKIP)
+        public Builder search(Optional<String> search) {
+            this.search = search;
+            return this;
+        }
+
+        public Builder search(String search) {
+            this.search = Optional.ofNullable(search);
             return this;
         }
 
@@ -323,6 +351,7 @@ public final class FindPayeeCounterpartiesRequest {
         public FindPayeeCounterpartiesRequest build() {
             return new FindPayeeCounterpartiesRequest(
                     name,
+                    search,
                     networkType,
                     paymentMethods,
                     invoiceMetrics,

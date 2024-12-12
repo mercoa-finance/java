@@ -30,6 +30,8 @@ public final class OcrCustomizationRequest {
 
     private final Optional<Boolean> predictMetadata;
 
+    private final Optional<Boolean> taxAndShippingAsLineItems;
+
     private final Map<String, Object> additionalProperties;
 
     private OcrCustomizationRequest(
@@ -38,12 +40,14 @@ public final class OcrCustomizationRequest {
             Optional<Boolean> lineItemMetadata,
             Optional<Boolean> lineItemGlAccountId,
             Optional<Boolean> predictMetadata,
+            Optional<Boolean> taxAndShippingAsLineItems,
             Map<String, Object> additionalProperties) {
         this.lineItems = lineItems;
         this.invoiceMetadata = invoiceMetadata;
         this.lineItemMetadata = lineItemMetadata;
         this.lineItemGlAccountId = lineItemGlAccountId;
         this.predictMetadata = predictMetadata;
+        this.taxAndShippingAsLineItems = taxAndShippingAsLineItems;
         this.additionalProperties = additionalProperties;
     }
 
@@ -87,6 +91,14 @@ public final class OcrCustomizationRequest {
         return predictMetadata;
     }
 
+    /**
+     * @return Pull tax and shipping information as line items. Defaults to true. If false, tax and shipping will extracted as invoice level fields.
+     */
+    @JsonProperty("taxAndShippingAsLineItems")
+    public Optional<Boolean> getTaxAndShippingAsLineItems() {
+        return taxAndShippingAsLineItems;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -103,7 +115,8 @@ public final class OcrCustomizationRequest {
                 && invoiceMetadata.equals(other.invoiceMetadata)
                 && lineItemMetadata.equals(other.lineItemMetadata)
                 && lineItemGlAccountId.equals(other.lineItemGlAccountId)
-                && predictMetadata.equals(other.predictMetadata);
+                && predictMetadata.equals(other.predictMetadata)
+                && taxAndShippingAsLineItems.equals(other.taxAndShippingAsLineItems);
     }
 
     @java.lang.Override
@@ -113,7 +126,8 @@ public final class OcrCustomizationRequest {
                 this.invoiceMetadata,
                 this.lineItemMetadata,
                 this.lineItemGlAccountId,
-                this.predictMetadata);
+                this.predictMetadata,
+                this.taxAndShippingAsLineItems);
     }
 
     @java.lang.Override
@@ -137,6 +151,8 @@ public final class OcrCustomizationRequest {
 
         private Optional<Boolean> predictMetadata = Optional.empty();
 
+        private Optional<Boolean> taxAndShippingAsLineItems = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -148,6 +164,7 @@ public final class OcrCustomizationRequest {
             lineItemMetadata(other.getLineItemMetadata());
             lineItemGlAccountId(other.getLineItemGlAccountId());
             predictMetadata(other.getPredictMetadata());
+            taxAndShippingAsLineItems(other.getTaxAndShippingAsLineItems());
             return this;
         }
 
@@ -206,6 +223,17 @@ public final class OcrCustomizationRequest {
             return this;
         }
 
+        @JsonSetter(value = "taxAndShippingAsLineItems", nulls = Nulls.SKIP)
+        public Builder taxAndShippingAsLineItems(Optional<Boolean> taxAndShippingAsLineItems) {
+            this.taxAndShippingAsLineItems = taxAndShippingAsLineItems;
+            return this;
+        }
+
+        public Builder taxAndShippingAsLineItems(Boolean taxAndShippingAsLineItems) {
+            this.taxAndShippingAsLineItems = Optional.ofNullable(taxAndShippingAsLineItems);
+            return this;
+        }
+
         public OcrCustomizationRequest build() {
             return new OcrCustomizationRequest(
                     lineItems,
@@ -213,6 +241,7 @@ public final class OcrCustomizationRequest {
                     lineItemMetadata,
                     lineItemGlAccountId,
                     predictMetadata,
+                    taxAndShippingAsLineItems,
                     additionalProperties);
         }
     }

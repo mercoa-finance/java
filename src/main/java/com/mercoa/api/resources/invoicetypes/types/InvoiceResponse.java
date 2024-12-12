@@ -80,6 +80,10 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
     private final Optional<List<InvoiceLineItemResponse>> lineItems;
 
+    private final Optional<Double> taxAmount;
+
+    private final Optional<Double> shippingAmount;
+
     private final List<ApprovalSlot> approvers;
 
     private final List<ApprovalPolicyResponse> approvalPolicy;
@@ -142,6 +146,8 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             boolean hasDocuments,
             boolean hasSourceEmail,
             Optional<List<InvoiceLineItemResponse>> lineItems,
+            Optional<Double> taxAmount,
+            Optional<Double> shippingAmount,
             List<ApprovalSlot> approvers,
             List<ApprovalPolicyResponse> approvalPolicy,
             Map<String, String> metadata,
@@ -185,6 +191,8 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
         this.hasDocuments = hasDocuments;
         this.hasSourceEmail = hasSourceEmail;
         this.lineItems = lineItems;
+        this.taxAmount = taxAmount;
+        this.shippingAmount = shippingAmount;
         this.approvers = approvers;
         this.approvalPolicy = approvalPolicy;
         this.metadata = metadata;
@@ -385,6 +393,24 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
         return lineItems;
     }
 
+    /**
+     * @return Tax amount for this invoice.
+     */
+    @JsonProperty("taxAmount")
+    @java.lang.Override
+    public Optional<Double> getTaxAmount() {
+        return taxAmount;
+    }
+
+    /**
+     * @return Shipping amount for this invoice.
+     */
+    @JsonProperty("shippingAmount")
+    @java.lang.Override
+    public Optional<Double> getShippingAmount() {
+        return shippingAmount;
+    }
+
     @JsonProperty("approvers")
     @java.lang.Override
     public List<ApprovalSlot> getApprovers() {
@@ -550,6 +576,8 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
                 && hasDocuments == other.hasDocuments
                 && hasSourceEmail == other.hasSourceEmail
                 && lineItems.equals(other.lineItems)
+                && taxAmount.equals(other.taxAmount)
+                && shippingAmount.equals(other.shippingAmount)
                 && approvers.equals(other.approvers)
                 && approvalPolicy.equals(other.approvalPolicy)
                 && metadata.equals(other.metadata)
@@ -597,6 +625,8 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
                 this.hasDocuments,
                 this.hasSourceEmail,
                 this.lineItems,
+                this.taxAmount,
+                this.shippingAmount,
                 this.approvers,
                 this.approvalPolicy,
                 this.metadata,
@@ -742,6 +772,14 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         _FinalStage lineItems(List<InvoiceLineItemResponse> lineItems);
 
+        _FinalStage taxAmount(Optional<Double> taxAmount);
+
+        _FinalStage taxAmount(Double taxAmount);
+
+        _FinalStage shippingAmount(Optional<Double> shippingAmount);
+
+        _FinalStage shippingAmount(Double shippingAmount);
+
         _FinalStage approvers(List<ApprovalSlot> approvers);
 
         _FinalStage addApprovers(ApprovalSlot approvers);
@@ -857,6 +895,10 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         private List<ApprovalSlot> approvers = new ArrayList<>();
 
+        private Optional<Double> shippingAmount = Optional.empty();
+
+        private Optional<Double> taxAmount = Optional.empty();
+
         private Optional<List<InvoiceLineItemResponse>> lineItems = Optional.empty();
 
         private Optional<Boolean> batchPayment = Optional.empty();
@@ -931,6 +973,8 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             hasDocuments(other.getHasDocuments());
             hasSourceEmail(other.getHasSourceEmail());
             lineItems(other.getLineItems());
+            taxAmount(other.getTaxAmount());
+            shippingAmount(other.getShippingAmount());
             approvers(other.getApprovers());
             approvalPolicy(other.getApprovalPolicy());
             metadata(other.getMetadata());
@@ -1263,6 +1307,40 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>Shipping amount for this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage shippingAmount(Double shippingAmount) {
+            this.shippingAmount = Optional.ofNullable(shippingAmount);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "shippingAmount", nulls = Nulls.SKIP)
+        public _FinalStage shippingAmount(Optional<Double> shippingAmount) {
+            this.shippingAmount = shippingAmount;
+            return this;
+        }
+
+        /**
+         * <p>Tax amount for this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage taxAmount(Double taxAmount) {
+            this.taxAmount = Optional.ofNullable(taxAmount);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "taxAmount", nulls = Nulls.SKIP)
+        public _FinalStage taxAmount(Optional<Double> taxAmount) {
+            this.taxAmount = taxAmount;
+            return this;
+        }
+
         @java.lang.Override
         public _FinalStage lineItems(List<InvoiceLineItemResponse> lineItems) {
             this.lineItems = Optional.ofNullable(lineItems);
@@ -1592,6 +1670,8 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
                     hasDocuments,
                     hasSourceEmail,
                     lineItems,
+                    taxAmount,
+                    shippingAmount,
                     approvers,
                     approvalPolicy,
                     metadata,

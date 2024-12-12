@@ -64,6 +64,10 @@ public interface IInvoiceResponseBase {
 
     Optional<List<InvoiceLineItemResponse>> getLineItems();
 
+    Optional<Double> getTaxAmount();
+
+    Optional<Double> getShippingAmount();
+
     List<ApprovalSlot> getApprovers();
 
     List<ApprovalPolicyResponse> getApprovalPolicy();

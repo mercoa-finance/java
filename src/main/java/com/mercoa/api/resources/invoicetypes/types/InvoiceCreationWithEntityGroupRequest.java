@@ -77,6 +77,10 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
 
     private final Optional<List<String>> vendorCreditIds;
 
+    private final Optional<Double> taxAmount;
+
+    private final Optional<Double> shippingAmount;
+
     private final Optional<List<InvoiceLineItemCreationRequest>> lineItems;
 
     private final String creatorEntityGroupId;
@@ -111,6 +115,8 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             Optional<Boolean> batchPayment,
             Optional<PaymentSchedule> paymentSchedule,
             Optional<List<String>> vendorCreditIds,
+            Optional<Double> taxAmount,
+            Optional<Double> shippingAmount,
             Optional<List<InvoiceLineItemCreationRequest>> lineItems,
             String creatorEntityGroupId,
             Map<String, Object> additionalProperties) {
@@ -141,6 +147,8 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
         this.batchPayment = batchPayment;
         this.paymentSchedule = paymentSchedule;
         this.vendorCreditIds = vendorCreditIds;
+        this.taxAmount = taxAmount;
+        this.shippingAmount = shippingAmount;
         this.lineItems = lineItems;
         this.creatorEntityGroupId = creatorEntityGroupId;
         this.additionalProperties = additionalProperties;
@@ -377,6 +385,24 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
         return vendorCreditIds;
     }
 
+    /**
+     * @return Tax amount for this invoice.
+     */
+    @JsonProperty("taxAmount")
+    @java.lang.Override
+    public Optional<Double> getTaxAmount() {
+        return taxAmount;
+    }
+
+    /**
+     * @return Shipping amount for this invoice.
+     */
+    @JsonProperty("shippingAmount")
+    @java.lang.Override
+    public Optional<Double> getShippingAmount() {
+        return shippingAmount;
+    }
+
     @JsonProperty("lineItems")
     public Optional<List<InvoiceLineItemCreationRequest>> getLineItems() {
         return lineItems;
@@ -430,6 +456,8 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
                 && batchPayment.equals(other.batchPayment)
                 && paymentSchedule.equals(other.paymentSchedule)
                 && vendorCreditIds.equals(other.vendorCreditIds)
+                && taxAmount.equals(other.taxAmount)
+                && shippingAmount.equals(other.shippingAmount)
                 && lineItems.equals(other.lineItems)
                 && creatorEntityGroupId.equals(other.creatorEntityGroupId);
     }
@@ -464,6 +492,8 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
                 this.batchPayment,
                 this.paymentSchedule,
                 this.vendorCreditIds,
+                this.taxAmount,
+                this.shippingAmount,
                 this.lineItems,
                 this.creatorEntityGroupId);
     }
@@ -594,6 +624,14 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
 
         _FinalStage vendorCreditIds(List<String> vendorCreditIds);
 
+        _FinalStage taxAmount(Optional<Double> taxAmount);
+
+        _FinalStage taxAmount(Double taxAmount);
+
+        _FinalStage shippingAmount(Optional<Double> shippingAmount);
+
+        _FinalStage shippingAmount(Double shippingAmount);
+
         _FinalStage lineItems(Optional<List<InvoiceLineItemCreationRequest>> lineItems);
 
         _FinalStage lineItems(List<InvoiceLineItemCreationRequest> lineItems);
@@ -604,6 +642,10 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
         private String creatorEntityGroupId;
 
         private Optional<List<InvoiceLineItemCreationRequest>> lineItems = Optional.empty();
+
+        private Optional<Double> shippingAmount = Optional.empty();
+
+        private Optional<Double> taxAmount = Optional.empty();
 
         private Optional<List<String>> vendorCreditIds = Optional.empty();
 
@@ -693,6 +735,8 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             batchPayment(other.getBatchPayment());
             paymentSchedule(other.getPaymentSchedule());
             vendorCreditIds(other.getVendorCreditIds());
+            taxAmount(other.getTaxAmount());
+            shippingAmount(other.getShippingAmount());
             lineItems(other.getLineItems());
             creatorEntityGroupId(other.getCreatorEntityGroupId());
             return this;
@@ -719,6 +763,40 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
         @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
         public _FinalStage lineItems(Optional<List<InvoiceLineItemCreationRequest>> lineItems) {
             this.lineItems = lineItems;
+            return this;
+        }
+
+        /**
+         * <p>Shipping amount for this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage shippingAmount(Double shippingAmount) {
+            this.shippingAmount = Optional.ofNullable(shippingAmount);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "shippingAmount", nulls = Nulls.SKIP)
+        public _FinalStage shippingAmount(Optional<Double> shippingAmount) {
+            this.shippingAmount = shippingAmount;
+            return this;
+        }
+
+        /**
+         * <p>Tax amount for this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage taxAmount(Double taxAmount) {
+            this.taxAmount = Optional.ofNullable(taxAmount);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "taxAmount", nulls = Nulls.SKIP)
+        public _FinalStage taxAmount(Optional<Double> taxAmount) {
+            this.taxAmount = taxAmount;
             return this;
         }
 
@@ -1195,6 +1273,8 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
                     batchPayment,
                     paymentSchedule,
                     vendorCreditIds,
+                    taxAmount,
+                    shippingAmount,
                     lineItems,
                     creatorEntityGroupId,
                     additionalProperties);

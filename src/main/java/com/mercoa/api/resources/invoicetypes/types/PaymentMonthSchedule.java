@@ -24,22 +24,22 @@ public final class PaymentMonthSchedule implements IPaymentScheduleBase {
 
     private final Optional<PaymentScheduleEndCondition> ends;
 
-    private final int dayOffset;
+    private final Optional<Integer> dayOffset;
 
-    private final Optional<PaymentMonthRepeatType> offsetType;
+    private final int repeatOnDay;
 
     private final Map<String, Object> additionalProperties;
 
     private PaymentMonthSchedule(
             Optional<Integer> repeatEvery,
             Optional<PaymentScheduleEndCondition> ends,
-            int dayOffset,
-            Optional<PaymentMonthRepeatType> offsetType,
+            Optional<Integer> dayOffset,
+            int repeatOnDay,
             Map<String, Object> additionalProperties) {
         this.repeatEvery = repeatEvery;
         this.ends = ends;
         this.dayOffset = dayOffset;
-        this.offsetType = offsetType;
+        this.repeatOnDay = repeatOnDay;
         this.additionalProperties = additionalProperties;
     }
 
@@ -62,19 +62,19 @@ public final class PaymentMonthSchedule implements IPaymentScheduleBase {
     }
 
     /**
-     * @return Offset from the start or end of the month to repeat on (0-30). Defaults to 0.
+     * @return deprecated. will be removed in the future and will always be 0.
      */
     @JsonProperty("dayOffset")
-    public int getDayOffset() {
+    public Optional<Integer> getDayOffset() {
         return dayOffset;
     }
 
     /**
-     * @return Type of offset. If start, will offset from the start of the month (so 10 with an offset of start will be on the 10th of the month). If end, will offset from the end of the month (so 10 with an offset of end will be the 20th).
+     * @return Day of the month to repeat on. Positive values (1-31): Represent the day of the month counting from the start (e.g., 10 is the 10th day of the month). Negative values (-1 to -31): Represent the day of the month counting backward from the end (e.g., -1 is the last day of the month, -2 is the second-to-last day).
      */
-    @JsonProperty("offsetType")
-    public Optional<PaymentMonthRepeatType> getOffsetType() {
-        return offsetType;
+    @JsonProperty("repeatOnDay")
+    public int getRepeatOnDay() {
+        return repeatOnDay;
     }
 
     @java.lang.Override
@@ -91,13 +91,13 @@ public final class PaymentMonthSchedule implements IPaymentScheduleBase {
     private boolean equalTo(PaymentMonthSchedule other) {
         return repeatEvery.equals(other.repeatEvery)
                 && ends.equals(other.ends)
-                && dayOffset == other.dayOffset
-                && offsetType.equals(other.offsetType);
+                && dayOffset.equals(other.dayOffset)
+                && repeatOnDay == other.repeatOnDay;
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.repeatEvery, this.ends, this.dayOffset, this.offsetType);
+        return Objects.hash(this.repeatEvery, this.ends, this.dayOffset, this.repeatOnDay);
     }
 
     @java.lang.Override
@@ -105,12 +105,12 @@ public final class PaymentMonthSchedule implements IPaymentScheduleBase {
         return ObjectMappers.stringify(this);
     }
 
-    public static DayOffsetStage builder() {
+    public static RepeatOnDayStage builder() {
         return new Builder();
     }
 
-    public interface DayOffsetStage {
-        _FinalStage dayOffset(int dayOffset);
+    public interface RepeatOnDayStage {
+        _FinalStage repeatOnDay(int repeatOnDay);
 
         Builder from(PaymentMonthSchedule other);
     }
@@ -126,16 +126,16 @@ public final class PaymentMonthSchedule implements IPaymentScheduleBase {
 
         _FinalStage ends(PaymentScheduleEndCondition ends);
 
-        _FinalStage offsetType(Optional<PaymentMonthRepeatType> offsetType);
+        _FinalStage dayOffset(Optional<Integer> dayOffset);
 
-        _FinalStage offsetType(PaymentMonthRepeatType offsetType);
+        _FinalStage dayOffset(Integer dayOffset);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements DayOffsetStage, _FinalStage {
-        private int dayOffset;
+    public static final class Builder implements RepeatOnDayStage, _FinalStage {
+        private int repeatOnDay;
 
-        private Optional<PaymentMonthRepeatType> offsetType = Optional.empty();
+        private Optional<Integer> dayOffset = Optional.empty();
 
         private Optional<PaymentScheduleEndCondition> ends = Optional.empty();
 
@@ -151,35 +151,35 @@ public final class PaymentMonthSchedule implements IPaymentScheduleBase {
             repeatEvery(other.getRepeatEvery());
             ends(other.getEnds());
             dayOffset(other.getDayOffset());
-            offsetType(other.getOffsetType());
+            repeatOnDay(other.getRepeatOnDay());
             return this;
         }
 
         /**
-         * <p>Offset from the start or end of the month to repeat on (0-30). Defaults to 0.</p>
+         * <p>Day of the month to repeat on. Positive values (1-31): Represent the day of the month counting from the start (e.g., 10 is the 10th day of the month). Negative values (-1 to -31): Represent the day of the month counting backward from the end (e.g., -1 is the last day of the month, -2 is the second-to-last day).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        @JsonSetter("dayOffset")
-        public _FinalStage dayOffset(int dayOffset) {
+        @JsonSetter("repeatOnDay")
+        public _FinalStage repeatOnDay(int repeatOnDay) {
+            this.repeatOnDay = repeatOnDay;
+            return this;
+        }
+
+        /**
+         * <p>deprecated. will be removed in the future and will always be 0.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage dayOffset(Integer dayOffset) {
+            this.dayOffset = Optional.ofNullable(dayOffset);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "dayOffset", nulls = Nulls.SKIP)
+        public _FinalStage dayOffset(Optional<Integer> dayOffset) {
             this.dayOffset = dayOffset;
-            return this;
-        }
-
-        /**
-         * <p>Type of offset. If start, will offset from the start of the month (so 10 with an offset of start will be on the 10th of the month). If end, will offset from the end of the month (so 10 with an offset of end will be the 20th).</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage offsetType(PaymentMonthRepeatType offsetType) {
-            this.offsetType = Optional.ofNullable(offsetType);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "offsetType", nulls = Nulls.SKIP)
-        public _FinalStage offsetType(Optional<PaymentMonthRepeatType> offsetType) {
-            this.offsetType = offsetType;
             return this;
         }
 
@@ -219,7 +219,7 @@ public final class PaymentMonthSchedule implements IPaymentScheduleBase {
 
         @java.lang.Override
         public PaymentMonthSchedule build() {
-            return new PaymentMonthSchedule(repeatEvery, ends, dayOffset, offsetType, additionalProperties);
+            return new PaymentMonthSchedule(repeatEvery, ends, dayOffset, repeatOnDay, additionalProperties);
         }
     }
 }

@@ -66,6 +66,9 @@ public class CounterpartyClient {
         if (request.getName().isPresent()) {
             httpUrl.addQueryParameter("name", request.getName().get());
         }
+        if (request.getSearch().isPresent()) {
+            httpUrl.addQueryParameter("search", request.getSearch().get());
+        }
         if (request.getNetworkType().isPresent()) {
             httpUrl.addQueryParameter(
                     "networkType", request.getNetworkType().get().toString());
@@ -147,6 +150,9 @@ public class CounterpartyClient {
                 .addPathSegments("counterparties/payors");
         if (request.getName().isPresent()) {
             httpUrl.addQueryParameter("name", request.getName().get());
+        }
+        if (request.getSearch().isPresent()) {
+            httpUrl.addQueryParameter("search", request.getSearch().get());
         }
         if (request.getNetworkType().isPresent()) {
             httpUrl.addQueryParameter(

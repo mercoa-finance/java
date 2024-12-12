@@ -53,4 +53,8 @@ public interface IInvoiceTemplateRequestBase {
     Optional<Boolean> getBatchPayment();
 
     Optional<PaymentSchedule> getPaymentSchedule();
+
+    Optional<Double> getTaxAmount();
+
+    Optional<Double> getShippingAmount();
 }

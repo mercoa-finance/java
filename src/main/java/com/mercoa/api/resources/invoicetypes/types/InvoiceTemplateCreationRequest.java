@@ -67,6 +67,10 @@ public final class InvoiceTemplateCreationRequest implements IInvoiceTemplateReq
 
     private final Optional<PaymentSchedule> paymentSchedule;
 
+    private final Optional<Double> taxAmount;
+
+    private final Optional<Double> shippingAmount;
+
     private final Optional<List<InvoiceLineItemCreationRequest>> lineItems;
 
     private final Optional<String> creatorEntityId;
@@ -96,6 +100,8 @@ public final class InvoiceTemplateCreationRequest implements IInvoiceTemplateReq
             Optional<InvoiceFeesRequest> fees,
             Optional<Boolean> batchPayment,
             Optional<PaymentSchedule> paymentSchedule,
+            Optional<Double> taxAmount,
+            Optional<Double> shippingAmount,
             Optional<List<InvoiceLineItemCreationRequest>> lineItems,
             Optional<String> creatorEntityId,
             Map<String, Object> additionalProperties) {
@@ -121,6 +127,8 @@ public final class InvoiceTemplateCreationRequest implements IInvoiceTemplateReq
         this.fees = fees;
         this.batchPayment = batchPayment;
         this.paymentSchedule = paymentSchedule;
+        this.taxAmount = taxAmount;
+        this.shippingAmount = shippingAmount;
         this.lineItems = lineItems;
         this.creatorEntityId = creatorEntityId;
         this.additionalProperties = additionalProperties;
@@ -312,6 +320,24 @@ public final class InvoiceTemplateCreationRequest implements IInvoiceTemplateReq
         return paymentSchedule;
     }
 
+    /**
+     * @return Tax amount for this invoice.
+     */
+    @JsonProperty("taxAmount")
+    @java.lang.Override
+    public Optional<Double> getTaxAmount() {
+        return taxAmount;
+    }
+
+    /**
+     * @return Shipping amount for this invoice.
+     */
+    @JsonProperty("shippingAmount")
+    @java.lang.Override
+    public Optional<Double> getShippingAmount() {
+        return shippingAmount;
+    }
+
     @JsonProperty("lineItems")
     public Optional<List<InvoiceLineItemCreationRequest>> getLineItems() {
         return lineItems;
@@ -359,6 +385,8 @@ public final class InvoiceTemplateCreationRequest implements IInvoiceTemplateReq
                 && fees.equals(other.fees)
                 && batchPayment.equals(other.batchPayment)
                 && paymentSchedule.equals(other.paymentSchedule)
+                && taxAmount.equals(other.taxAmount)
+                && shippingAmount.equals(other.shippingAmount)
                 && lineItems.equals(other.lineItems)
                 && creatorEntityId.equals(other.creatorEntityId);
     }
@@ -388,6 +416,8 @@ public final class InvoiceTemplateCreationRequest implements IInvoiceTemplateReq
                 this.fees,
                 this.batchPayment,
                 this.paymentSchedule,
+                this.taxAmount,
+                this.shippingAmount,
                 this.lineItems,
                 this.creatorEntityId);
     }
@@ -447,6 +477,10 @@ public final class InvoiceTemplateCreationRequest implements IInvoiceTemplateReq
 
         private Optional<PaymentSchedule> paymentSchedule = Optional.empty();
 
+        private Optional<Double> taxAmount = Optional.empty();
+
+        private Optional<Double> shippingAmount = Optional.empty();
+
         private Optional<List<InvoiceLineItemCreationRequest>> lineItems = Optional.empty();
 
         private Optional<String> creatorEntityId = Optional.empty();
@@ -479,6 +513,8 @@ public final class InvoiceTemplateCreationRequest implements IInvoiceTemplateReq
             fees(other.getFees());
             batchPayment(other.getBatchPayment());
             paymentSchedule(other.getPaymentSchedule());
+            taxAmount(other.getTaxAmount());
+            shippingAmount(other.getShippingAmount());
             lineItems(other.getLineItems());
             creatorEntityId(other.getCreatorEntityId());
             return this;
@@ -726,6 +762,28 @@ public final class InvoiceTemplateCreationRequest implements IInvoiceTemplateReq
             return this;
         }
 
+        @JsonSetter(value = "taxAmount", nulls = Nulls.SKIP)
+        public Builder taxAmount(Optional<Double> taxAmount) {
+            this.taxAmount = taxAmount;
+            return this;
+        }
+
+        public Builder taxAmount(Double taxAmount) {
+            this.taxAmount = Optional.ofNullable(taxAmount);
+            return this;
+        }
+
+        @JsonSetter(value = "shippingAmount", nulls = Nulls.SKIP)
+        public Builder shippingAmount(Optional<Double> shippingAmount) {
+            this.shippingAmount = shippingAmount;
+            return this;
+        }
+
+        public Builder shippingAmount(Double shippingAmount) {
+            this.shippingAmount = Optional.ofNullable(shippingAmount);
+            return this;
+        }
+
         @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
         public Builder lineItems(Optional<List<InvoiceLineItemCreationRequest>> lineItems) {
             this.lineItems = lineItems;
@@ -772,6 +830,8 @@ public final class InvoiceTemplateCreationRequest implements IInvoiceTemplateReq
                     fees,
                     batchPayment,
                     paymentSchedule,
+                    taxAmount,
+                    shippingAmount,
                     lineItems,
                     creatorEntityId,
                     additionalProperties);

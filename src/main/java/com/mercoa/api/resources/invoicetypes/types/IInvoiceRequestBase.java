@@ -63,4 +63,8 @@ public interface IInvoiceRequestBase {
     Optional<PaymentSchedule> getPaymentSchedule();
 
     Optional<List<String>> getVendorCreditIds();
+
+    Optional<Double> getTaxAmount();
+
+    Optional<Double> getShippingAmount();
 }

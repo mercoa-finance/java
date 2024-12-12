@@ -62,7 +62,7 @@ public final class PaymentYearSchedule implements IPaymentScheduleBase {
     }
 
     /**
-     * @return Day of the month to repeat on (1-31).
+     * @return Day of the month to repeat on. Positive values (1-31): Represent the day of the month counting from the start (e.g., 10 is the 10th day of the month). Negative values (-1 to -31): Represent the day of the month counting backward from the end (e.g., -1 is the last day of the month, -2 is the second-to-last day).
      */
     @JsonProperty("repeatOnDay")
     public int getRepeatOnDay() {
@@ -156,7 +156,7 @@ public final class PaymentYearSchedule implements IPaymentScheduleBase {
         }
 
         /**
-         * <p>Day of the month to repeat on (1-31).</p>
+         * <p>Day of the month to repeat on. Positive values (1-31): Represent the day of the month counting from the start (e.g., 10 is the 10th day of the month). Negative values (-1 to -31): Represent the day of the month counting backward from the end (e.g., -1 is the last day of the month, -2 is the second-to-last day).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
