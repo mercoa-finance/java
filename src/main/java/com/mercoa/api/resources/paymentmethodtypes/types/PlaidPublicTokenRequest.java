@@ -9,32 +9,35 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PlaidPublicTokenRequest.Builder.class)
 public final class PlaidPublicTokenRequest {
-    private final String accountId;
+    private final Optional<String> accountId;
 
     private final String publicToken;
 
     private final Map<String, Object> additionalProperties;
 
-    private PlaidPublicTokenRequest(String accountId, String publicToken, Map<String, Object> additionalProperties) {
+    private PlaidPublicTokenRequest(
+            Optional<String> accountId, String publicToken, Map<String, Object> additionalProperties) {
         this.accountId = accountId;
         this.publicToken = publicToken;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return Plaid account ID
+     * @return Plaid account ID. If not provided, will try to match the provided routing number and account number.
      */
     @JsonProperty("accountId")
-    public String getAccountId() {
+    public Optional<String> getAccountId() {
         return accountId;
     }
 
@@ -71,29 +74,29 @@ public final class PlaidPublicTokenRequest {
         return ObjectMappers.stringify(this);
     }
 
-    public static AccountIdStage builder() {
+    public static PublicTokenStage builder() {
         return new Builder();
-    }
-
-    public interface AccountIdStage {
-        PublicTokenStage accountId(String accountId);
-
-        Builder from(PlaidPublicTokenRequest other);
     }
 
     public interface PublicTokenStage {
         _FinalStage publicToken(String publicToken);
+
+        Builder from(PlaidPublicTokenRequest other);
     }
 
     public interface _FinalStage {
         PlaidPublicTokenRequest build();
+
+        _FinalStage accountId(Optional<String> accountId);
+
+        _FinalStage accountId(String accountId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements AccountIdStage, PublicTokenStage, _FinalStage {
-        private String accountId;
-
+    public static final class Builder implements PublicTokenStage, _FinalStage {
         private String publicToken;
+
+        private Optional<String> accountId = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -108,17 +111,6 @@ public final class PlaidPublicTokenRequest {
         }
 
         /**
-         * <p>Plaid account ID</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("accountId")
-        public PublicTokenStage accountId(String accountId) {
-            this.accountId = accountId;
-            return this;
-        }
-
-        /**
          * <p>Public token received from Plaid Link. Use this if linking the account using the Plaid Link frontend component.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -126,6 +118,23 @@ public final class PlaidPublicTokenRequest {
         @JsonSetter("publicToken")
         public _FinalStage publicToken(String publicToken) {
             this.publicToken = publicToken;
+            return this;
+        }
+
+        /**
+         * <p>Plaid account ID. If not provided, will try to match the provided routing number and account number.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage accountId(String accountId) {
+            this.accountId = Optional.ofNullable(accountId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
+        public _FinalStage accountId(Optional<String> accountId) {
+            this.accountId = accountId;
             return this;
         }
 

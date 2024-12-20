@@ -33,6 +33,8 @@ public final class EntityCustomizationRequest {
 
     private final Optional<NotificationCustomizationRequest> notifications;
 
+    private final Optional<WorkflowCustomizationRequest> workflow;
+
     private final Map<String, Object> additionalProperties;
 
     private EntityCustomizationRequest(
@@ -42,6 +44,7 @@ public final class EntityCustomizationRequest {
             Optional<List<PaymentMethodCustomizationRequest>> paymentDestination,
             Optional<OcrCustomizationRequest> ocr,
             Optional<NotificationCustomizationRequest> notifications,
+            Optional<WorkflowCustomizationRequest> workflow,
             Map<String, Object> additionalProperties) {
         this.metadata = metadata;
         this.paymentSource = paymentSource;
@@ -49,6 +52,7 @@ public final class EntityCustomizationRequest {
         this.paymentDestination = paymentDestination;
         this.ocr = ocr;
         this.notifications = notifications;
+        this.workflow = workflow;
         this.additionalProperties = additionalProperties;
     }
 
@@ -82,6 +86,11 @@ public final class EntityCustomizationRequest {
         return notifications;
     }
 
+    @JsonProperty("workflow")
+    public Optional<WorkflowCustomizationRequest> getWorkflow() {
+        return workflow;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -99,7 +108,8 @@ public final class EntityCustomizationRequest {
                 && backupDisbursement.equals(other.backupDisbursement)
                 && paymentDestination.equals(other.paymentDestination)
                 && ocr.equals(other.ocr)
-                && notifications.equals(other.notifications);
+                && notifications.equals(other.notifications)
+                && workflow.equals(other.workflow);
     }
 
     @java.lang.Override
@@ -110,7 +120,8 @@ public final class EntityCustomizationRequest {
                 this.backupDisbursement,
                 this.paymentDestination,
                 this.ocr,
-                this.notifications);
+                this.notifications,
+                this.workflow);
     }
 
     @java.lang.Override
@@ -136,6 +147,8 @@ public final class EntityCustomizationRequest {
 
         private Optional<NotificationCustomizationRequest> notifications = Optional.empty();
 
+        private Optional<WorkflowCustomizationRequest> workflow = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -148,6 +161,7 @@ public final class EntityCustomizationRequest {
             paymentDestination(other.getPaymentDestination());
             ocr(other.getOcr());
             notifications(other.getNotifications());
+            workflow(other.getWorkflow());
             return this;
         }
 
@@ -217,6 +231,17 @@ public final class EntityCustomizationRequest {
             return this;
         }
 
+        @JsonSetter(value = "workflow", nulls = Nulls.SKIP)
+        public Builder workflow(Optional<WorkflowCustomizationRequest> workflow) {
+            this.workflow = workflow;
+            return this;
+        }
+
+        public Builder workflow(WorkflowCustomizationRequest workflow) {
+            this.workflow = Optional.ofNullable(workflow);
+            return this;
+        }
+
         public EntityCustomizationRequest build() {
             return new EntityCustomizationRequest(
                     metadata,
@@ -225,6 +250,7 @@ public final class EntityCustomizationRequest {
                     paymentDestination,
                     ocr,
                     notifications,
+                    workflow,
                     additionalProperties);
         }
     }

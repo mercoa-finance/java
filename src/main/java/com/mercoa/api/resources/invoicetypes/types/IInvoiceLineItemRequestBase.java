@@ -17,7 +17,7 @@ public interface IInvoiceLineItemRequestBase {
 
     Optional<Double> getUnitPrice();
 
-    Optional<InvoiceLineItemCategory> getCategory();
+    Optional<String> getCategory();
 
     Optional<OffsetDateTime> getServiceStartDate();
 

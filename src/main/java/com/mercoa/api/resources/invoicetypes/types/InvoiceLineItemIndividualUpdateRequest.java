@@ -25,7 +25,7 @@ public final class InvoiceLineItemIndividualUpdateRequest {
 
     private final Optional<String> description;
 
-    private final Optional<InvoiceLineItemCategory> category;
+    private final Optional<String> category;
 
     private final Optional<OffsetDateTime> serviceStartDate;
 
@@ -40,7 +40,7 @@ public final class InvoiceLineItemIndividualUpdateRequest {
     private InvoiceLineItemIndividualUpdateRequest(
             Optional<String> name,
             Optional<String> description,
-            Optional<InvoiceLineItemCategory> category,
+            Optional<String> category,
             Optional<OffsetDateTime> serviceStartDate,
             Optional<OffsetDateTime> serviceEndDate,
             Optional<Map<String, String>> metadata,
@@ -67,10 +67,10 @@ public final class InvoiceLineItemIndividualUpdateRequest {
     }
 
     /**
-     * @return Category of the line item. Defaults to EXPENSE.
+     * @return Category of the line item.
      */
     @JsonProperty("category")
-    public Optional<InvoiceLineItemCategory> getCategory() {
+    public Optional<String> getCategory() {
         return category;
     }
 
@@ -146,7 +146,7 @@ public final class InvoiceLineItemIndividualUpdateRequest {
 
         private Optional<String> description = Optional.empty();
 
-        private Optional<InvoiceLineItemCategory> category = Optional.empty();
+        private Optional<String> category = Optional.empty();
 
         private Optional<OffsetDateTime> serviceStartDate = Optional.empty();
 
@@ -195,12 +195,12 @@ public final class InvoiceLineItemIndividualUpdateRequest {
         }
 
         @JsonSetter(value = "category", nulls = Nulls.SKIP)
-        public Builder category(Optional<InvoiceLineItemCategory> category) {
+        public Builder category(Optional<String> category) {
             this.category = category;
             return this;
         }
 
-        public Builder category(InvoiceLineItemCategory category) {
+        public Builder category(String category) {
             this.category = Optional.ofNullable(category);
             return this;
         }

@@ -30,7 +30,7 @@ public final class InvoiceLineItemUpdateRequest implements IInvoiceLineItemReque
 
     private final Optional<Double> unitPrice;
 
-    private final Optional<InvoiceLineItemCategory> category;
+    private final Optional<String> category;
 
     private final Optional<OffsetDateTime> serviceStartDate;
 
@@ -53,7 +53,7 @@ public final class InvoiceLineItemUpdateRequest implements IInvoiceLineItemReque
             Optional<String> name,
             Optional<Double> quantity,
             Optional<Double> unitPrice,
-            Optional<InvoiceLineItemCategory> category,
+            Optional<String> category,
             Optional<OffsetDateTime> serviceStartDate,
             Optional<OffsetDateTime> serviceEndDate,
             Optional<Map<String, String>> metadata,
@@ -108,11 +108,11 @@ public final class InvoiceLineItemUpdateRequest implements IInvoiceLineItemReque
     }
 
     /**
-     * @return Category of the line item. Defaults to EXPENSE.
+     * @return Category of the line item.
      */
     @JsonProperty("category")
     @java.lang.Override
-    public Optional<InvoiceLineItemCategory> getCategory() {
+    public Optional<String> getCategory() {
         return category;
     }
 
@@ -226,7 +226,7 @@ public final class InvoiceLineItemUpdateRequest implements IInvoiceLineItemReque
 
         private Optional<Double> unitPrice = Optional.empty();
 
-        private Optional<InvoiceLineItemCategory> category = Optional.empty();
+        private Optional<String> category = Optional.empty();
 
         private Optional<OffsetDateTime> serviceStartDate = Optional.empty();
 
@@ -308,12 +308,12 @@ public final class InvoiceLineItemUpdateRequest implements IInvoiceLineItemReque
         }
 
         @JsonSetter(value = "category", nulls = Nulls.SKIP)
-        public Builder category(Optional<InvoiceLineItemCategory> category) {
+        public Builder category(Optional<String> category) {
             this.category = category;
             return this;
         }
 
-        public Builder category(InvoiceLineItemCategory category) {
+        public Builder category(String category) {
             this.category = Optional.ofNullable(category);
             return this;
         }

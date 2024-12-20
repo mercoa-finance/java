@@ -3,167 +3,39 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.mercoa.api.core.ObjectMappers;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
 import java.util.Objects;
-import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = EntityRequest.Builder.class)
+@JsonDeserialize(using = EntityRequest.Deserializer.class)
 public final class EntityRequest {
-    private final Optional<String> foreignId;
+    private final Object value;
 
-    private final Optional<String> emailTo;
+    private final int type;
 
-    private final Optional<List<String>> emailToAlias;
-
-    private final boolean isCustomer;
-
-    private final AccountType accountType;
-
-    private final ProfileRequest profile;
-
-    private final boolean isPayor;
-
-    private final boolean isPayee;
-
-    private final Optional<Boolean> isNetworkPayor;
-
-    private final Optional<Boolean> isNetworkPayee;
-
-    private final Optional<String> logo;
-
-    private final Optional<Map<String, String>> metadata;
-
-    private final Map<String, Object> additionalProperties;
-
-    private EntityRequest(
-            Optional<String> foreignId,
-            Optional<String> emailTo,
-            Optional<List<String>> emailToAlias,
-            boolean isCustomer,
-            AccountType accountType,
-            ProfileRequest profile,
-            boolean isPayor,
-            boolean isPayee,
-            Optional<Boolean> isNetworkPayor,
-            Optional<Boolean> isNetworkPayee,
-            Optional<String> logo,
-            Optional<Map<String, String>> metadata,
-            Map<String, Object> additionalProperties) {
-        this.foreignId = foreignId;
-        this.emailTo = emailTo;
-        this.emailToAlias = emailToAlias;
-        this.isCustomer = isCustomer;
-        this.accountType = accountType;
-        this.profile = profile;
-        this.isPayor = isPayor;
-        this.isPayee = isPayee;
-        this.isNetworkPayor = isNetworkPayor;
-        this.isNetworkPayee = isNetworkPayee;
-        this.logo = logo;
-        this.metadata = metadata;
-        this.additionalProperties = additionalProperties;
+    private EntityRequest(Object value, int type) {
+        this.value = value;
+        this.type = type;
     }
 
-    /**
-     * @return The ID used to identify this entity in your system. This ID must be unique across all entities in your system.
-     */
-    @JsonProperty("foreignId")
-    public Optional<String> getForeignId() {
-        return foreignId;
+    @JsonValue
+    public Object get() {
+        return this.value;
     }
 
-    /**
-     * @return Sets the email address to which to send invoices to be added to the Invoice Inbox. Only provide the local-part/username of the email address, do not include the @domain.com
-     */
-    @JsonProperty("emailTo")
-    public Optional<String> getEmailTo() {
-        return emailTo;
-    }
-
-    /**
-     * @return Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias. Include the full email address.
-     */
-    @JsonProperty("emailToAlias")
-    public Optional<List<String>> getEmailToAlias() {
-        return emailToAlias;
-    }
-
-    /**
-     * @return If this entity has a direct relationship with your organization (e.g your direct customer or client), set this to true. Otherwise, set to false (e.g your customer's vendors).
-     */
-    @JsonProperty("isCustomer")
-    public boolean getIsCustomer() {
-        return isCustomer;
-    }
-
-    @JsonProperty("accountType")
-    public AccountType getAccountType() {
-        return accountType;
-    }
-
-    @JsonProperty("profile")
-    public ProfileRequest getProfile() {
-        return profile;
-    }
-
-    /**
-     * @return If this entity will be paying invoices, set this to true.
-     */
-    @JsonProperty("isPayor")
-    public boolean getIsPayor() {
-        return isPayor;
-    }
-
-    /**
-     * @return If this entity will be receiving payments, set this to true.
-     */
-    @JsonProperty("isPayee")
-    public boolean getIsPayee() {
-        return isPayee;
-    }
-
-    /**
-     * @return Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.
-     */
-    @JsonProperty("isNetworkPayor")
-    public Optional<Boolean> getIsNetworkPayor() {
-        return isNetworkPayor;
-    }
-
-    /**
-     * @return Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.
-     */
-    @JsonProperty("isNetworkPayee")
-    public Optional<Boolean> getIsNetworkPayee() {
-        return isNetworkPayee;
-    }
-
-    /**
-     * @return Base64 encoded PNG image data for the entity logo. Max size 100KB.
-     */
-    @JsonProperty("logo")
-    public Optional<String> getLogo() {
-        return logo;
-    }
-
-    /**
-     * @return Simple key/value metadata associated with this entity. For more complex metadata, use the Metadata API.
-     */
-    @JsonProperty("metadata")
-    public Optional<Map<String, String>> getMetadata() {
-        return metadata;
+    public <T> T visit(Visitor<T> visitor) {
+        if (this.type == 0) {
+            return visitor.visit((EntityCreationRequest) this.value);
+        } else if (this.type == 1) {
+            return visitor.visit((EntityCloneRequest) this.value);
+        }
+        throw new IllegalStateException("Failed to visit value. This should never happen.");
     }
 
     @java.lang.Override
@@ -172,337 +44,51 @@ public final class EntityRequest {
         return other instanceof EntityRequest && equalTo((EntityRequest) other);
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
     private boolean equalTo(EntityRequest other) {
-        return foreignId.equals(other.foreignId)
-                && emailTo.equals(other.emailTo)
-                && emailToAlias.equals(other.emailToAlias)
-                && isCustomer == other.isCustomer
-                && accountType.equals(other.accountType)
-                && profile.equals(other.profile)
-                && isPayor == other.isPayor
-                && isPayee == other.isPayee
-                && isNetworkPayor.equals(other.isNetworkPayor)
-                && isNetworkPayee.equals(other.isNetworkPayee)
-                && logo.equals(other.logo)
-                && metadata.equals(other.metadata);
+        return value.equals(other.value);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(
-                this.foreignId,
-                this.emailTo,
-                this.emailToAlias,
-                this.isCustomer,
-                this.accountType,
-                this.profile,
-                this.isPayor,
-                this.isPayee,
-                this.isNetworkPayor,
-                this.isNetworkPayee,
-                this.logo,
-                this.metadata);
+        return Objects.hash(this.value);
     }
 
     @java.lang.Override
     public String toString() {
-        return ObjectMappers.stringify(this);
+        return this.value.toString();
     }
 
-    public static IsCustomerStage builder() {
-        return new Builder();
+    public static EntityRequest of(EntityCreationRequest value) {
+        return new EntityRequest(value, 0);
     }
 
-    public interface IsCustomerStage {
-        AccountTypeStage isCustomer(boolean isCustomer);
-
-        Builder from(EntityRequest other);
+    public static EntityRequest of(EntityCloneRequest value) {
+        return new EntityRequest(value, 1);
     }
 
-    public interface AccountTypeStage {
-        ProfileStage accountType(AccountType accountType);
+    public interface Visitor<T> {
+        T visit(EntityCreationRequest value);
+
+        T visit(EntityCloneRequest value);
     }
 
-    public interface ProfileStage {
-        IsPayorStage profile(ProfileRequest profile);
-    }
-
-    public interface IsPayorStage {
-        IsPayeeStage isPayor(boolean isPayor);
-    }
-
-    public interface IsPayeeStage {
-        _FinalStage isPayee(boolean isPayee);
-    }
-
-    public interface _FinalStage {
-        EntityRequest build();
-
-        _FinalStage foreignId(Optional<String> foreignId);
-
-        _FinalStage foreignId(String foreignId);
-
-        _FinalStage emailTo(Optional<String> emailTo);
-
-        _FinalStage emailTo(String emailTo);
-
-        _FinalStage emailToAlias(Optional<List<String>> emailToAlias);
-
-        _FinalStage emailToAlias(List<String> emailToAlias);
-
-        _FinalStage isNetworkPayor(Optional<Boolean> isNetworkPayor);
-
-        _FinalStage isNetworkPayor(Boolean isNetworkPayor);
-
-        _FinalStage isNetworkPayee(Optional<Boolean> isNetworkPayee);
-
-        _FinalStage isNetworkPayee(Boolean isNetworkPayee);
-
-        _FinalStage logo(Optional<String> logo);
-
-        _FinalStage logo(String logo);
-
-        _FinalStage metadata(Optional<Map<String, String>> metadata);
-
-        _FinalStage metadata(Map<String, String> metadata);
-    }
-
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder
-            implements IsCustomerStage, AccountTypeStage, ProfileStage, IsPayorStage, IsPayeeStage, _FinalStage {
-        private boolean isCustomer;
-
-        private AccountType accountType;
-
-        private ProfileRequest profile;
-
-        private boolean isPayor;
-
-        private boolean isPayee;
-
-        private Optional<Map<String, String>> metadata = Optional.empty();
-
-        private Optional<String> logo = Optional.empty();
-
-        private Optional<Boolean> isNetworkPayee = Optional.empty();
-
-        private Optional<Boolean> isNetworkPayor = Optional.empty();
-
-        private Optional<List<String>> emailToAlias = Optional.empty();
-
-        private Optional<String> emailTo = Optional.empty();
-
-        private Optional<String> foreignId = Optional.empty();
-
-        @JsonAnySetter
-        private Map<String, Object> additionalProperties = new HashMap<>();
-
-        private Builder() {}
-
-        @java.lang.Override
-        public Builder from(EntityRequest other) {
-            foreignId(other.getForeignId());
-            emailTo(other.getEmailTo());
-            emailToAlias(other.getEmailToAlias());
-            isCustomer(other.getIsCustomer());
-            accountType(other.getAccountType());
-            profile(other.getProfile());
-            isPayor(other.getIsPayor());
-            isPayee(other.getIsPayee());
-            isNetworkPayor(other.getIsNetworkPayor());
-            isNetworkPayee(other.getIsNetworkPayee());
-            logo(other.getLogo());
-            metadata(other.getMetadata());
-            return this;
-        }
-
-        /**
-         * <p>If this entity has a direct relationship with your organization (e.g your direct customer or client), set this to true. Otherwise, set to false (e.g your customer's vendors).</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("isCustomer")
-        public AccountTypeStage isCustomer(boolean isCustomer) {
-            this.isCustomer = isCustomer;
-            return this;
+    static final class Deserializer extends StdDeserializer<EntityRequest> {
+        Deserializer() {
+            super(EntityRequest.class);
         }
 
         @java.lang.Override
-        @JsonSetter("accountType")
-        public ProfileStage accountType(AccountType accountType) {
-            this.accountType = accountType;
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("profile")
-        public IsPayorStage profile(ProfileRequest profile) {
-            this.profile = profile;
-            return this;
-        }
-
-        /**
-         * <p>If this entity will be paying invoices, set this to true.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("isPayor")
-        public IsPayeeStage isPayor(boolean isPayor) {
-            this.isPayor = isPayor;
-            return this;
-        }
-
-        /**
-         * <p>If this entity will be receiving payments, set this to true.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("isPayee")
-        public _FinalStage isPayee(boolean isPayee) {
-            this.isPayee = isPayee;
-            return this;
-        }
-
-        /**
-         * <p>Simple key/value metadata associated with this entity. For more complex metadata, use the Metadata API.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage metadata(Map<String, String> metadata) {
-            this.metadata = Optional.ofNullable(metadata);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
-        public _FinalStage metadata(Optional<Map<String, String>> metadata) {
-            this.metadata = metadata;
-            return this;
-        }
-
-        /**
-         * <p>Base64 encoded PNG image data for the entity logo. Max size 100KB.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage logo(String logo) {
-            this.logo = Optional.ofNullable(logo);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "logo", nulls = Nulls.SKIP)
-        public _FinalStage logo(Optional<String> logo) {
-            this.logo = logo;
-            return this;
-        }
-
-        /**
-         * <p>Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage isNetworkPayee(Boolean isNetworkPayee) {
-            this.isNetworkPayee = Optional.ofNullable(isNetworkPayee);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "isNetworkPayee", nulls = Nulls.SKIP)
-        public _FinalStage isNetworkPayee(Optional<Boolean> isNetworkPayee) {
-            this.isNetworkPayee = isNetworkPayee;
-            return this;
-        }
-
-        /**
-         * <p>Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage isNetworkPayor(Boolean isNetworkPayor) {
-            this.isNetworkPayor = Optional.ofNullable(isNetworkPayor);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "isNetworkPayor", nulls = Nulls.SKIP)
-        public _FinalStage isNetworkPayor(Optional<Boolean> isNetworkPayor) {
-            this.isNetworkPayor = isNetworkPayor;
-            return this;
-        }
-
-        /**
-         * <p>Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias. Include the full email address.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage emailToAlias(List<String> emailToAlias) {
-            this.emailToAlias = Optional.ofNullable(emailToAlias);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "emailToAlias", nulls = Nulls.SKIP)
-        public _FinalStage emailToAlias(Optional<List<String>> emailToAlias) {
-            this.emailToAlias = emailToAlias;
-            return this;
-        }
-
-        /**
-         * <p>Sets the email address to which to send invoices to be added to the Invoice Inbox. Only provide the local-part/username of the email address, do not include the @domain.com</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage emailTo(String emailTo) {
-            this.emailTo = Optional.ofNullable(emailTo);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "emailTo", nulls = Nulls.SKIP)
-        public _FinalStage emailTo(Optional<String> emailTo) {
-            this.emailTo = emailTo;
-            return this;
-        }
-
-        /**
-         * <p>The ID used to identify this entity in your system. This ID must be unique across all entities in your system.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage foreignId(String foreignId) {
-            this.foreignId = Optional.ofNullable(foreignId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
-        public _FinalStage foreignId(Optional<String> foreignId) {
-            this.foreignId = foreignId;
-            return this;
-        }
-
-        @java.lang.Override
-        public EntityRequest build() {
-            return new EntityRequest(
-                    foreignId,
-                    emailTo,
-                    emailToAlias,
-                    isCustomer,
-                    accountType,
-                    profile,
-                    isPayor,
-                    isPayee,
-                    isNetworkPayor,
-                    isNetworkPayee,
-                    logo,
-                    metadata,
-                    additionalProperties);
+        public EntityRequest deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+            Object value = p.readValueAs(Object.class);
+            try {
+                return of(ObjectMappers.JSON_MAPPER.convertValue(value, EntityCreationRequest.class));
+            } catch (IllegalArgumentException e) {
+            }
+            try {
+                return of(ObjectMappers.JSON_MAPPER.convertValue(value, EntityCloneRequest.class));
+            } catch (IllegalArgumentException e) {
+            }
+            throw new JsonParseException(p, "Failed to deserialize");
         }
     }
 }

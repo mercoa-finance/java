@@ -33,6 +33,8 @@ public final class EntityCustomizationResponse {
 
     private final NotificationCustomizationRequest notifications;
 
+    private final WorkflowCustomizationRequest workflow;
+
     private final Map<String, Object> additionalProperties;
 
     private EntityCustomizationResponse(
@@ -42,6 +44,7 @@ public final class EntityCustomizationResponse {
             List<PaymentMethodCustomizationRequest> paymentDestination,
             OcrCustomizationRequest ocr,
             NotificationCustomizationRequest notifications,
+            WorkflowCustomizationRequest workflow,
             Map<String, Object> additionalProperties) {
         this.metadata = metadata;
         this.paymentSource = paymentSource;
@@ -49,6 +52,7 @@ public final class EntityCustomizationResponse {
         this.paymentDestination = paymentDestination;
         this.ocr = ocr;
         this.notifications = notifications;
+        this.workflow = workflow;
         this.additionalProperties = additionalProperties;
     }
 
@@ -82,6 +86,11 @@ public final class EntityCustomizationResponse {
         return notifications;
     }
 
+    @JsonProperty("workflow")
+    public WorkflowCustomizationRequest getWorkflow() {
+        return workflow;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -99,7 +108,8 @@ public final class EntityCustomizationResponse {
                 && backupDisbursement.equals(other.backupDisbursement)
                 && paymentDestination.equals(other.paymentDestination)
                 && ocr.equals(other.ocr)
-                && notifications.equals(other.notifications);
+                && notifications.equals(other.notifications)
+                && workflow.equals(other.workflow);
     }
 
     @java.lang.Override
@@ -110,7 +120,8 @@ public final class EntityCustomizationResponse {
                 this.backupDisbursement,
                 this.paymentDestination,
                 this.ocr,
-                this.notifications);
+                this.notifications,
+                this.workflow);
     }
 
     @java.lang.Override
@@ -129,7 +140,11 @@ public final class EntityCustomizationResponse {
     }
 
     public interface NotificationsStage {
-        _FinalStage notifications(NotificationCustomizationRequest notifications);
+        WorkflowStage notifications(NotificationCustomizationRequest notifications);
+    }
+
+    public interface WorkflowStage {
+        _FinalStage workflow(WorkflowCustomizationRequest workflow);
     }
 
     public interface _FinalStage {
@@ -161,10 +176,12 @@ public final class EntityCustomizationResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements OcrStage, NotificationsStage, _FinalStage {
+    public static final class Builder implements OcrStage, NotificationsStage, WorkflowStage, _FinalStage {
         private OcrCustomizationRequest ocr;
 
         private NotificationCustomizationRequest notifications;
+
+        private WorkflowCustomizationRequest workflow;
 
         private List<PaymentMethodCustomizationRequest> paymentDestination = new ArrayList<>();
 
@@ -187,6 +204,7 @@ public final class EntityCustomizationResponse {
             paymentDestination(other.getPaymentDestination());
             ocr(other.getOcr());
             notifications(other.getNotifications());
+            workflow(other.getWorkflow());
             return this;
         }
 
@@ -199,8 +217,15 @@ public final class EntityCustomizationResponse {
 
         @java.lang.Override
         @JsonSetter("notifications")
-        public _FinalStage notifications(NotificationCustomizationRequest notifications) {
+        public WorkflowStage notifications(NotificationCustomizationRequest notifications) {
             this.notifications = notifications;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("workflow")
+        public _FinalStage workflow(WorkflowCustomizationRequest workflow) {
+            this.workflow = workflow;
             return this;
         }
 
@@ -293,6 +318,7 @@ public final class EntityCustomizationResponse {
                     paymentDestination,
                     ocr,
                     notifications,
+                    workflow,
                     additionalProperties);
         }
     }

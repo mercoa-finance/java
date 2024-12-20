@@ -36,7 +36,7 @@ public final class InvoiceLineItemResponse {
 
     private final Optional<Double> unitPrice;
 
-    private final InvoiceLineItemCategory category;
+    private final String category;
 
     private final Optional<OffsetDateTime> serviceStartDate;
 
@@ -60,7 +60,7 @@ public final class InvoiceLineItemResponse {
             Optional<String> name,
             Optional<Double> quantity,
             Optional<Double> unitPrice,
-            InvoiceLineItemCategory category,
+            String category,
             Optional<OffsetDateTime> serviceStartDate,
             Optional<OffsetDateTime> serviceEndDate,
             Optional<Map<String, String>> metadata,
@@ -126,8 +126,11 @@ public final class InvoiceLineItemResponse {
         return unitPrice;
     }
 
+    /**
+     * @return Category of the line item. Defaults to 'EXPENSE'.
+     */
     @JsonProperty("category")
-    public InvoiceLineItemCategory getCategory() {
+    public String getCategory() {
         return category;
     }
 
@@ -231,7 +234,7 @@ public final class InvoiceLineItemResponse {
     }
 
     public interface CategoryStage {
-        CreatedAtStage category(InvoiceLineItemCategory category);
+        CreatedAtStage category(String category);
     }
 
     public interface CreatedAtStage {
@@ -289,7 +292,7 @@ public final class InvoiceLineItemResponse {
 
         private CurrencyCode currency;
 
-        private InvoiceLineItemCategory category;
+        private String category;
 
         private OffsetDateTime createdAt;
 
@@ -351,9 +354,13 @@ public final class InvoiceLineItemResponse {
             return this;
         }
 
+        /**
+         * <p>Category of the line item. Defaults to 'EXPENSE'.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("category")
-        public CreatedAtStage category(InvoiceLineItemCategory category) {
+        public CreatedAtStage category(String category) {
             this.category = category;
             return this;
         }

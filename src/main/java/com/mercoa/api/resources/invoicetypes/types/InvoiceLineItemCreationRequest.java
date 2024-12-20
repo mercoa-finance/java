@@ -30,7 +30,7 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
 
     private final Optional<Double> unitPrice;
 
-    private final Optional<InvoiceLineItemCategory> category;
+    private final Optional<String> category;
 
     private final Optional<OffsetDateTime> serviceStartDate;
 
@@ -51,7 +51,7 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
             Optional<String> name,
             Optional<Double> quantity,
             Optional<Double> unitPrice,
-            Optional<InvoiceLineItemCategory> category,
+            Optional<String> category,
             Optional<OffsetDateTime> serviceStartDate,
             Optional<OffsetDateTime> serviceEndDate,
             Optional<Map<String, String>> metadata,
@@ -104,11 +104,11 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
     }
 
     /**
-     * @return Category of the line item. Defaults to EXPENSE.
+     * @return Category of the line item.
      */
     @JsonProperty("category")
     @java.lang.Override
-    public Optional<InvoiceLineItemCategory> getCategory() {
+    public Optional<String> getCategory() {
         return category;
     }
 
@@ -231,9 +231,9 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
 
         _FinalStage unitPrice(Double unitPrice);
 
-        _FinalStage category(Optional<InvoiceLineItemCategory> category);
+        _FinalStage category(Optional<String> category);
 
-        _FinalStage category(InvoiceLineItemCategory category);
+        _FinalStage category(String category);
 
         _FinalStage serviceStartDate(Optional<OffsetDateTime> serviceStartDate);
 
@@ -266,7 +266,7 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
 
         private Optional<OffsetDateTime> serviceStartDate = Optional.empty();
 
-        private Optional<InvoiceLineItemCategory> category = Optional.empty();
+        private Optional<String> category = Optional.empty();
 
         private Optional<Double> unitPrice = Optional.empty();
 
@@ -372,18 +372,18 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
         }
 
         /**
-         * <p>Category of the line item. Defaults to EXPENSE.</p>
+         * <p>Category of the line item.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage category(InvoiceLineItemCategory category) {
+        public _FinalStage category(String category) {
             this.category = Optional.ofNullable(category);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "category", nulls = Nulls.SKIP)
-        public _FinalStage category(Optional<InvoiceLineItemCategory> category) {
+        public _FinalStage category(Optional<String> category) {
             this.category = category;
             return this;
         }
