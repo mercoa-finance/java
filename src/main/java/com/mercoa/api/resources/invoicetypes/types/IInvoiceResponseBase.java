@@ -87,4 +87,6 @@ public interface IInvoiceResponseBase {
     Optional<InvoiceFeesResponse> getFees();
 
     Optional<PaymentSchedule> getPaymentSchedule();
+
+    Optional<String> getOcrJobId();
 }

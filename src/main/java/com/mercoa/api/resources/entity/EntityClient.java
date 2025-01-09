@@ -12,6 +12,7 @@ import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.entity.approvalpolicy.ApprovalPolicyClient;
+import com.mercoa.api.resources.entity.bulk.BulkClient;
 import com.mercoa.api.resources.entity.counterparty.CounterpartyClient;
 import com.mercoa.api.resources.entity.customization.CustomizationClient;
 import com.mercoa.api.resources.entity.document.DocumentClient;
@@ -59,6 +60,8 @@ public class EntityClient {
 
     protected final Supplier<ApprovalPolicyClient> approvalPolicyClient;
 
+    protected final Supplier<BulkClient> bulkClient;
+
     protected final Supplier<CustomizationClient> customizationClient;
 
     protected final Supplier<DocumentClient> documentClient;
@@ -82,6 +85,7 @@ public class EntityClient {
         this.paymentMethodClient = Suppliers.memoize(() -> new PaymentMethodClient(clientOptions));
         this.userClient = Suppliers.memoize(() -> new UserClient(clientOptions));
         this.approvalPolicyClient = Suppliers.memoize(() -> new ApprovalPolicyClient(clientOptions));
+        this.bulkClient = Suppliers.memoize(() -> new BulkClient(clientOptions));
         this.customizationClient = Suppliers.memoize(() -> new CustomizationClient(clientOptions));
         this.documentClient = Suppliers.memoize(() -> new DocumentClient(clientOptions));
         this.emailTemplateClient = Suppliers.memoize(() -> new EmailTemplateClient(clientOptions));
@@ -715,6 +719,10 @@ public class EntityClient {
 
     public ApprovalPolicyClient approvalPolicy() {
         return this.approvalPolicyClient.get();
+    }
+
+    public BulkClient bulk() {
+        return this.bulkClient.get();
     }
 
     public CustomizationClient customization() {

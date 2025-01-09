@@ -167,7 +167,7 @@ public final class GroupInvoiceMetricsRequest {
     }
 
     /**
-     * @return Filter invoices by invoice ID.
+     * @return Filter invoices by invoice ID or invoice foreign ID.
      */
     @JsonProperty("invoiceId")
     public Optional<String> getInvoiceId() {

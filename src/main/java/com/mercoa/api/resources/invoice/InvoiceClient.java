@@ -12,6 +12,7 @@ import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.invoice.approval.ApprovalClient;
+import com.mercoa.api.resources.invoice.bulk.BulkClient;
 import com.mercoa.api.resources.invoice.comment.CommentClient;
 import com.mercoa.api.resources.invoice.document.DocumentClient;
 import com.mercoa.api.resources.invoice.lineitem.LineItemClient;
@@ -40,6 +41,8 @@ public class InvoiceClient {
 
     protected final Supplier<ApprovalClient> approvalClient;
 
+    protected final Supplier<BulkClient> bulkClient;
+
     protected final Supplier<CommentClient> commentClient;
 
     protected final Supplier<DocumentClient> documentClient;
@@ -50,6 +53,7 @@ public class InvoiceClient {
         this.clientOptions = clientOptions;
         this.lineItemClient = Suppliers.memoize(() -> new LineItemClient(clientOptions));
         this.approvalClient = Suppliers.memoize(() -> new ApprovalClient(clientOptions));
+        this.bulkClient = Suppliers.memoize(() -> new BulkClient(clientOptions));
         this.commentClient = Suppliers.memoize(() -> new CommentClient(clientOptions));
         this.documentClient = Suppliers.memoize(() -> new DocumentClient(clientOptions));
         this.paymentLinksClient = Suppliers.memoize(() -> new PaymentLinksClient(clientOptions));
@@ -395,6 +399,10 @@ public class InvoiceClient {
 
     public ApprovalClient approval() {
         return this.approvalClient.get();
+    }
+
+    public BulkClient bulk() {
+        return this.bulkClient.get();
     }
 
     public CommentClient comment() {

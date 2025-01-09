@@ -81,6 +81,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
     private final Optional<Double> shippingAmount;
 
+    private final Optional<String> ocrJobId;
+
     private final Map<String, Object> additionalProperties;
 
     private InvoiceRequestBase(
@@ -113,6 +115,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             Optional<List<String>> vendorCreditIds,
             Optional<Double> taxAmount,
             Optional<Double> shippingAmount,
+            Optional<String> ocrJobId,
             Map<String, Object> additionalProperties) {
         this.status = status;
         this.amount = amount;
@@ -143,6 +146,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         this.vendorCreditIds = vendorCreditIds;
         this.taxAmount = taxAmount;
         this.shippingAmount = shippingAmount;
+        this.ocrJobId = ocrJobId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -395,6 +399,15 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         return shippingAmount;
     }
 
+    /**
+     * @return ID of the OCR job that processed this invoice.
+     */
+    @JsonProperty("ocrJobId")
+    @java.lang.Override
+    public Optional<String> getOcrJobId() {
+        return ocrJobId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -435,7 +448,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 && paymentSchedule.equals(other.paymentSchedule)
                 && vendorCreditIds.equals(other.vendorCreditIds)
                 && taxAmount.equals(other.taxAmount)
-                && shippingAmount.equals(other.shippingAmount);
+                && shippingAmount.equals(other.shippingAmount)
+                && ocrJobId.equals(other.ocrJobId);
     }
 
     @java.lang.Override
@@ -469,7 +483,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 this.paymentSchedule,
                 this.vendorCreditIds,
                 this.taxAmount,
-                this.shippingAmount);
+                this.shippingAmount,
+                this.ocrJobId);
     }
 
     @java.lang.Override
@@ -541,6 +556,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
         private Optional<Double> shippingAmount = Optional.empty();
 
+        private Optional<String> ocrJobId = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -576,6 +593,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             vendorCreditIds(other.getVendorCreditIds());
             taxAmount(other.getTaxAmount());
             shippingAmount(other.getShippingAmount());
+            ocrJobId(other.getOcrJobId());
             return this;
         }
 
@@ -898,6 +916,17 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        @JsonSetter(value = "ocrJobId", nulls = Nulls.SKIP)
+        public Builder ocrJobId(Optional<String> ocrJobId) {
+            this.ocrJobId = ocrJobId;
+            return this;
+        }
+
+        public Builder ocrJobId(String ocrJobId) {
+            this.ocrJobId = Optional.ofNullable(ocrJobId);
+            return this;
+        }
+
         public InvoiceRequestBase build() {
             return new InvoiceRequestBase(
                     status,
@@ -929,6 +958,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                     vendorCreditIds,
                     taxAmount,
                     shippingAmount,
+                    ocrJobId,
                     additionalProperties);
         }
     }

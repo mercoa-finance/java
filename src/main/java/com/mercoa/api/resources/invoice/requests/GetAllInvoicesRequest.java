@@ -241,7 +241,7 @@ public final class GetAllInvoicesRequest {
     }
 
     /**
-     * @return Filter invoices by assigned approver user ID.
+     * @return Filter invoices by assigned approver user ID. Only invoices with all upstream policies approved will be returned.
      */
     @JsonProperty("approverId")
     public Optional<String> getApproverId() {
@@ -257,7 +257,7 @@ public final class GetAllInvoicesRequest {
     }
 
     /**
-     * @return Filter invoices by invoice ID.
+     * @return Filter invoices by invoice ID or invoice foreign ID.
      */
     @JsonProperty("invoiceId")
     public Optional<String> getInvoiceId() {

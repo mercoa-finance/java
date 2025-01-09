@@ -24,6 +24,8 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = OcrResponse.Builder.class)
 public final class OcrResponse {
+    private final String jobId;
+
     private final InvoiceResponse invoice;
 
     private final CounterpartyResponse vendor;
@@ -35,16 +37,23 @@ public final class OcrResponse {
     private final Map<String, Object> additionalProperties;
 
     private OcrResponse(
+            String jobId,
             InvoiceResponse invoice,
             CounterpartyResponse vendor,
             Optional<CheckResponse> check,
             Optional<BankAccountResponse> bankAccount,
             Map<String, Object> additionalProperties) {
+        this.jobId = jobId;
         this.invoice = invoice;
         this.vendor = vendor;
         this.check = check;
         this.bankAccount = bankAccount;
         this.additionalProperties = additionalProperties;
+    }
+
+    @JsonProperty("jobId")
+    public String getJobId() {
+        return jobId;
     }
 
     @JsonProperty("invoice")
@@ -79,7 +88,8 @@ public final class OcrResponse {
     }
 
     private boolean equalTo(OcrResponse other) {
-        return invoice.equals(other.invoice)
+        return jobId.equals(other.jobId)
+                && invoice.equals(other.invoice)
                 && vendor.equals(other.vendor)
                 && check.equals(other.check)
                 && bankAccount.equals(other.bankAccount);
@@ -87,7 +97,7 @@ public final class OcrResponse {
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.invoice, this.vendor, this.check, this.bankAccount);
+        return Objects.hash(this.jobId, this.invoice, this.vendor, this.check, this.bankAccount);
     }
 
     @java.lang.Override
@@ -95,14 +105,18 @@ public final class OcrResponse {
         return ObjectMappers.stringify(this);
     }
 
-    public static InvoiceStage builder() {
+    public static JobIdStage builder() {
         return new Builder();
+    }
+
+    public interface JobIdStage {
+        InvoiceStage jobId(String jobId);
+
+        Builder from(OcrResponse other);
     }
 
     public interface InvoiceStage {
         VendorStage invoice(InvoiceResponse invoice);
-
-        Builder from(OcrResponse other);
     }
 
     public interface VendorStage {
@@ -122,7 +136,9 @@ public final class OcrResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements InvoiceStage, VendorStage, _FinalStage {
+    public static final class Builder implements JobIdStage, InvoiceStage, VendorStage, _FinalStage {
+        private String jobId;
+
         private InvoiceResponse invoice;
 
         private CounterpartyResponse vendor;
@@ -138,10 +154,18 @@ public final class OcrResponse {
 
         @java.lang.Override
         public Builder from(OcrResponse other) {
+            jobId(other.getJobId());
             invoice(other.getInvoice());
             vendor(other.getVendor());
             check(other.getCheck());
             bankAccount(other.getBankAccount());
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("jobId")
+        public InvoiceStage jobId(String jobId) {
+            this.jobId = jobId;
             return this;
         }
 
@@ -187,7 +211,7 @@ public final class OcrResponse {
 
         @java.lang.Override
         public OcrResponse build() {
-            return new OcrResponse(invoice, vendor, check, bankAccount, additionalProperties);
+            return new OcrResponse(jobId, invoice, vendor, check, bankAccount, additionalProperties);
         }
     }
 }

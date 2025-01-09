@@ -81,6 +81,8 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
 
     private final Optional<Double> shippingAmount;
 
+    private final Optional<String> ocrJobId;
+
     private final Optional<List<InvoiceLineItemCreationRequest>> lineItems;
 
     private final String creatorEntityId;
@@ -117,6 +119,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
             Optional<List<String>> vendorCreditIds,
             Optional<Double> taxAmount,
             Optional<Double> shippingAmount,
+            Optional<String> ocrJobId,
             Optional<List<InvoiceLineItemCreationRequest>> lineItems,
             String creatorEntityId,
             Map<String, Object> additionalProperties) {
@@ -149,6 +152,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
         this.vendorCreditIds = vendorCreditIds;
         this.taxAmount = taxAmount;
         this.shippingAmount = shippingAmount;
+        this.ocrJobId = ocrJobId;
         this.lineItems = lineItems;
         this.creatorEntityId = creatorEntityId;
         this.additionalProperties = additionalProperties;
@@ -403,6 +407,15 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
         return shippingAmount;
     }
 
+    /**
+     * @return ID of the OCR job that processed this invoice.
+     */
+    @JsonProperty("ocrJobId")
+    @java.lang.Override
+    public Optional<String> getOcrJobId() {
+        return ocrJobId;
+    }
+
     @JsonProperty("lineItems")
     public Optional<List<InvoiceLineItemCreationRequest>> getLineItems() {
         return lineItems;
@@ -457,6 +470,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
                 && vendorCreditIds.equals(other.vendorCreditIds)
                 && taxAmount.equals(other.taxAmount)
                 && shippingAmount.equals(other.shippingAmount)
+                && ocrJobId.equals(other.ocrJobId)
                 && lineItems.equals(other.lineItems)
                 && creatorEntityId.equals(other.creatorEntityId);
     }
@@ -493,6 +507,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
                 this.vendorCreditIds,
                 this.taxAmount,
                 this.shippingAmount,
+                this.ocrJobId,
                 this.lineItems,
                 this.creatorEntityId);
     }
@@ -631,6 +646,10 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
 
         _FinalStage shippingAmount(Double shippingAmount);
 
+        _FinalStage ocrJobId(Optional<String> ocrJobId);
+
+        _FinalStage ocrJobId(String ocrJobId);
+
         _FinalStage lineItems(Optional<List<InvoiceLineItemCreationRequest>> lineItems);
 
         _FinalStage lineItems(List<InvoiceLineItemCreationRequest> lineItems);
@@ -641,6 +660,8 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
         private String creatorEntityId;
 
         private Optional<List<InvoiceLineItemCreationRequest>> lineItems = Optional.empty();
+
+        private Optional<String> ocrJobId = Optional.empty();
 
         private Optional<Double> shippingAmount = Optional.empty();
 
@@ -736,6 +757,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
             vendorCreditIds(other.getVendorCreditIds());
             taxAmount(other.getTaxAmount());
             shippingAmount(other.getShippingAmount());
+            ocrJobId(other.getOcrJobId());
             lineItems(other.getLineItems());
             creatorEntityId(other.getCreatorEntityId());
             return this;
@@ -762,6 +784,23 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
         @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
         public _FinalStage lineItems(Optional<List<InvoiceLineItemCreationRequest>> lineItems) {
             this.lineItems = lineItems;
+            return this;
+        }
+
+        /**
+         * <p>ID of the OCR job that processed this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage ocrJobId(String ocrJobId) {
+            this.ocrJobId = Optional.ofNullable(ocrJobId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "ocrJobId", nulls = Nulls.SKIP)
+        public _FinalStage ocrJobId(Optional<String> ocrJobId) {
+            this.ocrJobId = ocrJobId;
             return this;
         }
 
@@ -1274,6 +1313,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
                     vendorCreditIds,
                     taxAmount,
                     shippingAmount,
+                    ocrJobId,
                     lineItems,
                     creatorEntityId,
                     additionalProperties);

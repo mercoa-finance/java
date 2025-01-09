@@ -67,4 +67,6 @@ public interface IInvoiceRequestBase {
     Optional<Double> getTaxAmount();
 
     Optional<Double> getShippingAmount();
+
+    Optional<String> getOcrJobId();
 }

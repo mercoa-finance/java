@@ -29,7 +29,7 @@ public final class EntityCustomizationResponse {
 
     private final List<PaymentMethodCustomizationRequest> paymentDestination;
 
-    private final OcrCustomizationRequest ocr;
+    private final OcrCustomizationResponse ocr;
 
     private final NotificationCustomizationRequest notifications;
 
@@ -42,7 +42,7 @@ public final class EntityCustomizationResponse {
             List<PaymentMethodCustomizationRequest> paymentSource,
             List<PaymentMethodCustomizationRequest> backupDisbursement,
             List<PaymentMethodCustomizationRequest> paymentDestination,
-            OcrCustomizationRequest ocr,
+            OcrCustomizationResponse ocr,
             NotificationCustomizationRequest notifications,
             WorkflowCustomizationRequest workflow,
             Map<String, Object> additionalProperties) {
@@ -77,7 +77,7 @@ public final class EntityCustomizationResponse {
     }
 
     @JsonProperty("ocr")
-    public OcrCustomizationRequest getOcr() {
+    public OcrCustomizationResponse getOcr() {
         return ocr;
     }
 
@@ -134,7 +134,7 @@ public final class EntityCustomizationResponse {
     }
 
     public interface OcrStage {
-        NotificationsStage ocr(OcrCustomizationRequest ocr);
+        NotificationsStage ocr(OcrCustomizationResponse ocr);
 
         Builder from(EntityCustomizationResponse other);
     }
@@ -177,7 +177,7 @@ public final class EntityCustomizationResponse {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements OcrStage, NotificationsStage, WorkflowStage, _FinalStage {
-        private OcrCustomizationRequest ocr;
+        private OcrCustomizationResponse ocr;
 
         private NotificationCustomizationRequest notifications;
 
@@ -210,7 +210,7 @@ public final class EntityCustomizationResponse {
 
         @java.lang.Override
         @JsonSetter("ocr")
-        public NotificationsStage ocr(OcrCustomizationRequest ocr) {
+        public NotificationsStage ocr(OcrCustomizationResponse ocr) {
             this.ocr = ocr;
             return this;
         }

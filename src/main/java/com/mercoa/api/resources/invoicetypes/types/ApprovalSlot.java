@@ -23,6 +23,10 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ApprovalSlot.Builder.class)
 public final class ApprovalSlot {
+    private final Optional<String> upstreamPolicyId;
+
+    private final Optional<Boolean> upstreamPoliciesApproved;
+
     private final String approvalPolicyId;
 
     private final String approvalSlotId;
@@ -40,6 +44,8 @@ public final class ApprovalSlot {
     private final Map<String, Object> additionalProperties;
 
     private ApprovalSlot(
+            Optional<String> upstreamPolicyId,
+            Optional<Boolean> upstreamPoliciesApproved,
             String approvalPolicyId,
             String approvalSlotId,
             Optional<String> assignedUserId,
@@ -48,6 +54,8 @@ public final class ApprovalSlot {
             List<String> eligibleUserIds,
             OffsetDateTime date,
             Map<String, Object> additionalProperties) {
+        this.upstreamPolicyId = upstreamPolicyId;
+        this.upstreamPoliciesApproved = upstreamPoliciesApproved;
         this.approvalPolicyId = approvalPolicyId;
         this.approvalSlotId = approvalSlotId;
         this.assignedUserId = assignedUserId;
@@ -56,6 +64,22 @@ public final class ApprovalSlot {
         this.eligibleUserIds = eligibleUserIds;
         this.date = date;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return The identifier for the upstream policy this slot is associated with.
+     */
+    @JsonProperty("upstreamPolicyId")
+    public Optional<String> getUpstreamPolicyId() {
+        return upstreamPolicyId;
+    }
+
+    /**
+     * @return Whether all upstream policies are approved.
+     */
+    @JsonProperty("upstreamPoliciesApproved")
+    public Optional<Boolean> getUpstreamPoliciesApproved() {
+        return upstreamPoliciesApproved;
     }
 
     /**
@@ -117,7 +141,9 @@ public final class ApprovalSlot {
     }
 
     private boolean equalTo(ApprovalSlot other) {
-        return approvalPolicyId.equals(other.approvalPolicyId)
+        return upstreamPolicyId.equals(other.upstreamPolicyId)
+                && upstreamPoliciesApproved.equals(other.upstreamPoliciesApproved)
+                && approvalPolicyId.equals(other.approvalPolicyId)
                 && approvalSlotId.equals(other.approvalSlotId)
                 && assignedUserId.equals(other.assignedUserId)
                 && action.equals(other.action)
@@ -129,6 +155,8 @@ public final class ApprovalSlot {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.upstreamPolicyId,
+                this.upstreamPoliciesApproved,
                 this.approvalPolicyId,
                 this.approvalSlotId,
                 this.assignedUserId,
@@ -168,6 +196,14 @@ public final class ApprovalSlot {
     public interface _FinalStage {
         ApprovalSlot build();
 
+        _FinalStage upstreamPolicyId(Optional<String> upstreamPolicyId);
+
+        _FinalStage upstreamPolicyId(String upstreamPolicyId);
+
+        _FinalStage upstreamPoliciesApproved(Optional<Boolean> upstreamPoliciesApproved);
+
+        _FinalStage upstreamPoliciesApproved(Boolean upstreamPoliciesApproved);
+
         _FinalStage assignedUserId(Optional<String> assignedUserId);
 
         _FinalStage assignedUserId(String assignedUserId);
@@ -202,6 +238,10 @@ public final class ApprovalSlot {
 
         private Optional<String> assignedUserId = Optional.empty();
 
+        private Optional<Boolean> upstreamPoliciesApproved = Optional.empty();
+
+        private Optional<String> upstreamPolicyId = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -209,6 +249,8 @@ public final class ApprovalSlot {
 
         @java.lang.Override
         public Builder from(ApprovalSlot other) {
+            upstreamPolicyId(other.getUpstreamPolicyId());
+            upstreamPoliciesApproved(other.getUpstreamPoliciesApproved());
             approvalPolicyId(other.getApprovalPolicyId());
             approvalSlotId(other.getApprovalSlotId());
             assignedUserId(other.getAssignedUserId());
@@ -316,9 +358,45 @@ public final class ApprovalSlot {
             return this;
         }
 
+        /**
+         * <p>Whether all upstream policies are approved.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage upstreamPoliciesApproved(Boolean upstreamPoliciesApproved) {
+            this.upstreamPoliciesApproved = Optional.ofNullable(upstreamPoliciesApproved);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "upstreamPoliciesApproved", nulls = Nulls.SKIP)
+        public _FinalStage upstreamPoliciesApproved(Optional<Boolean> upstreamPoliciesApproved) {
+            this.upstreamPoliciesApproved = upstreamPoliciesApproved;
+            return this;
+        }
+
+        /**
+         * <p>The identifier for the upstream policy this slot is associated with.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage upstreamPolicyId(String upstreamPolicyId) {
+            this.upstreamPolicyId = Optional.ofNullable(upstreamPolicyId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "upstreamPolicyId", nulls = Nulls.SKIP)
+        public _FinalStage upstreamPolicyId(Optional<String> upstreamPolicyId) {
+            this.upstreamPolicyId = upstreamPolicyId;
+            return this;
+        }
+
         @java.lang.Override
         public ApprovalSlot build() {
             return new ApprovalSlot(
+                    upstreamPolicyId,
+                    upstreamPoliciesApproved,
                     approvalPolicyId,
                     approvalSlotId,
                     assignedUserId,

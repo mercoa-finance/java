@@ -3,12 +3,41 @@
  */
 package com.mercoa.api.resources.transaction.types;
 
+import com.mercoa.api.resources.entitytypes.types.CounterpartyResponse;
+import com.mercoa.api.resources.invoicetypes.types.InvoiceFeesResponse;
+import com.mercoa.api.resources.invoicetypes.types.PaymentDestinationOptions;
+import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
 import java.time.OffsetDateTime;
+import java.util.Optional;
 
 public interface ITransactionResponseBase {
     String getId();
 
     TransactionStatus getStatus();
+
+    int getAmount();
+
+    String getCurrency();
+
+    String getPayerId();
+
+    CounterpartyResponse getPayer();
+
+    PaymentMethodResponse getPaymentSource();
+
+    String getPaymentSourceId();
+
+    String getVendorId();
+
+    CounterpartyResponse getVendor();
+
+    PaymentMethodResponse getPaymentDestination();
+
+    String getPaymentDestinationId();
+
+    Optional<PaymentDestinationOptions> getPaymentDestinationOptions();
+
+    Optional<InvoiceFeesResponse> getFees();
 
     OffsetDateTime getCreatedAt();
 

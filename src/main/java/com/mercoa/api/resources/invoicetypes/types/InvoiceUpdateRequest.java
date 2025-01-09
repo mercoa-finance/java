@@ -81,6 +81,8 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
 
     private final Optional<Double> shippingAmount;
 
+    private final Optional<String> ocrJobId;
+
     private final Optional<List<InvoiceLineItemUpdateRequest>> lineItems;
 
     private final Optional<String> creatorEntityId;
@@ -117,6 +119,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
             Optional<List<String>> vendorCreditIds,
             Optional<Double> taxAmount,
             Optional<Double> shippingAmount,
+            Optional<String> ocrJobId,
             Optional<List<InvoiceLineItemUpdateRequest>> lineItems,
             Optional<String> creatorEntityId,
             Map<String, Object> additionalProperties) {
@@ -149,6 +152,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
         this.vendorCreditIds = vendorCreditIds;
         this.taxAmount = taxAmount;
         this.shippingAmount = shippingAmount;
+        this.ocrJobId = ocrJobId;
         this.lineItems = lineItems;
         this.creatorEntityId = creatorEntityId;
         this.additionalProperties = additionalProperties;
@@ -403,6 +407,15 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
         return shippingAmount;
     }
 
+    /**
+     * @return ID of the OCR job that processed this invoice.
+     */
+    @JsonProperty("ocrJobId")
+    @java.lang.Override
+    public Optional<String> getOcrJobId() {
+        return ocrJobId;
+    }
+
     @JsonProperty("lineItems")
     public Optional<List<InvoiceLineItemUpdateRequest>> getLineItems() {
         return lineItems;
@@ -457,6 +470,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
                 && vendorCreditIds.equals(other.vendorCreditIds)
                 && taxAmount.equals(other.taxAmount)
                 && shippingAmount.equals(other.shippingAmount)
+                && ocrJobId.equals(other.ocrJobId)
                 && lineItems.equals(other.lineItems)
                 && creatorEntityId.equals(other.creatorEntityId);
     }
@@ -493,6 +507,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
                 this.vendorCreditIds,
                 this.taxAmount,
                 this.shippingAmount,
+                this.ocrJobId,
                 this.lineItems,
                 this.creatorEntityId);
     }
@@ -566,6 +581,8 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
 
         private Optional<Double> shippingAmount = Optional.empty();
 
+        private Optional<String> ocrJobId = Optional.empty();
+
         private Optional<List<InvoiceLineItemUpdateRequest>> lineItems = Optional.empty();
 
         private Optional<String> creatorEntityId = Optional.empty();
@@ -605,6 +622,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
             vendorCreditIds(other.getVendorCreditIds());
             taxAmount(other.getTaxAmount());
             shippingAmount(other.getShippingAmount());
+            ocrJobId(other.getOcrJobId());
             lineItems(other.getLineItems());
             creatorEntityId(other.getCreatorEntityId());
             return this;
@@ -929,6 +947,17 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
             return this;
         }
 
+        @JsonSetter(value = "ocrJobId", nulls = Nulls.SKIP)
+        public Builder ocrJobId(Optional<String> ocrJobId) {
+            this.ocrJobId = ocrJobId;
+            return this;
+        }
+
+        public Builder ocrJobId(String ocrJobId) {
+            this.ocrJobId = Optional.ofNullable(ocrJobId);
+            return this;
+        }
+
         @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
         public Builder lineItems(Optional<List<InvoiceLineItemUpdateRequest>> lineItems) {
             this.lineItems = lineItems;
@@ -982,6 +1011,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
                     vendorCreditIds,
                     taxAmount,
                     shippingAmount,
+                    ocrJobId,
                     lineItems,
                     creatorEntityId,
                     additionalProperties);

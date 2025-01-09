@@ -9,12 +9,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.resources.entitytypes.types.CounterpartyResponse;
+import com.mercoa.api.resources.invoicetypes.types.InvoiceFeesResponse;
+import com.mercoa.api.resources.invoicetypes.types.PaymentDestinationOptions;
+import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = TransactionResponseBankToMailedCheckBase.Builder.class)
@@ -26,6 +32,30 @@ public final class TransactionResponseBankToMailedCheckBase
 
     private final TransactionStatus status;
 
+    private final int amount;
+
+    private final String currency;
+
+    private final String payerId;
+
+    private final CounterpartyResponse payer;
+
+    private final PaymentMethodResponse paymentSource;
+
+    private final String paymentSourceId;
+
+    private final String vendorId;
+
+    private final CounterpartyResponse vendor;
+
+    private final PaymentMethodResponse paymentDestination;
+
+    private final String paymentDestinationId;
+
+    private final Optional<PaymentDestinationOptions> paymentDestinationOptions;
+
+    private final Optional<InvoiceFeesResponse> fees;
+
     private final OffsetDateTime createdAt;
 
     private final OffsetDateTime updatedAt;
@@ -36,12 +66,36 @@ public final class TransactionResponseBankToMailedCheckBase
             int checkNumber,
             String id,
             TransactionStatus status,
+            int amount,
+            String currency,
+            String payerId,
+            CounterpartyResponse payer,
+            PaymentMethodResponse paymentSource,
+            String paymentSourceId,
+            String vendorId,
+            CounterpartyResponse vendor,
+            PaymentMethodResponse paymentDestination,
+            String paymentDestinationId,
+            Optional<PaymentDestinationOptions> paymentDestinationOptions,
+            Optional<InvoiceFeesResponse> fees,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Map<String, Object> additionalProperties) {
         this.checkNumber = checkNumber;
         this.id = id;
         this.status = status;
+        this.amount = amount;
+        this.currency = currency;
+        this.payerId = payerId;
+        this.payer = payer;
+        this.paymentSource = paymentSource;
+        this.paymentSourceId = paymentSourceId;
+        this.vendorId = vendorId;
+        this.vendor = vendor;
+        this.paymentDestination = paymentDestination;
+        this.paymentDestinationId = paymentDestinationId;
+        this.paymentDestinationOptions = paymentDestinationOptions;
+        this.fees = fees;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
@@ -66,6 +120,78 @@ public final class TransactionResponseBankToMailedCheckBase
     @java.lang.Override
     public TransactionStatus getStatus() {
         return status;
+    }
+
+    @JsonProperty("amount")
+    @java.lang.Override
+    public int getAmount() {
+        return amount;
+    }
+
+    @JsonProperty("currency")
+    @java.lang.Override
+    public String getCurrency() {
+        return currency;
+    }
+
+    @JsonProperty("payerId")
+    @java.lang.Override
+    public String getPayerId() {
+        return payerId;
+    }
+
+    @JsonProperty("payer")
+    @java.lang.Override
+    public CounterpartyResponse getPayer() {
+        return payer;
+    }
+
+    @JsonProperty("paymentSource")
+    @java.lang.Override
+    public PaymentMethodResponse getPaymentSource() {
+        return paymentSource;
+    }
+
+    @JsonProperty("paymentSourceId")
+    @java.lang.Override
+    public String getPaymentSourceId() {
+        return paymentSourceId;
+    }
+
+    @JsonProperty("vendorId")
+    @java.lang.Override
+    public String getVendorId() {
+        return vendorId;
+    }
+
+    @JsonProperty("vendor")
+    @java.lang.Override
+    public CounterpartyResponse getVendor() {
+        return vendor;
+    }
+
+    @JsonProperty("paymentDestination")
+    @java.lang.Override
+    public PaymentMethodResponse getPaymentDestination() {
+        return paymentDestination;
+    }
+
+    @JsonProperty("paymentDestinationId")
+    @java.lang.Override
+    public String getPaymentDestinationId() {
+        return paymentDestinationId;
+    }
+
+    @JsonProperty("paymentDestinationOptions")
+    @java.lang.Override
+    public Optional<PaymentDestinationOptions> getPaymentDestinationOptions() {
+        return paymentDestinationOptions;
+    }
+
+    @JsonProperty("fees")
+    @java.lang.Override
+    public Optional<InvoiceFeesResponse> getFees() {
+        return fees;
     }
 
     @JsonProperty("createdAt")
@@ -96,13 +222,42 @@ public final class TransactionResponseBankToMailedCheckBase
         return checkNumber == other.checkNumber
                 && id.equals(other.id)
                 && status.equals(other.status)
+                && amount == other.amount
+                && currency.equals(other.currency)
+                && payerId.equals(other.payerId)
+                && payer.equals(other.payer)
+                && paymentSource.equals(other.paymentSource)
+                && paymentSourceId.equals(other.paymentSourceId)
+                && vendorId.equals(other.vendorId)
+                && vendor.equals(other.vendor)
+                && paymentDestination.equals(other.paymentDestination)
+                && paymentDestinationId.equals(other.paymentDestinationId)
+                && paymentDestinationOptions.equals(other.paymentDestinationOptions)
+                && fees.equals(other.fees)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.checkNumber, this.id, this.status, this.createdAt, this.updatedAt);
+        return Objects.hash(
+                this.checkNumber,
+                this.id,
+                this.status,
+                this.amount,
+                this.currency,
+                this.payerId,
+                this.payer,
+                this.paymentSource,
+                this.paymentSourceId,
+                this.vendorId,
+                this.vendor,
+                this.paymentDestination,
+                this.paymentDestinationId,
+                this.paymentDestinationOptions,
+                this.fees,
+                this.createdAt,
+                this.updatedAt);
     }
 
     @java.lang.Override
@@ -125,7 +280,47 @@ public final class TransactionResponseBankToMailedCheckBase
     }
 
     public interface StatusStage {
-        CreatedAtStage status(TransactionStatus status);
+        AmountStage status(TransactionStatus status);
+    }
+
+    public interface AmountStage {
+        CurrencyStage amount(int amount);
+    }
+
+    public interface CurrencyStage {
+        PayerIdStage currency(String currency);
+    }
+
+    public interface PayerIdStage {
+        PayerStage payerId(String payerId);
+    }
+
+    public interface PayerStage {
+        PaymentSourceStage payer(CounterpartyResponse payer);
+    }
+
+    public interface PaymentSourceStage {
+        PaymentSourceIdStage paymentSource(PaymentMethodResponse paymentSource);
+    }
+
+    public interface PaymentSourceIdStage {
+        VendorIdStage paymentSourceId(String paymentSourceId);
+    }
+
+    public interface VendorIdStage {
+        VendorStage vendorId(String vendorId);
+    }
+
+    public interface VendorStage {
+        PaymentDestinationStage vendor(CounterpartyResponse vendor);
+    }
+
+    public interface PaymentDestinationStage {
+        PaymentDestinationIdStage paymentDestination(PaymentMethodResponse paymentDestination);
+    }
+
+    public interface PaymentDestinationIdStage {
+        CreatedAtStage paymentDestinationId(String paymentDestinationId);
     }
 
     public interface CreatedAtStage {
@@ -138,20 +333,67 @@ public final class TransactionResponseBankToMailedCheckBase
 
     public interface _FinalStage {
         TransactionResponseBankToMailedCheckBase build();
+
+        _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions);
+
+        _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions);
+
+        _FinalStage fees(Optional<InvoiceFeesResponse> fees);
+
+        _FinalStage fees(InvoiceFeesResponse fees);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements CheckNumberStage, IdStage, StatusStage, CreatedAtStage, UpdatedAtStage, _FinalStage {
+            implements CheckNumberStage,
+                    IdStage,
+                    StatusStage,
+                    AmountStage,
+                    CurrencyStage,
+                    PayerIdStage,
+                    PayerStage,
+                    PaymentSourceStage,
+                    PaymentSourceIdStage,
+                    VendorIdStage,
+                    VendorStage,
+                    PaymentDestinationStage,
+                    PaymentDestinationIdStage,
+                    CreatedAtStage,
+                    UpdatedAtStage,
+                    _FinalStage {
         private int checkNumber;
 
         private String id;
 
         private TransactionStatus status;
 
+        private int amount;
+
+        private String currency;
+
+        private String payerId;
+
+        private CounterpartyResponse payer;
+
+        private PaymentMethodResponse paymentSource;
+
+        private String paymentSourceId;
+
+        private String vendorId;
+
+        private CounterpartyResponse vendor;
+
+        private PaymentMethodResponse paymentDestination;
+
+        private String paymentDestinationId;
+
         private OffsetDateTime createdAt;
 
         private OffsetDateTime updatedAt;
+
+        private Optional<InvoiceFeesResponse> fees = Optional.empty();
+
+        private Optional<PaymentDestinationOptions> paymentDestinationOptions = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -163,6 +405,18 @@ public final class TransactionResponseBankToMailedCheckBase
             checkNumber(other.getCheckNumber());
             id(other.getId());
             status(other.getStatus());
+            amount(other.getAmount());
+            currency(other.getCurrency());
+            payerId(other.getPayerId());
+            payer(other.getPayer());
+            paymentSource(other.getPaymentSource());
+            paymentSourceId(other.getPaymentSourceId());
+            vendorId(other.getVendorId());
+            vendor(other.getVendor());
+            paymentDestination(other.getPaymentDestination());
+            paymentDestinationId(other.getPaymentDestinationId());
+            paymentDestinationOptions(other.getPaymentDestinationOptions());
+            fees(other.getFees());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             return this;
@@ -188,8 +442,78 @@ public final class TransactionResponseBankToMailedCheckBase
 
         @java.lang.Override
         @JsonSetter("status")
-        public CreatedAtStage status(TransactionStatus status) {
+        public AmountStage status(TransactionStatus status) {
             this.status = status;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("amount")
+        public CurrencyStage amount(int amount) {
+            this.amount = amount;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("currency")
+        public PayerIdStage currency(String currency) {
+            this.currency = currency;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("payerId")
+        public PayerStage payerId(String payerId) {
+            this.payerId = payerId;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("payer")
+        public PaymentSourceStage payer(CounterpartyResponse payer) {
+            this.payer = payer;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("paymentSource")
+        public PaymentSourceIdStage paymentSource(PaymentMethodResponse paymentSource) {
+            this.paymentSource = paymentSource;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("paymentSourceId")
+        public VendorIdStage paymentSourceId(String paymentSourceId) {
+            this.paymentSourceId = paymentSourceId;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("vendorId")
+        public VendorStage vendorId(String vendorId) {
+            this.vendorId = vendorId;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("vendor")
+        public PaymentDestinationStage vendor(CounterpartyResponse vendor) {
+            this.vendor = vendor;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("paymentDestination")
+        public PaymentDestinationIdStage paymentDestination(PaymentMethodResponse paymentDestination) {
+            this.paymentDestination = paymentDestination;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("paymentDestinationId")
+        public CreatedAtStage paymentDestinationId(String paymentDestinationId) {
+            this.paymentDestinationId = paymentDestinationId;
             return this;
         }
 
@@ -208,9 +532,52 @@ public final class TransactionResponseBankToMailedCheckBase
         }
 
         @java.lang.Override
+        public _FinalStage fees(InvoiceFeesResponse fees) {
+            this.fees = Optional.ofNullable(fees);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "fees", nulls = Nulls.SKIP)
+        public _FinalStage fees(Optional<InvoiceFeesResponse> fees) {
+            this.fees = fees;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions) {
+            this.paymentDestinationOptions = Optional.ofNullable(paymentDestinationOptions);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "paymentDestinationOptions", nulls = Nulls.SKIP)
+        public _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions) {
+            this.paymentDestinationOptions = paymentDestinationOptions;
+            return this;
+        }
+
+        @java.lang.Override
         public TransactionResponseBankToMailedCheckBase build() {
             return new TransactionResponseBankToMailedCheckBase(
-                    checkNumber, id, status, createdAt, updatedAt, additionalProperties);
+                    checkNumber,
+                    id,
+                    status,
+                    amount,
+                    currency,
+                    payerId,
+                    payer,
+                    paymentSource,
+                    paymentSourceId,
+                    vendorId,
+                    vendor,
+                    paymentDestination,
+                    paymentDestinationId,
+                    paymentDestinationOptions,
+                    fees,
+                    createdAt,
+                    updatedAt,
+                    additionalProperties);
         }
     }
 }

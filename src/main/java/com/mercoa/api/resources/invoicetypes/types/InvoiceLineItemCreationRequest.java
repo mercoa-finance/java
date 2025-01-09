@@ -40,9 +40,9 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
 
     private final Optional<String> glAccountId;
 
-    private final double amount;
+    private final Optional<Double> amount;
 
-    private final String description;
+    private final Optional<String> description;
 
     private final Map<String, Object> additionalProperties;
 
@@ -56,8 +56,8 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
             Optional<OffsetDateTime> serviceEndDate,
             Optional<Map<String, String>> metadata,
             Optional<String> glAccountId,
-            double amount,
-            String description,
+            Optional<Double> amount,
+            Optional<String> description,
             Map<String, Object> additionalProperties) {
         this.currency = currency;
         this.name = name;
@@ -143,12 +143,12 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
      * @return Total amount of line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
      */
     @JsonProperty("amount")
-    public double getAmount() {
+    public Optional<Double> getAmount() {
         return amount;
     }
 
     @JsonProperty("description")
-    public String getDescription() {
+    public Optional<String> getDescription() {
         return description;
     }
 
@@ -173,7 +173,7 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
                 && serviceEndDate.equals(other.serviceEndDate)
                 && metadata.equals(other.metadata)
                 && glAccountId.equals(other.glAccountId)
-                && amount == other.amount
+                && amount.equals(other.amount)
                 && description.equals(other.description);
     }
 
@@ -198,90 +198,39 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
         return ObjectMappers.stringify(this);
     }
 
-    public static AmountStage builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
-    public interface AmountStage {
-        DescriptionStage amount(double amount);
-
-        Builder from(InvoiceLineItemCreationRequest other);
-    }
-
-    public interface DescriptionStage {
-        _FinalStage description(String description);
-    }
-
-    public interface _FinalStage {
-        InvoiceLineItemCreationRequest build();
-
-        _FinalStage currency(Optional<CurrencyCode> currency);
-
-        _FinalStage currency(CurrencyCode currency);
-
-        _FinalStage name(Optional<String> name);
-
-        _FinalStage name(String name);
-
-        _FinalStage quantity(Optional<Double> quantity);
-
-        _FinalStage quantity(Double quantity);
-
-        _FinalStage unitPrice(Optional<Double> unitPrice);
-
-        _FinalStage unitPrice(Double unitPrice);
-
-        _FinalStage category(Optional<String> category);
-
-        _FinalStage category(String category);
-
-        _FinalStage serviceStartDate(Optional<OffsetDateTime> serviceStartDate);
-
-        _FinalStage serviceStartDate(OffsetDateTime serviceStartDate);
-
-        _FinalStage serviceEndDate(Optional<OffsetDateTime> serviceEndDate);
-
-        _FinalStage serviceEndDate(OffsetDateTime serviceEndDate);
-
-        _FinalStage metadata(Optional<Map<String, String>> metadata);
-
-        _FinalStage metadata(Map<String, String> metadata);
-
-        _FinalStage glAccountId(Optional<String> glAccountId);
-
-        _FinalStage glAccountId(String glAccountId);
-    }
-
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements AmountStage, DescriptionStage, _FinalStage {
-        private double amount;
-
-        private String description;
-
-        private Optional<String> glAccountId = Optional.empty();
-
-        private Optional<Map<String, String>> metadata = Optional.empty();
-
-        private Optional<OffsetDateTime> serviceEndDate = Optional.empty();
-
-        private Optional<OffsetDateTime> serviceStartDate = Optional.empty();
-
-        private Optional<String> category = Optional.empty();
-
-        private Optional<Double> unitPrice = Optional.empty();
-
-        private Optional<Double> quantity = Optional.empty();
+    public static final class Builder {
+        private Optional<CurrencyCode> currency = Optional.empty();
 
         private Optional<String> name = Optional.empty();
 
-        private Optional<CurrencyCode> currency = Optional.empty();
+        private Optional<Double> quantity = Optional.empty();
+
+        private Optional<Double> unitPrice = Optional.empty();
+
+        private Optional<String> category = Optional.empty();
+
+        private Optional<OffsetDateTime> serviceStartDate = Optional.empty();
+
+        private Optional<OffsetDateTime> serviceEndDate = Optional.empty();
+
+        private Optional<Map<String, String>> metadata = Optional.empty();
+
+        private Optional<String> glAccountId = Optional.empty();
+
+        private Optional<Double> amount = Optional.empty();
+
+        private Optional<String> description = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
-        @java.lang.Override
         public Builder from(InvoiceLineItemCreationRequest other) {
             currency(other.getCurrency());
             name(other.getName());
@@ -297,158 +246,127 @@ public final class InvoiceLineItemCreationRequest implements IInvoiceLineItemReq
             return this;
         }
 
-        /**
-         * <p>Total amount of line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("amount")
-        public DescriptionStage amount(double amount) {
-            this.amount = amount;
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter("description")
-        public _FinalStage description(String description) {
-            this.description = description;
-            return this;
-        }
-
-        /**
-         * <p>ID of general ledger account associated with this line item.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage glAccountId(String glAccountId) {
-            this.glAccountId = Optional.ofNullable(glAccountId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "glAccountId", nulls = Nulls.SKIP)
-        public _FinalStage glAccountId(Optional<String> glAccountId) {
-            this.glAccountId = glAccountId;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage metadata(Map<String, String> metadata) {
-            this.metadata = Optional.ofNullable(metadata);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
-        public _FinalStage metadata(Optional<Map<String, String>> metadata) {
-            this.metadata = metadata;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage serviceEndDate(OffsetDateTime serviceEndDate) {
-            this.serviceEndDate = Optional.ofNullable(serviceEndDate);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "serviceEndDate", nulls = Nulls.SKIP)
-        public _FinalStage serviceEndDate(Optional<OffsetDateTime> serviceEndDate) {
-            this.serviceEndDate = serviceEndDate;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage serviceStartDate(OffsetDateTime serviceStartDate) {
-            this.serviceStartDate = Optional.ofNullable(serviceStartDate);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "serviceStartDate", nulls = Nulls.SKIP)
-        public _FinalStage serviceStartDate(Optional<OffsetDateTime> serviceStartDate) {
-            this.serviceStartDate = serviceStartDate;
-            return this;
-        }
-
-        /**
-         * <p>Category of the line item.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage category(String category) {
-            this.category = Optional.ofNullable(category);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "category", nulls = Nulls.SKIP)
-        public _FinalStage category(Optional<String> category) {
-            this.category = category;
-            return this;
-        }
-
-        /**
-         * <p>Unit price of the line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage unitPrice(Double unitPrice) {
-            this.unitPrice = Optional.ofNullable(unitPrice);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "unitPrice", nulls = Nulls.SKIP)
-        public _FinalStage unitPrice(Optional<Double> unitPrice) {
-            this.unitPrice = unitPrice;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage quantity(Double quantity) {
-            this.quantity = Optional.ofNullable(quantity);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "quantity", nulls = Nulls.SKIP)
-        public _FinalStage quantity(Optional<Double> quantity) {
-            this.quantity = quantity;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage name(String name) {
-            this.name = Optional.ofNullable(name);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "name", nulls = Nulls.SKIP)
-        public _FinalStage name(Optional<String> name) {
-            this.name = name;
-            return this;
-        }
-
-        /**
-         * <p>Currency code for the amount. Defaults to USD.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage currency(CurrencyCode currency) {
-            this.currency = Optional.ofNullable(currency);
-            return this;
-        }
-
-        @java.lang.Override
         @JsonSetter(value = "currency", nulls = Nulls.SKIP)
-        public _FinalStage currency(Optional<CurrencyCode> currency) {
+        public Builder currency(Optional<CurrencyCode> currency) {
             this.currency = currency;
             return this;
         }
 
-        @java.lang.Override
+        public Builder currency(CurrencyCode currency) {
+            this.currency = Optional.ofNullable(currency);
+            return this;
+        }
+
+        @JsonSetter(value = "name", nulls = Nulls.SKIP)
+        public Builder name(Optional<String> name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = Optional.ofNullable(name);
+            return this;
+        }
+
+        @JsonSetter(value = "quantity", nulls = Nulls.SKIP)
+        public Builder quantity(Optional<Double> quantity) {
+            this.quantity = quantity;
+            return this;
+        }
+
+        public Builder quantity(Double quantity) {
+            this.quantity = Optional.ofNullable(quantity);
+            return this;
+        }
+
+        @JsonSetter(value = "unitPrice", nulls = Nulls.SKIP)
+        public Builder unitPrice(Optional<Double> unitPrice) {
+            this.unitPrice = unitPrice;
+            return this;
+        }
+
+        public Builder unitPrice(Double unitPrice) {
+            this.unitPrice = Optional.ofNullable(unitPrice);
+            return this;
+        }
+
+        @JsonSetter(value = "category", nulls = Nulls.SKIP)
+        public Builder category(Optional<String> category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder category(String category) {
+            this.category = Optional.ofNullable(category);
+            return this;
+        }
+
+        @JsonSetter(value = "serviceStartDate", nulls = Nulls.SKIP)
+        public Builder serviceStartDate(Optional<OffsetDateTime> serviceStartDate) {
+            this.serviceStartDate = serviceStartDate;
+            return this;
+        }
+
+        public Builder serviceStartDate(OffsetDateTime serviceStartDate) {
+            this.serviceStartDate = Optional.ofNullable(serviceStartDate);
+            return this;
+        }
+
+        @JsonSetter(value = "serviceEndDate", nulls = Nulls.SKIP)
+        public Builder serviceEndDate(Optional<OffsetDateTime> serviceEndDate) {
+            this.serviceEndDate = serviceEndDate;
+            return this;
+        }
+
+        public Builder serviceEndDate(OffsetDateTime serviceEndDate) {
+            this.serviceEndDate = Optional.ofNullable(serviceEndDate);
+            return this;
+        }
+
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public Builder metadata(Optional<Map<String, String>> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        public Builder metadata(Map<String, String> metadata) {
+            this.metadata = Optional.ofNullable(metadata);
+            return this;
+        }
+
+        @JsonSetter(value = "glAccountId", nulls = Nulls.SKIP)
+        public Builder glAccountId(Optional<String> glAccountId) {
+            this.glAccountId = glAccountId;
+            return this;
+        }
+
+        public Builder glAccountId(String glAccountId) {
+            this.glAccountId = Optional.ofNullable(glAccountId);
+            return this;
+        }
+
+        @JsonSetter(value = "amount", nulls = Nulls.SKIP)
+        public Builder amount(Optional<Double> amount) {
+            this.amount = amount;
+            return this;
+        }
+
+        public Builder amount(Double amount) {
+            this.amount = Optional.ofNullable(amount);
+            return this;
+        }
+
+        @JsonSetter(value = "description", nulls = Nulls.SKIP)
+        public Builder description(Optional<String> description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = Optional.ofNullable(description);
+            return this;
+        }
+
         public InvoiceLineItemCreationRequest build() {
             return new InvoiceLineItemCreationRequest(
                     currency,

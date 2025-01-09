@@ -22,6 +22,8 @@ import java.util.Optional;
 public final class OcrCustomizationRequest {
     private final Optional<Boolean> lineItems;
 
+    private final Optional<Boolean> collapseLineItems;
+
     private final Optional<Boolean> invoiceMetadata;
 
     private final Optional<Boolean> lineItemMetadata;
@@ -36,6 +38,7 @@ public final class OcrCustomizationRequest {
 
     private OcrCustomizationRequest(
             Optional<Boolean> lineItems,
+            Optional<Boolean> collapseLineItems,
             Optional<Boolean> invoiceMetadata,
             Optional<Boolean> lineItemMetadata,
             Optional<Boolean> lineItemGlAccountId,
@@ -43,6 +46,7 @@ public final class OcrCustomizationRequest {
             Optional<Boolean> taxAndShippingAsLineItems,
             Map<String, Object> additionalProperties) {
         this.lineItems = lineItems;
+        this.collapseLineItems = collapseLineItems;
         this.invoiceMetadata = invoiceMetadata;
         this.lineItemMetadata = lineItemMetadata;
         this.lineItemGlAccountId = lineItemGlAccountId;
@@ -57,6 +61,14 @@ public final class OcrCustomizationRequest {
     @JsonProperty("lineItems")
     public Optional<Boolean> getLineItems() {
         return lineItems;
+    }
+
+    /**
+     * @return If true, the line items will be collapsed into a single line item. Defaults to false.
+     */
+    @JsonProperty("collapseLineItems")
+    public Optional<Boolean> getCollapseLineItems() {
+        return collapseLineItems;
     }
 
     /**
@@ -112,6 +124,7 @@ public final class OcrCustomizationRequest {
 
     private boolean equalTo(OcrCustomizationRequest other) {
         return lineItems.equals(other.lineItems)
+                && collapseLineItems.equals(other.collapseLineItems)
                 && invoiceMetadata.equals(other.invoiceMetadata)
                 && lineItemMetadata.equals(other.lineItemMetadata)
                 && lineItemGlAccountId.equals(other.lineItemGlAccountId)
@@ -123,6 +136,7 @@ public final class OcrCustomizationRequest {
     public int hashCode() {
         return Objects.hash(
                 this.lineItems,
+                this.collapseLineItems,
                 this.invoiceMetadata,
                 this.lineItemMetadata,
                 this.lineItemGlAccountId,
@@ -143,6 +157,8 @@ public final class OcrCustomizationRequest {
     public static final class Builder {
         private Optional<Boolean> lineItems = Optional.empty();
 
+        private Optional<Boolean> collapseLineItems = Optional.empty();
+
         private Optional<Boolean> invoiceMetadata = Optional.empty();
 
         private Optional<Boolean> lineItemMetadata = Optional.empty();
@@ -160,6 +176,7 @@ public final class OcrCustomizationRequest {
 
         public Builder from(OcrCustomizationRequest other) {
             lineItems(other.getLineItems());
+            collapseLineItems(other.getCollapseLineItems());
             invoiceMetadata(other.getInvoiceMetadata());
             lineItemMetadata(other.getLineItemMetadata());
             lineItemGlAccountId(other.getLineItemGlAccountId());
@@ -176,6 +193,17 @@ public final class OcrCustomizationRequest {
 
         public Builder lineItems(Boolean lineItems) {
             this.lineItems = Optional.ofNullable(lineItems);
+            return this;
+        }
+
+        @JsonSetter(value = "collapseLineItems", nulls = Nulls.SKIP)
+        public Builder collapseLineItems(Optional<Boolean> collapseLineItems) {
+            this.collapseLineItems = collapseLineItems;
+            return this;
+        }
+
+        public Builder collapseLineItems(Boolean collapseLineItems) {
+            this.collapseLineItems = Optional.ofNullable(collapseLineItems);
             return this;
         }
 
@@ -237,6 +265,7 @@ public final class OcrCustomizationRequest {
         public OcrCustomizationRequest build() {
             return new OcrCustomizationRequest(
                     lineItems,
+                    collapseLineItems,
                     invoiceMetadata,
                     lineItemMetadata,
                     lineItemGlAccountId,

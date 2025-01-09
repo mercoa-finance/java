@@ -192,7 +192,7 @@ public final class FindTransactionsRequest {
     }
 
     /**
-     * @return Filter transactions by invoice ID.
+     * @return Filter transactions by invoice ID. Does not support foreign ID.
      */
     @JsonProperty("invoiceId")
     public Optional<String> getInvoiceId() {

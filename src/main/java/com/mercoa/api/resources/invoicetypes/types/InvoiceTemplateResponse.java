@@ -103,6 +103,8 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
 
     private final Optional<PaymentSchedule> paymentSchedule;
 
+    private final Optional<String> ocrJobId;
+
     private final String id;
 
     private final Map<String, Object> additionalProperties;
@@ -145,6 +147,7 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
             Optional<List<CommentResponse>> comments,
             Optional<InvoiceFeesResponse> fees,
             Optional<PaymentSchedule> paymentSchedule,
+            Optional<String> ocrJobId,
             String id,
             Map<String, Object> additionalProperties) {
         this.status = status;
@@ -184,6 +187,7 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
         this.comments = comments;
         this.fees = fees;
         this.paymentSchedule = paymentSchedule;
+        this.ocrJobId = ocrJobId;
         this.id = id;
         this.additionalProperties = additionalProperties;
     }
@@ -461,6 +465,15 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
         return paymentSchedule;
     }
 
+    /**
+     * @return ID of the OCR job that processed this invoice.
+     */
+    @JsonProperty("ocrJobId")
+    @java.lang.Override
+    public Optional<String> getOcrJobId() {
+        return ocrJobId;
+    }
+
     @JsonProperty("id")
     public String getId() {
         return id;
@@ -515,6 +528,7 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
                 && comments.equals(other.comments)
                 && fees.equals(other.fees)
                 && paymentSchedule.equals(other.paymentSchedule)
+                && ocrJobId.equals(other.ocrJobId)
                 && id.equals(other.id);
     }
 
@@ -558,6 +572,7 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
                 this.comments,
                 this.fees,
                 this.paymentSchedule,
+                this.ocrJobId,
                 this.id);
     }
 
@@ -732,6 +747,10 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
         _FinalStage paymentSchedule(Optional<PaymentSchedule> paymentSchedule);
 
         _FinalStage paymentSchedule(PaymentSchedule paymentSchedule);
+
+        _FinalStage ocrJobId(Optional<String> ocrJobId);
+
+        _FinalStage ocrJobId(String ocrJobId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -757,6 +776,8 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
         private OffsetDateTime updatedAt;
 
         private String id;
+
+        private Optional<String> ocrJobId = Optional.empty();
 
         private Optional<PaymentSchedule> paymentSchedule = Optional.empty();
 
@@ -864,6 +885,7 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
             comments(other.getComments());
             fees(other.getFees());
             paymentSchedule(other.getPaymentSchedule());
+            ocrJobId(other.getOcrJobId());
             id(other.getId());
             return this;
         }
@@ -926,6 +948,23 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
         @JsonSetter("id")
         public _FinalStage id(String id) {
             this.id = id;
+            return this;
+        }
+
+        /**
+         * <p>ID of the OCR job that processed this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage ocrJobId(String ocrJobId) {
+            this.ocrJobId = Optional.ofNullable(ocrJobId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "ocrJobId", nulls = Nulls.SKIP)
+        public _FinalStage ocrJobId(Optional<String> ocrJobId) {
+            this.ocrJobId = ocrJobId;
             return this;
         }
 
@@ -1453,6 +1492,7 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
                     comments,
                     fees,
                     paymentSchedule,
+                    ocrJobId,
                     id,
                     additionalProperties);
         }

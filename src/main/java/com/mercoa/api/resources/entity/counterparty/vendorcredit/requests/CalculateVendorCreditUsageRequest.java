@@ -70,7 +70,7 @@ public final class CalculateVendorCreditUsageRequest {
     }
 
     /**
-     * @return List of vendor credit IDs to include in the calculation. If not provided, all applicable vendor credits will be included, while an empty list will not include ANY vendor credits. This is useful for recalculating vendor credit usage on invoices that have a fixed list of applied vendor credits (e.g. a SCHEDULED or PENDING invoice).
+     * @return List of vendor credit IDs to include in the calculation. If not provided, all applicable vendor credits will be included, while an empty list will not include ANY vendor credits.  This is useful for recalculating vendor credit usage on invoices that have a fixed list of applied vendor credits (e.g. a SCHEDULED or PENDING invoice).
      */
     @JsonProperty("includedVendorCreditIds")
     public Optional<List<String>> getIncludedVendorCreditIds() {
@@ -167,7 +167,7 @@ public final class CalculateVendorCreditUsageRequest {
         }
 
         /**
-         * <p>List of vendor credit IDs to include in the calculation. If not provided, all applicable vendor credits will be included, while an empty list will not include ANY vendor credits. This is useful for recalculating vendor credit usage on invoices that have a fixed list of applied vendor credits (e.g. a SCHEDULED or PENDING invoice).</p>
+         * <p>List of vendor credit IDs to include in the calculation. If not provided, all applicable vendor credits will be included, while an empty list will not include ANY vendor credits.  This is useful for recalculating vendor credit usage on invoices that have a fixed list of applied vendor credits (e.g. a SCHEDULED or PENDING invoice).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

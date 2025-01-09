@@ -103,6 +103,8 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
 
     private final Optional<PaymentSchedule> paymentSchedule;
 
+    private final Optional<String> ocrJobId;
+
     private final Map<String, Object> additionalProperties;
 
     private InvoiceResponseBase(
@@ -143,6 +145,7 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
             Optional<List<CommentResponse>> comments,
             Optional<InvoiceFeesResponse> fees,
             Optional<PaymentSchedule> paymentSchedule,
+            Optional<String> ocrJobId,
             Map<String, Object> additionalProperties) {
         this.status = status;
         this.amount = amount;
@@ -181,6 +184,7 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
         this.comments = comments;
         this.fees = fees;
         this.paymentSchedule = paymentSchedule;
+        this.ocrJobId = ocrJobId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -457,6 +461,15 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
         return paymentSchedule;
     }
 
+    /**
+     * @return ID of the OCR job that processed this invoice.
+     */
+    @JsonProperty("ocrJobId")
+    @java.lang.Override
+    public Optional<String> getOcrJobId() {
+        return ocrJobId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -505,7 +518,8 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
                 && updatedAt.equals(other.updatedAt)
                 && comments.equals(other.comments)
                 && fees.equals(other.fees)
-                && paymentSchedule.equals(other.paymentSchedule);
+                && paymentSchedule.equals(other.paymentSchedule)
+                && ocrJobId.equals(other.ocrJobId);
     }
 
     @java.lang.Override
@@ -547,7 +561,8 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
                 this.updatedAt,
                 this.comments,
                 this.fees,
-                this.paymentSchedule);
+                this.paymentSchedule,
+                this.ocrJobId);
     }
 
     @java.lang.Override
@@ -717,6 +732,10 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
         _FinalStage paymentSchedule(Optional<PaymentSchedule> paymentSchedule);
 
         _FinalStage paymentSchedule(PaymentSchedule paymentSchedule);
+
+        _FinalStage ocrJobId(Optional<String> ocrJobId);
+
+        _FinalStage ocrJobId(String ocrJobId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -739,6 +758,8 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
         private OffsetDateTime createdAt;
 
         private OffsetDateTime updatedAt;
+
+        private Optional<String> ocrJobId = Optional.empty();
 
         private Optional<PaymentSchedule> paymentSchedule = Optional.empty();
 
@@ -846,6 +867,7 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
             comments(other.getComments());
             fees(other.getFees());
             paymentSchedule(other.getPaymentSchedule());
+            ocrJobId(other.getOcrJobId());
             return this;
         }
 
@@ -900,6 +922,23 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
         @JsonSetter("updatedAt")
         public _FinalStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = updatedAt;
+            return this;
+        }
+
+        /**
+         * <p>ID of the OCR job that processed this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage ocrJobId(String ocrJobId) {
+            this.ocrJobId = Optional.ofNullable(ocrJobId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "ocrJobId", nulls = Nulls.SKIP)
+        public _FinalStage ocrJobId(Optional<String> ocrJobId) {
+            this.ocrJobId = ocrJobId;
             return this;
         }
 
@@ -1427,6 +1466,7 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
                     comments,
                     fees,
                     paymentSchedule,
+                    ocrJobId,
                     additionalProperties);
         }
     }
