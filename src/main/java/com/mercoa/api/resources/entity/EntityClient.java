@@ -28,7 +28,6 @@ import com.mercoa.api.resources.entity.requests.EntityEntityGetEventsRequest;
 import com.mercoa.api.resources.entity.requests.EntityGetRequest;
 import com.mercoa.api.resources.entity.requests.FindEntities;
 import com.mercoa.api.resources.entity.requests.GenerateOnboardingLink;
-import com.mercoa.api.resources.entity.requests.PlaidLinkTokenRequest;
 import com.mercoa.api.resources.entity.requests.SendOnboardingLink;
 import com.mercoa.api.resources.entity.user.UserClient;
 import com.mercoa.api.resources.entitytypes.types.EntityEventsResponse;
@@ -478,58 +477,6 @@ public class EntityClient {
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
                 .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
-    }
-
-    /**
-     * Get a Plaid link token for an entity. This token can be used to add or update a bank account to the entity using Plaid Link.
-     */
-    public String plaidLinkToken(String entityId) {
-        return plaidLinkToken(entityId, PlaidLinkTokenRequest.builder().build());
-    }
-
-    /**
-     * Get a Plaid link token for an entity. This token can be used to add or update a bank account to the entity using Plaid Link.
-     */
-    public String plaidLinkToken(String entityId, PlaidLinkTokenRequest request) {
-        return plaidLinkToken(entityId, request, null);
-    }
-
-    /**
-     * Get a Plaid link token for an entity. This token can be used to add or update a bank account to the entity using Plaid Link.
-     */
-    public String plaidLinkToken(String entityId, PlaidLinkTokenRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("plaidLinkToken");
-        if (request.getPaymentMethodId().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "paymentMethodId", request.getPaymentMethodId().get());
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);

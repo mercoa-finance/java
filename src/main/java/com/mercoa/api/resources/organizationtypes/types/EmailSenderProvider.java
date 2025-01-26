@@ -12,7 +12,9 @@ public enum EmailSenderProvider {
 
     SES("ses"),
 
-    RESEND("resend");
+    RESEND("resend"),
+
+    CLOUDMAILIN("cloudmailin");
 
     private final String value;
 

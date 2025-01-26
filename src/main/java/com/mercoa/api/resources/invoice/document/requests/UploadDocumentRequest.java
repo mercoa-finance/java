@@ -35,7 +35,7 @@ public final class UploadDocumentRequest {
     }
 
     /**
-     * @return Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
+     * @return Base64-encoded string. Supported file types include PNG, JPG, WEBP, PDF, and all Microsoft Office formats (automatically converted to PDF). Max file size 10MB.
      */
     @JsonProperty("document")
     public String getDocument() {
@@ -112,7 +112,7 @@ public final class UploadDocumentRequest {
         }
 
         /**
-         * <p>Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.</p>
+         * <p>Base64-encoded string. Supported file types include PNG, JPG, WEBP, PDF, and all Microsoft Office formats (automatically converted to PDF). Max file size 10MB.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

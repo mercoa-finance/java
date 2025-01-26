@@ -22,13 +22,19 @@ import java.util.Optional;
 public final class BulkInvoiceCreationFromObjectResponse {
     private final Optional<String> id;
 
+    private final Optional<String> foreignId;
+
     private final Optional<String> error;
 
     private final Map<String, Object> additionalProperties;
 
     private BulkInvoiceCreationFromObjectResponse(
-            Optional<String> id, Optional<String> error, Map<String, Object> additionalProperties) {
+            Optional<String> id,
+            Optional<String> foreignId,
+            Optional<String> error,
+            Map<String, Object> additionalProperties) {
         this.id = id;
+        this.foreignId = foreignId;
         this.error = error;
         this.additionalProperties = additionalProperties;
     }
@@ -39,6 +45,14 @@ public final class BulkInvoiceCreationFromObjectResponse {
     @JsonProperty("id")
     public Optional<String> getId() {
         return id;
+    }
+
+    /**
+     * @return If provided, this is the foreign ID of the invoice that was created.
+     */
+    @JsonProperty("foreignId")
+    public Optional<String> getForeignId() {
+        return foreignId;
     }
 
     /**
@@ -62,12 +76,12 @@ public final class BulkInvoiceCreationFromObjectResponse {
     }
 
     private boolean equalTo(BulkInvoiceCreationFromObjectResponse other) {
-        return id.equals(other.id) && error.equals(other.error);
+        return id.equals(other.id) && foreignId.equals(other.foreignId) && error.equals(other.error);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.id, this.error);
+        return Objects.hash(this.id, this.foreignId, this.error);
     }
 
     @java.lang.Override
@@ -83,6 +97,8 @@ public final class BulkInvoiceCreationFromObjectResponse {
     public static final class Builder {
         private Optional<String> id = Optional.empty();
 
+        private Optional<String> foreignId = Optional.empty();
+
         private Optional<String> error = Optional.empty();
 
         @JsonAnySetter
@@ -92,6 +108,7 @@ public final class BulkInvoiceCreationFromObjectResponse {
 
         public Builder from(BulkInvoiceCreationFromObjectResponse other) {
             id(other.getId());
+            foreignId(other.getForeignId());
             error(other.getError());
             return this;
         }
@@ -107,6 +124,17 @@ public final class BulkInvoiceCreationFromObjectResponse {
             return this;
         }
 
+        @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
+        public Builder foreignId(Optional<String> foreignId) {
+            this.foreignId = foreignId;
+            return this;
+        }
+
+        public Builder foreignId(String foreignId) {
+            this.foreignId = Optional.ofNullable(foreignId);
+            return this;
+        }
+
         @JsonSetter(value = "error", nulls = Nulls.SKIP)
         public Builder error(Optional<String> error) {
             this.error = error;
@@ -119,7 +147,7 @@ public final class BulkInvoiceCreationFromObjectResponse {
         }
 
         public BulkInvoiceCreationFromObjectResponse build() {
-            return new BulkInvoiceCreationFromObjectResponse(id, error, additionalProperties);
+            return new BulkInvoiceCreationFromObjectResponse(id, foreignId, error, additionalProperties);
         }
     }
 }

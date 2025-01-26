@@ -25,20 +25,20 @@ import java.util.Optional;
 public final class TokenGenerationInvoiceOptions {
     private final Optional<LineItemAvailabilities> lineItems;
 
-    private final Optional<Boolean> disableLineItems;
-
     private final List<InvoiceStatus> status;
+
+    private final Optional<Boolean> recurring;
 
     private final Map<String, Object> additionalProperties;
 
     private TokenGenerationInvoiceOptions(
             Optional<LineItemAvailabilities> lineItems,
-            Optional<Boolean> disableLineItems,
             List<InvoiceStatus> status,
+            Optional<Boolean> recurring,
             Map<String, Object> additionalProperties) {
         this.lineItems = lineItems;
-        this.disableLineItems = disableLineItems;
         this.status = status;
+        this.recurring = recurring;
         this.additionalProperties = additionalProperties;
     }
 
@@ -50,17 +50,17 @@ public final class TokenGenerationInvoiceOptions {
         return lineItems;
     }
 
-    /**
-     * @return DEPRECATED. Use lineItems instead.
-     */
-    @JsonProperty("disableLineItems")
-    public Optional<Boolean> getDisableLineItems() {
-        return disableLineItems;
-    }
-
     @JsonProperty("status")
     public List<InvoiceStatus> getStatus() {
         return status;
+    }
+
+    /**
+     * @return If true, recurring invoice templates will be available to the user.
+     */
+    @JsonProperty("recurring")
+    public Optional<Boolean> getRecurring() {
+        return recurring;
     }
 
     @java.lang.Override
@@ -75,14 +75,12 @@ public final class TokenGenerationInvoiceOptions {
     }
 
     private boolean equalTo(TokenGenerationInvoiceOptions other) {
-        return lineItems.equals(other.lineItems)
-                && disableLineItems.equals(other.disableLineItems)
-                && status.equals(other.status);
+        return lineItems.equals(other.lineItems) && status.equals(other.status) && recurring.equals(other.recurring);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.lineItems, this.disableLineItems, this.status);
+        return Objects.hash(this.lineItems, this.status, this.recurring);
     }
 
     @java.lang.Override
@@ -98,9 +96,9 @@ public final class TokenGenerationInvoiceOptions {
     public static final class Builder {
         private Optional<LineItemAvailabilities> lineItems = Optional.empty();
 
-        private Optional<Boolean> disableLineItems = Optional.empty();
-
         private List<InvoiceStatus> status = new ArrayList<>();
+
+        private Optional<Boolean> recurring = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -109,8 +107,8 @@ public final class TokenGenerationInvoiceOptions {
 
         public Builder from(TokenGenerationInvoiceOptions other) {
             lineItems(other.getLineItems());
-            disableLineItems(other.getDisableLineItems());
             status(other.getStatus());
+            recurring(other.getRecurring());
             return this;
         }
 
@@ -122,17 +120,6 @@ public final class TokenGenerationInvoiceOptions {
 
         public Builder lineItems(LineItemAvailabilities lineItems) {
             this.lineItems = Optional.ofNullable(lineItems);
-            return this;
-        }
-
-        @JsonSetter(value = "disableLineItems", nulls = Nulls.SKIP)
-        public Builder disableLineItems(Optional<Boolean> disableLineItems) {
-            this.disableLineItems = disableLineItems;
-            return this;
-        }
-
-        public Builder disableLineItems(Boolean disableLineItems) {
-            this.disableLineItems = Optional.ofNullable(disableLineItems);
             return this;
         }
 
@@ -153,8 +140,19 @@ public final class TokenGenerationInvoiceOptions {
             return this;
         }
 
+        @JsonSetter(value = "recurring", nulls = Nulls.SKIP)
+        public Builder recurring(Optional<Boolean> recurring) {
+            this.recurring = recurring;
+            return this;
+        }
+
+        public Builder recurring(Boolean recurring) {
+            this.recurring = Optional.ofNullable(recurring);
+            return this;
+        }
+
         public TokenGenerationInvoiceOptions build() {
-            return new TokenGenerationInvoiceOptions(lineItems, disableLineItems, status, additionalProperties);
+            return new TokenGenerationInvoiceOptions(lineItems, status, recurring, additionalProperties);
         }
     }
 }

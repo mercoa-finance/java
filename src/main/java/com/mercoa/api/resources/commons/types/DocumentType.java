@@ -16,6 +16,8 @@ public enum DocumentType {
 
     BANK_STATEMENT("BANK_STATEMENT"),
 
+    CONTRACT("CONTRACT"),
+
     OTHER("OTHER");
 
     private final String value;

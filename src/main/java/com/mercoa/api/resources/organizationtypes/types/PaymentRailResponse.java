@@ -3,196 +3,593 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodType;
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = PaymentRailResponse.Builder.class)
 public final class PaymentRailResponse {
-    private final PaymentMethodType type;
+    private final Value value;
 
-    private final String name;
-
-    private final boolean active;
-
-    private final Optional<Boolean> available;
-
-    private final Map<String, Object> additionalProperties;
-
-    private PaymentRailResponse(
-            PaymentMethodType type,
-            String name,
-            boolean active,
-            Optional<Boolean> available,
-            Map<String, Object> additionalProperties) {
-        this.type = type;
-        this.name = name;
-        this.active = active;
-        this.available = available;
-        this.additionalProperties = additionalProperties;
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    private PaymentRailResponse(Value value) {
+        this.value = value;
     }
 
-    @JsonProperty("type")
-    public PaymentMethodType getType() {
-        return type;
+    public <T> T visit(Visitor<T> visitor) {
+        return value.visit(visitor);
     }
 
-    /**
-     * @return For custom payment methods, this is the ID of the schema.
-     */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    public static PaymentRailResponse bankAccount(BankPaymentRailResponse value) {
+        return new PaymentRailResponse(new BankAccountValue(value));
     }
 
-    @JsonProperty("active")
-    public boolean getActive() {
-        return active;
+    public static PaymentRailResponse card(GenericPaymentRailResponse value) {
+        return new PaymentRailResponse(new CardValue(value));
     }
 
-    /**
-     * @return unused
-     */
-    @JsonProperty("available")
-    public Optional<Boolean> getAvailable() {
-        return available;
+    public static PaymentRailResponse virtualCard(GenericPaymentRailResponse value) {
+        return new PaymentRailResponse(new VirtualCardValue(value));
     }
 
-    @java.lang.Override
-    public boolean equals(Object other) {
-        if (this == other) return true;
-        return other instanceof PaymentRailResponse && equalTo((PaymentRailResponse) other);
+    public static PaymentRailResponse check(CheckPaymentRailResponse value) {
+        return new PaymentRailResponse(new CheckValue(value));
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
+    public static PaymentRailResponse custom(CustomPaymentRailResponse value) {
+        return new PaymentRailResponse(new CustomValue(value));
     }
 
-    private boolean equalTo(PaymentRailResponse other) {
-        return type.equals(other.type)
-                && name.equals(other.name)
-                && active == other.active
-                && available.equals(other.available);
+    public static PaymentRailResponse bnpl(GenericPaymentRailResponse value) {
+        return new PaymentRailResponse(new BnplValue(value));
     }
 
-    @java.lang.Override
-    public int hashCode() {
-        return Objects.hash(this.type, this.name, this.active, this.available);
+    public static PaymentRailResponse offPlatform(GenericPaymentRailResponse value) {
+        return new PaymentRailResponse(new OffPlatformValue(value));
     }
 
-    @java.lang.Override
-    public String toString() {
-        return ObjectMappers.stringify(this);
+    public static PaymentRailResponse utility(GenericPaymentRailResponse value) {
+        return new PaymentRailResponse(new UtilityValue(value));
     }
 
-    public static TypeStage builder() {
-        return new Builder();
+    public static PaymentRailResponse na(GenericPaymentRailResponse value) {
+        return new PaymentRailResponse(new NaValue(value));
     }
 
-    public interface TypeStage {
-        NameStage type(PaymentMethodType type);
-
-        Builder from(PaymentRailResponse other);
+    public boolean isBankAccount() {
+        return value instanceof BankAccountValue;
     }
 
-    public interface NameStage {
-        ActiveStage name(String name);
+    public boolean isCard() {
+        return value instanceof CardValue;
     }
 
-    public interface ActiveStage {
-        _FinalStage active(boolean active);
+    public boolean isVirtualCard() {
+        return value instanceof VirtualCardValue;
     }
 
-    public interface _FinalStage {
-        PaymentRailResponse build();
-
-        _FinalStage available(Optional<Boolean> available);
-
-        _FinalStage available(Boolean available);
+    public boolean isCheck() {
+        return value instanceof CheckValue;
     }
 
+    public boolean isCustom() {
+        return value instanceof CustomValue;
+    }
+
+    public boolean isBnpl() {
+        return value instanceof BnplValue;
+    }
+
+    public boolean isOffPlatform() {
+        return value instanceof OffPlatformValue;
+    }
+
+    public boolean isUtility() {
+        return value instanceof UtilityValue;
+    }
+
+    public boolean isNa() {
+        return value instanceof NaValue;
+    }
+
+    public boolean _isUnknown() {
+        return value instanceof _UnknownValue;
+    }
+
+    public Optional<BankPaymentRailResponse> getBankAccount() {
+        if (isBankAccount()) {
+            return Optional.of(((BankAccountValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<GenericPaymentRailResponse> getCard() {
+        if (isCard()) {
+            return Optional.of(((CardValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<GenericPaymentRailResponse> getVirtualCard() {
+        if (isVirtualCard()) {
+            return Optional.of(((VirtualCardValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<CheckPaymentRailResponse> getCheck() {
+        if (isCheck()) {
+            return Optional.of(((CheckValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<CustomPaymentRailResponse> getCustom() {
+        if (isCustom()) {
+            return Optional.of(((CustomValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<GenericPaymentRailResponse> getBnpl() {
+        if (isBnpl()) {
+            return Optional.of(((BnplValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<GenericPaymentRailResponse> getOffPlatform() {
+        if (isOffPlatform()) {
+            return Optional.of(((OffPlatformValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<GenericPaymentRailResponse> getUtility() {
+        if (isUtility()) {
+            return Optional.of(((UtilityValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<GenericPaymentRailResponse> getNa() {
+        if (isNa()) {
+            return Optional.of(((NaValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Object> _getUnknown() {
+        if (_isUnknown()) {
+            return Optional.of(((_UnknownValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    @JsonValue
+    private Value getValue() {
+        return this.value;
+    }
+
+    public interface Visitor<T> {
+        T visitBankAccount(BankPaymentRailResponse bankAccount);
+
+        T visitCard(GenericPaymentRailResponse card);
+
+        T visitVirtualCard(GenericPaymentRailResponse virtualCard);
+
+        T visitCheck(CheckPaymentRailResponse check);
+
+        T visitCustom(CustomPaymentRailResponse custom);
+
+        T visitBnpl(GenericPaymentRailResponse bnpl);
+
+        T visitOffPlatform(GenericPaymentRailResponse offPlatform);
+
+        T visitUtility(GenericPaymentRailResponse utility);
+
+        T visitNa(GenericPaymentRailResponse na);
+
+        T _visitUnknown(Object unknownType);
+    }
+
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = _UnknownValue.class)
+    @JsonSubTypes({
+        @JsonSubTypes.Type(BankAccountValue.class),
+        @JsonSubTypes.Type(CardValue.class),
+        @JsonSubTypes.Type(VirtualCardValue.class),
+        @JsonSubTypes.Type(CheckValue.class),
+        @JsonSubTypes.Type(CustomValue.class),
+        @JsonSubTypes.Type(BnplValue.class),
+        @JsonSubTypes.Type(OffPlatformValue.class),
+        @JsonSubTypes.Type(UtilityValue.class),
+        @JsonSubTypes.Type(NaValue.class)
+    })
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements TypeStage, NameStage, ActiveStage, _FinalStage {
-        private PaymentMethodType type;
+    private interface Value {
+        <T> T visit(Visitor<T> visitor);
+    }
 
-        private String name;
+    @JsonTypeName("bankAccount")
+    private static final class BankAccountValue implements Value {
+        @JsonUnwrapped
+        private BankPaymentRailResponse value;
 
-        private boolean active;
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private BankAccountValue() {}
 
-        private Optional<Boolean> available = Optional.empty();
-
-        @JsonAnySetter
-        private Map<String, Object> additionalProperties = new HashMap<>();
-
-        private Builder() {}
-
-        @java.lang.Override
-        public Builder from(PaymentRailResponse other) {
-            type(other.getType());
-            name(other.getName());
-            active(other.getActive());
-            available(other.getAvailable());
-            return this;
+        private BankAccountValue(BankPaymentRailResponse value) {
+            this.value = value;
         }
 
         @java.lang.Override
-        @JsonSetter("type")
-        public NameStage type(PaymentMethodType type) {
-            this.type = type;
-            return this;
-        }
-
-        /**
-         * <p>For custom payment methods, this is the ID of the schema.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("name")
-        public ActiveStage name(String name) {
-            this.name = name;
-            return this;
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitBankAccount(value);
         }
 
         @java.lang.Override
-        @JsonSetter("active")
-        public _FinalStage active(boolean active) {
-            this.active = active;
-            return this;
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof BankAccountValue && equalTo((BankAccountValue) other);
         }
 
-        /**
-         * <p>unused</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage available(Boolean available) {
-            this.available = Optional.ofNullable(available);
-            return this;
+        private boolean equalTo(BankAccountValue other) {
+            return value.equals(other.value);
         }
 
         @java.lang.Override
-        @JsonSetter(value = "available", nulls = Nulls.SKIP)
-        public _FinalStage available(Optional<Boolean> available) {
-            this.available = available;
-            return this;
+        public int hashCode() {
+            return Objects.hash(this.value);
         }
 
         @java.lang.Override
-        public PaymentRailResponse build() {
-            return new PaymentRailResponse(type, name, active, available, additionalProperties);
+        public String toString() {
+            return "PaymentRailResponse{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("card")
+    private static final class CardValue implements Value {
+        @JsonUnwrapped
+        private GenericPaymentRailResponse value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private CardValue() {}
+
+        private CardValue(GenericPaymentRailResponse value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitCard(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof CardValue && equalTo((CardValue) other);
+        }
+
+        private boolean equalTo(CardValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentRailResponse{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("virtualCard")
+    private static final class VirtualCardValue implements Value {
+        @JsonUnwrapped
+        private GenericPaymentRailResponse value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private VirtualCardValue() {}
+
+        private VirtualCardValue(GenericPaymentRailResponse value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitVirtualCard(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof VirtualCardValue && equalTo((VirtualCardValue) other);
+        }
+
+        private boolean equalTo(VirtualCardValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentRailResponse{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("check")
+    private static final class CheckValue implements Value {
+        @JsonUnwrapped
+        private CheckPaymentRailResponse value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private CheckValue() {}
+
+        private CheckValue(CheckPaymentRailResponse value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitCheck(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof CheckValue && equalTo((CheckValue) other);
+        }
+
+        private boolean equalTo(CheckValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentRailResponse{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("custom")
+    private static final class CustomValue implements Value {
+        @JsonUnwrapped
+        private CustomPaymentRailResponse value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private CustomValue() {}
+
+        private CustomValue(CustomPaymentRailResponse value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitCustom(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof CustomValue && equalTo((CustomValue) other);
+        }
+
+        private boolean equalTo(CustomValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentRailResponse{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("bnpl")
+    private static final class BnplValue implements Value {
+        @JsonUnwrapped
+        private GenericPaymentRailResponse value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private BnplValue() {}
+
+        private BnplValue(GenericPaymentRailResponse value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitBnpl(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof BnplValue && equalTo((BnplValue) other);
+        }
+
+        private boolean equalTo(BnplValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentRailResponse{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("offPlatform")
+    private static final class OffPlatformValue implements Value {
+        @JsonUnwrapped
+        private GenericPaymentRailResponse value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private OffPlatformValue() {}
+
+        private OffPlatformValue(GenericPaymentRailResponse value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitOffPlatform(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof OffPlatformValue && equalTo((OffPlatformValue) other);
+        }
+
+        private boolean equalTo(OffPlatformValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentRailResponse{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("utility")
+    private static final class UtilityValue implements Value {
+        @JsonUnwrapped
+        private GenericPaymentRailResponse value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private UtilityValue() {}
+
+        private UtilityValue(GenericPaymentRailResponse value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitUtility(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof UtilityValue && equalTo((UtilityValue) other);
+        }
+
+        private boolean equalTo(UtilityValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentRailResponse{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("na")
+    private static final class NaValue implements Value {
+        @JsonUnwrapped
+        private GenericPaymentRailResponse value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private NaValue() {}
+
+        private NaValue(GenericPaymentRailResponse value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitNa(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof NaValue && equalTo((NaValue) other);
+        }
+
+        private boolean equalTo(NaValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentRailResponse{" + "value: " + value + "}";
+        }
+    }
+
+    private static final class _UnknownValue implements Value {
+        private String type;
+
+        @JsonValue
+        private Object value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private _UnknownValue(@JsonProperty("value") Object value) {}
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor._visitUnknown(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof _UnknownValue && equalTo((_UnknownValue) other);
+        }
+
+        private boolean equalTo(_UnknownValue other) {
+            return type.equals(other.type) && value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.type, this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentRailResponse{" + "type: " + type + ", value: " + value + "}";
         }
     }
 }

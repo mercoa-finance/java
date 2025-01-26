@@ -14,6 +14,8 @@ import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.entity.paymentmethod.bankaccount.BankAccountClient;
 import com.mercoa.api.resources.entity.paymentmethod.requests.GetAllPaymentMethodsRequest;
+import com.mercoa.api.resources.entity.paymentmethod.requests.PlaidLinkTokenRequest;
+import com.mercoa.api.resources.entitytypes.types.CardLinkTokenResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodRequest;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodUpdateRequest;
@@ -247,6 +249,100 @@ public class PaymentMethodClient {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return;
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            throw new MercoaApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new MercoaException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Get a Plaid link token for an entity. This token can be used to add or update a bank account to the entity using Plaid Link.
+     */
+    public String plaidLinkToken(String entityId) {
+        return plaidLinkToken(entityId, PlaidLinkTokenRequest.builder().build());
+    }
+
+    /**
+     * Get a Plaid link token for an entity. This token can be used to add or update a bank account to the entity using Plaid Link.
+     */
+    public String plaidLinkToken(String entityId, PlaidLinkTokenRequest request) {
+        return plaidLinkToken(entityId, request, null);
+    }
+
+    /**
+     * Get a Plaid link token for an entity. This token can be used to add or update a bank account to the entity using Plaid Link.
+     */
+    public String plaidLinkToken(String entityId, PlaidLinkTokenRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entity")
+                .addPathSegment(entityId)
+                .addPathSegments("plaidLinkToken");
+        if (request.getPaymentMethodId().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "paymentMethodId", request.getPaymentMethodId().get());
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class);
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            throw new MercoaApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new MercoaException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * Get a card link token for an entity. This token is used by the frontend components to generate a PCI compliant form to add a card to the entity.
+     */
+    public CardLinkTokenResponse cardLinkToken(String entityId) {
+        return cardLinkToken(entityId, null);
+    }
+
+    /**
+     * Get a card link token for an entity. This token is used by the frontend components to generate a PCI compliant form to add a card to the entity.
+     */
+    public CardLinkTokenResponse cardLinkToken(String entityId, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entity")
+                .addPathSegment(entityId)
+                .addPathSegments("cardLinkToken")
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), CardLinkTokenResponse.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             throw new MercoaApiException(

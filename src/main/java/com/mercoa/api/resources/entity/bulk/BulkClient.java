@@ -3,14 +3,13 @@
  */
 package com.mercoa.api.resources.entity.bulk;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.MercoaApiException;
 import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
-import com.mercoa.api.resources.entitytypes.types.BulkEntityCreationRequest;
+import com.mercoa.api.resources.entity.bulk.requests.BulkEntityCreationRequest;
 import com.mercoa.api.resources.entitytypes.types.BulkEntityCreationResponse;
 import java.io.IOException;
 import okhttp3.Headers;
@@ -39,23 +38,26 @@ public class BulkClient {
      * Create multiple entities in bulk. This endpoint will process synchronously and return a list of entities that were created or failed to create.
      */
     public BulkEntityCreationResponse create(BulkEntityCreationRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
-                .addPathSegments("entities")
-                .build();
+                .addPathSegments("entities");
+        if (request.getEmitWebhooks().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "emitWebhooks", request.getEmitWebhooks().get().toString());
+        }
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()), MediaTypes.APPLICATION_JSON);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .build();
+                .addHeader("Content-Type", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
             client = clientOptions.httpClientWithTimeout(requestOptions);

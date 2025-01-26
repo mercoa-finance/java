@@ -3,170 +3,593 @@
  */
 package com.mercoa.api.resources.entitytypes.types;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodType;
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Objects;
 import java.util.Optional;
 
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = PaymentMethodCustomizationRequest.Builder.class)
 public final class PaymentMethodCustomizationRequest {
-    private final PaymentMethodType type;
+    private final Value value;
 
-    private final Optional<String> schemaId;
-
-    private final boolean disabled;
-
-    private final Map<String, Object> additionalProperties;
-
-    private PaymentMethodCustomizationRequest(
-            PaymentMethodType type,
-            Optional<String> schemaId,
-            boolean disabled,
-            Map<String, Object> additionalProperties) {
-        this.type = type;
-        this.schemaId = schemaId;
-        this.disabled = disabled;
-        this.additionalProperties = additionalProperties;
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    private PaymentMethodCustomizationRequest(Value value) {
+        this.value = value;
     }
 
-    @JsonProperty("type")
-    public PaymentMethodType getType() {
-        return type;
+    public <T> T visit(Visitor<T> visitor) {
+        return value.visit(visitor);
     }
 
-    /**
-     * @return If type is custom, this is the ID of the schema to use for this payment method.
-     */
-    @JsonProperty("schemaId")
-    public Optional<String> getSchemaId() {
-        return schemaId;
+    public static PaymentMethodCustomizationRequest bankAccount(BankAccountPaymentMethodCustomizationRequest value) {
+        return new PaymentMethodCustomizationRequest(new BankAccountValue(value));
     }
 
-    /**
-     * @return If true, this method will will not be available to the entity.
-     */
-    @JsonProperty("disabled")
-    public boolean getDisabled() {
-        return disabled;
+    public static PaymentMethodCustomizationRequest card(GenericPaymentMethodCustomizationRequest value) {
+        return new PaymentMethodCustomizationRequest(new CardValue(value));
     }
 
-    @java.lang.Override
-    public boolean equals(Object other) {
-        if (this == other) return true;
-        return other instanceof PaymentMethodCustomizationRequest && equalTo((PaymentMethodCustomizationRequest) other);
+    public static PaymentMethodCustomizationRequest virtualCard(GenericPaymentMethodCustomizationRequest value) {
+        return new PaymentMethodCustomizationRequest(new VirtualCardValue(value));
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
+    public static PaymentMethodCustomizationRequest check(CheckPaymentMethodCustomizationRequest value) {
+        return new PaymentMethodCustomizationRequest(new CheckValue(value));
     }
 
-    private boolean equalTo(PaymentMethodCustomizationRequest other) {
-        return type.equals(other.type) && schemaId.equals(other.schemaId) && disabled == other.disabled;
+    public static PaymentMethodCustomizationRequest custom(CustomPaymentMethodCustomizationRequest value) {
+        return new PaymentMethodCustomizationRequest(new CustomValue(value));
     }
 
-    @java.lang.Override
-    public int hashCode() {
-        return Objects.hash(this.type, this.schemaId, this.disabled);
+    public static PaymentMethodCustomizationRequest bnpl(GenericPaymentMethodCustomizationRequest value) {
+        return new PaymentMethodCustomizationRequest(new BnplValue(value));
     }
 
-    @java.lang.Override
-    public String toString() {
-        return ObjectMappers.stringify(this);
+    public static PaymentMethodCustomizationRequest offPlatform(GenericPaymentMethodCustomizationRequest value) {
+        return new PaymentMethodCustomizationRequest(new OffPlatformValue(value));
     }
 
-    public static TypeStage builder() {
-        return new Builder();
+    public static PaymentMethodCustomizationRequest utility(GenericPaymentMethodCustomizationRequest value) {
+        return new PaymentMethodCustomizationRequest(new UtilityValue(value));
     }
 
-    public interface TypeStage {
-        DisabledStage type(PaymentMethodType type);
-
-        Builder from(PaymentMethodCustomizationRequest other);
+    public static PaymentMethodCustomizationRequest na(GenericPaymentMethodCustomizationRequest value) {
+        return new PaymentMethodCustomizationRequest(new NaValue(value));
     }
 
-    public interface DisabledStage {
-        _FinalStage disabled(boolean disabled);
+    public boolean isBankAccount() {
+        return value instanceof BankAccountValue;
     }
 
-    public interface _FinalStage {
-        PaymentMethodCustomizationRequest build();
-
-        _FinalStage schemaId(Optional<String> schemaId);
-
-        _FinalStage schemaId(String schemaId);
+    public boolean isCard() {
+        return value instanceof CardValue;
     }
 
+    public boolean isVirtualCard() {
+        return value instanceof VirtualCardValue;
+    }
+
+    public boolean isCheck() {
+        return value instanceof CheckValue;
+    }
+
+    public boolean isCustom() {
+        return value instanceof CustomValue;
+    }
+
+    public boolean isBnpl() {
+        return value instanceof BnplValue;
+    }
+
+    public boolean isOffPlatform() {
+        return value instanceof OffPlatformValue;
+    }
+
+    public boolean isUtility() {
+        return value instanceof UtilityValue;
+    }
+
+    public boolean isNa() {
+        return value instanceof NaValue;
+    }
+
+    public boolean _isUnknown() {
+        return value instanceof _UnknownValue;
+    }
+
+    public Optional<BankAccountPaymentMethodCustomizationRequest> getBankAccount() {
+        if (isBankAccount()) {
+            return Optional.of(((BankAccountValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<GenericPaymentMethodCustomizationRequest> getCard() {
+        if (isCard()) {
+            return Optional.of(((CardValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<GenericPaymentMethodCustomizationRequest> getVirtualCard() {
+        if (isVirtualCard()) {
+            return Optional.of(((VirtualCardValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<CheckPaymentMethodCustomizationRequest> getCheck() {
+        if (isCheck()) {
+            return Optional.of(((CheckValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<CustomPaymentMethodCustomizationRequest> getCustom() {
+        if (isCustom()) {
+            return Optional.of(((CustomValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<GenericPaymentMethodCustomizationRequest> getBnpl() {
+        if (isBnpl()) {
+            return Optional.of(((BnplValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<GenericPaymentMethodCustomizationRequest> getOffPlatform() {
+        if (isOffPlatform()) {
+            return Optional.of(((OffPlatformValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<GenericPaymentMethodCustomizationRequest> getUtility() {
+        if (isUtility()) {
+            return Optional.of(((UtilityValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<GenericPaymentMethodCustomizationRequest> getNa() {
+        if (isNa()) {
+            return Optional.of(((NaValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Object> _getUnknown() {
+        if (_isUnknown()) {
+            return Optional.of(((_UnknownValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    @JsonValue
+    private Value getValue() {
+        return this.value;
+    }
+
+    public interface Visitor<T> {
+        T visitBankAccount(BankAccountPaymentMethodCustomizationRequest bankAccount);
+
+        T visitCard(GenericPaymentMethodCustomizationRequest card);
+
+        T visitVirtualCard(GenericPaymentMethodCustomizationRequest virtualCard);
+
+        T visitCheck(CheckPaymentMethodCustomizationRequest check);
+
+        T visitCustom(CustomPaymentMethodCustomizationRequest custom);
+
+        T visitBnpl(GenericPaymentMethodCustomizationRequest bnpl);
+
+        T visitOffPlatform(GenericPaymentMethodCustomizationRequest offPlatform);
+
+        T visitUtility(GenericPaymentMethodCustomizationRequest utility);
+
+        T visitNa(GenericPaymentMethodCustomizationRequest na);
+
+        T _visitUnknown(Object unknownType);
+    }
+
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = _UnknownValue.class)
+    @JsonSubTypes({
+        @JsonSubTypes.Type(BankAccountValue.class),
+        @JsonSubTypes.Type(CardValue.class),
+        @JsonSubTypes.Type(VirtualCardValue.class),
+        @JsonSubTypes.Type(CheckValue.class),
+        @JsonSubTypes.Type(CustomValue.class),
+        @JsonSubTypes.Type(BnplValue.class),
+        @JsonSubTypes.Type(OffPlatformValue.class),
+        @JsonSubTypes.Type(UtilityValue.class),
+        @JsonSubTypes.Type(NaValue.class)
+    })
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements TypeStage, DisabledStage, _FinalStage {
-        private PaymentMethodType type;
+    private interface Value {
+        <T> T visit(Visitor<T> visitor);
+    }
 
-        private boolean disabled;
+    @JsonTypeName("bankAccount")
+    private static final class BankAccountValue implements Value {
+        @JsonUnwrapped
+        private BankAccountPaymentMethodCustomizationRequest value;
 
-        private Optional<String> schemaId = Optional.empty();
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private BankAccountValue() {}
 
-        @JsonAnySetter
-        private Map<String, Object> additionalProperties = new HashMap<>();
-
-        private Builder() {}
-
-        @java.lang.Override
-        public Builder from(PaymentMethodCustomizationRequest other) {
-            type(other.getType());
-            schemaId(other.getSchemaId());
-            disabled(other.getDisabled());
-            return this;
+        private BankAccountValue(BankAccountPaymentMethodCustomizationRequest value) {
+            this.value = value;
         }
 
         @java.lang.Override
-        @JsonSetter("type")
-        public DisabledStage type(PaymentMethodType type) {
-            this.type = type;
-            return this;
-        }
-
-        /**
-         * <p>If true, this method will will not be available to the entity.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("disabled")
-        public _FinalStage disabled(boolean disabled) {
-            this.disabled = disabled;
-            return this;
-        }
-
-        /**
-         * <p>If type is custom, this is the ID of the schema to use for this payment method.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage schemaId(String schemaId) {
-            this.schemaId = Optional.ofNullable(schemaId);
-            return this;
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitBankAccount(value);
         }
 
         @java.lang.Override
-        @JsonSetter(value = "schemaId", nulls = Nulls.SKIP)
-        public _FinalStage schemaId(Optional<String> schemaId) {
-            this.schemaId = schemaId;
-            return this;
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof BankAccountValue && equalTo((BankAccountValue) other);
+        }
+
+        private boolean equalTo(BankAccountValue other) {
+            return value.equals(other.value);
         }
 
         @java.lang.Override
-        public PaymentMethodCustomizationRequest build() {
-            return new PaymentMethodCustomizationRequest(type, schemaId, disabled, additionalProperties);
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentMethodCustomizationRequest{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("card")
+    private static final class CardValue implements Value {
+        @JsonUnwrapped
+        private GenericPaymentMethodCustomizationRequest value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private CardValue() {}
+
+        private CardValue(GenericPaymentMethodCustomizationRequest value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitCard(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof CardValue && equalTo((CardValue) other);
+        }
+
+        private boolean equalTo(CardValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentMethodCustomizationRequest{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("virtualCard")
+    private static final class VirtualCardValue implements Value {
+        @JsonUnwrapped
+        private GenericPaymentMethodCustomizationRequest value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private VirtualCardValue() {}
+
+        private VirtualCardValue(GenericPaymentMethodCustomizationRequest value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitVirtualCard(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof VirtualCardValue && equalTo((VirtualCardValue) other);
+        }
+
+        private boolean equalTo(VirtualCardValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentMethodCustomizationRequest{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("check")
+    private static final class CheckValue implements Value {
+        @JsonUnwrapped
+        private CheckPaymentMethodCustomizationRequest value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private CheckValue() {}
+
+        private CheckValue(CheckPaymentMethodCustomizationRequest value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitCheck(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof CheckValue && equalTo((CheckValue) other);
+        }
+
+        private boolean equalTo(CheckValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentMethodCustomizationRequest{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("custom")
+    private static final class CustomValue implements Value {
+        @JsonUnwrapped
+        private CustomPaymentMethodCustomizationRequest value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private CustomValue() {}
+
+        private CustomValue(CustomPaymentMethodCustomizationRequest value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitCustom(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof CustomValue && equalTo((CustomValue) other);
+        }
+
+        private boolean equalTo(CustomValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentMethodCustomizationRequest{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("bnpl")
+    private static final class BnplValue implements Value {
+        @JsonUnwrapped
+        private GenericPaymentMethodCustomizationRequest value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private BnplValue() {}
+
+        private BnplValue(GenericPaymentMethodCustomizationRequest value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitBnpl(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof BnplValue && equalTo((BnplValue) other);
+        }
+
+        private boolean equalTo(BnplValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentMethodCustomizationRequest{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("offPlatform")
+    private static final class OffPlatformValue implements Value {
+        @JsonUnwrapped
+        private GenericPaymentMethodCustomizationRequest value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private OffPlatformValue() {}
+
+        private OffPlatformValue(GenericPaymentMethodCustomizationRequest value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitOffPlatform(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof OffPlatformValue && equalTo((OffPlatformValue) other);
+        }
+
+        private boolean equalTo(OffPlatformValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentMethodCustomizationRequest{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("utility")
+    private static final class UtilityValue implements Value {
+        @JsonUnwrapped
+        private GenericPaymentMethodCustomizationRequest value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private UtilityValue() {}
+
+        private UtilityValue(GenericPaymentMethodCustomizationRequest value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitUtility(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof UtilityValue && equalTo((UtilityValue) other);
+        }
+
+        private boolean equalTo(UtilityValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentMethodCustomizationRequest{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("na")
+    private static final class NaValue implements Value {
+        @JsonUnwrapped
+        private GenericPaymentMethodCustomizationRequest value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private NaValue() {}
+
+        private NaValue(GenericPaymentMethodCustomizationRequest value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitNa(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof NaValue && equalTo((NaValue) other);
+        }
+
+        private boolean equalTo(NaValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentMethodCustomizationRequest{" + "value: " + value + "}";
+        }
+    }
+
+    private static final class _UnknownValue implements Value {
+        private String type;
+
+        @JsonValue
+        private Object value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private _UnknownValue(@JsonProperty("value") Object value) {}
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor._visitUnknown(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof _UnknownValue && equalTo((_UnknownValue) other);
+        }
+
+        private boolean equalTo(_UnknownValue other) {
+            return type.equals(other.type) && value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.type, this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentMethodCustomizationRequest{" + "type: " + type + ", value: " + value + "}";
         }
     }
 }

@@ -310,7 +310,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
     }
 
     /**
-     * @return Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max. If the invoice already has a document, this will add a new document to the invoice.
+     * @return Base64-encoded string. Supported file types include PNG, JPG, WEBP, PDF, and all Microsoft Office formats (automatically converted to PDF). Max file size 10MB. If the invoice already has a document, this will add a new document to the invoice.
      */
     @JsonProperty("document")
     @java.lang.Override
