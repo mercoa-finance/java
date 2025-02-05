@@ -47,6 +47,8 @@ public final class OrganizationRequest {
 
     private final Optional<List<String>> customDomains;
 
+    private final Optional<Map<String, List<Permission>>> rolePermissionConfig;
+
     private final Map<String, Object> additionalProperties;
 
     private OrganizationRequest(
@@ -63,6 +65,7 @@ public final class OrganizationRequest {
             Optional<List<MetadataSchema>> metadataSchema,
             Optional<NotificationEmailTemplateRequest> notificationEmailTemplate,
             Optional<List<String>> customDomains,
+            Optional<Map<String, List<Permission>>> rolePermissionConfig,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.logo = logo;
@@ -77,6 +80,7 @@ public final class OrganizationRequest {
         this.metadataSchema = metadataSchema;
         this.notificationEmailTemplate = notificationEmailTemplate;
         this.customDomains = customDomains;
+        this.rolePermissionConfig = rolePermissionConfig;
         this.additionalProperties = additionalProperties;
     }
 
@@ -145,6 +149,11 @@ public final class OrganizationRequest {
         return customDomains;
     }
 
+    @JsonProperty("rolePermissionConfig")
+    public Optional<Map<String, List<Permission>>> getRolePermissionConfig() {
+        return rolePermissionConfig;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -169,7 +178,8 @@ public final class OrganizationRequest {
                 && payorOnboardingOptions.equals(other.payorOnboardingOptions)
                 && metadataSchema.equals(other.metadataSchema)
                 && notificationEmailTemplate.equals(other.notificationEmailTemplate)
-                && customDomains.equals(other.customDomains);
+                && customDomains.equals(other.customDomains)
+                && rolePermissionConfig.equals(other.rolePermissionConfig);
     }
 
     @java.lang.Override
@@ -187,7 +197,8 @@ public final class OrganizationRequest {
                 this.payorOnboardingOptions,
                 this.metadataSchema,
                 this.notificationEmailTemplate,
-                this.customDomains);
+                this.customDomains,
+                this.rolePermissionConfig);
     }
 
     @java.lang.Override
@@ -227,6 +238,8 @@ public final class OrganizationRequest {
 
         private Optional<List<String>> customDomains = Optional.empty();
 
+        private Optional<Map<String, List<Permission>>> rolePermissionConfig = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -246,6 +259,7 @@ public final class OrganizationRequest {
             metadataSchema(other.getMetadataSchema());
             notificationEmailTemplate(other.getNotificationEmailTemplate());
             customDomains(other.getCustomDomains());
+            rolePermissionConfig(other.getRolePermissionConfig());
             return this;
         }
 
@@ -394,6 +408,17 @@ public final class OrganizationRequest {
             return this;
         }
 
+        @JsonSetter(value = "rolePermissionConfig", nulls = Nulls.SKIP)
+        public Builder rolePermissionConfig(Optional<Map<String, List<Permission>>> rolePermissionConfig) {
+            this.rolePermissionConfig = rolePermissionConfig;
+            return this;
+        }
+
+        public Builder rolePermissionConfig(Map<String, List<Permission>> rolePermissionConfig) {
+            this.rolePermissionConfig = Optional.ofNullable(rolePermissionConfig);
+            return this;
+        }
+
         public OrganizationRequest build() {
             return new OrganizationRequest(
                     name,
@@ -409,6 +434,7 @@ public final class OrganizationRequest {
                     metadataSchema,
                     notificationEmailTemplate,
                     customDomains,
+                    rolePermissionConfig,
                     additionalProperties);
         }
     }

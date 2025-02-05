@@ -95,6 +95,11 @@ public class OrganizationClient {
                     "notificationEmailTemplate",
                     request.getNotificationEmailTemplate().get().toString());
         }
+        if (request.getRolePermissionConfig().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "rolePermissionConfig",
+                    request.getRolePermissionConfig().get().toString());
+        }
         if (request.getCustomDomains().isPresent()) {
             httpUrl.addQueryParameter(
                     "customDomains", request.getCustomDomains().get().toString());

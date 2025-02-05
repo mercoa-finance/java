@@ -181,7 +181,7 @@ public final class GetAllInvoiceTemplatesRequest {
     }
 
     /**
-     * @return Find invoice templates by vendor name, invoice number, or amount. Partial matches are supported.
+     * @return Find invoice templates by vendor name, check number, invoice number, or amount. Partial matches are supported.
      */
     @JsonProperty("search")
     public Optional<String> getSearch() {

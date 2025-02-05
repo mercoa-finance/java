@@ -36,6 +36,8 @@ public final class GetOrganizationRequest {
 
     private final Optional<Boolean> notificationEmailTemplate;
 
+    private final Optional<Boolean> rolePermissionConfig;
+
     private final Optional<Boolean> customDomains;
 
     private final Map<String, Object> additionalProperties;
@@ -49,6 +51,7 @@ public final class GetOrganizationRequest {
             Optional<Boolean> payorOnboardingOptions,
             Optional<Boolean> metadataSchema,
             Optional<Boolean> notificationEmailTemplate,
+            Optional<Boolean> rolePermissionConfig,
             Optional<Boolean> customDomains,
             Map<String, Object> additionalProperties) {
         this.paymentMethods = paymentMethods;
@@ -59,6 +62,7 @@ public final class GetOrganizationRequest {
         this.payorOnboardingOptions = payorOnboardingOptions;
         this.metadataSchema = metadataSchema;
         this.notificationEmailTemplate = notificationEmailTemplate;
+        this.rolePermissionConfig = rolePermissionConfig;
         this.customDomains = customDomains;
         this.additionalProperties = additionalProperties;
     }
@@ -128,6 +132,14 @@ public final class GetOrganizationRequest {
     }
 
     /**
+     * @return include role permission config in response
+     */
+    @JsonProperty("rolePermissionConfig")
+    public Optional<Boolean> getRolePermissionConfig() {
+        return rolePermissionConfig;
+    }
+
+    /**
      * @return include custom domains in response
      */
     @JsonProperty("customDomains")
@@ -155,6 +167,7 @@ public final class GetOrganizationRequest {
                 && payorOnboardingOptions.equals(other.payorOnboardingOptions)
                 && metadataSchema.equals(other.metadataSchema)
                 && notificationEmailTemplate.equals(other.notificationEmailTemplate)
+                && rolePermissionConfig.equals(other.rolePermissionConfig)
                 && customDomains.equals(other.customDomains);
     }
 
@@ -169,6 +182,7 @@ public final class GetOrganizationRequest {
                 this.payorOnboardingOptions,
                 this.metadataSchema,
                 this.notificationEmailTemplate,
+                this.rolePermissionConfig,
                 this.customDomains);
     }
 
@@ -199,6 +213,8 @@ public final class GetOrganizationRequest {
 
         private Optional<Boolean> notificationEmailTemplate = Optional.empty();
 
+        private Optional<Boolean> rolePermissionConfig = Optional.empty();
+
         private Optional<Boolean> customDomains = Optional.empty();
 
         @JsonAnySetter
@@ -215,6 +231,7 @@ public final class GetOrganizationRequest {
             payorOnboardingOptions(other.getPayorOnboardingOptions());
             metadataSchema(other.getMetadataSchema());
             notificationEmailTemplate(other.getNotificationEmailTemplate());
+            rolePermissionConfig(other.getRolePermissionConfig());
             customDomains(other.getCustomDomains());
             return this;
         }
@@ -307,6 +324,17 @@ public final class GetOrganizationRequest {
             return this;
         }
 
+        @JsonSetter(value = "rolePermissionConfig", nulls = Nulls.SKIP)
+        public Builder rolePermissionConfig(Optional<Boolean> rolePermissionConfig) {
+            this.rolePermissionConfig = rolePermissionConfig;
+            return this;
+        }
+
+        public Builder rolePermissionConfig(Boolean rolePermissionConfig) {
+            this.rolePermissionConfig = Optional.ofNullable(rolePermissionConfig);
+            return this;
+        }
+
         @JsonSetter(value = "customDomains", nulls = Nulls.SKIP)
         public Builder customDomains(Optional<Boolean> customDomains) {
             this.customDomains = customDomains;
@@ -328,6 +356,7 @@ public final class GetOrganizationRequest {
                     payorOnboardingOptions,
                     metadataSchema,
                     notificationEmailTemplate,
+                    rolePermissionConfig,
                     customDomains,
                     additionalProperties);
         }

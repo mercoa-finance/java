@@ -124,6 +124,16 @@ public class InvoiceClient {
             httpUrl.addQueryParameter(
                     "paymentType", request.getPaymentType().get().toString());
         }
+        if (request.getReturnPayerMetadata().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "returnPayerMetadata",
+                    request.getReturnPayerMetadata().get().toString());
+        }
+        if (request.getReturnVendorMetadata().isPresent()) {
+            httpUrl.addQueryParameter(
+                    "returnVendorMetadata",
+                    request.getReturnVendorMetadata().get().toString());
+        }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)

@@ -136,7 +136,7 @@ public final class FindTransactionsRequest {
     }
 
     /**
-     * @return Find transactions by vendor name, invoice number, or amount. Partial matches are supported.
+     * @return Find transactions by vendor name, invoice number, check number, or amount. Partial matches are supported.
      */
     @JsonProperty("search")
     public Optional<String> getSearch() {
