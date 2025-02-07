@@ -40,6 +40,24 @@ public enum Permission {
 
     INVOICE_CREATE_SCHEDULED("invoice.create.scheduled"),
 
+    INVOICE_CREATE_ARCHIVED("invoice.create.archived"),
+
+    INVOICE_CREATE_CANCEL("invoice.create.cancel"),
+
+    INVOICE_UPDATE_ALL("invoice.update.all"),
+
+    INVOICE_UPDATE_DRAFT("invoice.update.draft"),
+
+    INVOICE_UPDATE_NEW("invoice.update.new"),
+
+    INVOICE_UPDATE_APPROVED("invoice.update.approved"),
+
+    INVOICE_UPDATE_SCHEDULED("invoice.update.scheduled"),
+
+    INVOICE_UPDATE_ARCHIVED("invoice.update.archived"),
+
+    INVOICE_UPDATE_CANCEL("invoice.update.cancel"),
+
     INVOICE_DELETE("invoice.delete"),
 
     INVOICE_COMMENT_VIEW("invoice.comment.view"),

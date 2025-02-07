@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.CounterpartyResponse;
+import com.mercoa.api.resources.entitytypes.types.EntityResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.BankAccountResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.CheckResponse;
@@ -34,6 +35,8 @@ public final class OcrResponse {
 
     private final Optional<BankAccountResponse> bankAccount;
 
+    private final Optional<EntityResponse> payer;
+
     private final Map<String, Object> additionalProperties;
 
     private OcrResponse(
@@ -42,12 +45,14 @@ public final class OcrResponse {
             CounterpartyResponse vendor,
             Optional<CheckResponse> check,
             Optional<BankAccountResponse> bankAccount,
+            Optional<EntityResponse> payer,
             Map<String, Object> additionalProperties) {
         this.jobId = jobId;
         this.invoice = invoice;
         this.vendor = vendor;
         this.check = check;
         this.bankAccount = bankAccount;
+        this.payer = payer;
         this.additionalProperties = additionalProperties;
     }
 
@@ -76,6 +81,11 @@ public final class OcrResponse {
         return bankAccount;
     }
 
+    @JsonProperty("payer")
+    public Optional<EntityResponse> getPayer() {
+        return payer;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -92,12 +102,13 @@ public final class OcrResponse {
                 && invoice.equals(other.invoice)
                 && vendor.equals(other.vendor)
                 && check.equals(other.check)
-                && bankAccount.equals(other.bankAccount);
+                && bankAccount.equals(other.bankAccount)
+                && payer.equals(other.payer);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.jobId, this.invoice, this.vendor, this.check, this.bankAccount);
+        return Objects.hash(this.jobId, this.invoice, this.vendor, this.check, this.bankAccount, this.payer);
     }
 
     @java.lang.Override
@@ -133,6 +144,10 @@ public final class OcrResponse {
         _FinalStage bankAccount(Optional<BankAccountResponse> bankAccount);
 
         _FinalStage bankAccount(BankAccountResponse bankAccount);
+
+        _FinalStage payer(Optional<EntityResponse> payer);
+
+        _FinalStage payer(EntityResponse payer);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -142,6 +157,8 @@ public final class OcrResponse {
         private InvoiceResponse invoice;
 
         private CounterpartyResponse vendor;
+
+        private Optional<EntityResponse> payer = Optional.empty();
 
         private Optional<BankAccountResponse> bankAccount = Optional.empty();
 
@@ -159,6 +176,7 @@ public final class OcrResponse {
             vendor(other.getVendor());
             check(other.getCheck());
             bankAccount(other.getBankAccount());
+            payer(other.getPayer());
             return this;
         }
 
@@ -180,6 +198,19 @@ public final class OcrResponse {
         @JsonSetter("vendor")
         public _FinalStage vendor(CounterpartyResponse vendor) {
             this.vendor = vendor;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage payer(EntityResponse payer) {
+            this.payer = Optional.ofNullable(payer);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "payer", nulls = Nulls.SKIP)
+        public _FinalStage payer(Optional<EntityResponse> payer) {
+            this.payer = payer;
             return this;
         }
 
@@ -211,7 +242,7 @@ public final class OcrResponse {
 
         @java.lang.Override
         public OcrResponse build() {
-            return new OcrResponse(jobId, invoice, vendor, check, bankAccount, additionalProperties);
+            return new OcrResponse(jobId, invoice, vendor, check, bankAccount, payer, additionalProperties);
         }
     }
 }
