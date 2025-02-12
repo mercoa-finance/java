@@ -36,7 +36,7 @@ public final class GetOrganizationRequest {
 
     private final Optional<Boolean> notificationEmailTemplate;
 
-    private final Optional<Boolean> rolePermissionConfig;
+    private final Optional<Boolean> rolePermissions;
 
     private final Optional<Boolean> customDomains;
 
@@ -51,7 +51,7 @@ public final class GetOrganizationRequest {
             Optional<Boolean> payorOnboardingOptions,
             Optional<Boolean> metadataSchema,
             Optional<Boolean> notificationEmailTemplate,
-            Optional<Boolean> rolePermissionConfig,
+            Optional<Boolean> rolePermissions,
             Optional<Boolean> customDomains,
             Map<String, Object> additionalProperties) {
         this.paymentMethods = paymentMethods;
@@ -62,7 +62,7 @@ public final class GetOrganizationRequest {
         this.payorOnboardingOptions = payorOnboardingOptions;
         this.metadataSchema = metadataSchema;
         this.notificationEmailTemplate = notificationEmailTemplate;
-        this.rolePermissionConfig = rolePermissionConfig;
+        this.rolePermissions = rolePermissions;
         this.customDomains = customDomains;
         this.additionalProperties = additionalProperties;
     }
@@ -134,9 +134,9 @@ public final class GetOrganizationRequest {
     /**
      * @return include role permission config in response
      */
-    @JsonProperty("rolePermissionConfig")
-    public Optional<Boolean> getRolePermissionConfig() {
-        return rolePermissionConfig;
+    @JsonProperty("rolePermissions")
+    public Optional<Boolean> getRolePermissions() {
+        return rolePermissions;
     }
 
     /**
@@ -167,7 +167,7 @@ public final class GetOrganizationRequest {
                 && payorOnboardingOptions.equals(other.payorOnboardingOptions)
                 && metadataSchema.equals(other.metadataSchema)
                 && notificationEmailTemplate.equals(other.notificationEmailTemplate)
-                && rolePermissionConfig.equals(other.rolePermissionConfig)
+                && rolePermissions.equals(other.rolePermissions)
                 && customDomains.equals(other.customDomains);
     }
 
@@ -182,7 +182,7 @@ public final class GetOrganizationRequest {
                 this.payorOnboardingOptions,
                 this.metadataSchema,
                 this.notificationEmailTemplate,
-                this.rolePermissionConfig,
+                this.rolePermissions,
                 this.customDomains);
     }
 
@@ -213,7 +213,7 @@ public final class GetOrganizationRequest {
 
         private Optional<Boolean> notificationEmailTemplate = Optional.empty();
 
-        private Optional<Boolean> rolePermissionConfig = Optional.empty();
+        private Optional<Boolean> rolePermissions = Optional.empty();
 
         private Optional<Boolean> customDomains = Optional.empty();
 
@@ -231,7 +231,7 @@ public final class GetOrganizationRequest {
             payorOnboardingOptions(other.getPayorOnboardingOptions());
             metadataSchema(other.getMetadataSchema());
             notificationEmailTemplate(other.getNotificationEmailTemplate());
-            rolePermissionConfig(other.getRolePermissionConfig());
+            rolePermissions(other.getRolePermissions());
             customDomains(other.getCustomDomains());
             return this;
         }
@@ -324,14 +324,14 @@ public final class GetOrganizationRequest {
             return this;
         }
 
-        @JsonSetter(value = "rolePermissionConfig", nulls = Nulls.SKIP)
-        public Builder rolePermissionConfig(Optional<Boolean> rolePermissionConfig) {
-            this.rolePermissionConfig = rolePermissionConfig;
+        @JsonSetter(value = "rolePermissions", nulls = Nulls.SKIP)
+        public Builder rolePermissions(Optional<Boolean> rolePermissions) {
+            this.rolePermissions = rolePermissions;
             return this;
         }
 
-        public Builder rolePermissionConfig(Boolean rolePermissionConfig) {
-            this.rolePermissionConfig = Optional.ofNullable(rolePermissionConfig);
+        public Builder rolePermissions(Boolean rolePermissions) {
+            this.rolePermissions = Optional.ofNullable(rolePermissions);
             return this;
         }
 
@@ -356,7 +356,7 @@ public final class GetOrganizationRequest {
                     payorOnboardingOptions,
                     metadataSchema,
                     notificationEmailTemplate,
-                    rolePermissionConfig,
+                    rolePermissions,
                     customDomains,
                     additionalProperties);
         }

@@ -47,7 +47,7 @@ public final class OrganizationRequest {
 
     private final Optional<List<String>> customDomains;
 
-    private final Optional<Map<String, List<Permission>>> rolePermissionConfig;
+    private final Optional<Map<String, List<Permission>>> rolePermissions;
 
     private final Map<String, Object> additionalProperties;
 
@@ -65,7 +65,7 @@ public final class OrganizationRequest {
             Optional<List<MetadataSchema>> metadataSchema,
             Optional<NotificationEmailTemplateRequest> notificationEmailTemplate,
             Optional<List<String>> customDomains,
-            Optional<Map<String, List<Permission>>> rolePermissionConfig,
+            Optional<Map<String, List<Permission>>> rolePermissions,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.logo = logo;
@@ -80,7 +80,7 @@ public final class OrganizationRequest {
         this.metadataSchema = metadataSchema;
         this.notificationEmailTemplate = notificationEmailTemplate;
         this.customDomains = customDomains;
-        this.rolePermissionConfig = rolePermissionConfig;
+        this.rolePermissions = rolePermissions;
         this.additionalProperties = additionalProperties;
     }
 
@@ -149,9 +149,9 @@ public final class OrganizationRequest {
         return customDomains;
     }
 
-    @JsonProperty("rolePermissionConfig")
-    public Optional<Map<String, List<Permission>>> getRolePermissionConfig() {
-        return rolePermissionConfig;
+    @JsonProperty("rolePermissions")
+    public Optional<Map<String, List<Permission>>> getRolePermissions() {
+        return rolePermissions;
     }
 
     @java.lang.Override
@@ -179,7 +179,7 @@ public final class OrganizationRequest {
                 && metadataSchema.equals(other.metadataSchema)
                 && notificationEmailTemplate.equals(other.notificationEmailTemplate)
                 && customDomains.equals(other.customDomains)
-                && rolePermissionConfig.equals(other.rolePermissionConfig);
+                && rolePermissions.equals(other.rolePermissions);
     }
 
     @java.lang.Override
@@ -198,7 +198,7 @@ public final class OrganizationRequest {
                 this.metadataSchema,
                 this.notificationEmailTemplate,
                 this.customDomains,
-                this.rolePermissionConfig);
+                this.rolePermissions);
     }
 
     @java.lang.Override
@@ -238,7 +238,7 @@ public final class OrganizationRequest {
 
         private Optional<List<String>> customDomains = Optional.empty();
 
-        private Optional<Map<String, List<Permission>>> rolePermissionConfig = Optional.empty();
+        private Optional<Map<String, List<Permission>>> rolePermissions = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -259,7 +259,7 @@ public final class OrganizationRequest {
             metadataSchema(other.getMetadataSchema());
             notificationEmailTemplate(other.getNotificationEmailTemplate());
             customDomains(other.getCustomDomains());
-            rolePermissionConfig(other.getRolePermissionConfig());
+            rolePermissions(other.getRolePermissions());
             return this;
         }
 
@@ -408,14 +408,14 @@ public final class OrganizationRequest {
             return this;
         }
 
-        @JsonSetter(value = "rolePermissionConfig", nulls = Nulls.SKIP)
-        public Builder rolePermissionConfig(Optional<Map<String, List<Permission>>> rolePermissionConfig) {
-            this.rolePermissionConfig = rolePermissionConfig;
+        @JsonSetter(value = "rolePermissions", nulls = Nulls.SKIP)
+        public Builder rolePermissions(Optional<Map<String, List<Permission>>> rolePermissions) {
+            this.rolePermissions = rolePermissions;
             return this;
         }
 
-        public Builder rolePermissionConfig(Map<String, List<Permission>> rolePermissionConfig) {
-            this.rolePermissionConfig = Optional.ofNullable(rolePermissionConfig);
+        public Builder rolePermissions(Map<String, List<Permission>> rolePermissions) {
+            this.rolePermissions = Optional.ofNullable(rolePermissions);
             return this;
         }
 
@@ -434,7 +434,7 @@ public final class OrganizationRequest {
                     metadataSchema,
                     notificationEmailTemplate,
                     customDomains,
-                    rolePermissionConfig,
+                    rolePermissions,
                     additionalProperties);
         }
     }

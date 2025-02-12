@@ -12,8 +12,10 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.resources.organizationtypes.types.Permission;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -35,6 +37,8 @@ public final class EntityCustomizationResponse {
 
     private final WorkflowCustomizationRequest workflow;
 
+    private final Map<String, List<Permission>> rolePermissions;
+
     private final Map<String, Object> additionalProperties;
 
     private EntityCustomizationResponse(
@@ -45,6 +49,7 @@ public final class EntityCustomizationResponse {
             OcrCustomizationResponse ocr,
             NotificationCustomizationRequest notifications,
             WorkflowCustomizationRequest workflow,
+            Map<String, List<Permission>> rolePermissions,
             Map<String, Object> additionalProperties) {
         this.metadata = metadata;
         this.paymentSource = paymentSource;
@@ -53,6 +58,7 @@ public final class EntityCustomizationResponse {
         this.ocr = ocr;
         this.notifications = notifications;
         this.workflow = workflow;
+        this.rolePermissions = rolePermissions;
         this.additionalProperties = additionalProperties;
     }
 
@@ -91,6 +97,11 @@ public final class EntityCustomizationResponse {
         return workflow;
     }
 
+    @JsonProperty("rolePermissions")
+    public Map<String, List<Permission>> getRolePermissions() {
+        return rolePermissions;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -109,7 +120,8 @@ public final class EntityCustomizationResponse {
                 && paymentDestination.equals(other.paymentDestination)
                 && ocr.equals(other.ocr)
                 && notifications.equals(other.notifications)
-                && workflow.equals(other.workflow);
+                && workflow.equals(other.workflow)
+                && rolePermissions.equals(other.rolePermissions);
     }
 
     @java.lang.Override
@@ -121,7 +133,8 @@ public final class EntityCustomizationResponse {
                 this.paymentDestination,
                 this.ocr,
                 this.notifications,
-                this.workflow);
+                this.workflow,
+                this.rolePermissions);
     }
 
     @java.lang.Override
@@ -173,6 +186,12 @@ public final class EntityCustomizationResponse {
         _FinalStage addPaymentDestination(PaymentMethodCustomizationRequest paymentDestination);
 
         _FinalStage addAllPaymentDestination(List<PaymentMethodCustomizationRequest> paymentDestination);
+
+        _FinalStage rolePermissions(Map<String, List<Permission>> rolePermissions);
+
+        _FinalStage putAllRolePermissions(Map<String, List<Permission>> rolePermissions);
+
+        _FinalStage rolePermissions(String key, List<Permission> value);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -182,6 +201,8 @@ public final class EntityCustomizationResponse {
         private NotificationCustomizationRequest notifications;
 
         private WorkflowCustomizationRequest workflow;
+
+        private Map<String, List<Permission>> rolePermissions = new LinkedHashMap<>();
 
         private List<PaymentMethodCustomizationRequest> paymentDestination = new ArrayList<>();
 
@@ -205,6 +226,7 @@ public final class EntityCustomizationResponse {
             ocr(other.getOcr());
             notifications(other.getNotifications());
             workflow(other.getWorkflow());
+            rolePermissions(other.getRolePermissions());
             return this;
         }
 
@@ -226,6 +248,26 @@ public final class EntityCustomizationResponse {
         @JsonSetter("workflow")
         public _FinalStage workflow(WorkflowCustomizationRequest workflow) {
             this.workflow = workflow;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage rolePermissions(String key, List<Permission> value) {
+            this.rolePermissions.put(key, value);
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage putAllRolePermissions(Map<String, List<Permission>> rolePermissions) {
+            this.rolePermissions.putAll(rolePermissions);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "rolePermissions", nulls = Nulls.SKIP)
+        public _FinalStage rolePermissions(Map<String, List<Permission>> rolePermissions) {
+            this.rolePermissions.clear();
+            this.rolePermissions.putAll(rolePermissions);
             return this;
         }
 
@@ -319,6 +361,7 @@ public final class EntityCustomizationResponse {
                     ocr,
                     notifications,
                     workflow,
+                    rolePermissions,
                     additionalProperties);
         }
     }

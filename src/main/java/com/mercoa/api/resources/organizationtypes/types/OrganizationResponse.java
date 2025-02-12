@@ -53,7 +53,7 @@ public final class OrganizationResponse {
 
     private final Optional<String> organizationEntityId;
 
-    private final Optional<Map<String, List<Permission>>> rolePermissionConfig;
+    private final Optional<Map<String, List<Permission>>> rolePermissions;
 
     private final Map<String, Object> additionalProperties;
 
@@ -74,7 +74,7 @@ public final class OrganizationResponse {
             Optional<NotificationEmailTemplateResponse> notificationEmailTemplate,
             Optional<List<String>> customDomains,
             Optional<String> organizationEntityId,
-            Optional<Map<String, List<Permission>>> rolePermissionConfig,
+            Optional<Map<String, List<Permission>>> rolePermissions,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.sandbox = sandbox;
@@ -92,7 +92,7 @@ public final class OrganizationResponse {
         this.notificationEmailTemplate = notificationEmailTemplate;
         this.customDomains = customDomains;
         this.organizationEntityId = organizationEntityId;
-        this.rolePermissionConfig = rolePermissionConfig;
+        this.rolePermissions = rolePermissions;
         this.additionalProperties = additionalProperties;
     }
 
@@ -176,9 +176,9 @@ public final class OrganizationResponse {
         return organizationEntityId;
     }
 
-    @JsonProperty("rolePermissionConfig")
-    public Optional<Map<String, List<Permission>>> getRolePermissionConfig() {
-        return rolePermissionConfig;
+    @JsonProperty("rolePermissions")
+    public Optional<Map<String, List<Permission>>> getRolePermissions() {
+        return rolePermissions;
     }
 
     @java.lang.Override
@@ -209,7 +209,7 @@ public final class OrganizationResponse {
                 && notificationEmailTemplate.equals(other.notificationEmailTemplate)
                 && customDomains.equals(other.customDomains)
                 && organizationEntityId.equals(other.organizationEntityId)
-                && rolePermissionConfig.equals(other.rolePermissionConfig);
+                && rolePermissions.equals(other.rolePermissions);
     }
 
     @java.lang.Override
@@ -231,7 +231,7 @@ public final class OrganizationResponse {
                 this.notificationEmailTemplate,
                 this.customDomains,
                 this.organizationEntityId,
-                this.rolePermissionConfig);
+                this.rolePermissions);
     }
 
     @java.lang.Override
@@ -314,9 +314,9 @@ public final class OrganizationResponse {
 
         _FinalStage organizationEntityId(String organizationEntityId);
 
-        _FinalStage rolePermissionConfig(Optional<Map<String, List<Permission>>> rolePermissionConfig);
+        _FinalStage rolePermissions(Optional<Map<String, List<Permission>>> rolePermissions);
 
-        _FinalStage rolePermissionConfig(Map<String, List<Permission>> rolePermissionConfig);
+        _FinalStage rolePermissions(Map<String, List<Permission>> rolePermissions);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -327,7 +327,7 @@ public final class OrganizationResponse {
 
         private String name;
 
-        private Optional<Map<String, List<Permission>>> rolePermissionConfig = Optional.empty();
+        private Optional<Map<String, List<Permission>>> rolePermissions = Optional.empty();
 
         private Optional<String> organizationEntityId = Optional.empty();
 
@@ -378,7 +378,7 @@ public final class OrganizationResponse {
             notificationEmailTemplate(other.getNotificationEmailTemplate());
             customDomains(other.getCustomDomains());
             organizationEntityId(other.getOrganizationEntityId());
-            rolePermissionConfig(other.getRolePermissionConfig());
+            rolePermissions(other.getRolePermissions());
             return this;
         }
 
@@ -404,15 +404,15 @@ public final class OrganizationResponse {
         }
 
         @java.lang.Override
-        public _FinalStage rolePermissionConfig(Map<String, List<Permission>> rolePermissionConfig) {
-            this.rolePermissionConfig = Optional.ofNullable(rolePermissionConfig);
+        public _FinalStage rolePermissions(Map<String, List<Permission>> rolePermissions) {
+            this.rolePermissions = Optional.ofNullable(rolePermissions);
             return this;
         }
 
         @java.lang.Override
-        @JsonSetter(value = "rolePermissionConfig", nulls = Nulls.SKIP)
-        public _FinalStage rolePermissionConfig(Optional<Map<String, List<Permission>>> rolePermissionConfig) {
-            this.rolePermissionConfig = rolePermissionConfig;
+        @JsonSetter(value = "rolePermissions", nulls = Nulls.SKIP)
+        public _FinalStage rolePermissions(Optional<Map<String, List<Permission>>> rolePermissions) {
+            this.rolePermissions = rolePermissions;
             return this;
         }
 
@@ -607,7 +607,7 @@ public final class OrganizationResponse {
                     notificationEmailTemplate,
                     customDomains,
                     organizationEntityId,
-                    rolePermissionConfig,
+                    rolePermissions,
                     additionalProperties);
         }
     }

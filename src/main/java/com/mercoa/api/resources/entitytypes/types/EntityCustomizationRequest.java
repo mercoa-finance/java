@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.resources.organizationtypes.types.Permission;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,8 @@ public final class EntityCustomizationRequest {
 
     private final Optional<WorkflowCustomizationRequest> workflow;
 
+    private final Optional<Map<String, List<Permission>>> rolePermissions;
+
     private final Map<String, Object> additionalProperties;
 
     private EntityCustomizationRequest(
@@ -45,6 +48,7 @@ public final class EntityCustomizationRequest {
             Optional<OcrCustomizationRequest> ocr,
             Optional<NotificationCustomizationRequest> notifications,
             Optional<WorkflowCustomizationRequest> workflow,
+            Optional<Map<String, List<Permission>>> rolePermissions,
             Map<String, Object> additionalProperties) {
         this.metadata = metadata;
         this.paymentSource = paymentSource;
@@ -53,6 +57,7 @@ public final class EntityCustomizationRequest {
         this.ocr = ocr;
         this.notifications = notifications;
         this.workflow = workflow;
+        this.rolePermissions = rolePermissions;
         this.additionalProperties = additionalProperties;
     }
 
@@ -91,6 +96,11 @@ public final class EntityCustomizationRequest {
         return workflow;
     }
 
+    @JsonProperty("rolePermissions")
+    public Optional<Map<String, List<Permission>>> getRolePermissions() {
+        return rolePermissions;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -109,7 +119,8 @@ public final class EntityCustomizationRequest {
                 && paymentDestination.equals(other.paymentDestination)
                 && ocr.equals(other.ocr)
                 && notifications.equals(other.notifications)
-                && workflow.equals(other.workflow);
+                && workflow.equals(other.workflow)
+                && rolePermissions.equals(other.rolePermissions);
     }
 
     @java.lang.Override
@@ -121,7 +132,8 @@ public final class EntityCustomizationRequest {
                 this.paymentDestination,
                 this.ocr,
                 this.notifications,
-                this.workflow);
+                this.workflow,
+                this.rolePermissions);
     }
 
     @java.lang.Override
@@ -149,6 +161,8 @@ public final class EntityCustomizationRequest {
 
         private Optional<WorkflowCustomizationRequest> workflow = Optional.empty();
 
+        private Optional<Map<String, List<Permission>>> rolePermissions = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -162,6 +176,7 @@ public final class EntityCustomizationRequest {
             ocr(other.getOcr());
             notifications(other.getNotifications());
             workflow(other.getWorkflow());
+            rolePermissions(other.getRolePermissions());
             return this;
         }
 
@@ -242,6 +257,17 @@ public final class EntityCustomizationRequest {
             return this;
         }
 
+        @JsonSetter(value = "rolePermissions", nulls = Nulls.SKIP)
+        public Builder rolePermissions(Optional<Map<String, List<Permission>>> rolePermissions) {
+            this.rolePermissions = rolePermissions;
+            return this;
+        }
+
+        public Builder rolePermissions(Map<String, List<Permission>> rolePermissions) {
+            this.rolePermissions = Optional.ofNullable(rolePermissions);
+            return this;
+        }
+
         public EntityCustomizationRequest build() {
             return new EntityCustomizationRequest(
                     metadata,
@@ -251,6 +277,7 @@ public final class EntityCustomizationRequest {
                     ocr,
                     notifications,
                     workflow,
+                    rolePermissions,
                     additionalProperties);
         }
     }

@@ -22,6 +22,8 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = MetadataShowConditions.Builder.class)
 public final class MetadataShowConditions {
+    private final Optional<Boolean> alwaysHide;
+
     private final Optional<Boolean> hasOptions;
 
     private final Optional<Boolean> hasDocument;
@@ -39,6 +41,7 @@ public final class MetadataShowConditions {
     private final Map<String, Object> additionalProperties;
 
     private MetadataShowConditions(
+            Optional<Boolean> alwaysHide,
             Optional<Boolean> hasOptions,
             Optional<Boolean> hasDocument,
             Optional<Boolean> hasNoLineItems,
@@ -47,6 +50,7 @@ public final class MetadataShowConditions {
             Optional<List<PaymentMethodType>> paymentDestinationTypes,
             Optional<List<String>> paymentDestinationCustomSchemaIds,
             Map<String, Object> additionalProperties) {
+        this.alwaysHide = alwaysHide;
         this.hasOptions = hasOptions;
         this.hasDocument = hasDocument;
         this.hasNoLineItems = hasNoLineItems;
@@ -55,6 +59,14 @@ public final class MetadataShowConditions {
         this.paymentDestinationTypes = paymentDestinationTypes;
         this.paymentDestinationCustomSchemaIds = paymentDestinationCustomSchemaIds;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Always hide this field. Useful for getting data from OCR and AI predictions that you don't want to show in the UI.
+     */
+    @JsonProperty("alwaysHide")
+    public Optional<Boolean> getAlwaysHide() {
+        return alwaysHide;
     }
 
     /**
@@ -125,7 +137,8 @@ public final class MetadataShowConditions {
     }
 
     private boolean equalTo(MetadataShowConditions other) {
-        return hasOptions.equals(other.hasOptions)
+        return alwaysHide.equals(other.alwaysHide)
+                && hasOptions.equals(other.hasOptions)
                 && hasDocument.equals(other.hasDocument)
                 && hasNoLineItems.equals(other.hasNoLineItems)
                 && paymentSourceTypes.equals(other.paymentSourceTypes)
@@ -137,6 +150,7 @@ public final class MetadataShowConditions {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.alwaysHide,
                 this.hasOptions,
                 this.hasDocument,
                 this.hasNoLineItems,
@@ -157,6 +171,8 @@ public final class MetadataShowConditions {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<Boolean> alwaysHide = Optional.empty();
+
         private Optional<Boolean> hasOptions = Optional.empty();
 
         private Optional<Boolean> hasDocument = Optional.empty();
@@ -177,6 +193,7 @@ public final class MetadataShowConditions {
         private Builder() {}
 
         public Builder from(MetadataShowConditions other) {
+            alwaysHide(other.getAlwaysHide());
             hasOptions(other.getHasOptions());
             hasDocument(other.getHasDocument());
             hasNoLineItems(other.getHasNoLineItems());
@@ -184,6 +201,17 @@ public final class MetadataShowConditions {
             paymentSourceCustomSchemaIds(other.getPaymentSourceCustomSchemaIds());
             paymentDestinationTypes(other.getPaymentDestinationTypes());
             paymentDestinationCustomSchemaIds(other.getPaymentDestinationCustomSchemaIds());
+            return this;
+        }
+
+        @JsonSetter(value = "alwaysHide", nulls = Nulls.SKIP)
+        public Builder alwaysHide(Optional<Boolean> alwaysHide) {
+            this.alwaysHide = alwaysHide;
+            return this;
+        }
+
+        public Builder alwaysHide(Boolean alwaysHide) {
+            this.alwaysHide = Optional.ofNullable(alwaysHide);
             return this;
         }
 
@@ -266,6 +294,7 @@ public final class MetadataShowConditions {
 
         public MetadataShowConditions build() {
             return new MetadataShowConditions(
+                    alwaysHide,
                     hasOptions,
                     hasDocument,
                     hasNoLineItems,
