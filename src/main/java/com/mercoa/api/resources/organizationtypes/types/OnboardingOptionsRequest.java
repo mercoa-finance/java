@@ -26,9 +26,9 @@ public final class OnboardingOptionsRequest {
 
     private final Optional<Boolean> paymentMethod;
 
-    private final Optional<BusinessOnboardingOptions> business;
+    private final Optional<BusinessOnboardingOptionsRequest> business;
 
-    private final Optional<IndividualOnboardingOptions> individual;
+    private final Optional<IndividualOnboardingOptionsRequest> individual;
 
     private final Map<String, Object> additionalProperties;
 
@@ -36,8 +36,8 @@ public final class OnboardingOptionsRequest {
             Optional<Boolean> enableBusiness,
             Optional<Boolean> enableIndividual,
             Optional<Boolean> paymentMethod,
-            Optional<BusinessOnboardingOptions> business,
-            Optional<IndividualOnboardingOptions> individual,
+            Optional<BusinessOnboardingOptionsRequest> business,
+            Optional<IndividualOnboardingOptionsRequest> individual,
             Map<String, Object> additionalProperties) {
         this.enableBusiness = enableBusiness;
         this.enableIndividual = enableIndividual;
@@ -63,12 +63,12 @@ public final class OnboardingOptionsRequest {
     }
 
     @JsonProperty("business")
-    public Optional<BusinessOnboardingOptions> getBusiness() {
+    public Optional<BusinessOnboardingOptionsRequest> getBusiness() {
         return business;
     }
 
     @JsonProperty("individual")
-    public Optional<IndividualOnboardingOptions> getIndividual() {
+    public Optional<IndividualOnboardingOptionsRequest> getIndividual() {
         return individual;
     }
 
@@ -114,9 +114,9 @@ public final class OnboardingOptionsRequest {
 
         private Optional<Boolean> paymentMethod = Optional.empty();
 
-        private Optional<BusinessOnboardingOptions> business = Optional.empty();
+        private Optional<BusinessOnboardingOptionsRequest> business = Optional.empty();
 
-        private Optional<IndividualOnboardingOptions> individual = Optional.empty();
+        private Optional<IndividualOnboardingOptionsRequest> individual = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -166,23 +166,23 @@ public final class OnboardingOptionsRequest {
         }
 
         @JsonSetter(value = "business", nulls = Nulls.SKIP)
-        public Builder business(Optional<BusinessOnboardingOptions> business) {
+        public Builder business(Optional<BusinessOnboardingOptionsRequest> business) {
             this.business = business;
             return this;
         }
 
-        public Builder business(BusinessOnboardingOptions business) {
+        public Builder business(BusinessOnboardingOptionsRequest business) {
             this.business = Optional.ofNullable(business);
             return this;
         }
 
         @JsonSetter(value = "individual", nulls = Nulls.SKIP)
-        public Builder individual(Optional<IndividualOnboardingOptions> individual) {
+        public Builder individual(Optional<IndividualOnboardingOptionsRequest> individual) {
             this.individual = individual;
             return this;
         }
 
-        public Builder individual(IndividualOnboardingOptions individual) {
+        public Builder individual(IndividualOnboardingOptionsRequest individual) {
             this.individual = Optional.ofNullable(individual);
             return this;
         }

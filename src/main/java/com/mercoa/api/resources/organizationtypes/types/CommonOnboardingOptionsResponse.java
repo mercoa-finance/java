@@ -16,35 +16,35 @@ import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = CommonOnboardingOptions.Builder.class)
-public final class CommonOnboardingOptions implements ICommonOnboardingOptions {
-    private final OnboardingOption termsOfService;
+@JsonDeserialize(builder = CommonOnboardingOptionsResponse.Builder.class)
+public final class CommonOnboardingOptionsResponse implements ICommonOnboardingOptionsResponse {
+    private final OnboardingOptionResponse termsOfService;
 
-    private final OnboardingOption email;
+    private final OnboardingOptionResponse email;
 
-    private final OnboardingOption name;
+    private final OnboardingOptionResponse name;
 
-    private final OnboardingOption address;
+    private final OnboardingOptionResponse address;
 
-    private final OnboardingOption phone;
+    private final OnboardingOptionResponse phone;
 
-    private final OnboardingOption tenNinetyNine;
+    private final OnboardingOptionResponse tenNinetyNine;
 
-    private final OnboardingOption w9;
+    private final OnboardingOptionResponse w9;
 
-    private final OnboardingOption bankStatement;
+    private final OnboardingOptionResponse bankStatement;
 
     private final Map<String, Object> additionalProperties;
 
-    private CommonOnboardingOptions(
-            OnboardingOption termsOfService,
-            OnboardingOption email,
-            OnboardingOption name,
-            OnboardingOption address,
-            OnboardingOption phone,
-            OnboardingOption tenNinetyNine,
-            OnboardingOption w9,
-            OnboardingOption bankStatement,
+    private CommonOnboardingOptionsResponse(
+            OnboardingOptionResponse termsOfService,
+            OnboardingOptionResponse email,
+            OnboardingOptionResponse name,
+            OnboardingOptionResponse address,
+            OnboardingOptionResponse phone,
+            OnboardingOptionResponse tenNinetyNine,
+            OnboardingOptionResponse w9,
+            OnboardingOptionResponse bankStatement,
             Map<String, Object> additionalProperties) {
         this.termsOfService = termsOfService;
         this.email = email;
@@ -59,56 +59,56 @@ public final class CommonOnboardingOptions implements ICommonOnboardingOptions {
 
     @JsonProperty("termsOfService")
     @java.lang.Override
-    public OnboardingOption getTermsOfService() {
+    public OnboardingOptionResponse getTermsOfService() {
         return termsOfService;
     }
 
     @JsonProperty("email")
     @java.lang.Override
-    public OnboardingOption getEmail() {
+    public OnboardingOptionResponse getEmail() {
         return email;
     }
 
     @JsonProperty("name")
     @java.lang.Override
-    public OnboardingOption getName() {
+    public OnboardingOptionResponse getName() {
         return name;
     }
 
     @JsonProperty("address")
     @java.lang.Override
-    public OnboardingOption getAddress() {
+    public OnboardingOptionResponse getAddress() {
         return address;
     }
 
     @JsonProperty("phone")
     @java.lang.Override
-    public OnboardingOption getPhone() {
+    public OnboardingOptionResponse getPhone() {
         return phone;
     }
 
     @JsonProperty("tenNinetyNine")
     @java.lang.Override
-    public OnboardingOption getTenNinetyNine() {
+    public OnboardingOptionResponse getTenNinetyNine() {
         return tenNinetyNine;
     }
 
     @JsonProperty("w9")
     @java.lang.Override
-    public OnboardingOption getW9() {
+    public OnboardingOptionResponse getW9() {
         return w9;
     }
 
     @JsonProperty("bankStatement")
     @java.lang.Override
-    public OnboardingOption getBankStatement() {
+    public OnboardingOptionResponse getBankStatement() {
         return bankStatement;
     }
 
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof CommonOnboardingOptions && equalTo((CommonOnboardingOptions) other);
+        return other instanceof CommonOnboardingOptionsResponse && equalTo((CommonOnboardingOptionsResponse) other);
     }
 
     @JsonAnyGetter
@@ -116,7 +116,7 @@ public final class CommonOnboardingOptions implements ICommonOnboardingOptions {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(CommonOnboardingOptions other) {
+    private boolean equalTo(CommonOnboardingOptionsResponse other) {
         return termsOfService.equals(other.termsOfService)
                 && email.equals(other.email)
                 && name.equals(other.name)
@@ -150,41 +150,41 @@ public final class CommonOnboardingOptions implements ICommonOnboardingOptions {
     }
 
     public interface TermsOfServiceStage {
-        EmailStage termsOfService(OnboardingOption termsOfService);
+        EmailStage termsOfService(OnboardingOptionResponse termsOfService);
 
-        Builder from(CommonOnboardingOptions other);
+        Builder from(CommonOnboardingOptionsResponse other);
     }
 
     public interface EmailStage {
-        NameStage email(OnboardingOption email);
+        NameStage email(OnboardingOptionResponse email);
     }
 
     public interface NameStage {
-        AddressStage name(OnboardingOption name);
+        AddressStage name(OnboardingOptionResponse name);
     }
 
     public interface AddressStage {
-        PhoneStage address(OnboardingOption address);
+        PhoneStage address(OnboardingOptionResponse address);
     }
 
     public interface PhoneStage {
-        TenNinetyNineStage phone(OnboardingOption phone);
+        TenNinetyNineStage phone(OnboardingOptionResponse phone);
     }
 
     public interface TenNinetyNineStage {
-        W9Stage tenNinetyNine(OnboardingOption tenNinetyNine);
+        W9Stage tenNinetyNine(OnboardingOptionResponse tenNinetyNine);
     }
 
     public interface W9Stage {
-        BankStatementStage w9(OnboardingOption w9);
+        BankStatementStage w9(OnboardingOptionResponse w9);
     }
 
     public interface BankStatementStage {
-        _FinalStage bankStatement(OnboardingOption bankStatement);
+        _FinalStage bankStatement(OnboardingOptionResponse bankStatement);
     }
 
     public interface _FinalStage {
-        CommonOnboardingOptions build();
+        CommonOnboardingOptionsResponse build();
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -198,21 +198,21 @@ public final class CommonOnboardingOptions implements ICommonOnboardingOptions {
                     W9Stage,
                     BankStatementStage,
                     _FinalStage {
-        private OnboardingOption termsOfService;
+        private OnboardingOptionResponse termsOfService;
 
-        private OnboardingOption email;
+        private OnboardingOptionResponse email;
 
-        private OnboardingOption name;
+        private OnboardingOptionResponse name;
 
-        private OnboardingOption address;
+        private OnboardingOptionResponse address;
 
-        private OnboardingOption phone;
+        private OnboardingOptionResponse phone;
 
-        private OnboardingOption tenNinetyNine;
+        private OnboardingOptionResponse tenNinetyNine;
 
-        private OnboardingOption w9;
+        private OnboardingOptionResponse w9;
 
-        private OnboardingOption bankStatement;
+        private OnboardingOptionResponse bankStatement;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -220,7 +220,7 @@ public final class CommonOnboardingOptions implements ICommonOnboardingOptions {
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(CommonOnboardingOptions other) {
+        public Builder from(CommonOnboardingOptionsResponse other) {
             termsOfService(other.getTermsOfService());
             email(other.getEmail());
             name(other.getName());
@@ -234,63 +234,63 @@ public final class CommonOnboardingOptions implements ICommonOnboardingOptions {
 
         @java.lang.Override
         @JsonSetter("termsOfService")
-        public EmailStage termsOfService(OnboardingOption termsOfService) {
+        public EmailStage termsOfService(OnboardingOptionResponse termsOfService) {
             this.termsOfService = termsOfService;
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("email")
-        public NameStage email(OnboardingOption email) {
+        public NameStage email(OnboardingOptionResponse email) {
             this.email = email;
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("name")
-        public AddressStage name(OnboardingOption name) {
+        public AddressStage name(OnboardingOptionResponse name) {
             this.name = name;
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("address")
-        public PhoneStage address(OnboardingOption address) {
+        public PhoneStage address(OnboardingOptionResponse address) {
             this.address = address;
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("phone")
-        public TenNinetyNineStage phone(OnboardingOption phone) {
+        public TenNinetyNineStage phone(OnboardingOptionResponse phone) {
             this.phone = phone;
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("tenNinetyNine")
-        public W9Stage tenNinetyNine(OnboardingOption tenNinetyNine) {
+        public W9Stage tenNinetyNine(OnboardingOptionResponse tenNinetyNine) {
             this.tenNinetyNine = tenNinetyNine;
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("w9")
-        public BankStatementStage w9(OnboardingOption w9) {
+        public BankStatementStage w9(OnboardingOptionResponse w9) {
             this.w9 = w9;
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("bankStatement")
-        public _FinalStage bankStatement(OnboardingOption bankStatement) {
+        public _FinalStage bankStatement(OnboardingOptionResponse bankStatement) {
             this.bankStatement = bankStatement;
             return this;
         }
 
         @java.lang.Override
-        public CommonOnboardingOptions build() {
-            return new CommonOnboardingOptions(
+        public CommonOnboardingOptionsResponse build() {
+            return new CommonOnboardingOptionsResponse(
                     termsOfService,
                     email,
                     name,

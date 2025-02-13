@@ -24,9 +24,9 @@ public final class OnboardingOptionsResponse {
 
     private final boolean paymentMethod;
 
-    private final BusinessOnboardingOptions business;
+    private final BusinessOnboardingOptionsResponse business;
 
-    private final IndividualOnboardingOptions individual;
+    private final IndividualOnboardingOptionsResponse individual;
 
     private final Map<String, Object> additionalProperties;
 
@@ -34,8 +34,8 @@ public final class OnboardingOptionsResponse {
             boolean enableBusiness,
             boolean enableIndividual,
             boolean paymentMethod,
-            BusinessOnboardingOptions business,
-            IndividualOnboardingOptions individual,
+            BusinessOnboardingOptionsResponse business,
+            IndividualOnboardingOptionsResponse individual,
             Map<String, Object> additionalProperties) {
         this.enableBusiness = enableBusiness;
         this.enableIndividual = enableIndividual;
@@ -61,12 +61,12 @@ public final class OnboardingOptionsResponse {
     }
 
     @JsonProperty("business")
-    public BusinessOnboardingOptions getBusiness() {
+    public BusinessOnboardingOptionsResponse getBusiness() {
         return business;
     }
 
     @JsonProperty("individual")
-    public IndividualOnboardingOptions getIndividual() {
+    public IndividualOnboardingOptionsResponse getIndividual() {
         return individual;
     }
 
@@ -119,11 +119,11 @@ public final class OnboardingOptionsResponse {
     }
 
     public interface BusinessStage {
-        IndividualStage business(BusinessOnboardingOptions business);
+        IndividualStage business(BusinessOnboardingOptionsResponse business);
     }
 
     public interface IndividualStage {
-        _FinalStage individual(IndividualOnboardingOptions individual);
+        _FinalStage individual(IndividualOnboardingOptionsResponse individual);
     }
 
     public interface _FinalStage {
@@ -144,9 +144,9 @@ public final class OnboardingOptionsResponse {
 
         private boolean paymentMethod;
 
-        private BusinessOnboardingOptions business;
+        private BusinessOnboardingOptionsResponse business;
 
-        private IndividualOnboardingOptions individual;
+        private IndividualOnboardingOptionsResponse individual;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -186,14 +186,14 @@ public final class OnboardingOptionsResponse {
 
         @java.lang.Override
         @JsonSetter("business")
-        public IndividualStage business(BusinessOnboardingOptions business) {
+        public IndividualStage business(BusinessOnboardingOptionsResponse business) {
             this.business = business;
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("individual")
-        public _FinalStage individual(IndividualOnboardingOptions individual) {
+        public _FinalStage individual(IndividualOnboardingOptionsResponse individual) {
             this.individual = individual;
             return this;
         }

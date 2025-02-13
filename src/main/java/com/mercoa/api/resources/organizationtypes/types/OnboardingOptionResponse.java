@@ -16,8 +16,8 @@ import java.util.Map;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = OnboardingOption.Builder.class)
-public final class OnboardingOption {
+@JsonDeserialize(builder = OnboardingOptionResponse.Builder.class)
+public final class OnboardingOptionResponse {
     private final boolean show;
 
     private final boolean edit;
@@ -26,7 +26,8 @@ public final class OnboardingOption {
 
     private final Map<String, Object> additionalProperties;
 
-    private OnboardingOption(boolean show, boolean edit, boolean required, Map<String, Object> additionalProperties) {
+    private OnboardingOptionResponse(
+            boolean show, boolean edit, boolean required, Map<String, Object> additionalProperties) {
         this.show = show;
         this.edit = edit;
         this.required = required;
@@ -51,7 +52,7 @@ public final class OnboardingOption {
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof OnboardingOption && equalTo((OnboardingOption) other);
+        return other instanceof OnboardingOptionResponse && equalTo((OnboardingOptionResponse) other);
     }
 
     @JsonAnyGetter
@@ -59,7 +60,7 @@ public final class OnboardingOption {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(OnboardingOption other) {
+    private boolean equalTo(OnboardingOptionResponse other) {
         return show == other.show && edit == other.edit && required == other.required;
     }
 
@@ -80,7 +81,7 @@ public final class OnboardingOption {
     public interface ShowStage {
         EditStage show(boolean show);
 
-        Builder from(OnboardingOption other);
+        Builder from(OnboardingOptionResponse other);
     }
 
     public interface EditStage {
@@ -92,7 +93,7 @@ public final class OnboardingOption {
     }
 
     public interface _FinalStage {
-        OnboardingOption build();
+        OnboardingOptionResponse build();
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -109,7 +110,7 @@ public final class OnboardingOption {
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(OnboardingOption other) {
+        public Builder from(OnboardingOptionResponse other) {
             show(other.getShow());
             edit(other.getEdit());
             required(other.getRequired());
@@ -138,8 +139,8 @@ public final class OnboardingOption {
         }
 
         @java.lang.Override
-        public OnboardingOption build() {
-            return new OnboardingOption(show, edit, required, additionalProperties);
+        public OnboardingOptionResponse build() {
+            return new OnboardingOptionResponse(show, edit, required, additionalProperties);
         }
     }
 }
