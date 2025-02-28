@@ -3,6 +3,6 @@
  */
 package com.mercoa.api.resources.transaction.types;
 
-public interface ITransactionResponseBankToMailedCheckBase extends ITransactionResponseBase {
+public interface ITransactionResponseMailedCheckBase extends ITransactionResponseBase {
     int getCheckNumber();
 }

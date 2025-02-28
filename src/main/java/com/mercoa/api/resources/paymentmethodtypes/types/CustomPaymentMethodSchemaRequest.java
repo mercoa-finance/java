@@ -38,8 +38,6 @@ public final class CustomPaymentMethodSchemaRequest {
 
     private final Optional<Double> minAmount;
 
-    private final Optional<CustomPaymentMethodSchemaFee> fees;
-
     private final Map<String, Object> additionalProperties;
 
     private CustomPaymentMethodSchemaRequest(
@@ -51,7 +49,6 @@ public final class CustomPaymentMethodSchemaRequest {
             Optional<Integer> estimatedProcessingTime,
             Optional<Double> maxAmount,
             Optional<Double> minAmount,
-            Optional<CustomPaymentMethodSchemaFee> fees,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.isSource = isSource;
@@ -61,7 +58,6 @@ public final class CustomPaymentMethodSchemaRequest {
         this.estimatedProcessingTime = estimatedProcessingTime;
         this.maxAmount = maxAmount;
         this.minAmount = minAmount;
-        this.fees = fees;
         this.additionalProperties = additionalProperties;
     }
 
@@ -123,11 +119,6 @@ public final class CustomPaymentMethodSchemaRequest {
         return minAmount;
     }
 
-    @JsonProperty("fees")
-    public Optional<CustomPaymentMethodSchemaFee> getFees() {
-        return fees;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -147,8 +138,7 @@ public final class CustomPaymentMethodSchemaRequest {
                 && fields.equals(other.fields)
                 && estimatedProcessingTime.equals(other.estimatedProcessingTime)
                 && maxAmount.equals(other.maxAmount)
-                && minAmount.equals(other.minAmount)
-                && fees.equals(other.fees);
+                && minAmount.equals(other.minAmount);
     }
 
     @java.lang.Override
@@ -161,8 +151,7 @@ public final class CustomPaymentMethodSchemaRequest {
                 this.fields,
                 this.estimatedProcessingTime,
                 this.maxAmount,
-                this.minAmount,
-                this.fees);
+                this.minAmount);
     }
 
     @java.lang.Override
@@ -212,10 +201,6 @@ public final class CustomPaymentMethodSchemaRequest {
         _FinalStage minAmount(Optional<Double> minAmount);
 
         _FinalStage minAmount(Double minAmount);
-
-        _FinalStage fees(Optional<CustomPaymentMethodSchemaFee> fees);
-
-        _FinalStage fees(CustomPaymentMethodSchemaFee fees);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -225,8 +210,6 @@ public final class CustomPaymentMethodSchemaRequest {
         private boolean isSource;
 
         private boolean isDestination;
-
-        private Optional<CustomPaymentMethodSchemaFee> fees = Optional.empty();
 
         private Optional<Double> minAmount = Optional.empty();
 
@@ -253,7 +236,6 @@ public final class CustomPaymentMethodSchemaRequest {
             estimatedProcessingTime(other.getEstimatedProcessingTime());
             maxAmount(other.getMaxAmount());
             minAmount(other.getMinAmount());
-            fees(other.getFees());
             return this;
         }
 
@@ -283,19 +265,6 @@ public final class CustomPaymentMethodSchemaRequest {
         @JsonSetter("isDestination")
         public _FinalStage isDestination(boolean isDestination) {
             this.isDestination = isDestination;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage fees(CustomPaymentMethodSchemaFee fees) {
-            this.fees = Optional.ofNullable(fees);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "fees", nulls = Nulls.SKIP)
-        public _FinalStage fees(Optional<CustomPaymentMethodSchemaFee> fees) {
-            this.fees = fees;
             return this;
         }
 
@@ -398,7 +367,6 @@ public final class CustomPaymentMethodSchemaRequest {
                     estimatedProcessingTime,
                     maxAmount,
                     minAmount,
-                    fees,
                     additionalProperties);
         }
     }

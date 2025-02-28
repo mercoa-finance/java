@@ -14,18 +14,20 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.CounterpartyResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceFeesResponse;
+import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
 import com.mercoa.api.resources.invoicetypes.types.PaymentDestinationOptions;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = TransactionResponseBankToBankBase.Builder.class)
-public final class TransactionResponseBankToBankBase
-        implements ITransactionResponseBankToBankBase, ITransactionResponseBase {
+@JsonDeserialize(builder = TransactionResponseBankToWalletWithInvoices.Builder.class)
+public final class TransactionResponseBankToWalletWithInvoices implements ITransactionResponseAchBase {
     private final Optional<TransactionFailureReason> failureReason;
 
     private final String id;
@@ -60,9 +62,11 @@ public final class TransactionResponseBankToBankBase
 
     private final OffsetDateTime updatedAt;
 
+    private final List<InvoiceResponse> invoices;
+
     private final Map<String, Object> additionalProperties;
 
-    private TransactionResponseBankToBankBase(
+    private TransactionResponseBankToWalletWithInvoices(
             Optional<TransactionFailureReason> failureReason,
             String id,
             TransactionStatus status,
@@ -80,6 +84,7 @@ public final class TransactionResponseBankToBankBase
             Optional<InvoiceFeesResponse> fees,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
+            List<InvoiceResponse> invoices,
             Map<String, Object> additionalProperties) {
         this.failureReason = failureReason;
         this.id = id;
@@ -98,6 +103,7 @@ public final class TransactionResponseBankToBankBase
         this.fees = fees;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.invoices = invoices;
         this.additionalProperties = additionalProperties;
     }
 
@@ -206,10 +212,19 @@ public final class TransactionResponseBankToBankBase
         return updatedAt;
     }
 
+    /**
+     * @return Invoices associated with this transaction
+     */
+    @JsonProperty("invoices")
+    public List<InvoiceResponse> getInvoices() {
+        return invoices;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof TransactionResponseBankToBankBase && equalTo((TransactionResponseBankToBankBase) other);
+        return other instanceof TransactionResponseBankToWalletWithInvoices
+                && equalTo((TransactionResponseBankToWalletWithInvoices) other);
     }
 
     @JsonAnyGetter
@@ -217,7 +232,7 @@ public final class TransactionResponseBankToBankBase
         return this.additionalProperties;
     }
 
-    private boolean equalTo(TransactionResponseBankToBankBase other) {
+    private boolean equalTo(TransactionResponseBankToWalletWithInvoices other) {
         return failureReason.equals(other.failureReason)
                 && id.equals(other.id)
                 && status.equals(other.status)
@@ -234,7 +249,8 @@ public final class TransactionResponseBankToBankBase
                 && paymentDestinationOptions.equals(other.paymentDestinationOptions)
                 && fees.equals(other.fees)
                 && createdAt.equals(other.createdAt)
-                && updatedAt.equals(other.updatedAt);
+                && updatedAt.equals(other.updatedAt)
+                && invoices.equals(other.invoices);
     }
 
     @java.lang.Override
@@ -256,7 +272,8 @@ public final class TransactionResponseBankToBankBase
                 this.paymentDestinationOptions,
                 this.fees,
                 this.createdAt,
-                this.updatedAt);
+                this.updatedAt,
+                this.invoices);
     }
 
     @java.lang.Override
@@ -271,7 +288,7 @@ public final class TransactionResponseBankToBankBase
     public interface IdStage {
         StatusStage id(String id);
 
-        Builder from(TransactionResponseBankToBankBase other);
+        Builder from(TransactionResponseBankToWalletWithInvoices other);
     }
 
     public interface StatusStage {
@@ -327,7 +344,7 @@ public final class TransactionResponseBankToBankBase
     }
 
     public interface _FinalStage {
-        TransactionResponseBankToBankBase build();
+        TransactionResponseBankToWalletWithInvoices build();
 
         _FinalStage failureReason(Optional<TransactionFailureReason> failureReason);
 
@@ -340,6 +357,12 @@ public final class TransactionResponseBankToBankBase
         _FinalStage fees(Optional<InvoiceFeesResponse> fees);
 
         _FinalStage fees(InvoiceFeesResponse fees);
+
+        _FinalStage invoices(List<InvoiceResponse> invoices);
+
+        _FinalStage addInvoices(InvoiceResponse invoices);
+
+        _FinalStage addAllInvoices(List<InvoiceResponse> invoices);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -387,6 +410,8 @@ public final class TransactionResponseBankToBankBase
 
         private OffsetDateTime updatedAt;
 
+        private List<InvoiceResponse> invoices = new ArrayList<>();
+
         private Optional<InvoiceFeesResponse> fees = Optional.empty();
 
         private Optional<PaymentDestinationOptions> paymentDestinationOptions = Optional.empty();
@@ -399,7 +424,7 @@ public final class TransactionResponseBankToBankBase
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(TransactionResponseBankToBankBase other) {
+        public Builder from(TransactionResponseBankToWalletWithInvoices other) {
             failureReason(other.getFailureReason());
             id(other.getId());
             status(other.getStatus());
@@ -417,6 +442,7 @@ public final class TransactionResponseBankToBankBase
             fees(other.getFees());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
+            invoices(other.getInvoices());
             return this;
         }
 
@@ -518,6 +544,34 @@ public final class TransactionResponseBankToBankBase
             return this;
         }
 
+        /**
+         * <p>Invoices associated with this transaction</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addAllInvoices(List<InvoiceResponse> invoices) {
+            this.invoices.addAll(invoices);
+            return this;
+        }
+
+        /**
+         * <p>Invoices associated with this transaction</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addInvoices(InvoiceResponse invoices) {
+            this.invoices.add(invoices);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "invoices", nulls = Nulls.SKIP)
+        public _FinalStage invoices(List<InvoiceResponse> invoices) {
+            this.invoices.clear();
+            this.invoices.addAll(invoices);
+            return this;
+        }
+
         @java.lang.Override
         public _FinalStage fees(InvoiceFeesResponse fees) {
             this.fees = Optional.ofNullable(fees);
@@ -562,8 +616,8 @@ public final class TransactionResponseBankToBankBase
         }
 
         @java.lang.Override
-        public TransactionResponseBankToBankBase build() {
-            return new TransactionResponseBankToBankBase(
+        public TransactionResponseBankToWalletWithInvoices build() {
+            return new TransactionResponseBankToWalletWithInvoices(
                     failureReason,
                     id,
                     status,
@@ -581,6 +635,7 @@ public final class TransactionResponseBankToBankBase
                     fees,
                     createdAt,
                     updatedAt,
+                    invoices,
                     additionalProperties);
         }
     }

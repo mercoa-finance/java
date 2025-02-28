@@ -23,10 +23,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = TransactionResponseBankToMailedCheckBase.Builder.class)
-public final class TransactionResponseBankToMailedCheckBase
-        implements ITransactionResponseBankToMailedCheckBase, ITransactionResponseBase {
-    private final int checkNumber;
+@JsonDeserialize(builder = TransactionResponseAchBase.Builder.class)
+public final class TransactionResponseAchBase implements ITransactionResponseAchBase, ITransactionResponseBase {
+    private final Optional<TransactionFailureReason> failureReason;
 
     private final String id;
 
@@ -62,8 +61,8 @@ public final class TransactionResponseBankToMailedCheckBase
 
     private final Map<String, Object> additionalProperties;
 
-    private TransactionResponseBankToMailedCheckBase(
-            int checkNumber,
+    private TransactionResponseAchBase(
+            Optional<TransactionFailureReason> failureReason,
             String id,
             TransactionStatus status,
             int amount,
@@ -81,7 +80,7 @@ public final class TransactionResponseBankToMailedCheckBase
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Map<String, Object> additionalProperties) {
-        this.checkNumber = checkNumber;
+        this.failureReason = failureReason;
         this.id = id;
         this.status = status;
         this.amount = amount;
@@ -102,12 +101,12 @@ public final class TransactionResponseBankToMailedCheckBase
     }
 
     /**
-     * @return The number of the check
+     * @return If the invoice failed to be paid, this field will be populated with the reason of failure.
      */
-    @JsonProperty("checkNumber")
+    @JsonProperty("failureReason")
     @java.lang.Override
-    public int getCheckNumber() {
-        return checkNumber;
+    public Optional<TransactionFailureReason> getFailureReason() {
+        return failureReason;
     }
 
     @JsonProperty("id")
@@ -209,8 +208,7 @@ public final class TransactionResponseBankToMailedCheckBase
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof TransactionResponseBankToMailedCheckBase
-                && equalTo((TransactionResponseBankToMailedCheckBase) other);
+        return other instanceof TransactionResponseAchBase && equalTo((TransactionResponseAchBase) other);
     }
 
     @JsonAnyGetter
@@ -218,8 +216,8 @@ public final class TransactionResponseBankToMailedCheckBase
         return this.additionalProperties;
     }
 
-    private boolean equalTo(TransactionResponseBankToMailedCheckBase other) {
-        return checkNumber == other.checkNumber
+    private boolean equalTo(TransactionResponseAchBase other) {
+        return failureReason.equals(other.failureReason)
                 && id.equals(other.id)
                 && status.equals(other.status)
                 && amount == other.amount
@@ -241,7 +239,7 @@ public final class TransactionResponseBankToMailedCheckBase
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.checkNumber,
+                this.failureReason,
                 this.id,
                 this.status,
                 this.amount,
@@ -265,18 +263,14 @@ public final class TransactionResponseBankToMailedCheckBase
         return ObjectMappers.stringify(this);
     }
 
-    public static CheckNumberStage builder() {
+    public static IdStage builder() {
         return new Builder();
-    }
-
-    public interface CheckNumberStage {
-        IdStage checkNumber(int checkNumber);
-
-        Builder from(TransactionResponseBankToMailedCheckBase other);
     }
 
     public interface IdStage {
         StatusStage id(String id);
+
+        Builder from(TransactionResponseAchBase other);
     }
 
     public interface StatusStage {
@@ -332,7 +326,11 @@ public final class TransactionResponseBankToMailedCheckBase
     }
 
     public interface _FinalStage {
-        TransactionResponseBankToMailedCheckBase build();
+        TransactionResponseAchBase build();
+
+        _FinalStage failureReason(Optional<TransactionFailureReason> failureReason);
+
+        _FinalStage failureReason(TransactionFailureReason failureReason);
 
         _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions);
 
@@ -345,8 +343,7 @@ public final class TransactionResponseBankToMailedCheckBase
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements CheckNumberStage,
-                    IdStage,
+            implements IdStage,
                     StatusStage,
                     AmountStage,
                     CurrencyStage,
@@ -361,8 +358,6 @@ public final class TransactionResponseBankToMailedCheckBase
                     CreatedAtStage,
                     UpdatedAtStage,
                     _FinalStage {
-        private int checkNumber;
-
         private String id;
 
         private TransactionStatus status;
@@ -395,14 +390,16 @@ public final class TransactionResponseBankToMailedCheckBase
 
         private Optional<PaymentDestinationOptions> paymentDestinationOptions = Optional.empty();
 
+        private Optional<TransactionFailureReason> failureReason = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(TransactionResponseBankToMailedCheckBase other) {
-            checkNumber(other.getCheckNumber());
+        public Builder from(TransactionResponseAchBase other) {
+            failureReason(other.getFailureReason());
             id(other.getId());
             status(other.getStatus());
             amount(other.getAmount());
@@ -419,17 +416,6 @@ public final class TransactionResponseBankToMailedCheckBase
             fees(other.getFees());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
-            return this;
-        }
-
-        /**
-         * <p>The number of the check</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("checkNumber")
-        public IdStage checkNumber(int checkNumber) {
-            this.checkNumber = checkNumber;
             return this;
         }
 
@@ -557,10 +543,27 @@ public final class TransactionResponseBankToMailedCheckBase
             return this;
         }
 
+        /**
+         * <p>If the invoice failed to be paid, this field will be populated with the reason of failure.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
-        public TransactionResponseBankToMailedCheckBase build() {
-            return new TransactionResponseBankToMailedCheckBase(
-                    checkNumber,
+        public _FinalStage failureReason(TransactionFailureReason failureReason) {
+            this.failureReason = Optional.ofNullable(failureReason);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "failureReason", nulls = Nulls.SKIP)
+        public _FinalStage failureReason(Optional<TransactionFailureReason> failureReason) {
+            this.failureReason = failureReason;
+            return this;
+        }
+
+        @java.lang.Override
+        public TransactionResponseAchBase build() {
+            return new TransactionResponseAchBase(
+                    failureReason,
                     id,
                     status,
                     amount,

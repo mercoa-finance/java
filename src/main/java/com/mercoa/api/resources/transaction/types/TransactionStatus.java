@@ -18,7 +18,9 @@ public enum TransactionStatus {
 
     QUEUED("QUEUED"),
 
-    CANCELED("CANCELED");
+    CANCELED("CANCELED"),
+
+    RETURNED("RETURNED");
 
     private final String value;
 

@@ -41,8 +41,6 @@ public final class CustomPaymentMethodSchemaResponse {
 
     private final Optional<Double> minAmount;
 
-    private final Optional<CustomPaymentMethodSchemaFee> fees;
-
     private final OffsetDateTime createdAt;
 
     private final OffsetDateTime updatedAt;
@@ -59,7 +57,6 @@ public final class CustomPaymentMethodSchemaResponse {
             int estimatedProcessingTime,
             Optional<Double> maxAmount,
             Optional<Double> minAmount,
-            Optional<CustomPaymentMethodSchemaFee> fees,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Map<String, Object> additionalProperties) {
@@ -72,7 +69,6 @@ public final class CustomPaymentMethodSchemaResponse {
         this.estimatedProcessingTime = estimatedProcessingTime;
         this.maxAmount = maxAmount;
         this.minAmount = minAmount;
-        this.fees = fees;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
@@ -141,11 +137,6 @@ public final class CustomPaymentMethodSchemaResponse {
         return minAmount;
     }
 
-    @JsonProperty("fees")
-    public Optional<CustomPaymentMethodSchemaFee> getFees() {
-        return fees;
-    }
-
     @JsonProperty("createdAt")
     public OffsetDateTime getCreatedAt() {
         return createdAt;
@@ -177,7 +168,6 @@ public final class CustomPaymentMethodSchemaResponse {
                 && estimatedProcessingTime == other.estimatedProcessingTime
                 && maxAmount.equals(other.maxAmount)
                 && minAmount.equals(other.minAmount)
-                && fees.equals(other.fees)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt);
     }
@@ -194,7 +184,6 @@ public final class CustomPaymentMethodSchemaResponse {
                 this.estimatedProcessingTime,
                 this.maxAmount,
                 this.minAmount,
-                this.fees,
                 this.createdAt,
                 this.updatedAt);
     }
@@ -260,10 +249,6 @@ public final class CustomPaymentMethodSchemaResponse {
         _FinalStage minAmount(Optional<Double> minAmount);
 
         _FinalStage minAmount(Double minAmount);
-
-        _FinalStage fees(Optional<CustomPaymentMethodSchemaFee> fees);
-
-        _FinalStage fees(CustomPaymentMethodSchemaFee fees);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -290,8 +275,6 @@ public final class CustomPaymentMethodSchemaResponse {
 
         private OffsetDateTime updatedAt;
 
-        private Optional<CustomPaymentMethodSchemaFee> fees = Optional.empty();
-
         private Optional<Double> minAmount = Optional.empty();
 
         private Optional<Double> maxAmount = Optional.empty();
@@ -316,7 +299,6 @@ public final class CustomPaymentMethodSchemaResponse {
             estimatedProcessingTime(other.getEstimatedProcessingTime());
             maxAmount(other.getMaxAmount());
             minAmount(other.getMinAmount());
-            fees(other.getFees());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             return this;
@@ -380,19 +362,6 @@ public final class CustomPaymentMethodSchemaResponse {
         @JsonSetter("updatedAt")
         public _FinalStage updatedAt(OffsetDateTime updatedAt) {
             this.updatedAt = updatedAt;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage fees(CustomPaymentMethodSchemaFee fees) {
-            this.fees = Optional.ofNullable(fees);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "fees", nulls = Nulls.SKIP)
-        public _FinalStage fees(Optional<CustomPaymentMethodSchemaFee> fees) {
-            this.fees = fees;
             return this;
         }
 
@@ -490,7 +459,6 @@ public final class CustomPaymentMethodSchemaResponse {
                     estimatedProcessingTime,
                     maxAmount,
                     minAmount,
-                    fees,
                     createdAt,
                     updatedAt,
                     additionalProperties);

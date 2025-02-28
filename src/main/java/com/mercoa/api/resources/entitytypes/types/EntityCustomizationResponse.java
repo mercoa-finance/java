@@ -12,6 +12,12 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.resources.customizationtypes.types.FeeCustomizationRequest;
+import com.mercoa.api.resources.customizationtypes.types.MetadataCustomizationRequest;
+import com.mercoa.api.resources.customizationtypes.types.NotificationCustomizationRequest;
+import com.mercoa.api.resources.customizationtypes.types.OcrCustomizationResponse;
+import com.mercoa.api.resources.customizationtypes.types.PaymentMethodCustomizationRequest;
+import com.mercoa.api.resources.customizationtypes.types.WorkflowCustomizationRequest;
 import com.mercoa.api.resources.organizationtypes.types.Permission;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +43,8 @@ public final class EntityCustomizationResponse {
 
     private final WorkflowCustomizationRequest workflow;
 
+    private final FeeCustomizationRequest fees;
+
     private final Map<String, List<Permission>> rolePermissions;
 
     private final Map<String, Object> additionalProperties;
@@ -49,6 +57,7 @@ public final class EntityCustomizationResponse {
             OcrCustomizationResponse ocr,
             NotificationCustomizationRequest notifications,
             WorkflowCustomizationRequest workflow,
+            FeeCustomizationRequest fees,
             Map<String, List<Permission>> rolePermissions,
             Map<String, Object> additionalProperties) {
         this.metadata = metadata;
@@ -58,6 +67,7 @@ public final class EntityCustomizationResponse {
         this.ocr = ocr;
         this.notifications = notifications;
         this.workflow = workflow;
+        this.fees = fees;
         this.rolePermissions = rolePermissions;
         this.additionalProperties = additionalProperties;
     }
@@ -97,6 +107,11 @@ public final class EntityCustomizationResponse {
         return workflow;
     }
 
+    @JsonProperty("fees")
+    public FeeCustomizationRequest getFees() {
+        return fees;
+    }
+
     @JsonProperty("rolePermissions")
     public Map<String, List<Permission>> getRolePermissions() {
         return rolePermissions;
@@ -121,6 +136,7 @@ public final class EntityCustomizationResponse {
                 && ocr.equals(other.ocr)
                 && notifications.equals(other.notifications)
                 && workflow.equals(other.workflow)
+                && fees.equals(other.fees)
                 && rolePermissions.equals(other.rolePermissions);
     }
 
@@ -134,6 +150,7 @@ public final class EntityCustomizationResponse {
                 this.ocr,
                 this.notifications,
                 this.workflow,
+                this.fees,
                 this.rolePermissions);
     }
 
@@ -157,7 +174,11 @@ public final class EntityCustomizationResponse {
     }
 
     public interface WorkflowStage {
-        _FinalStage workflow(WorkflowCustomizationRequest workflow);
+        FeesStage workflow(WorkflowCustomizationRequest workflow);
+    }
+
+    public interface FeesStage {
+        _FinalStage fees(FeeCustomizationRequest fees);
     }
 
     public interface _FinalStage {
@@ -195,12 +216,14 @@ public final class EntityCustomizationResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements OcrStage, NotificationsStage, WorkflowStage, _FinalStage {
+    public static final class Builder implements OcrStage, NotificationsStage, WorkflowStage, FeesStage, _FinalStage {
         private OcrCustomizationResponse ocr;
 
         private NotificationCustomizationRequest notifications;
 
         private WorkflowCustomizationRequest workflow;
+
+        private FeeCustomizationRequest fees;
 
         private Map<String, List<Permission>> rolePermissions = new LinkedHashMap<>();
 
@@ -226,6 +249,7 @@ public final class EntityCustomizationResponse {
             ocr(other.getOcr());
             notifications(other.getNotifications());
             workflow(other.getWorkflow());
+            fees(other.getFees());
             rolePermissions(other.getRolePermissions());
             return this;
         }
@@ -246,8 +270,15 @@ public final class EntityCustomizationResponse {
 
         @java.lang.Override
         @JsonSetter("workflow")
-        public _FinalStage workflow(WorkflowCustomizationRequest workflow) {
+        public FeesStage workflow(WorkflowCustomizationRequest workflow) {
             this.workflow = workflow;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("fees")
+        public _FinalStage fees(FeeCustomizationRequest fees) {
+            this.fees = fees;
             return this;
         }
 
@@ -361,6 +392,7 @@ public final class EntityCustomizationResponse {
                     ocr,
                     notifications,
                     workflow,
+                    fees,
                     rolePermissions,
                     additionalProperties);
         }

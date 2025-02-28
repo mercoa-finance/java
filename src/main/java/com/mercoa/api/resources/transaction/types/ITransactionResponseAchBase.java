@@ -5,6 +5,6 @@ package com.mercoa.api.resources.transaction.types;
 
 import java.util.Optional;
 
-public interface ITransactionResponseBankToBankBase extends ITransactionResponseBase {
+public interface ITransactionResponseAchBase extends ITransactionResponseBase {
     Optional<TransactionFailureReason> getFailureReason();
 }

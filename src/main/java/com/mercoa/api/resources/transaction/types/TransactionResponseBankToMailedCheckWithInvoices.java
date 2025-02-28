@@ -27,8 +27,7 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = TransactionResponseBankToMailedCheckWithInvoices.Builder.class)
-public final class TransactionResponseBankToMailedCheckWithInvoices
-        implements ITransactionResponseBankToMailedCheckBase {
+public final class TransactionResponseBankToMailedCheckWithInvoices implements ITransactionResponseMailedCheckBase {
     private final int checkNumber;
 
     private final String id;

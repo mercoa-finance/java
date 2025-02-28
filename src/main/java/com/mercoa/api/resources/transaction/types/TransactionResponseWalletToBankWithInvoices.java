@@ -26,8 +26,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = TransactionResponseBankToBankWithInvoices.Builder.class)
-public final class TransactionResponseBankToBankWithInvoices implements ITransactionResponseAchBase {
+@JsonDeserialize(builder = TransactionResponseWalletToBankWithInvoices.Builder.class)
+public final class TransactionResponseWalletToBankWithInvoices implements ITransactionResponseAchBase {
     private final Optional<TransactionFailureReason> failureReason;
 
     private final String id;
@@ -66,7 +66,7 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
 
     private final Map<String, Object> additionalProperties;
 
-    private TransactionResponseBankToBankWithInvoices(
+    private TransactionResponseWalletToBankWithInvoices(
             Optional<TransactionFailureReason> failureReason,
             String id,
             TransactionStatus status,
@@ -223,8 +223,8 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof TransactionResponseBankToBankWithInvoices
-                && equalTo((TransactionResponseBankToBankWithInvoices) other);
+        return other instanceof TransactionResponseWalletToBankWithInvoices
+                && equalTo((TransactionResponseWalletToBankWithInvoices) other);
     }
 
     @JsonAnyGetter
@@ -232,7 +232,7 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
         return this.additionalProperties;
     }
 
-    private boolean equalTo(TransactionResponseBankToBankWithInvoices other) {
+    private boolean equalTo(TransactionResponseWalletToBankWithInvoices other) {
         return failureReason.equals(other.failureReason)
                 && id.equals(other.id)
                 && status.equals(other.status)
@@ -288,7 +288,7 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
     public interface IdStage {
         StatusStage id(String id);
 
-        Builder from(TransactionResponseBankToBankWithInvoices other);
+        Builder from(TransactionResponseWalletToBankWithInvoices other);
     }
 
     public interface StatusStage {
@@ -344,7 +344,7 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
     }
 
     public interface _FinalStage {
-        TransactionResponseBankToBankWithInvoices build();
+        TransactionResponseWalletToBankWithInvoices build();
 
         _FinalStage failureReason(Optional<TransactionFailureReason> failureReason);
 
@@ -424,7 +424,7 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(TransactionResponseBankToBankWithInvoices other) {
+        public Builder from(TransactionResponseWalletToBankWithInvoices other) {
             failureReason(other.getFailureReason());
             id(other.getId());
             status(other.getStatus());
@@ -616,8 +616,8 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
         }
 
         @java.lang.Override
-        public TransactionResponseBankToBankWithInvoices build() {
-            return new TransactionResponseBankToBankWithInvoices(
+        public TransactionResponseWalletToBankWithInvoices build() {
+            return new TransactionResponseWalletToBankWithInvoices(
                     failureReason,
                     id,
                     status,

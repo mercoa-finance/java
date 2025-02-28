@@ -26,26 +26,34 @@ public final class CalculateFeesRequest {
 
     private final Optional<CurrencyCode> currency;
 
+    private final Optional<String> creatorEntityId;
+
     private final String paymentSourceId;
 
     private final String paymentDestinationId;
 
     private final Optional<PaymentDestinationOptions> paymentDestinationOptions;
 
+    private final Optional<FeeCalculationType> type;
+
     private final Map<String, Object> additionalProperties;
 
     private CalculateFeesRequest(
             double amount,
             Optional<CurrencyCode> currency,
+            Optional<String> creatorEntityId,
             String paymentSourceId,
             String paymentDestinationId,
             Optional<PaymentDestinationOptions> paymentDestinationOptions,
+            Optional<FeeCalculationType> type,
             Map<String, Object> additionalProperties) {
         this.amount = amount;
         this.currency = currency;
+        this.creatorEntityId = creatorEntityId;
         this.paymentSourceId = paymentSourceId;
         this.paymentDestinationId = paymentDestinationId;
         this.paymentDestinationOptions = paymentDestinationOptions;
+        this.type = type;
         this.additionalProperties = additionalProperties;
     }
 
@@ -63,6 +71,14 @@ public final class CalculateFeesRequest {
     @JsonProperty("currency")
     public Optional<CurrencyCode> getCurrency() {
         return currency;
+    }
+
+    /**
+     * @return ID of the entity creating the invoice. If not provided, the fees will be calculated with the default pricing for the organization.
+     */
+    @JsonProperty("creatorEntityId")
+    public Optional<String> getCreatorEntityId() {
+        return creatorEntityId;
     }
 
     /**
@@ -89,6 +105,14 @@ public final class CalculateFeesRequest {
         return paymentDestinationOptions;
     }
 
+    /**
+     * @return Type of payment to calculate fees for. Defaults to PAYABLE (Accounts Payable).
+     */
+    @JsonProperty("type")
+    public Optional<FeeCalculationType> getType() {
+        return type;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -103,9 +127,11 @@ public final class CalculateFeesRequest {
     private boolean equalTo(CalculateFeesRequest other) {
         return amount == other.amount
                 && currency.equals(other.currency)
+                && creatorEntityId.equals(other.creatorEntityId)
                 && paymentSourceId.equals(other.paymentSourceId)
                 && paymentDestinationId.equals(other.paymentDestinationId)
-                && paymentDestinationOptions.equals(other.paymentDestinationOptions);
+                && paymentDestinationOptions.equals(other.paymentDestinationOptions)
+                && type.equals(other.type);
     }
 
     @java.lang.Override
@@ -113,9 +139,11 @@ public final class CalculateFeesRequest {
         return Objects.hash(
                 this.amount,
                 this.currency,
+                this.creatorEntityId,
                 this.paymentSourceId,
                 this.paymentDestinationId,
-                this.paymentDestinationOptions);
+                this.paymentDestinationOptions,
+                this.type);
     }
 
     @java.lang.Override
@@ -148,9 +176,17 @@ public final class CalculateFeesRequest {
 
         _FinalStage currency(CurrencyCode currency);
 
+        _FinalStage creatorEntityId(Optional<String> creatorEntityId);
+
+        _FinalStage creatorEntityId(String creatorEntityId);
+
         _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions);
 
         _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions);
+
+        _FinalStage type(Optional<FeeCalculationType> type);
+
+        _FinalStage type(FeeCalculationType type);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -162,7 +198,11 @@ public final class CalculateFeesRequest {
 
         private String paymentDestinationId;
 
+        private Optional<FeeCalculationType> type = Optional.empty();
+
         private Optional<PaymentDestinationOptions> paymentDestinationOptions = Optional.empty();
+
+        private Optional<String> creatorEntityId = Optional.empty();
 
         private Optional<CurrencyCode> currency = Optional.empty();
 
@@ -175,9 +215,11 @@ public final class CalculateFeesRequest {
         public Builder from(CalculateFeesRequest other) {
             amount(other.getAmount());
             currency(other.getCurrency());
+            creatorEntityId(other.getCreatorEntityId());
             paymentSourceId(other.getPaymentSourceId());
             paymentDestinationId(other.getPaymentDestinationId());
             paymentDestinationOptions(other.getPaymentDestinationOptions());
+            type(other.getType());
             return this;
         }
 
@@ -215,6 +257,23 @@ public final class CalculateFeesRequest {
         }
 
         /**
+         * <p>Type of payment to calculate fees for. Defaults to PAYABLE (Accounts Payable).</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage type(FeeCalculationType type) {
+            this.type = Optional.ofNullable(type);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "type", nulls = Nulls.SKIP)
+        public _FinalStage type(Optional<FeeCalculationType> type) {
+            this.type = type;
+            return this;
+        }
+
+        /**
          * <p>Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -228,6 +287,23 @@ public final class CalculateFeesRequest {
         @JsonSetter(value = "paymentDestinationOptions", nulls = Nulls.SKIP)
         public _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions) {
             this.paymentDestinationOptions = paymentDestinationOptions;
+            return this;
+        }
+
+        /**
+         * <p>ID of the entity creating the invoice. If not provided, the fees will be calculated with the default pricing for the organization.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage creatorEntityId(String creatorEntityId) {
+            this.creatorEntityId = Optional.ofNullable(creatorEntityId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "creatorEntityId", nulls = Nulls.SKIP)
+        public _FinalStage creatorEntityId(Optional<String> creatorEntityId) {
+            this.creatorEntityId = creatorEntityId;
             return this;
         }
 
@@ -253,9 +329,11 @@ public final class CalculateFeesRequest {
             return new CalculateFeesRequest(
                     amount,
                     currency,
+                    creatorEntityId,
                     paymentSourceId,
                     paymentDestinationId,
                     paymentDestinationOptions,
+                    type,
                     additionalProperties);
         }
     }

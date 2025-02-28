@@ -26,10 +26,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = TransactionResponseBankToBankWithInvoices.Builder.class)
-public final class TransactionResponseBankToBankWithInvoices implements ITransactionResponseAchBase {
-    private final Optional<TransactionFailureReason> failureReason;
-
+@JsonDeserialize(builder = TransactionResponseCardToWalletWithInvoices.Builder.class)
+public final class TransactionResponseCardToWalletWithInvoices implements ITransactionResponseBase {
     private final String id;
 
     private final TransactionStatus status;
@@ -66,8 +64,7 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
 
     private final Map<String, Object> additionalProperties;
 
-    private TransactionResponseBankToBankWithInvoices(
-            Optional<TransactionFailureReason> failureReason,
+    private TransactionResponseCardToWalletWithInvoices(
             String id,
             TransactionStatus status,
             int amount,
@@ -86,7 +83,6 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
             OffsetDateTime updatedAt,
             List<InvoiceResponse> invoices,
             Map<String, Object> additionalProperties) {
-        this.failureReason = failureReason;
         this.id = id;
         this.status = status;
         this.amount = amount;
@@ -105,15 +101,6 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
         this.updatedAt = updatedAt;
         this.invoices = invoices;
         this.additionalProperties = additionalProperties;
-    }
-
-    /**
-     * @return If the invoice failed to be paid, this field will be populated with the reason of failure.
-     */
-    @JsonProperty("failureReason")
-    @java.lang.Override
-    public Optional<TransactionFailureReason> getFailureReason() {
-        return failureReason;
     }
 
     @JsonProperty("id")
@@ -223,8 +210,8 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof TransactionResponseBankToBankWithInvoices
-                && equalTo((TransactionResponseBankToBankWithInvoices) other);
+        return other instanceof TransactionResponseCardToWalletWithInvoices
+                && equalTo((TransactionResponseCardToWalletWithInvoices) other);
     }
 
     @JsonAnyGetter
@@ -232,9 +219,8 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
         return this.additionalProperties;
     }
 
-    private boolean equalTo(TransactionResponseBankToBankWithInvoices other) {
-        return failureReason.equals(other.failureReason)
-                && id.equals(other.id)
+    private boolean equalTo(TransactionResponseCardToWalletWithInvoices other) {
+        return id.equals(other.id)
                 && status.equals(other.status)
                 && amount == other.amount
                 && currency.equals(other.currency)
@@ -256,7 +242,6 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.failureReason,
                 this.id,
                 this.status,
                 this.amount,
@@ -288,7 +273,7 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
     public interface IdStage {
         StatusStage id(String id);
 
-        Builder from(TransactionResponseBankToBankWithInvoices other);
+        Builder from(TransactionResponseCardToWalletWithInvoices other);
     }
 
     public interface StatusStage {
@@ -344,11 +329,7 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
     }
 
     public interface _FinalStage {
-        TransactionResponseBankToBankWithInvoices build();
-
-        _FinalStage failureReason(Optional<TransactionFailureReason> failureReason);
-
-        _FinalStage failureReason(TransactionFailureReason failureReason);
+        TransactionResponseCardToWalletWithInvoices build();
 
         _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions);
 
@@ -416,16 +397,13 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
 
         private Optional<PaymentDestinationOptions> paymentDestinationOptions = Optional.empty();
 
-        private Optional<TransactionFailureReason> failureReason = Optional.empty();
-
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(TransactionResponseBankToBankWithInvoices other) {
-            failureReason(other.getFailureReason());
+        public Builder from(TransactionResponseCardToWalletWithInvoices other) {
             id(other.getId());
             status(other.getStatus());
             amount(other.getAmount());
@@ -598,27 +576,9 @@ public final class TransactionResponseBankToBankWithInvoices implements ITransac
             return this;
         }
 
-        /**
-         * <p>If the invoice failed to be paid, this field will be populated with the reason of failure.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
         @java.lang.Override
-        public _FinalStage failureReason(TransactionFailureReason failureReason) {
-            this.failureReason = Optional.ofNullable(failureReason);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "failureReason", nulls = Nulls.SKIP)
-        public _FinalStage failureReason(Optional<TransactionFailureReason> failureReason) {
-            this.failureReason = failureReason;
-            return this;
-        }
-
-        @java.lang.Override
-        public TransactionResponseBankToBankWithInvoices build() {
-            return new TransactionResponseBankToBankWithInvoices(
-                    failureReason,
+        public TransactionResponseCardToWalletWithInvoices build() {
+            return new TransactionResponseCardToWalletWithInvoices(
                     id,
                     status,
                     amount,

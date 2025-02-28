@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.commons.types.Address;
 import com.mercoa.api.resources.commons.types.PhoneNumber;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -44,6 +45,8 @@ public final class BusinessProfileResponse {
 
     private final Optional<TaxId> taxId;
 
+    private final Optional<OffsetDateTime> formationDate;
+
     private final Optional<IndustryCodes> industryCodes;
 
     private final Optional<Double> averageMonthlyTransactionVolume;
@@ -66,6 +69,7 @@ public final class BusinessProfileResponse {
             Optional<Boolean> ownersProvided,
             boolean taxIdProvided,
             Optional<TaxId> taxId,
+            Optional<OffsetDateTime> formationDate,
             Optional<IndustryCodes> industryCodes,
             Optional<Double> averageMonthlyTransactionVolume,
             Optional<Double> averageTransactionSize,
@@ -82,6 +86,7 @@ public final class BusinessProfileResponse {
         this.ownersProvided = ownersProvided;
         this.taxIdProvided = taxIdProvided;
         this.taxId = taxId;
+        this.formationDate = formationDate;
         this.industryCodes = industryCodes;
         this.averageMonthlyTransactionVolume = averageMonthlyTransactionVolume;
         this.averageTransactionSize = averageTransactionSize;
@@ -147,6 +152,11 @@ public final class BusinessProfileResponse {
         return taxId;
     }
 
+    @JsonProperty("formationDate")
+    public Optional<OffsetDateTime> getFormationDate() {
+        return formationDate;
+    }
+
     @JsonProperty("industryCodes")
     public Optional<IndustryCodes> getIndustryCodes() {
         return industryCodes;
@@ -190,6 +200,7 @@ public final class BusinessProfileResponse {
                 && ownersProvided.equals(other.ownersProvided)
                 && taxIdProvided == other.taxIdProvided
                 && taxId.equals(other.taxId)
+                && formationDate.equals(other.formationDate)
                 && industryCodes.equals(other.industryCodes)
                 && averageMonthlyTransactionVolume.equals(other.averageMonthlyTransactionVolume)
                 && averageTransactionSize.equals(other.averageTransactionSize)
@@ -210,6 +221,7 @@ public final class BusinessProfileResponse {
                 this.ownersProvided,
                 this.taxIdProvided,
                 this.taxId,
+                this.formationDate,
                 this.industryCodes,
                 this.averageMonthlyTransactionVolume,
                 this.averageTransactionSize,
@@ -274,6 +286,10 @@ public final class BusinessProfileResponse {
 
         _FinalStage taxId(TaxId taxId);
 
+        _FinalStage formationDate(Optional<OffsetDateTime> formationDate);
+
+        _FinalStage formationDate(OffsetDateTime formationDate);
+
         _FinalStage industryCodes(Optional<IndustryCodes> industryCodes);
 
         _FinalStage industryCodes(IndustryCodes industryCodes);
@@ -304,6 +320,8 @@ public final class BusinessProfileResponse {
         private Optional<Double> averageMonthlyTransactionVolume = Optional.empty();
 
         private Optional<IndustryCodes> industryCodes = Optional.empty();
+
+        private Optional<OffsetDateTime> formationDate = Optional.empty();
 
         private Optional<TaxId> taxId = Optional.empty();
 
@@ -341,6 +359,7 @@ public final class BusinessProfileResponse {
             ownersProvided(other.getOwnersProvided());
             taxIdProvided(other.getTaxIdProvided());
             taxId(other.getTaxId());
+            formationDate(other.getFormationDate());
             industryCodes(other.getIndustryCodes());
             averageMonthlyTransactionVolume(other.getAverageMonthlyTransactionVolume());
             averageTransactionSize(other.getAverageTransactionSize());
@@ -411,6 +430,19 @@ public final class BusinessProfileResponse {
         @JsonSetter(value = "industryCodes", nulls = Nulls.SKIP)
         public _FinalStage industryCodes(Optional<IndustryCodes> industryCodes) {
             this.industryCodes = industryCodes;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage formationDate(OffsetDateTime formationDate) {
+            this.formationDate = Optional.ofNullable(formationDate);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "formationDate", nulls = Nulls.SKIP)
+        public _FinalStage formationDate(Optional<OffsetDateTime> formationDate) {
+            this.formationDate = formationDate;
             return this;
         }
 
@@ -549,6 +581,7 @@ public final class BusinessProfileResponse {
                     ownersProvided,
                     taxIdProvided,
                     taxId,
+                    formationDate,
                     industryCodes,
                     averageMonthlyTransactionVolume,
                     averageTransactionSize,
