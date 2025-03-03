@@ -71,6 +71,7 @@ public final class ActionResponse {
     }
 
     @JsonTypeName("email")
+    @JsonIgnoreProperties("type")
     private static final class EmailValue implements Value {
         @JsonUnwrapped
         private EmailCollectionActionResponse value;
@@ -108,6 +109,7 @@ public final class ActionResponse {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

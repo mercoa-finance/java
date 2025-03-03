@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ApprovalSlot.Builder.class)
@@ -176,21 +177,21 @@ public final class ApprovalSlot {
     }
 
     public interface ApprovalPolicyIdStage {
-        ApprovalSlotIdStage approvalPolicyId(String approvalPolicyId);
+        ApprovalSlotIdStage approvalPolicyId(@NotNull String approvalPolicyId);
 
         Builder from(ApprovalSlot other);
     }
 
     public interface ApprovalSlotIdStage {
-        ActionStage approvalSlotId(String approvalSlotId);
+        ActionStage approvalSlotId(@NotNull String approvalSlotId);
     }
 
     public interface ActionStage {
-        DateStage action(ApproverAction action);
+        DateStage action(@NotNull ApproverAction action);
     }
 
     public interface DateStage {
-        _FinalStage date(OffsetDateTime date);
+        _FinalStage date(@NotNull OffsetDateTime date);
     }
 
     public interface _FinalStage {
@@ -267,8 +268,8 @@ public final class ApprovalSlot {
          */
         @java.lang.Override
         @JsonSetter("approvalPolicyId")
-        public ApprovalSlotIdStage approvalPolicyId(String approvalPolicyId) {
-            this.approvalPolicyId = approvalPolicyId;
+        public ApprovalSlotIdStage approvalPolicyId(@NotNull String approvalPolicyId) {
+            this.approvalPolicyId = Objects.requireNonNull(approvalPolicyId, "approvalPolicyId must not be null");
             return this;
         }
 
@@ -278,15 +279,15 @@ public final class ApprovalSlot {
          */
         @java.lang.Override
         @JsonSetter("approvalSlotId")
-        public ActionStage approvalSlotId(String approvalSlotId) {
-            this.approvalSlotId = approvalSlotId;
+        public ActionStage approvalSlotId(@NotNull String approvalSlotId) {
+            this.approvalSlotId = Objects.requireNonNull(approvalSlotId, "approvalSlotId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("action")
-        public DateStage action(ApproverAction action) {
-            this.action = action;
+        public DateStage action(@NotNull ApproverAction action) {
+            this.action = Objects.requireNonNull(action, "action must not be null");
             return this;
         }
 
@@ -296,8 +297,8 @@ public final class ApprovalSlot {
          */
         @java.lang.Override
         @JsonSetter("date")
-        public _FinalStage date(OffsetDateTime date) {
-            this.date = date;
+        public _FinalStage date(@NotNull OffsetDateTime date) {
+            this.date = Objects.requireNonNull(date, "date must not be null");
             return this;
         }
 

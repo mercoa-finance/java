@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = TokenGenerationVendorOptions.Builder.class)
@@ -76,7 +77,7 @@ public final class TokenGenerationVendorOptions {
     }
 
     public interface NetworkStage {
-        _FinalStage network(VendorNetwork network);
+        _FinalStage network(@NotNull VendorNetwork network);
 
         Builder from(TokenGenerationVendorOptions other);
     }
@@ -109,8 +110,8 @@ public final class TokenGenerationVendorOptions {
 
         @java.lang.Override
         @JsonSetter("network")
-        public _FinalStage network(VendorNetwork network) {
-            this.network = network;
+        public _FinalStage network(@NotNull VendorNetwork network) {
+            this.network = Objects.requireNonNull(network, "network must not be null");
             return this;
         }
 

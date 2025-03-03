@@ -15,6 +15,7 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CalculatePaymentTimingResponse.Builder.class)
@@ -111,7 +112,7 @@ public final class CalculatePaymentTimingResponse {
     }
 
     public interface EstimatedProcessingDateStage {
-        BusinessDaysStage estimatedProcessingDate(OffsetDateTime estimatedProcessingDate);
+        BusinessDaysStage estimatedProcessingDate(@NotNull OffsetDateTime estimatedProcessingDate);
 
         Builder from(CalculatePaymentTimingResponse other);
     }
@@ -125,7 +126,7 @@ public final class CalculatePaymentTimingResponse {
     }
 
     public interface EstimatedSettlementDateStage {
-        _FinalStage estimatedSettlementDate(OffsetDateTime estimatedSettlementDate);
+        _FinalStage estimatedSettlementDate(@NotNull OffsetDateTime estimatedSettlementDate);
     }
 
     public interface _FinalStage {
@@ -167,8 +168,9 @@ public final class CalculatePaymentTimingResponse {
          */
         @java.lang.Override
         @JsonSetter("estimatedProcessingDate")
-        public BusinessDaysStage estimatedProcessingDate(OffsetDateTime estimatedProcessingDate) {
-            this.estimatedProcessingDate = estimatedProcessingDate;
+        public BusinessDaysStage estimatedProcessingDate(@NotNull OffsetDateTime estimatedProcessingDate) {
+            this.estimatedProcessingDate =
+                    Objects.requireNonNull(estimatedProcessingDate, "estimatedProcessingDate must not be null");
             return this;
         }
 
@@ -200,8 +202,9 @@ public final class CalculatePaymentTimingResponse {
          */
         @java.lang.Override
         @JsonSetter("estimatedSettlementDate")
-        public _FinalStage estimatedSettlementDate(OffsetDateTime estimatedSettlementDate) {
-            this.estimatedSettlementDate = estimatedSettlementDate;
+        public _FinalStage estimatedSettlementDate(@NotNull OffsetDateTime estimatedSettlementDate) {
+            this.estimatedSettlementDate =
+                    Objects.requireNonNull(estimatedSettlementDate, "estimatedSettlementDate must not be null");
             return this;
         }
 

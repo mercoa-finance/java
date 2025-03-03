@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EmailTemplateRequest.Builder.class)
@@ -118,21 +119,21 @@ public final class EmailTemplateRequest {
     }
 
     public interface TemplateTypeStage {
-        NameStage templateType(EmailTemplateType templateType);
+        NameStage templateType(@NotNull EmailTemplateType templateType);
 
         Builder from(EmailTemplateRequest other);
     }
 
     public interface NameStage {
-        SubjectStage name(String name);
+        SubjectStage name(@NotNull String name);
     }
 
     public interface SubjectStage {
-        ContentStage subject(String subject);
+        ContentStage subject(@NotNull String subject);
     }
 
     public interface ContentStage {
-        _FinalStage content(String content);
+        _FinalStage content(@NotNull String content);
     }
 
     public interface _FinalStage {
@@ -172,8 +173,8 @@ public final class EmailTemplateRequest {
 
         @java.lang.Override
         @JsonSetter("templateType")
-        public NameStage templateType(EmailTemplateType templateType) {
-            this.templateType = templateType;
+        public NameStage templateType(@NotNull EmailTemplateType templateType) {
+            this.templateType = Objects.requireNonNull(templateType, "templateType must not be null");
             return this;
         }
 
@@ -183,8 +184,8 @@ public final class EmailTemplateRequest {
          */
         @java.lang.Override
         @JsonSetter("name")
-        public SubjectStage name(String name) {
-            this.name = name;
+        public SubjectStage name(@NotNull String name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 
@@ -194,8 +195,8 @@ public final class EmailTemplateRequest {
          */
         @java.lang.Override
         @JsonSetter("subject")
-        public ContentStage subject(String subject) {
-            this.subject = subject;
+        public ContentStage subject(@NotNull String subject) {
+            this.subject = Objects.requireNonNull(subject, "subject must not be null");
             return this;
         }
 
@@ -205,8 +206,8 @@ public final class EmailTemplateRequest {
          */
         @java.lang.Override
         @JsonSetter("content")
-        public _FinalStage content(String content) {
-            this.content = content;
+        public _FinalStage content(@NotNull String content) {
+            this.content = Objects.requireNonNull(content, "content must not be null");
             return this;
         }
 

@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityMetadataResponse.Builder.class)
@@ -73,7 +74,7 @@ public final class EntityMetadataResponse {
     }
 
     public interface KeyStage {
-        _FinalStage key(String key);
+        _FinalStage key(@NotNull String key);
 
         Builder from(EntityMetadataResponse other);
     }
@@ -108,8 +109,8 @@ public final class EntityMetadataResponse {
 
         @java.lang.Override
         @JsonSetter("key")
-        public _FinalStage key(String key) {
-            this.key = key;
+        public _FinalStage key(@NotNull String key) {
+            this.key = Objects.requireNonNull(key, "key must not be null");
             return this;
         }
 

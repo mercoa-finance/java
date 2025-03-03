@@ -9,6 +9,7 @@ import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.MercoaApiException;
 import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.entitygroup.invoice.InvoiceClient;
@@ -67,17 +68,19 @@ public class EntityGroupClient {
                 .newBuilder()
                 .addPathSegments("entityGroups");
         if (request.getLimit().isPresent()) {
-            httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "limit", request.getLimit().get().toString(), false);
         }
         if (request.getStartingAfter().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "startingAfter", request.getStartingAfter().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -132,6 +135,7 @@ public class EntityGroupClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -175,14 +179,18 @@ public class EntityGroupClient {
                 .addPathSegments("entityGroup")
                 .addPathSegment(entityGroupId);
         if (request.getReturnEntityMetadata().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "returnEntityMetadata", request.getReturnEntityMetadata().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "returnEntityMetadata",
+                    request.getReturnEntityMetadata().get(),
+                    false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -239,6 +247,7 @@ public class EntityGroupClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -279,6 +288,7 @@ public class EntityGroupClient {
                 .url(httpUrl)
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -338,6 +348,7 @@ public class EntityGroupClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -388,6 +399,7 @@ public class EntityGroupClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -438,6 +450,7 @@ public class EntityGroupClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {

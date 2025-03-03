@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CustomPaymentMethodSchemaField.Builder.class)
@@ -146,13 +147,13 @@ public final class CustomPaymentMethodSchemaField {
     }
 
     public interface NameStage {
-        TypeStage name(String name);
+        TypeStage name(@NotNull String name);
 
         Builder from(CustomPaymentMethodSchemaField other);
     }
 
     public interface TypeStage {
-        OptionalStage type(CustomPaymentMethodSchemaFieldType type);
+        OptionalStage type(@NotNull CustomPaymentMethodSchemaFieldType type);
     }
 
     public interface OptionalStage {
@@ -214,15 +215,15 @@ public final class CustomPaymentMethodSchemaField {
 
         @java.lang.Override
         @JsonSetter("name")
-        public TypeStage name(String name) {
-            this.name = name;
+        public TypeStage name(@NotNull String name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("type")
-        public OptionalStage type(CustomPaymentMethodSchemaFieldType type) {
-            this.type = type;
+        public OptionalStage type(@NotNull CustomPaymentMethodSchemaFieldType type) {
+            this.type = Objects.requireNonNull(type, "type must not be null");
             return this;
         }
 

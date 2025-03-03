@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BulkInvoiceCreationRequest.Builder.class)
@@ -78,7 +79,7 @@ public final class BulkInvoiceCreationRequest {
     }
 
     public interface BodyStage {
-        _FinalStage body(com.mercoa.api.resources.invoicetypes.types.BulkInvoiceCreationRequest body);
+        _FinalStage body(@NotNull com.mercoa.api.resources.invoicetypes.types.BulkInvoiceCreationRequest body);
 
         Builder from(BulkInvoiceCreationRequest other);
     }
@@ -111,8 +112,8 @@ public final class BulkInvoiceCreationRequest {
 
         @java.lang.Override
         @JsonSetter("body")
-        public _FinalStage body(com.mercoa.api.resources.invoicetypes.types.BulkInvoiceCreationRequest body) {
-            this.body = body;
+        public _FinalStage body(@NotNull com.mercoa.api.resources.invoicetypes.types.BulkInvoiceCreationRequest body) {
+            this.body = Objects.requireNonNull(body, "body must not be null");
             return this;
         }
 

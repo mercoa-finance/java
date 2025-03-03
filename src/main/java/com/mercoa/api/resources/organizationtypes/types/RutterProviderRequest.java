@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = RutterProviderRequest.Builder.class)
@@ -70,13 +71,13 @@ public final class RutterProviderRequest {
     }
 
     public interface ClientIdStage {
-        ClientSecretStage clientId(String clientId);
+        ClientSecretStage clientId(@NotNull String clientId);
 
         Builder from(RutterProviderRequest other);
     }
 
     public interface ClientSecretStage {
-        _FinalStage clientSecret(String clientSecret);
+        _FinalStage clientSecret(@NotNull String clientSecret);
     }
 
     public interface _FinalStage {
@@ -103,15 +104,15 @@ public final class RutterProviderRequest {
 
         @java.lang.Override
         @JsonSetter("clientId")
-        public ClientSecretStage clientId(String clientId) {
-            this.clientId = clientId;
+        public ClientSecretStage clientId(@NotNull String clientId) {
+            this.clientId = Objects.requireNonNull(clientId, "clientId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("clientSecret")
-        public _FinalStage clientSecret(String clientSecret) {
-            this.clientSecret = clientSecret;
+        public _FinalStage clientSecret(@NotNull String clientSecret) {
+            this.clientSecret = Objects.requireNonNull(clientSecret, "clientSecret must not be null");
             return this;
         }
 

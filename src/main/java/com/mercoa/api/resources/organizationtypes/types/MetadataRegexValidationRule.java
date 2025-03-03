@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = MetadataRegexValidationRule.Builder.class)
@@ -76,13 +77,13 @@ public final class MetadataRegexValidationRule {
     }
 
     public interface RegexStage {
-        ErrorMessageStage regex(String regex);
+        ErrorMessageStage regex(@NotNull String regex);
 
         Builder from(MetadataRegexValidationRule other);
     }
 
     public interface ErrorMessageStage {
-        _FinalStage errorMessage(String errorMessage);
+        _FinalStage errorMessage(@NotNull String errorMessage);
     }
 
     public interface _FinalStage {
@@ -113,8 +114,8 @@ public final class MetadataRegexValidationRule {
          */
         @java.lang.Override
         @JsonSetter("regex")
-        public ErrorMessageStage regex(String regex) {
-            this.regex = regex;
+        public ErrorMessageStage regex(@NotNull String regex) {
+            this.regex = Objects.requireNonNull(regex, "regex must not be null");
             return this;
         }
 
@@ -124,8 +125,8 @@ public final class MetadataRegexValidationRule {
          */
         @java.lang.Override
         @JsonSetter("errorMessage")
-        public _FinalStage errorMessage(String errorMessage) {
-            this.errorMessage = errorMessage;
+        public _FinalStage errorMessage(@NotNull String errorMessage) {
+            this.errorMessage = Objects.requireNonNull(errorMessage, "errorMessage must not be null");
             return this;
         }
 

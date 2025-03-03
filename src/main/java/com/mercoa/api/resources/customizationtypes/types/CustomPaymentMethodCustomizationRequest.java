@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CustomPaymentMethodCustomizationRequest.Builder.class)
@@ -85,7 +86,7 @@ public final class CustomPaymentMethodCustomizationRequest implements IGenericPa
     }
 
     public interface SchemaIdStage {
-        _FinalStage schemaId(String schemaId);
+        _FinalStage schemaId(@NotNull String schemaId);
     }
 
     public interface _FinalStage {
@@ -127,8 +128,8 @@ public final class CustomPaymentMethodCustomizationRequest implements IGenericPa
          */
         @java.lang.Override
         @JsonSetter("schemaId")
-        public _FinalStage schemaId(String schemaId) {
-            this.schemaId = schemaId;
+        public _FinalStage schemaId(@NotNull String schemaId) {
+            this.schemaId = Objects.requireNonNull(schemaId, "schemaId must not be null");
             return this;
         }
 

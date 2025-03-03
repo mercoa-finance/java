@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EmailTemplateResponse.Builder.class)
@@ -140,29 +141,29 @@ public final class EmailTemplateResponse {
     }
 
     public interface IdStage {
-        EntityIdStage id(String id);
+        EntityIdStage id(@NotNull String id);
 
         Builder from(EmailTemplateResponse other);
     }
 
     public interface EntityIdStage {
-        TemplateTypeStage entityId(String entityId);
+        TemplateTypeStage entityId(@NotNull String entityId);
     }
 
     public interface TemplateTypeStage {
-        NameStage templateType(EmailTemplateType templateType);
+        NameStage templateType(@NotNull EmailTemplateType templateType);
     }
 
     public interface NameStage {
-        SubjectStage name(String name);
+        SubjectStage name(@NotNull String name);
     }
 
     public interface SubjectStage {
-        ContentStage subject(String subject);
+        ContentStage subject(@NotNull String subject);
     }
 
     public interface ContentStage {
-        IsDefaultStage content(String content);
+        IsDefaultStage content(@NotNull String content);
     }
 
     public interface IsDefaultStage {
@@ -216,8 +217,8 @@ public final class EmailTemplateResponse {
 
         @java.lang.Override
         @JsonSetter("id")
-        public EntityIdStage id(String id) {
-            this.id = id;
+        public EntityIdStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
@@ -227,15 +228,15 @@ public final class EmailTemplateResponse {
          */
         @java.lang.Override
         @JsonSetter("entityId")
-        public TemplateTypeStage entityId(String entityId) {
-            this.entityId = entityId;
+        public TemplateTypeStage entityId(@NotNull String entityId) {
+            this.entityId = Objects.requireNonNull(entityId, "entityId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("templateType")
-        public NameStage templateType(EmailTemplateType templateType) {
-            this.templateType = templateType;
+        public NameStage templateType(@NotNull EmailTemplateType templateType) {
+            this.templateType = Objects.requireNonNull(templateType, "templateType must not be null");
             return this;
         }
 
@@ -245,8 +246,8 @@ public final class EmailTemplateResponse {
          */
         @java.lang.Override
         @JsonSetter("name")
-        public SubjectStage name(String name) {
-            this.name = name;
+        public SubjectStage name(@NotNull String name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 
@@ -256,8 +257,8 @@ public final class EmailTemplateResponse {
          */
         @java.lang.Override
         @JsonSetter("subject")
-        public ContentStage subject(String subject) {
-            this.subject = subject;
+        public ContentStage subject(@NotNull String subject) {
+            this.subject = Objects.requireNonNull(subject, "subject must not be null");
             return this;
         }
 
@@ -267,8 +268,8 @@ public final class EmailTemplateResponse {
          */
         @java.lang.Override
         @JsonSetter("content")
-        public IsDefaultStage content(String content) {
-            this.content = content;
+        public IsDefaultStage content(@NotNull String content) {
+            this.content = Objects.requireNonNull(content, "content must not be null");
             return this;
         }
 

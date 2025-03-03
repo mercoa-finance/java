@@ -109,6 +109,7 @@ public final class PaymentMethodFee {
     }
 
     @JsonTypeName("percentage")
+    @JsonIgnoreProperties("type")
     private static final class PercentageValue implements Value {
         @JsonUnwrapped
         private PercentageFee value;
@@ -147,6 +148,7 @@ public final class PaymentMethodFee {
     }
 
     @JsonTypeName("flat")
+    @JsonIgnoreProperties("type")
     private static final class FlatValue implements Value {
         @JsonUnwrapped
         private FlatFee value;
@@ -185,6 +187,7 @@ public final class PaymentMethodFee {
     }
 
     @JsonTypeName("default")
+    @JsonIgnoreProperties("type")
     private static final class DefaultValue implements Value {
         @JsonUnwrapped
         private DefaultFee value;
@@ -222,6 +225,7 @@ public final class PaymentMethodFee {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

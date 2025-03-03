@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = TaxId.Builder.class)
@@ -62,7 +63,7 @@ public final class TaxId {
     }
 
     public interface EinStage {
-        _FinalStage ein(Ein ein);
+        _FinalStage ein(@NotNull Ein ein);
 
         Builder from(TaxId other);
     }
@@ -88,8 +89,8 @@ public final class TaxId {
 
         @java.lang.Override
         @JsonSetter("ein")
-        public _FinalStage ein(Ein ein) {
-            this.ein = ein;
+        public _FinalStage ein(@NotNull Ein ein) {
+            this.ein = Objects.requireNonNull(ein, "ein must not be null");
             return this;
         }
 

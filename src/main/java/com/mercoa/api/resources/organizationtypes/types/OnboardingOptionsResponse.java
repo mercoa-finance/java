@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = OnboardingOptionsResponse.Builder.class)
@@ -119,11 +120,11 @@ public final class OnboardingOptionsResponse {
     }
 
     public interface BusinessStage {
-        IndividualStage business(BusinessOnboardingOptionsResponse business);
+        IndividualStage business(@NotNull BusinessOnboardingOptionsResponse business);
     }
 
     public interface IndividualStage {
-        _FinalStage individual(IndividualOnboardingOptionsResponse individual);
+        _FinalStage individual(@NotNull IndividualOnboardingOptionsResponse individual);
     }
 
     public interface _FinalStage {
@@ -186,15 +187,15 @@ public final class OnboardingOptionsResponse {
 
         @java.lang.Override
         @JsonSetter("business")
-        public IndividualStage business(BusinessOnboardingOptionsResponse business) {
-            this.business = business;
+        public IndividualStage business(@NotNull BusinessOnboardingOptionsResponse business) {
+            this.business = Objects.requireNonNull(business, "business must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("individual")
-        public _FinalStage individual(IndividualOnboardingOptionsResponse individual) {
-            this.individual = individual;
+        public _FinalStage individual(@NotNull IndividualOnboardingOptionsResponse individual) {
+            this.individual = Objects.requireNonNull(individual, "individual must not be null");
             return this;
         }
 

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = RepresentativeRequest.Builder.class)
@@ -144,25 +145,25 @@ public final class RepresentativeRequest {
     }
 
     public interface NameStage {
-        AddressStage name(FullName name);
+        AddressStage name(@NotNull FullName name);
 
         Builder from(RepresentativeRequest other);
     }
 
     public interface AddressStage {
-        BirthDateStage address(Address address);
+        BirthDateStage address(@NotNull Address address);
     }
 
     public interface BirthDateStage {
-        GovernmentIdStage birthDate(BirthDate birthDate);
+        GovernmentIdStage birthDate(@NotNull BirthDate birthDate);
     }
 
     public interface GovernmentIdStage {
-        ResponsibilitiesStage governmentId(IndividualGovernmentId governmentId);
+        ResponsibilitiesStage governmentId(@NotNull IndividualGovernmentId governmentId);
     }
 
     public interface ResponsibilitiesStage {
-        _FinalStage responsibilities(Responsibilities responsibilities);
+        _FinalStage responsibilities(@NotNull Responsibilities responsibilities);
     }
 
     public interface _FinalStage {
@@ -213,36 +214,36 @@ public final class RepresentativeRequest {
 
         @java.lang.Override
         @JsonSetter("name")
-        public AddressStage name(FullName name) {
-            this.name = name;
+        public AddressStage name(@NotNull FullName name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("address")
-        public BirthDateStage address(Address address) {
-            this.address = address;
+        public BirthDateStage address(@NotNull Address address) {
+            this.address = Objects.requireNonNull(address, "address must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("birthDate")
-        public GovernmentIdStage birthDate(BirthDate birthDate) {
-            this.birthDate = birthDate;
+        public GovernmentIdStage birthDate(@NotNull BirthDate birthDate) {
+            this.birthDate = Objects.requireNonNull(birthDate, "birthDate must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("governmentID")
-        public ResponsibilitiesStage governmentId(IndividualGovernmentId governmentId) {
-            this.governmentId = governmentId;
+        public ResponsibilitiesStage governmentId(@NotNull IndividualGovernmentId governmentId) {
+            this.governmentId = Objects.requireNonNull(governmentId, "governmentId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("responsibilities")
-        public _FinalStage responsibilities(Responsibilities responsibilities) {
-            this.responsibilities = responsibilities;
+        public _FinalStage responsibilities(@NotNull Responsibilities responsibilities) {
+            this.responsibilities = Objects.requireNonNull(responsibilities, "responsibilities must not be null");
             return this;
         }
 

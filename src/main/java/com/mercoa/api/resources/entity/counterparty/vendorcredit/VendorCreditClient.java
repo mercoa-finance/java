@@ -9,6 +9,7 @@ import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.MercoaApiException;
 import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.entity.counterparty.vendorcredit.requests.CalculateVendorCreditUsageRequest;
 import com.mercoa.api.resources.vendorcredittypes.types.CalculateVendorCreditUsageResponse;
@@ -49,6 +50,7 @@ public class VendorCreditClient {
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -89,6 +91,7 @@ public class VendorCreditClient {
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -135,6 +138,7 @@ public class VendorCreditClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -173,6 +177,7 @@ public class VendorCreditClient {
                 .url(httpUrl)
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -216,24 +221,31 @@ public class VendorCreditClient {
                 .addPathSegments("counterparty")
                 .addPathSegment(counterpartyId)
                 .addPathSegments("vendor-credits/estimate-usage");
-        httpUrl.addQueryParameter("amount", Double.toString(request.getAmount()));
+        QueryStringMapper.addQueryParameter(httpUrl, "amount", Double.toString(request.getAmount()), false);
         if (request.getCurrency().isPresent()) {
-            httpUrl.addQueryParameter("currency", request.getCurrency().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "currency", request.getCurrency().get().toString(), false);
         }
         if (request.getExcludedInvoiceIds().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "excludedInvoiceIds", request.getExcludedInvoiceIds().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "excludedInvoiceIds",
+                    request.getExcludedInvoiceIds().get().toString(),
+                    false);
         }
         if (request.getIncludedVendorCreditIds().isPresent()) {
-            httpUrl.addQueryParameter(
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
                     "includedVendorCreditIds",
-                    request.getIncludedVendorCreditIds().get().toString());
+                    request.getIncludedVendorCreditIds().get().toString(),
+                    false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {

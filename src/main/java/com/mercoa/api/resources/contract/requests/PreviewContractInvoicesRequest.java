@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PreviewContractInvoicesRequest.Builder.class)
@@ -81,7 +82,7 @@ public final class PreviewContractInvoicesRequest {
     }
 
     public interface ContractStage {
-        _FinalStage contract(ContractCreateRequest contract);
+        _FinalStage contract(@NotNull ContractCreateRequest contract);
 
         Builder from(PreviewContractInvoicesRequest other);
     }
@@ -120,8 +121,8 @@ public final class PreviewContractInvoicesRequest {
          */
         @java.lang.Override
         @JsonSetter("contract")
-        public _FinalStage contract(ContractCreateRequest contract) {
-            this.contract = contract;
+        public _FinalStage contract(@NotNull ContractCreateRequest contract) {
+            this.contract = Objects.requireNonNull(contract, "contract must not be null");
             return this;
         }
 

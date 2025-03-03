@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityWebhook.Builder.class)
@@ -89,13 +90,13 @@ public final class EntityWebhook {
     }
 
     public interface EventTypeStage {
-        EntityStage eventType(String eventType);
+        EntityStage eventType(@NotNull String eventType);
 
         Builder from(EntityWebhook other);
     }
 
     public interface EntityStage {
-        _FinalStage entity(EntityResponse entity);
+        _FinalStage entity(@NotNull EntityResponse entity);
     }
 
     public interface _FinalStage {
@@ -129,15 +130,15 @@ public final class EntityWebhook {
 
         @java.lang.Override
         @JsonSetter("eventType")
-        public EntityStage eventType(String eventType) {
-            this.eventType = eventType;
+        public EntityStage eventType(@NotNull String eventType) {
+            this.eventType = Objects.requireNonNull(eventType, "eventType must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("entity")
-        public _FinalStage entity(EntityResponse entity) {
-            this.entity = entity;
+        public _FinalStage entity(@NotNull EntityResponse entity) {
+            this.entity = Objects.requireNonNull(entity, "entity must not be null");
             return this;
         }
 

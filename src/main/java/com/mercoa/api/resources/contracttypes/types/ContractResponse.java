@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ContractResponse.Builder.class)
@@ -205,25 +206,25 @@ public final class ContractResponse {
     }
 
     public interface IdStage {
-        SummaryStage id(String id);
+        SummaryStage id(@NotNull String id);
 
         Builder from(ContractResponse other);
     }
 
     public interface SummaryStage {
-        CreatorEntityIdStage summary(String summary);
+        CreatorEntityIdStage summary(@NotNull String summary);
     }
 
     public interface CreatorEntityIdStage {
-        CreatedAtStage creatorEntityId(String creatorEntityId);
+        CreatedAtStage creatorEntityId(@NotNull String creatorEntityId);
     }
 
     public interface CreatedAtStage {
-        UpdatedAtStage createdAt(OffsetDateTime createdAt);
+        UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface UpdatedAtStage {
-        _FinalStage updatedAt(OffsetDateTime updatedAt);
+        _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
     public interface _FinalStage {
@@ -304,8 +305,8 @@ public final class ContractResponse {
 
         @java.lang.Override
         @JsonSetter("id")
-        public SummaryStage id(String id) {
-            this.id = id;
+        public SummaryStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
@@ -315,8 +316,8 @@ public final class ContractResponse {
          */
         @java.lang.Override
         @JsonSetter("summary")
-        public CreatorEntityIdStage summary(String summary) {
-            this.summary = summary;
+        public CreatorEntityIdStage summary(@NotNull String summary) {
+            this.summary = Objects.requireNonNull(summary, "summary must not be null");
             return this;
         }
 
@@ -326,22 +327,22 @@ public final class ContractResponse {
          */
         @java.lang.Override
         @JsonSetter("creatorEntityId")
-        public CreatedAtStage creatorEntityId(String creatorEntityId) {
-            this.creatorEntityId = creatorEntityId;
+        public CreatedAtStage creatorEntityId(@NotNull String creatorEntityId) {
+            this.creatorEntityId = Objects.requireNonNull(creatorEntityId, "creatorEntityId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("createdAt")
-        public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        public UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("updatedAt")
-        public _FinalStage updatedAt(OffsetDateTime updatedAt) {
-            this.updatedAt = updatedAt;
+        public _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt) {
+            this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
             return this;
         }
 

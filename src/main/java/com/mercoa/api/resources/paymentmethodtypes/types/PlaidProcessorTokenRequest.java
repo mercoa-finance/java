@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PlaidProcessorTokenRequest.Builder.class)
@@ -65,7 +66,7 @@ public final class PlaidProcessorTokenRequest {
     }
 
     public interface ProcessorTokenStage {
-        _FinalStage processorToken(String processorToken);
+        _FinalStage processorToken(@NotNull String processorToken);
 
         Builder from(PlaidProcessorTokenRequest other);
     }
@@ -95,8 +96,8 @@ public final class PlaidProcessorTokenRequest {
          */
         @java.lang.Override
         @JsonSetter("processorToken")
-        public _FinalStage processorToken(String processorToken) {
-            this.processorToken = processorToken;
+        public _FinalStage processorToken(@NotNull String processorToken) {
+            this.processorToken = Objects.requireNonNull(processorToken, "processorToken must not be null");
             return this;
         }
 

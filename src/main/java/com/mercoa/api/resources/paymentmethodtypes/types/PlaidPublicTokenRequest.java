@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PlaidPublicTokenRequest.Builder.class)
@@ -79,7 +80,7 @@ public final class PlaidPublicTokenRequest {
     }
 
     public interface PublicTokenStage {
-        _FinalStage publicToken(String publicToken);
+        _FinalStage publicToken(@NotNull String publicToken);
 
         Builder from(PlaidPublicTokenRequest other);
     }
@@ -116,8 +117,8 @@ public final class PlaidPublicTokenRequest {
          */
         @java.lang.Override
         @JsonSetter("publicToken")
-        public _FinalStage publicToken(String publicToken) {
-            this.publicToken = publicToken;
+        public _FinalStage publicToken(@NotNull String publicToken) {
+            this.publicToken = Objects.requireNonNull(publicToken, "publicToken must not be null");
             return this;
         }
 

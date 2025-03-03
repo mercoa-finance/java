@@ -7,6 +7,7 @@ import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.MercoaApiException;
 import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.emaillogtypes.types.EmailLog;
 import com.mercoa.api.resources.emaillogtypes.types.EmailLogResponse;
@@ -50,26 +51,31 @@ public class EmailLogClient {
                 .addPathSegment(entityId)
                 .addPathSegments("emailLogs");
         if (request.getStartDate().isPresent()) {
-            httpUrl.addQueryParameter("startDate", request.getStartDate().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "startDate", request.getStartDate().get().toString(), false);
         }
         if (request.getEndDate().isPresent()) {
-            httpUrl.addQueryParameter("endDate", request.getEndDate().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "endDate", request.getEndDate().get().toString(), false);
         }
         if (request.getLimit().isPresent()) {
-            httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "limit", request.getLimit().get().toString(), false);
         }
         if (request.getStartingAfter().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "startingAfter", request.getStartingAfter().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
         }
         if (request.getSearch().isPresent()) {
-            httpUrl.addQueryParameter("search", request.getSearch().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "search", request.getSearch().get(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -113,6 +119,7 @@ public class EmailLogClient {
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CustomPaymentMethodResponse.Builder.class)
@@ -272,7 +273,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
     }
 
     public interface IdStage {
-        IsDefaultSourceStage id(String id);
+        IsDefaultSourceStage id(@NotNull String id);
 
         Builder from(CustomPaymentMethodResponse other);
     }
@@ -290,19 +291,19 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
     }
 
     public interface CreatedAtStage {
-        UpdatedAtStage createdAt(OffsetDateTime createdAt);
+        UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface UpdatedAtStage {
-        SchemaIdStage updatedAt(OffsetDateTime updatedAt);
+        SchemaIdStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
     public interface SchemaIdStage {
-        SchemaStage schemaId(String schemaId);
+        SchemaStage schemaId(@NotNull String schemaId);
     }
 
     public interface SchemaStage {
-        _FinalStage schema(CustomPaymentMethodSchemaResponse schema);
+        _FinalStage schema(@NotNull CustomPaymentMethodSchemaResponse schema);
     }
 
     public interface _FinalStage {
@@ -418,8 +419,8 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
         @java.lang.Override
         @JsonSetter("id")
-        public IsDefaultSourceStage id(String id) {
-            this.id = id;
+        public IsDefaultSourceStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
@@ -458,15 +459,15 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
         @java.lang.Override
         @JsonSetter("createdAt")
-        public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        public UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("updatedAt")
-        public SchemaIdStage updatedAt(OffsetDateTime updatedAt) {
-            this.updatedAt = updatedAt;
+        public SchemaIdStage updatedAt(@NotNull OffsetDateTime updatedAt) {
+            this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
             return this;
         }
 
@@ -476,15 +477,15 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
          */
         @java.lang.Override
         @JsonSetter("schemaId")
-        public SchemaStage schemaId(String schemaId) {
-            this.schemaId = schemaId;
+        public SchemaStage schemaId(@NotNull String schemaId) {
+            this.schemaId = Objects.requireNonNull(schemaId, "schemaId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("schema")
-        public _FinalStage schema(CustomPaymentMethodSchemaResponse schema) {
-            this.schema = schema;
+        public _FinalStage schema(@NotNull CustomPaymentMethodSchemaResponse schema) {
+            this.schema = Objects.requireNonNull(schema, "schema must not be null");
             return this;
         }
 

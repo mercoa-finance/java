@@ -75,6 +75,7 @@ public final class NotificationConfigurationRequest {
     }
 
     @JsonTypeName("invoice")
+    @JsonIgnoreProperties("notificationType")
     private static final class InvoiceValue implements Value {
         @JsonUnwrapped
         private InvoiceNotificationConfigurationRequest value;
@@ -112,6 +113,7 @@ public final class NotificationConfigurationRequest {
         }
     }
 
+    @JsonIgnoreProperties("notificationType")
     private static final class _UnknownValue implements Value {
         private String type;
 

@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GenerateContractRequest.Builder.class)
@@ -76,13 +77,13 @@ public final class GenerateContractRequest {
     }
 
     public interface DocumentStage {
-        CreatorEntityIdStage document(String document);
+        CreatorEntityIdStage document(@NotNull String document);
 
         Builder from(GenerateContractRequest other);
     }
 
     public interface CreatorEntityIdStage {
-        _FinalStage creatorEntityId(String creatorEntityId);
+        _FinalStage creatorEntityId(@NotNull String creatorEntityId);
     }
 
     public interface _FinalStage {
@@ -113,8 +114,8 @@ public final class GenerateContractRequest {
          */
         @java.lang.Override
         @JsonSetter("document")
-        public CreatorEntityIdStage document(String document) {
-            this.document = document;
+        public CreatorEntityIdStage document(@NotNull String document) {
+            this.document = Objects.requireNonNull(document, "document must not be null");
             return this;
         }
 
@@ -124,8 +125,8 @@ public final class GenerateContractRequest {
          */
         @java.lang.Override
         @JsonSetter("creatorEntityId")
-        public _FinalStage creatorEntityId(String creatorEntityId) {
-            this.creatorEntityId = creatorEntityId;
+        public _FinalStage creatorEntityId(@NotNull String creatorEntityId) {
+            this.creatorEntityId = Objects.requireNonNull(creatorEntityId, "creatorEntityId must not be null");
             return this;
         }
 

@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CalculateFeesRequest.Builder.class)
@@ -162,11 +163,11 @@ public final class CalculateFeesRequest {
     }
 
     public interface PaymentSourceIdStage {
-        PaymentDestinationIdStage paymentSourceId(String paymentSourceId);
+        PaymentDestinationIdStage paymentSourceId(@NotNull String paymentSourceId);
     }
 
     public interface PaymentDestinationIdStage {
-        _FinalStage paymentDestinationId(String paymentDestinationId);
+        _FinalStage paymentDestinationId(@NotNull String paymentDestinationId);
     }
 
     public interface _FinalStage {
@@ -240,8 +241,8 @@ public final class CalculateFeesRequest {
          */
         @java.lang.Override
         @JsonSetter("paymentSourceId")
-        public PaymentDestinationIdStage paymentSourceId(String paymentSourceId) {
-            this.paymentSourceId = paymentSourceId;
+        public PaymentDestinationIdStage paymentSourceId(@NotNull String paymentSourceId) {
+            this.paymentSourceId = Objects.requireNonNull(paymentSourceId, "paymentSourceId must not be null");
             return this;
         }
 
@@ -251,8 +252,9 @@ public final class CalculateFeesRequest {
          */
         @java.lang.Override
         @JsonSetter("paymentDestinationId")
-        public _FinalStage paymentDestinationId(String paymentDestinationId) {
-            this.paymentDestinationId = paymentDestinationId;
+        public _FinalStage paymentDestinationId(@NotNull String paymentDestinationId) {
+            this.paymentDestinationId =
+                    Objects.requireNonNull(paymentDestinationId, "paymentDestinationId must not be null");
             return this;
         }
 

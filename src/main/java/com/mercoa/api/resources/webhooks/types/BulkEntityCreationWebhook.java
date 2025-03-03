@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BulkEntityCreationWebhook.Builder.class)
@@ -77,7 +78,7 @@ public final class BulkEntityCreationWebhook {
     }
 
     public interface EventTypeStage {
-        _FinalStage eventType(String eventType);
+        _FinalStage eventType(@NotNull String eventType);
 
         Builder from(BulkEntityCreationWebhook other);
     }
@@ -112,8 +113,8 @@ public final class BulkEntityCreationWebhook {
 
         @java.lang.Override
         @JsonSetter("eventType")
-        public _FinalStage eventType(String eventType) {
-            this.eventType = eventType;
+        public _FinalStage eventType(@NotNull String eventType) {
+            this.eventType = Objects.requireNonNull(eventType, "eventType must not be null");
             return this;
         }
 

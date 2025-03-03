@@ -109,6 +109,7 @@ public final class ExternalAccountingSystemCompanyResponse {
     }
 
     @JsonTypeName("codat")
+    @JsonIgnoreProperties("type")
     private static final class CodatValue implements Value {
         @JsonUnwrapped
         private CodatCompanyResponse value;
@@ -147,6 +148,7 @@ public final class ExternalAccountingSystemCompanyResponse {
     }
 
     @JsonTypeName("rutter")
+    @JsonIgnoreProperties("type")
     private static final class RutterValue implements Value {
         @JsonUnwrapped
         private RutterCompanyResponse value;
@@ -185,6 +187,7 @@ public final class ExternalAccountingSystemCompanyResponse {
     }
 
     @JsonTypeName("none")
+    @JsonIgnoreProperties("type")
     private static final class NoneValue implements Value {
         @JsonUnwrapped
         private CodatCompanyResponse value;
@@ -222,6 +225,7 @@ public final class ExternalAccountingSystemCompanyResponse {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

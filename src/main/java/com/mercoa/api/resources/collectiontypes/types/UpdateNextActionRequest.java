@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = UpdateNextActionRequest.Builder.class)
@@ -65,7 +66,7 @@ public final class UpdateNextActionRequest {
     }
 
     public interface FeedbackStage {
-        _FinalStage feedback(String feedback);
+        _FinalStage feedback(@NotNull String feedback);
 
         Builder from(UpdateNextActionRequest other);
     }
@@ -95,8 +96,8 @@ public final class UpdateNextActionRequest {
          */
         @java.lang.Override
         @JsonSetter("feedback")
-        public _FinalStage feedback(String feedback) {
-            this.feedback = feedback;
+        public _FinalStage feedback(@NotNull String feedback) {
+            this.feedback = Objects.requireNonNull(feedback, "feedback must not be null");
             return this;
         }
 

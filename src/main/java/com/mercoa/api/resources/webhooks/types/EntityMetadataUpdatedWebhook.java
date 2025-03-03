@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityMetadataUpdatedWebhook.Builder.class)
@@ -108,17 +109,17 @@ public final class EntityMetadataUpdatedWebhook {
     }
 
     public interface EventTypeStage {
-        EntityIdStage eventType(String eventType);
+        EntityIdStage eventType(@NotNull String eventType);
 
         Builder from(EntityMetadataUpdatedWebhook other);
     }
 
     public interface EntityIdStage {
-        KeyStage entityId(String entityId);
+        KeyStage entityId(@NotNull String entityId);
     }
 
     public interface KeyStage {
-        _FinalStage key(String key);
+        _FinalStage key(@NotNull String key);
     }
 
     public interface _FinalStage {
@@ -164,22 +165,22 @@ public final class EntityMetadataUpdatedWebhook {
 
         @java.lang.Override
         @JsonSetter("eventType")
-        public EntityIdStage eventType(String eventType) {
-            this.eventType = eventType;
+        public EntityIdStage eventType(@NotNull String eventType) {
+            this.eventType = Objects.requireNonNull(eventType, "eventType must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("entityId")
-        public KeyStage entityId(String entityId) {
-            this.entityId = entityId;
+        public KeyStage entityId(@NotNull String entityId) {
+            this.entityId = Objects.requireNonNull(entityId, "entityId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("key")
-        public _FinalStage key(String key) {
-            this.key = key;
+        public _FinalStage key(@NotNull String key) {
+            this.key = Objects.requireNonNull(key, "key must not be null");
             return this;
         }
 

@@ -5,6 +5,7 @@ package com.mercoa.api.core;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import okhttp3.OkHttpClient;
@@ -18,23 +19,62 @@ public final class ClientOptions {
 
     private final OkHttpClient httpClient;
 
+    private final int timeout;
+
+    /**
+     * version.toString() is sent as the "X-API-Version" header.
+     */
+    private final ApiVersion version;
+
+    /**
+     * @param version Defaults to "{\n"
+     *     + "  \"name\" : {\n"
+     *     + "    \"wireValue\" : \"2024-08-01\",\n"
+     *     + "    \"name\" : {\n"
+     *     + "      \"originalName\" : \"2024-08-01\",\n"
+     *     + "      \"camelCase\" : {\n"
+     *     + "        \"unsafeName\" : \"20240801\",\n"
+     *     + "        \"safeName\" : \"_20240801\"\n"
+     *     + "      },\n"
+     *     + "      \"pascalCase\" : {\n"
+     *     + "        \"unsafeName\" : \"20240801\",\n"
+     *     + "        \"safeName\" : \"_20240801\"\n"
+     *     + "      },\n"
+     *     + "      \"snakeCase\" : {\n"
+     *     + "        \"unsafeName\" : \"2024_08_01\",\n"
+     *     + "        \"safeName\" : \"_2024_08_01\"\n"
+     *     + "      },\n"
+     *     + "      \"screamingSnakeCase\" : {\n"
+     *     + "        \"unsafeName\" : \"2024_08_01\",\n"
+     *     + "        \"safeName\" : \"_2024_08_01\"\n"
+     *     + "      }\n"
+     *     + "    }\n"
+     *     + "  }\n"
+     *     + "}" if empty
+     */
     private ClientOptions(
             Environment environment,
             Map<String, String> headers,
             Map<String, Supplier<String>> headerSuppliers,
-            OkHttpClient httpClient) {
+            OkHttpClient httpClient,
+            int timeout,
+            Optional<ApiVersion> version) {
         this.environment = environment;
         this.headers = new HashMap<>();
         this.headers.putAll(headers);
         this.headers.putAll(new HashMap<String, String>() {
             {
+                put("User-Agent", "com.mercoa:mercoa/0.6.12");
                 put("X-Fern-Language", "JAVA");
                 put("X-Fern-SDK-Name", "com.mercoa.fern:api-sdk");
-                put("X-Fern-SDK-Version", "0.6.11");
+                put("X-Fern-SDK-Version", "0.6.12");
             }
         });
         this.headerSuppliers = headerSuppliers;
         this.httpClient = httpClient;
+        this.timeout = timeout;
+        this.version = version.orElse(ApiVersion.CURRENT);
+        this.headers.put("X-API-Version", this.version.toString());
     }
 
     public Environment environment() {
@@ -50,6 +90,13 @@ public final class ClientOptions {
             values.putAll(requestOptions.getHeaders());
         }
         return values;
+    }
+
+    /**
+     * version.toString() is sent as the "X-API-Version" header.
+     */
+    public ApiVersion version() {
+        return this.version;
     }
 
     public OkHttpClient httpClient() {
@@ -80,6 +127,15 @@ public final class ClientOptions {
 
         private final Map<String, Supplier<String>> headerSuppliers = new HashMap<>();
 
+        private int timeout = 60;
+
+        private OkHttpClient httpClient = new OkHttpClient.Builder()
+                .addInterceptor(new RetryInterceptor(3))
+                .callTimeout(this.timeout, TimeUnit.SECONDS)
+                .build();
+
+        private Optional<ApiVersion> version = Optional.empty();
+
         public Builder environment(Environment environment) {
             this.environment = environment;
             return this;
@@ -95,11 +151,29 @@ public final class ClientOptions {
             return this;
         }
 
+        /**
+         * Override the timeout in seconds. Defaults to 60 seconds.
+         */
+        public Builder timeout(int timeout) {
+            this.timeout = timeout;
+            return this;
+        }
+
+        public Builder httpClient(OkHttpClient httpClient) {
+            this.httpClient = httpClient;
+            return this;
+        }
+
+        /**
+         * version.toString() is sent as the "X-API-Version" header.
+         */
+        public Builder version(ApiVersion version) {
+            this.version = Optional.of(version);
+            return this;
+        }
+
         public ClientOptions build() {
-            OkHttpClient okhttpClient = new OkHttpClient.Builder()
-                    .addInterceptor(new RetryInterceptor(3))
-                    .build();
-            return new ClientOptions(environment, headers, headerSuppliers, okhttpClient);
+            return new ClientOptions(environment, headers, headerSuppliers, httpClient, this.timeout, version);
         }
     }
 }

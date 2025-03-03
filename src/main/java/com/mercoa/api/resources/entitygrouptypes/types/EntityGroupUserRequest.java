@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGroupUserRequest.Builder.class)
@@ -103,7 +104,7 @@ public final class EntityGroupUserRequest {
     }
 
     public interface ForeignIdStage {
-        _FinalStage foreignId(String foreignId);
+        _FinalStage foreignId(@NotNull String foreignId);
 
         Builder from(EntityGroupUserRequest other);
     }
@@ -154,8 +155,8 @@ public final class EntityGroupUserRequest {
          */
         @java.lang.Override
         @JsonSetter("foreignId")
-        public _FinalStage foreignId(String foreignId) {
-            this.foreignId = foreignId;
+        public _FinalStage foreignId(@NotNull String foreignId) {
+            this.foreignId = Objects.requireNonNull(foreignId, "foreignId must not be null");
             return this;
         }
 

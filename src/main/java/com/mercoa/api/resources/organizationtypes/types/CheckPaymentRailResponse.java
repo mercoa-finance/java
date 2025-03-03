@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CheckPaymentRailResponse.Builder.class)
@@ -118,7 +119,7 @@ public final class CheckPaymentRailResponse implements IGenericPaymentRailRespon
     }
 
     public interface NameStage {
-        ActiveStage name(String name);
+        ActiveStage name(@NotNull String name);
 
         Builder from(CheckPaymentRailResponse other);
     }
@@ -128,7 +129,7 @@ public final class CheckPaymentRailResponse implements IGenericPaymentRailRespon
     }
 
     public interface DefaultDeliveryMethodStage {
-        PrintDescriptionStage defaultDeliveryMethod(CheckDeliveryMethod defaultDeliveryMethod);
+        PrintDescriptionStage defaultDeliveryMethod(@NotNull CheckDeliveryMethod defaultDeliveryMethod);
     }
 
     public interface PrintDescriptionStage {
@@ -179,8 +180,8 @@ public final class CheckPaymentRailResponse implements IGenericPaymentRailRespon
          */
         @java.lang.Override
         @JsonSetter("name")
-        public ActiveStage name(String name) {
-            this.name = name;
+        public ActiveStage name(@NotNull String name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 
@@ -193,8 +194,9 @@ public final class CheckPaymentRailResponse implements IGenericPaymentRailRespon
 
         @java.lang.Override
         @JsonSetter("defaultDeliveryMethod")
-        public PrintDescriptionStage defaultDeliveryMethod(CheckDeliveryMethod defaultDeliveryMethod) {
-            this.defaultDeliveryMethod = defaultDeliveryMethod;
+        public PrintDescriptionStage defaultDeliveryMethod(@NotNull CheckDeliveryMethod defaultDeliveryMethod) {
+            this.defaultDeliveryMethod =
+                    Objects.requireNonNull(defaultDeliveryMethod, "defaultDeliveryMethod must not be null");
             return this;
         }
 

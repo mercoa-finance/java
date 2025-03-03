@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityWithPaymentMethodResponse.Builder.class)
@@ -331,17 +332,17 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
     }
 
     public interface IdStage {
-        NameStage id(String id);
+        NameStage id(@NotNull String id);
 
         Builder from(EntityWithPaymentMethodResponse other);
     }
 
     public interface NameStage {
-        EmailStage name(String name);
+        EmailStage name(@NotNull String name);
     }
 
     public interface EmailStage {
-        IsCustomerStage email(String email);
+        IsCustomerStage email(@NotNull String email);
     }
 
     public interface IsCustomerStage {
@@ -349,15 +350,15 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
     }
 
     public interface AccountTypeStage {
-        ProfileStage accountType(AccountType accountType);
+        ProfileStage accountType(@NotNull AccountType accountType);
     }
 
     public interface ProfileStage {
-        StatusStage profile(ProfileResponse profile);
+        StatusStage profile(@NotNull ProfileResponse profile);
     }
 
     public interface StatusStage {
-        AcceptedTosStage status(EntityStatus status);
+        AcceptedTosStage status(@NotNull EntityStatus status);
     }
 
     public interface AcceptedTosStage {
@@ -381,11 +382,11 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
     }
 
     public interface CreatedAtStage {
-        UpdatedAtStage createdAt(OffsetDateTime createdAt);
+        UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface UpdatedAtStage {
-        _FinalStage updatedAt(OffsetDateTime updatedAt);
+        _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
     public interface _FinalStage {
@@ -505,22 +506,22 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
 
         @java.lang.Override
         @JsonSetter("id")
-        public NameStage id(String id) {
-            this.id = id;
+        public NameStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("name")
-        public EmailStage name(String name) {
-            this.name = name;
+        public EmailStage name(@NotNull String name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("email")
-        public IsCustomerStage email(String email) {
-            this.email = email;
+        public IsCustomerStage email(@NotNull String email) {
+            this.email = Objects.requireNonNull(email, "email must not be null");
             return this;
         }
 
@@ -537,22 +538,22 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
 
         @java.lang.Override
         @JsonSetter("accountType")
-        public ProfileStage accountType(AccountType accountType) {
-            this.accountType = accountType;
+        public ProfileStage accountType(@NotNull AccountType accountType) {
+            this.accountType = Objects.requireNonNull(accountType, "accountType must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("profile")
-        public StatusStage profile(ProfileResponse profile) {
-            this.profile = profile;
+        public StatusStage profile(@NotNull ProfileResponse profile) {
+            this.profile = Objects.requireNonNull(profile, "profile must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("status")
-        public AcceptedTosStage status(EntityStatus status) {
-            this.status = status;
+        public AcceptedTosStage status(@NotNull EntityStatus status) {
+            this.status = Objects.requireNonNull(status, "status must not be null");
             return this;
         }
 
@@ -613,15 +614,15 @@ public final class EntityWithPaymentMethodResponse implements IEntityResponse {
 
         @java.lang.Override
         @JsonSetter("createdAt")
-        public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        public UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("updatedAt")
-        public _FinalStage updatedAt(OffsetDateTime updatedAt) {
-            this.updatedAt = updatedAt;
+        public _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt) {
+            this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
             return this;
         }
 

@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceNotificationConfigurationRequest.Builder.class)
@@ -64,7 +65,7 @@ public final class InvoiceNotificationConfigurationRequest implements IInvoiceNo
     }
 
     public interface UrlStage {
-        _FinalStage url(String url);
+        _FinalStage url(@NotNull String url);
 
         Builder from(InvoiceNotificationConfigurationRequest other);
     }
@@ -90,8 +91,8 @@ public final class InvoiceNotificationConfigurationRequest implements IInvoiceNo
 
         @java.lang.Override
         @JsonSetter("url")
-        public _FinalStage url(String url) {
-            this.url = url;
+        public _FinalStage url(@NotNull String url) {
+            this.url = Objects.requireNonNull(url, "url must not be null");
             return this;
         }
 

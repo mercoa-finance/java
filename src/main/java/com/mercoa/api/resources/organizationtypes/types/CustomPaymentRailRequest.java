@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CustomPaymentRailRequest.Builder.class)
@@ -89,7 +90,7 @@ public final class CustomPaymentRailRequest implements IGenericPaymentRailReques
     }
 
     public interface SchemaIdStage {
-        _FinalStage schemaId(String schemaId);
+        _FinalStage schemaId(@NotNull String schemaId);
     }
 
     public interface _FinalStage {
@@ -130,8 +131,8 @@ public final class CustomPaymentRailRequest implements IGenericPaymentRailReques
 
         @java.lang.Override
         @JsonSetter("schemaId")
-        public _FinalStage schemaId(String schemaId) {
-            this.schemaId = schemaId;
+        public _FinalStage schemaId(@NotNull String schemaId) {
+            this.schemaId = Objects.requireNonNull(schemaId, "schemaId must not be null");
             return this;
         }
 

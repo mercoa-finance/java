@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BankAccountResponse.Builder.class)
@@ -263,7 +264,7 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
     }
 
     public interface IdStage {
-        IsDefaultSourceStage id(String id);
+        IsDefaultSourceStage id(@NotNull String id);
 
         Builder from(BankAccountResponse other);
     }
@@ -281,35 +282,35 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
     }
 
     public interface CreatedAtStage {
-        UpdatedAtStage createdAt(OffsetDateTime createdAt);
+        UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface UpdatedAtStage {
-        AccountNameStage updatedAt(OffsetDateTime updatedAt);
+        AccountNameStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
     public interface AccountNameStage {
-        BankNameStage accountName(String accountName);
+        BankNameStage accountName(@NotNull String accountName);
     }
 
     public interface BankNameStage {
-        RoutingNumberStage bankName(String bankName);
+        RoutingNumberStage bankName(@NotNull String bankName);
     }
 
     public interface RoutingNumberStage {
-        AccountNumberStage routingNumber(String routingNumber);
+        AccountNumberStage routingNumber(@NotNull String routingNumber);
     }
 
     public interface AccountNumberStage {
-        AccountTypeStage accountNumber(String accountNumber);
+        AccountTypeStage accountNumber(@NotNull String accountNumber);
     }
 
     public interface AccountTypeStage {
-        StatusStage accountType(BankType accountType);
+        StatusStage accountType(@NotNull BankType accountType);
     }
 
     public interface StatusStage {
-        _FinalStage status(BankStatus status);
+        _FinalStage status(@NotNull BankStatus status);
     }
 
     public interface _FinalStage {
@@ -411,8 +412,8 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
 
         @java.lang.Override
         @JsonSetter("id")
-        public IsDefaultSourceStage id(String id) {
-            this.id = id;
+        public IsDefaultSourceStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
@@ -451,57 +452,57 @@ public final class BankAccountResponse implements IPaymentMethodBaseResponse {
 
         @java.lang.Override
         @JsonSetter("createdAt")
-        public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        public UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("updatedAt")
-        public AccountNameStage updatedAt(OffsetDateTime updatedAt) {
-            this.updatedAt = updatedAt;
+        public AccountNameStage updatedAt(@NotNull OffsetDateTime updatedAt) {
+            this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("accountName")
-        public BankNameStage accountName(String accountName) {
-            this.accountName = accountName;
+        public BankNameStage accountName(@NotNull String accountName) {
+            this.accountName = Objects.requireNonNull(accountName, "accountName must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("bankName")
-        public RoutingNumberStage bankName(String bankName) {
-            this.bankName = bankName;
+        public RoutingNumberStage bankName(@NotNull String bankName) {
+            this.bankName = Objects.requireNonNull(bankName, "bankName must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("routingNumber")
-        public AccountNumberStage routingNumber(String routingNumber) {
-            this.routingNumber = routingNumber;
+        public AccountNumberStage routingNumber(@NotNull String routingNumber) {
+            this.routingNumber = Objects.requireNonNull(routingNumber, "routingNumber must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("accountNumber")
-        public AccountTypeStage accountNumber(String accountNumber) {
-            this.accountNumber = accountNumber;
+        public AccountTypeStage accountNumber(@NotNull String accountNumber) {
+            this.accountNumber = Objects.requireNonNull(accountNumber, "accountNumber must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("accountType")
-        public StatusStage accountType(BankType accountType) {
-            this.accountType = accountType;
+        public StatusStage accountType(@NotNull BankType accountType) {
+            this.accountType = Objects.requireNonNull(accountType, "accountType must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("status")
-        public _FinalStage status(BankStatus status) {
-            this.status = status;
+        public _FinalStage status(@NotNull BankStatus status) {
+            this.status = Objects.requireNonNull(status, "status must not be null");
             return this;
         }
 

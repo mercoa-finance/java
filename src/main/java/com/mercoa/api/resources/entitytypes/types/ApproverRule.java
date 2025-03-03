@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ApproverRule.Builder.class)
@@ -101,7 +102,7 @@ public final class ApproverRule {
     }
 
     public interface IdentifierListStage {
-        _FinalStage identifierList(IdentifierList identifierList);
+        _FinalStage identifierList(@NotNull IdentifierList identifierList);
     }
 
     public interface _FinalStage {
@@ -150,8 +151,8 @@ public final class ApproverRule {
          */
         @java.lang.Override
         @JsonSetter("identifierList")
-        public _FinalStage identifierList(IdentifierList identifierList) {
-            this.identifierList = identifierList;
+        public _FinalStage identifierList(@NotNull IdentifierList identifierList) {
+            this.identifierList = Objects.requireNonNull(identifierList, "identifierList must not be null");
             return this;
         }
 

@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = UploadDocumentRequest.Builder.class)
@@ -80,7 +81,7 @@ public final class UploadDocumentRequest {
     }
 
     public interface DocumentStage {
-        _FinalStage document(String document);
+        _FinalStage document(@NotNull String document);
 
         Builder from(UploadDocumentRequest other);
     }
@@ -117,8 +118,8 @@ public final class UploadDocumentRequest {
          */
         @java.lang.Override
         @JsonSetter("document")
-        public _FinalStage document(String document) {
-            this.document = document;
+        public _FinalStage document(@NotNull String document) {
+            this.document = Objects.requireNonNull(document, "document must not be null");
             return this;
         }
 

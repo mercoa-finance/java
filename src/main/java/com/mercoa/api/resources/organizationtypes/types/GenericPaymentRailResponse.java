@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GenericPaymentRailResponse.Builder.class)
@@ -75,7 +76,7 @@ public final class GenericPaymentRailResponse implements IGenericPaymentRailResp
     }
 
     public interface NameStage {
-        ActiveStage name(String name);
+        ActiveStage name(@NotNull String name);
 
         Builder from(GenericPaymentRailResponse other);
     }
@@ -112,8 +113,8 @@ public final class GenericPaymentRailResponse implements IGenericPaymentRailResp
          */
         @java.lang.Override
         @JsonSetter("name")
-        public ActiveStage name(String name) {
-            this.name = name;
+        public ActiveStage name(@NotNull String name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 

@@ -88,6 +88,7 @@ public final class ExternalAccountingSystemCompanyCreationRequest {
     }
 
     @JsonTypeName("codat")
+    @JsonIgnoreProperties("type")
     private static final class CodatValue implements Value {
         @JsonUnwrapped
         private CodatCompanyCreationRequest value;
@@ -126,6 +127,7 @@ public final class ExternalAccountingSystemCompanyCreationRequest {
     }
 
     @JsonTypeName("rutter")
+    @JsonIgnoreProperties("type")
     private static final class RutterValue implements Value {
         @JsonUnwrapped
         private RutterCompanyCreationRequest value;
@@ -163,6 +165,7 @@ public final class ExternalAccountingSystemCompanyCreationRequest {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

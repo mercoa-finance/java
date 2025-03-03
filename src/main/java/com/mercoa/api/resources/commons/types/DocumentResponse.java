@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = DocumentResponse.Builder.class)
@@ -99,17 +100,17 @@ public final class DocumentResponse {
     }
 
     public interface MimeTypeStage {
-        TypeStage mimeType(String mimeType);
+        TypeStage mimeType(@NotNull String mimeType);
 
         Builder from(DocumentResponse other);
     }
 
     public interface TypeStage {
-        UriStage type(DocumentType type);
+        UriStage type(@NotNull DocumentType type);
     }
 
     public interface UriStage {
-        _FinalStage uri(String uri);
+        _FinalStage uri(@NotNull String uri);
     }
 
     public interface _FinalStage {
@@ -146,22 +147,22 @@ public final class DocumentResponse {
 
         @java.lang.Override
         @JsonSetter("mimeType")
-        public TypeStage mimeType(String mimeType) {
-            this.mimeType = mimeType;
+        public TypeStage mimeType(@NotNull String mimeType) {
+            this.mimeType = Objects.requireNonNull(mimeType, "mimeType must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("type")
-        public UriStage type(DocumentType type) {
-            this.type = type;
+        public UriStage type(@NotNull DocumentType type) {
+            this.type = Objects.requireNonNull(type, "type must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("uri")
-        public _FinalStage uri(String uri) {
-            this.uri = uri;
+        public _FinalStage uri(@NotNull String uri) {
+            this.uri = Objects.requireNonNull(uri, "uri must not be null");
             return this;
         }
 

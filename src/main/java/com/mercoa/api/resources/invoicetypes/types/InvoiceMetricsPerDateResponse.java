@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceMetricsPerDateResponse.Builder.class)
@@ -123,7 +124,7 @@ public final class InvoiceMetricsPerDateResponse {
     }
 
     public interface DateStage {
-        TotalAmountStage date(OffsetDateTime date);
+        TotalAmountStage date(@NotNull OffsetDateTime date);
 
         Builder from(InvoiceMetricsPerDateResponse other);
     }
@@ -141,7 +142,7 @@ public final class InvoiceMetricsPerDateResponse {
     }
 
     public interface CurrencyStage {
-        _FinalStage currency(CurrencyCode currency);
+        _FinalStage currency(@NotNull CurrencyCode currency);
     }
 
     public interface _FinalStage {
@@ -185,8 +186,8 @@ public final class InvoiceMetricsPerDateResponse {
 
         @java.lang.Override
         @JsonSetter("date")
-        public TotalAmountStage date(OffsetDateTime date) {
-            this.date = date;
+        public TotalAmountStage date(@NotNull OffsetDateTime date) {
+            this.date = Objects.requireNonNull(date, "date must not be null");
             return this;
         }
 
@@ -213,8 +214,8 @@ public final class InvoiceMetricsPerDateResponse {
 
         @java.lang.Override
         @JsonSetter("currency")
-        public _FinalStage currency(CurrencyCode currency) {
-            this.currency = currency;
+        public _FinalStage currency(@NotNull CurrencyCode currency) {
+            this.currency = Objects.requireNonNull(currency, "currency must not be null");
             return this;
         }
 

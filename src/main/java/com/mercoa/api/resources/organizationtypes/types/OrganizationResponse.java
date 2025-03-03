@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = OrganizationResponse.Builder.class)
@@ -244,7 +245,7 @@ public final class OrganizationResponse {
     }
 
     public interface IdStage {
-        SandboxStage id(String id);
+        SandboxStage id(@NotNull String id);
 
         Builder from(OrganizationResponse other);
     }
@@ -254,7 +255,7 @@ public final class OrganizationResponse {
     }
 
     public interface NameStage {
-        _FinalStage name(String name);
+        _FinalStage name(@NotNull String name);
     }
 
     public interface _FinalStage {
@@ -384,8 +385,8 @@ public final class OrganizationResponse {
 
         @java.lang.Override
         @JsonSetter("id")
-        public SandboxStage id(String id) {
-            this.id = id;
+        public SandboxStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
@@ -398,8 +399,8 @@ public final class OrganizationResponse {
 
         @java.lang.Override
         @JsonSetter("name")
-        public _FinalStage name(String name) {
-            this.name = name;
+        public _FinalStage name(@NotNull String name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 

@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ApprovalPolicyRequest.Builder.class)
@@ -90,13 +91,13 @@ public final class ApprovalPolicyRequest {
     }
 
     public interface RuleStage {
-        UpstreamPolicyIdStage rule(Rule rule);
+        UpstreamPolicyIdStage rule(@NotNull Rule rule);
 
         Builder from(ApprovalPolicyRequest other);
     }
 
     public interface UpstreamPolicyIdStage {
-        _FinalStage upstreamPolicyId(String upstreamPolicyId);
+        _FinalStage upstreamPolicyId(@NotNull String upstreamPolicyId);
     }
 
     public interface _FinalStage {
@@ -132,8 +133,8 @@ public final class ApprovalPolicyRequest {
 
         @java.lang.Override
         @JsonSetter("rule")
-        public UpstreamPolicyIdStage rule(Rule rule) {
-            this.rule = rule;
+        public UpstreamPolicyIdStage rule(@NotNull Rule rule) {
+            this.rule = Objects.requireNonNull(rule, "rule must not be null");
             return this;
         }
 
@@ -143,8 +144,8 @@ public final class ApprovalPolicyRequest {
          */
         @java.lang.Override
         @JsonSetter("upstreamPolicyId")
-        public _FinalStage upstreamPolicyId(String upstreamPolicyId) {
-            this.upstreamPolicyId = upstreamPolicyId;
+        public _FinalStage upstreamPolicyId(@NotNull String upstreamPolicyId) {
+            this.upstreamPolicyId = Objects.requireNonNull(upstreamPolicyId, "upstreamPolicyId must not be null");
             return this;
         }
 

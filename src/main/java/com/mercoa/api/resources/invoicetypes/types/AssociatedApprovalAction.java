@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = AssociatedApprovalAction.Builder.class)
@@ -70,13 +71,13 @@ public final class AssociatedApprovalAction {
     }
 
     public interface UserIdStage {
-        ActionStage userId(String userId);
+        ActionStage userId(@NotNull String userId);
 
         Builder from(AssociatedApprovalAction other);
     }
 
     public interface ActionStage {
-        _FinalStage action(ApproverAction action);
+        _FinalStage action(@NotNull ApproverAction action);
     }
 
     public interface _FinalStage {
@@ -103,15 +104,15 @@ public final class AssociatedApprovalAction {
 
         @java.lang.Override
         @JsonSetter("userId")
-        public ActionStage userId(String userId) {
-            this.userId = userId;
+        public ActionStage userId(@NotNull String userId) {
+            this.userId = Objects.requireNonNull(userId, "userId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("action")
-        public _FinalStage action(ApproverAction action) {
-            this.action = action;
+        public _FinalStage action(@NotNull ApproverAction action) {
+            this.action = Objects.requireNonNull(action, "action must not be null");
             return this;
         }
 

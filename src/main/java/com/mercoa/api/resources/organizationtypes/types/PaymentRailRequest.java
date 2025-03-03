@@ -217,6 +217,7 @@ public final class PaymentRailRequest {
     }
 
     @JsonTypeName("bankAccount")
+    @JsonIgnoreProperties("type")
     private static final class BankAccountValue implements Value {
         @JsonUnwrapped
         private BankPaymentRailRequest value;
@@ -255,6 +256,7 @@ public final class PaymentRailRequest {
     }
 
     @JsonTypeName("card")
+    @JsonIgnoreProperties("type")
     private static final class CardValue implements Value {
         @JsonUnwrapped
         private GenericPaymentRailRequest value;
@@ -293,6 +295,7 @@ public final class PaymentRailRequest {
     }
 
     @JsonTypeName("virtualCard")
+    @JsonIgnoreProperties("type")
     private static final class VirtualCardValue implements Value {
         @JsonUnwrapped
         private GenericPaymentRailRequest value;
@@ -331,6 +334,7 @@ public final class PaymentRailRequest {
     }
 
     @JsonTypeName("check")
+    @JsonIgnoreProperties("type")
     private static final class CheckValue implements Value {
         @JsonUnwrapped
         private CheckPaymentRailRequest value;
@@ -369,6 +373,7 @@ public final class PaymentRailRequest {
     }
 
     @JsonTypeName("custom")
+    @JsonIgnoreProperties("type")
     private static final class CustomValue implements Value {
         @JsonUnwrapped
         private CustomPaymentRailRequest value;
@@ -407,6 +412,7 @@ public final class PaymentRailRequest {
     }
 
     @JsonTypeName("bnpl")
+    @JsonIgnoreProperties("type")
     private static final class BnplValue implements Value {
         @JsonUnwrapped
         private GenericPaymentRailRequest value;
@@ -445,6 +451,7 @@ public final class PaymentRailRequest {
     }
 
     @JsonTypeName("offPlatform")
+    @JsonIgnoreProperties("type")
     private static final class OffPlatformValue implements Value {
         @JsonUnwrapped
         private GenericPaymentRailRequest value;
@@ -483,6 +490,7 @@ public final class PaymentRailRequest {
     }
 
     @JsonTypeName("utility")
+    @JsonIgnoreProperties("type")
     private static final class UtilityValue implements Value {
         @JsonUnwrapped
         private GenericPaymentRailRequest value;
@@ -521,6 +529,7 @@ public final class PaymentRailRequest {
     }
 
     @JsonTypeName("na")
+    @JsonIgnoreProperties("type")
     private static final class NaValue implements Value {
         @JsonUnwrapped
         private GenericPaymentRailRequest value;
@@ -558,6 +567,7 @@ public final class PaymentRailRequest {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

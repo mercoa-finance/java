@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = RepresentativeResponse.Builder.class)
@@ -181,17 +182,17 @@ public final class RepresentativeResponse {
     }
 
     public interface IdStage {
-        NameStage id(String id);
+        NameStage id(@NotNull String id);
 
         Builder from(RepresentativeResponse other);
     }
 
     public interface NameStage {
-        AddressStage name(FullName name);
+        AddressStage name(@NotNull FullName name);
     }
 
     public interface AddressStage {
-        BirthDateProvidedStage address(Address address);
+        BirthDateProvidedStage address(@NotNull Address address);
     }
 
     public interface BirthDateProvidedStage {
@@ -203,15 +204,15 @@ public final class RepresentativeResponse {
     }
 
     public interface ResponsibilitiesStage {
-        CreatedOnStage responsibilities(Responsibilities responsibilities);
+        CreatedOnStage responsibilities(@NotNull Responsibilities responsibilities);
     }
 
     public interface CreatedOnStage {
-        UpdatedOnStage createdOn(OffsetDateTime createdOn);
+        UpdatedOnStage createdOn(@NotNull OffsetDateTime createdOn);
     }
 
     public interface UpdatedOnStage {
-        _FinalStage updatedOn(OffsetDateTime updatedOn);
+        _FinalStage updatedOn(@NotNull OffsetDateTime updatedOn);
     }
 
     public interface _FinalStage {
@@ -286,22 +287,22 @@ public final class RepresentativeResponse {
 
         @java.lang.Override
         @JsonSetter("id")
-        public NameStage id(String id) {
-            this.id = id;
+        public NameStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("name")
-        public AddressStage name(FullName name) {
-            this.name = name;
+        public AddressStage name(@NotNull FullName name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("address")
-        public BirthDateProvidedStage address(Address address) {
-            this.address = address;
+        public BirthDateProvidedStage address(@NotNull Address address) {
+            this.address = Objects.requireNonNull(address, "address must not be null");
             return this;
         }
 
@@ -321,22 +322,22 @@ public final class RepresentativeResponse {
 
         @java.lang.Override
         @JsonSetter("responsibilities")
-        public CreatedOnStage responsibilities(Responsibilities responsibilities) {
-            this.responsibilities = responsibilities;
+        public CreatedOnStage responsibilities(@NotNull Responsibilities responsibilities) {
+            this.responsibilities = Objects.requireNonNull(responsibilities, "responsibilities must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("createdOn")
-        public UpdatedOnStage createdOn(OffsetDateTime createdOn) {
-            this.createdOn = createdOn;
+        public UpdatedOnStage createdOn(@NotNull OffsetDateTime createdOn) {
+            this.createdOn = Objects.requireNonNull(createdOn, "createdOn must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("updatedOn")
-        public _FinalStage updatedOn(OffsetDateTime updatedOn) {
-            this.updatedOn = updatedOn;
+        public _FinalStage updatedOn(@NotNull OffsetDateTime updatedOn) {
+            this.updatedOn = Objects.requireNonNull(updatedOn, "updatedOn must not be null");
             return this;
         }
 

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CustomPaymentMethodSchemaRequest.Builder.class)
@@ -164,7 +165,7 @@ public final class CustomPaymentMethodSchemaRequest {
     }
 
     public interface NameStage {
-        IsSourceStage name(String name);
+        IsSourceStage name(@NotNull String name);
 
         Builder from(CustomPaymentMethodSchemaRequest other);
     }
@@ -241,8 +242,8 @@ public final class CustomPaymentMethodSchemaRequest {
 
         @java.lang.Override
         @JsonSetter("name")
-        public IsSourceStage name(String name) {
-            this.name = name;
+        public IsSourceStage name(@NotNull String name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 

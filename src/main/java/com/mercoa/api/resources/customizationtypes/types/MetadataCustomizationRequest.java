@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = MetadataCustomizationRequest.Builder.class)
@@ -76,7 +77,7 @@ public final class MetadataCustomizationRequest {
     }
 
     public interface KeyStage {
-        DisabledStage key(String key);
+        DisabledStage key(@NotNull String key);
 
         Builder from(MetadataCustomizationRequest other);
     }
@@ -113,8 +114,8 @@ public final class MetadataCustomizationRequest {
          */
         @java.lang.Override
         @JsonSetter("key")
-        public DisabledStage key(String key) {
-            this.key = key;
+        public DisabledStage key(@NotNull String key) {
+            this.key = Objects.requireNonNull(key, "key must not be null");
             return this;
         }
 

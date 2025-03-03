@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BusinessOnboardingOptionsResponse.Builder.class)
@@ -282,86 +283,87 @@ public final class BusinessOnboardingOptionsResponse implements ICommonOnboardin
     }
 
     public interface TermsOfServiceStage {
-        EmailStage termsOfService(OnboardingOptionResponse termsOfService);
+        EmailStage termsOfService(@NotNull OnboardingOptionResponse termsOfService);
 
         Builder from(BusinessOnboardingOptionsResponse other);
     }
 
     public interface EmailStage {
-        NameStage email(OnboardingOptionResponse email);
+        NameStage email(@NotNull OnboardingOptionResponse email);
     }
 
     public interface NameStage {
-        AddressStage name(OnboardingOptionResponse name);
+        AddressStage name(@NotNull OnboardingOptionResponse name);
     }
 
     public interface AddressStage {
-        PhoneStage address(OnboardingOptionResponse address);
+        PhoneStage address(@NotNull OnboardingOptionResponse address);
     }
 
     public interface PhoneStage {
-        TenNinetyNineStage phone(OnboardingOptionResponse phone);
+        TenNinetyNineStage phone(@NotNull OnboardingOptionResponse phone);
     }
 
     public interface TenNinetyNineStage {
-        W9Stage tenNinetyNine(OnboardingOptionResponse tenNinetyNine);
+        W9Stage tenNinetyNine(@NotNull OnboardingOptionResponse tenNinetyNine);
     }
 
     public interface W9Stage {
-        BankStatementStage w9(OnboardingOptionResponse w9);
+        BankStatementStage w9(@NotNull OnboardingOptionResponse w9);
     }
 
     public interface BankStatementStage {
-        TypeStage bankStatement(OnboardingOptionResponse bankStatement);
+        TypeStage bankStatement(@NotNull OnboardingOptionResponse bankStatement);
     }
 
     public interface TypeStage {
-        DoingBusinessAsStage type(OnboardingOptionResponse type);
+        DoingBusinessAsStage type(@NotNull OnboardingOptionResponse type);
     }
 
     public interface DoingBusinessAsStage {
-        EinStage doingBusinessAs(OnboardingOptionResponse doingBusinessAs);
+        EinStage doingBusinessAs(@NotNull OnboardingOptionResponse doingBusinessAs);
     }
 
     public interface EinStage {
-        MccStage ein(OnboardingOptionResponse ein);
+        MccStage ein(@NotNull OnboardingOptionResponse ein);
     }
 
     public interface MccStage {
-        FormationDateStage mcc(OnboardingOptionResponse mcc);
+        FormationDateStage mcc(@NotNull OnboardingOptionResponse mcc);
     }
 
     public interface FormationDateStage {
-        WebsiteStage formationDate(OnboardingOptionResponse formationDate);
+        WebsiteStage formationDate(@NotNull OnboardingOptionResponse formationDate);
     }
 
     public interface WebsiteStage {
-        DescriptionStage website(OnboardingOptionResponse website);
+        DescriptionStage website(@NotNull OnboardingOptionResponse website);
     }
 
     public interface DescriptionStage {
-        RepresentativesStage description(OnboardingOptionResponse description);
+        RepresentativesStage description(@NotNull OnboardingOptionResponse description);
     }
 
     public interface RepresentativesStage {
-        LogoStage representatives(OnboardingOptionResponse representatives);
+        LogoStage representatives(@NotNull OnboardingOptionResponse representatives);
     }
 
     public interface LogoStage {
-        AverageTransactionSizeStage logo(OnboardingOptionResponse logo);
+        AverageTransactionSizeStage logo(@NotNull OnboardingOptionResponse logo);
     }
 
     public interface AverageTransactionSizeStage {
-        AverageMonthlyTransactionVolumeStage averageTransactionSize(OnboardingOptionResponse averageTransactionSize);
+        AverageMonthlyTransactionVolumeStage averageTransactionSize(
+                @NotNull OnboardingOptionResponse averageTransactionSize);
     }
 
     public interface AverageMonthlyTransactionVolumeStage {
         MaxTransactionSizeStage averageMonthlyTransactionVolume(
-                OnboardingOptionResponse averageMonthlyTransactionVolume);
+                @NotNull OnboardingOptionResponse averageMonthlyTransactionVolume);
     }
 
     public interface MaxTransactionSizeStage {
-        _FinalStage maxTransactionSize(OnboardingOptionResponse maxTransactionSize);
+        _FinalStage maxTransactionSize(@NotNull OnboardingOptionResponse maxTransactionSize);
     }
 
     public interface _FinalStage {
@@ -463,143 +465,145 @@ public final class BusinessOnboardingOptionsResponse implements ICommonOnboardin
 
         @java.lang.Override
         @JsonSetter("termsOfService")
-        public EmailStage termsOfService(OnboardingOptionResponse termsOfService) {
-            this.termsOfService = termsOfService;
+        public EmailStage termsOfService(@NotNull OnboardingOptionResponse termsOfService) {
+            this.termsOfService = Objects.requireNonNull(termsOfService, "termsOfService must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("email")
-        public NameStage email(OnboardingOptionResponse email) {
-            this.email = email;
+        public NameStage email(@NotNull OnboardingOptionResponse email) {
+            this.email = Objects.requireNonNull(email, "email must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("name")
-        public AddressStage name(OnboardingOptionResponse name) {
-            this.name = name;
+        public AddressStage name(@NotNull OnboardingOptionResponse name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("address")
-        public PhoneStage address(OnboardingOptionResponse address) {
-            this.address = address;
+        public PhoneStage address(@NotNull OnboardingOptionResponse address) {
+            this.address = Objects.requireNonNull(address, "address must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("phone")
-        public TenNinetyNineStage phone(OnboardingOptionResponse phone) {
-            this.phone = phone;
+        public TenNinetyNineStage phone(@NotNull OnboardingOptionResponse phone) {
+            this.phone = Objects.requireNonNull(phone, "phone must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("tenNinetyNine")
-        public W9Stage tenNinetyNine(OnboardingOptionResponse tenNinetyNine) {
-            this.tenNinetyNine = tenNinetyNine;
+        public W9Stage tenNinetyNine(@NotNull OnboardingOptionResponse tenNinetyNine) {
+            this.tenNinetyNine = Objects.requireNonNull(tenNinetyNine, "tenNinetyNine must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("w9")
-        public BankStatementStage w9(OnboardingOptionResponse w9) {
-            this.w9 = w9;
+        public BankStatementStage w9(@NotNull OnboardingOptionResponse w9) {
+            this.w9 = Objects.requireNonNull(w9, "w9 must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("bankStatement")
-        public TypeStage bankStatement(OnboardingOptionResponse bankStatement) {
-            this.bankStatement = bankStatement;
+        public TypeStage bankStatement(@NotNull OnboardingOptionResponse bankStatement) {
+            this.bankStatement = Objects.requireNonNull(bankStatement, "bankStatement must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("type")
-        public DoingBusinessAsStage type(OnboardingOptionResponse type) {
-            this.type = type;
+        public DoingBusinessAsStage type(@NotNull OnboardingOptionResponse type) {
+            this.type = Objects.requireNonNull(type, "type must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("doingBusinessAs")
-        public EinStage doingBusinessAs(OnboardingOptionResponse doingBusinessAs) {
-            this.doingBusinessAs = doingBusinessAs;
+        public EinStage doingBusinessAs(@NotNull OnboardingOptionResponse doingBusinessAs) {
+            this.doingBusinessAs = Objects.requireNonNull(doingBusinessAs, "doingBusinessAs must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("ein")
-        public MccStage ein(OnboardingOptionResponse ein) {
-            this.ein = ein;
+        public MccStage ein(@NotNull OnboardingOptionResponse ein) {
+            this.ein = Objects.requireNonNull(ein, "ein must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("mcc")
-        public FormationDateStage mcc(OnboardingOptionResponse mcc) {
-            this.mcc = mcc;
+        public FormationDateStage mcc(@NotNull OnboardingOptionResponse mcc) {
+            this.mcc = Objects.requireNonNull(mcc, "mcc must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("formationDate")
-        public WebsiteStage formationDate(OnboardingOptionResponse formationDate) {
-            this.formationDate = formationDate;
+        public WebsiteStage formationDate(@NotNull OnboardingOptionResponse formationDate) {
+            this.formationDate = Objects.requireNonNull(formationDate, "formationDate must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("website")
-        public DescriptionStage website(OnboardingOptionResponse website) {
-            this.website = website;
+        public DescriptionStage website(@NotNull OnboardingOptionResponse website) {
+            this.website = Objects.requireNonNull(website, "website must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("description")
-        public RepresentativesStage description(OnboardingOptionResponse description) {
-            this.description = description;
+        public RepresentativesStage description(@NotNull OnboardingOptionResponse description) {
+            this.description = Objects.requireNonNull(description, "description must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("representatives")
-        public LogoStage representatives(OnboardingOptionResponse representatives) {
-            this.representatives = representatives;
+        public LogoStage representatives(@NotNull OnboardingOptionResponse representatives) {
+            this.representatives = Objects.requireNonNull(representatives, "representatives must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("logo")
-        public AverageTransactionSizeStage logo(OnboardingOptionResponse logo) {
-            this.logo = logo;
+        public AverageTransactionSizeStage logo(@NotNull OnboardingOptionResponse logo) {
+            this.logo = Objects.requireNonNull(logo, "logo must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("averageTransactionSize")
         public AverageMonthlyTransactionVolumeStage averageTransactionSize(
-                OnboardingOptionResponse averageTransactionSize) {
-            this.averageTransactionSize = averageTransactionSize;
+                @NotNull OnboardingOptionResponse averageTransactionSize) {
+            this.averageTransactionSize =
+                    Objects.requireNonNull(averageTransactionSize, "averageTransactionSize must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("averageMonthlyTransactionVolume")
         public MaxTransactionSizeStage averageMonthlyTransactionVolume(
-                OnboardingOptionResponse averageMonthlyTransactionVolume) {
-            this.averageMonthlyTransactionVolume = averageMonthlyTransactionVolume;
+                @NotNull OnboardingOptionResponse averageMonthlyTransactionVolume) {
+            this.averageMonthlyTransactionVolume = Objects.requireNonNull(
+                    averageMonthlyTransactionVolume, "averageMonthlyTransactionVolume must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("maxTransactionSize")
-        public _FinalStage maxTransactionSize(OnboardingOptionResponse maxTransactionSize) {
-            this.maxTransactionSize = maxTransactionSize;
+        public _FinalStage maxTransactionSize(@NotNull OnboardingOptionResponse maxTransactionSize) {
+            this.maxTransactionSize = Objects.requireNonNull(maxTransactionSize, "maxTransactionSize must not be null");
             return this;
         }
 

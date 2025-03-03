@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CustomPaymentRailResponse.Builder.class)
@@ -84,7 +85,7 @@ public final class CustomPaymentRailResponse implements IGenericPaymentRailRespo
     }
 
     public interface NameStage {
-        ActiveStage name(String name);
+        ActiveStage name(@NotNull String name);
 
         Builder from(CustomPaymentRailResponse other);
     }
@@ -94,7 +95,7 @@ public final class CustomPaymentRailResponse implements IGenericPaymentRailRespo
     }
 
     public interface SchemaIdStage {
-        _FinalStage schemaId(String schemaId);
+        _FinalStage schemaId(@NotNull String schemaId);
     }
 
     public interface _FinalStage {
@@ -128,8 +129,8 @@ public final class CustomPaymentRailResponse implements IGenericPaymentRailRespo
          */
         @java.lang.Override
         @JsonSetter("name")
-        public ActiveStage name(String name) {
-            this.name = name;
+        public ActiveStage name(@NotNull String name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 
@@ -142,8 +143,8 @@ public final class CustomPaymentRailResponse implements IGenericPaymentRailRespo
 
         @java.lang.Override
         @JsonSetter("schemaId")
-        public _FinalStage schemaId(String schemaId) {
-            this.schemaId = schemaId;
+        public _FinalStage schemaId(@NotNull String schemaId) {
+            this.schemaId = Objects.requireNonNull(schemaId, "schemaId must not be null");
             return this;
         }
 

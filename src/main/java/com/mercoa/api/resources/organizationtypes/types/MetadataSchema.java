@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = MetadataSchema.Builder.class)
@@ -156,17 +157,17 @@ public final class MetadataSchema {
     }
 
     public interface KeyStage {
-        DisplayNameStage key(String key);
+        DisplayNameStage key(@NotNull String key);
 
         Builder from(MetadataSchema other);
     }
 
     public interface DisplayNameStage {
-        TypeStage displayName(String displayName);
+        TypeStage displayName(@NotNull String displayName);
     }
 
     public interface TypeStage {
-        _FinalStage type(MetadataType type);
+        _FinalStage type(@NotNull MetadataType type);
     }
 
     public interface _FinalStage {
@@ -231,22 +232,22 @@ public final class MetadataSchema {
 
         @java.lang.Override
         @JsonSetter("key")
-        public DisplayNameStage key(String key) {
-            this.key = key;
+        public DisplayNameStage key(@NotNull String key) {
+            this.key = Objects.requireNonNull(key, "key must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("displayName")
-        public TypeStage displayName(String displayName) {
-            this.displayName = displayName;
+        public TypeStage displayName(@NotNull String displayName) {
+            this.displayName = Objects.requireNonNull(displayName, "displayName must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("type")
-        public _FinalStage type(MetadataType type) {
-            this.type = type;
+        public _FinalStage type(@NotNull MetadataType type) {
+            this.type = Objects.requireNonNull(type, "type must not be null");
             return this;
         }
 

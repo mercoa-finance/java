@@ -7,6 +7,7 @@ import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.MercoaApiException;
 import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.invoice.paymentlinks.requests.PayerLinkRequest;
 import com.mercoa.api.resources.invoice.paymentlinks.requests.SendPayerEmail;
@@ -51,13 +52,15 @@ public class PaymentLinksClient {
                 .addPathSegment(invoiceId)
                 .addPathSegments("payerLink");
         if (request.getExpiresIn().isPresent()) {
-            httpUrl.addQueryParameter("expiresIn", request.getExpiresIn().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "expiresIn", request.getExpiresIn().get(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -102,13 +105,14 @@ public class PaymentLinksClient {
                 .addPathSegment(invoiceId)
                 .addPathSegments("sendPayerEmail");
         if (request.getAttachInvoice().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "attachInvoice", request.getAttachInvoice().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "attachInvoice", request.getAttachInvoice().get().toString(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("POST", RequestBody.create("", null))
-                .headers(Headers.of(clientOptions.headers(requestOptions)));
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -153,13 +157,15 @@ public class PaymentLinksClient {
                 .addPathSegment(invoiceId)
                 .addPathSegments("vendorLink");
         if (request.getExpiresIn().isPresent()) {
-            httpUrl.addQueryParameter("expiresIn", request.getExpiresIn().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "expiresIn", request.getExpiresIn().get(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -201,6 +207,7 @@ public class PaymentLinksClient {
                 .url(httpUrl)
                 .method("POST", RequestBody.create("", null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {

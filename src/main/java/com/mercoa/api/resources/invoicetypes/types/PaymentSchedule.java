@@ -145,6 +145,7 @@ public final class PaymentSchedule {
     }
 
     @JsonTypeName("oneTime")
+    @JsonIgnoreProperties("type")
     private static final class OneTimeValue implements Value {
         @JsonUnwrapped
         private PaymentScheduleBase value;
@@ -183,6 +184,7 @@ public final class PaymentSchedule {
     }
 
     @JsonTypeName("daily")
+    @JsonIgnoreProperties("type")
     private static final class DailyValue implements Value {
         @JsonUnwrapped
         private PaymentScheduleBase value;
@@ -221,6 +223,7 @@ public final class PaymentSchedule {
     }
 
     @JsonTypeName("weekly")
+    @JsonIgnoreProperties("type")
     private static final class WeeklyValue implements Value {
         @JsonUnwrapped
         private PaymentWeekSchedule value;
@@ -259,6 +262,7 @@ public final class PaymentSchedule {
     }
 
     @JsonTypeName("monthly")
+    @JsonIgnoreProperties("type")
     private static final class MonthlyValue implements Value {
         @JsonUnwrapped
         private PaymentMonthSchedule value;
@@ -297,6 +301,7 @@ public final class PaymentSchedule {
     }
 
     @JsonTypeName("yearly")
+    @JsonIgnoreProperties("type")
     private static final class YearlyValue implements Value {
         @JsonUnwrapped
         private PaymentYearSchedule value;
@@ -334,6 +339,7 @@ public final class PaymentSchedule {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BankAccountCheckOptions.Builder.class)
@@ -154,7 +155,7 @@ public final class BankAccountCheckOptions {
     }
 
     public interface SignatoryNameStage {
-        _FinalStage signatoryName(String signatoryName);
+        _FinalStage signatoryName(@NotNull String signatoryName);
 
         Builder from(BankAccountCheckOptions other);
     }
@@ -226,8 +227,8 @@ public final class BankAccountCheckOptions {
          */
         @java.lang.Override
         @JsonSetter("signatoryName")
-        public _FinalStage signatoryName(String signatoryName) {
-            this.signatoryName = signatoryName;
+        public _FinalStage signatoryName(@NotNull String signatoryName) {
+            this.signatoryName = Objects.requireNonNull(signatoryName, "signatoryName must not be null");
             return this;
         }
 

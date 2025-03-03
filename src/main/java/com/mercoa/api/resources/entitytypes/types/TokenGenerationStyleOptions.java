@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = TokenGenerationStyleOptions.Builder.class)
@@ -62,7 +63,7 @@ public final class TokenGenerationStyleOptions {
     }
 
     public interface PrimaryColorStage {
-        _FinalStage primaryColor(String primaryColor);
+        _FinalStage primaryColor(@NotNull String primaryColor);
 
         Builder from(TokenGenerationStyleOptions other);
     }
@@ -88,8 +89,8 @@ public final class TokenGenerationStyleOptions {
 
         @java.lang.Override
         @JsonSetter("primaryColor")
-        public _FinalStage primaryColor(String primaryColor) {
-            this.primaryColor = primaryColor;
+        public _FinalStage primaryColor(@NotNull String primaryColor) {
+            this.primaryColor = Objects.requireNonNull(primaryColor, "primaryColor must not be null");
             return this;
         }
 

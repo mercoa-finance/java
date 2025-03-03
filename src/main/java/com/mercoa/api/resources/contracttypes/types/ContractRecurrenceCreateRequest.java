@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ContractRecurrenceCreateRequest.Builder.class)
@@ -106,21 +107,21 @@ public final class ContractRecurrenceCreateRequest {
     }
 
     public interface RruleStage {
-        JustificationStage rrule(String rrule);
+        JustificationStage rrule(@NotNull String rrule);
 
         Builder from(ContractRecurrenceCreateRequest other);
     }
 
     public interface JustificationStage {
-        FilteredContractSummaryStage justification(String justification);
+        FilteredContractSummaryStage justification(@NotNull String justification);
     }
 
     public interface FilteredContractSummaryStage {
-        InvoiceSchemaStage filteredContractSummary(String filteredContractSummary);
+        InvoiceSchemaStage filteredContractSummary(@NotNull String filteredContractSummary);
     }
 
     public interface InvoiceSchemaStage {
-        _FinalStage invoiceSchema(ContractInvoiceSchema invoiceSchema);
+        _FinalStage invoiceSchema(@NotNull ContractInvoiceSchema invoiceSchema);
     }
 
     public interface _FinalStage {
@@ -158,8 +159,8 @@ public final class ContractRecurrenceCreateRequest {
          */
         @java.lang.Override
         @JsonSetter("rrule")
-        public JustificationStage rrule(String rrule) {
-            this.rrule = rrule;
+        public JustificationStage rrule(@NotNull String rrule) {
+            this.rrule = Objects.requireNonNull(rrule, "rrule must not be null");
             return this;
         }
 
@@ -169,8 +170,8 @@ public final class ContractRecurrenceCreateRequest {
          */
         @java.lang.Override
         @JsonSetter("justification")
-        public FilteredContractSummaryStage justification(String justification) {
-            this.justification = justification;
+        public FilteredContractSummaryStage justification(@NotNull String justification) {
+            this.justification = Objects.requireNonNull(justification, "justification must not be null");
             return this;
         }
 
@@ -180,8 +181,9 @@ public final class ContractRecurrenceCreateRequest {
          */
         @java.lang.Override
         @JsonSetter("filteredContractSummary")
-        public InvoiceSchemaStage filteredContractSummary(String filteredContractSummary) {
-            this.filteredContractSummary = filteredContractSummary;
+        public InvoiceSchemaStage filteredContractSummary(@NotNull String filteredContractSummary) {
+            this.filteredContractSummary =
+                    Objects.requireNonNull(filteredContractSummary, "filteredContractSummary must not be null");
             return this;
         }
 
@@ -191,8 +193,8 @@ public final class ContractRecurrenceCreateRequest {
          */
         @java.lang.Override
         @JsonSetter("invoiceSchema")
-        public _FinalStage invoiceSchema(ContractInvoiceSchema invoiceSchema) {
-            this.invoiceSchema = invoiceSchema;
+        public _FinalStage invoiceSchema(@NotNull ContractInvoiceSchema invoiceSchema) {
+            this.invoiceSchema = Objects.requireNonNull(invoiceSchema, "invoiceSchema must not be null");
             return this;
         }
 

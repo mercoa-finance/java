@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BankPaymentRailResponse.Builder.class)
@@ -103,7 +104,7 @@ public final class BankPaymentRailResponse implements IGenericPaymentRailRespons
     }
 
     public interface NameStage {
-        ActiveStage name(String name);
+        ActiveStage name(@NotNull String name);
 
         Builder from(BankPaymentRailResponse other);
     }
@@ -113,7 +114,7 @@ public final class BankPaymentRailResponse implements IGenericPaymentRailRespons
     }
 
     public interface DefaultDeliveryMethodStage {
-        _FinalStage defaultDeliveryMethod(BankDeliveryMethod defaultDeliveryMethod);
+        _FinalStage defaultDeliveryMethod(@NotNull BankDeliveryMethod defaultDeliveryMethod);
     }
 
     public interface _FinalStage {
@@ -156,8 +157,8 @@ public final class BankPaymentRailResponse implements IGenericPaymentRailRespons
          */
         @java.lang.Override
         @JsonSetter("name")
-        public ActiveStage name(String name) {
-            this.name = name;
+        public ActiveStage name(@NotNull String name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 
@@ -170,8 +171,9 @@ public final class BankPaymentRailResponse implements IGenericPaymentRailRespons
 
         @java.lang.Override
         @JsonSetter("defaultDeliveryMethod")
-        public _FinalStage defaultDeliveryMethod(BankDeliveryMethod defaultDeliveryMethod) {
-            this.defaultDeliveryMethod = defaultDeliveryMethod;
+        public _FinalStage defaultDeliveryMethod(@NotNull BankDeliveryMethod defaultDeliveryMethod) {
+            this.defaultDeliveryMethod =
+                    Objects.requireNonNull(defaultDeliveryMethod, "defaultDeliveryMethod must not be null");
             return this;
         }
 

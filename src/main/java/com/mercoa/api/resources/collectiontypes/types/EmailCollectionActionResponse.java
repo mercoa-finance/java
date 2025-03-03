@@ -15,6 +15,7 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EmailCollectionActionResponse.Builder.class)
@@ -120,25 +121,25 @@ public final class EmailCollectionActionResponse implements IActionBase {
     }
 
     public interface IdStage {
-        ScheduledExecutionTimeStage id(String id);
+        ScheduledExecutionTimeStage id(@NotNull String id);
 
         Builder from(EmailCollectionActionResponse other);
     }
 
     public interface ScheduledExecutionTimeStage {
-        StatusStage scheduledExecutionTime(OffsetDateTime scheduledExecutionTime);
+        StatusStage scheduledExecutionTime(@NotNull OffsetDateTime scheduledExecutionTime);
     }
 
     public interface StatusStage {
-        SubjectStage status(ActionStatus status);
+        SubjectStage status(@NotNull ActionStatus status);
     }
 
     public interface SubjectStage {
-        BodyStage subject(String subject);
+        BodyStage subject(@NotNull String subject);
     }
 
     public interface BodyStage {
-        _FinalStage body(String body);
+        _FinalStage body(@NotNull String body);
     }
 
     public interface _FinalStage {
@@ -175,8 +176,8 @@ public final class EmailCollectionActionResponse implements IActionBase {
 
         @java.lang.Override
         @JsonSetter("id")
-        public ScheduledExecutionTimeStage id(String id) {
-            this.id = id;
+        public ScheduledExecutionTimeStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
@@ -186,8 +187,9 @@ public final class EmailCollectionActionResponse implements IActionBase {
          */
         @java.lang.Override
         @JsonSetter("scheduledExecutionTime")
-        public StatusStage scheduledExecutionTime(OffsetDateTime scheduledExecutionTime) {
-            this.scheduledExecutionTime = scheduledExecutionTime;
+        public StatusStage scheduledExecutionTime(@NotNull OffsetDateTime scheduledExecutionTime) {
+            this.scheduledExecutionTime =
+                    Objects.requireNonNull(scheduledExecutionTime, "scheduledExecutionTime must not be null");
             return this;
         }
 
@@ -197,8 +199,8 @@ public final class EmailCollectionActionResponse implements IActionBase {
          */
         @java.lang.Override
         @JsonSetter("status")
-        public SubjectStage status(ActionStatus status) {
-            this.status = status;
+        public SubjectStage status(@NotNull ActionStatus status) {
+            this.status = Objects.requireNonNull(status, "status must not be null");
             return this;
         }
 
@@ -208,8 +210,8 @@ public final class EmailCollectionActionResponse implements IActionBase {
          */
         @java.lang.Override
         @JsonSetter("subject")
-        public BodyStage subject(String subject) {
-            this.subject = subject;
+        public BodyStage subject(@NotNull String subject) {
+            this.subject = Objects.requireNonNull(subject, "subject must not be null");
             return this;
         }
 
@@ -219,8 +221,8 @@ public final class EmailCollectionActionResponse implements IActionBase {
          */
         @java.lang.Override
         @JsonSetter("body")
-        public _FinalStage body(String body) {
-            this.body = body;
+        public _FinalStage body(@NotNull String body) {
+            this.body = Objects.requireNonNull(body, "body must not be null");
             return this;
         }
 

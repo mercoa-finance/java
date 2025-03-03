@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BulkEntityCreationRequest.Builder.class)
@@ -78,7 +79,7 @@ public final class BulkEntityCreationRequest {
     }
 
     public interface BodyStage {
-        _FinalStage body(com.mercoa.api.resources.entitytypes.types.BulkEntityCreationRequest body);
+        _FinalStage body(@NotNull com.mercoa.api.resources.entitytypes.types.BulkEntityCreationRequest body);
 
         Builder from(BulkEntityCreationRequest other);
     }
@@ -111,8 +112,8 @@ public final class BulkEntityCreationRequest {
 
         @java.lang.Override
         @JsonSetter("body")
-        public _FinalStage body(com.mercoa.api.resources.entitytypes.types.BulkEntityCreationRequest body) {
-            this.body = body;
+        public _FinalStage body(@NotNull com.mercoa.api.resources.entitytypes.types.BulkEntityCreationRequest body) {
+            this.body = Objects.requireNonNull(body, "body must not be null");
             return this;
         }
 

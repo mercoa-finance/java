@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BankAccountRequest.Builder.class)
@@ -220,17 +221,17 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
     }
 
     public interface RoutingNumberStage {
-        AccountNumberStage routingNumber(String routingNumber);
+        AccountNumberStage routingNumber(@NotNull String routingNumber);
 
         Builder from(BankAccountRequest other);
     }
 
     public interface AccountNumberStage {
-        AccountTypeStage accountNumber(String accountNumber);
+        AccountTypeStage accountNumber(@NotNull String accountNumber);
     }
 
     public interface AccountTypeStage {
-        _FinalStage accountType(BankType accountType);
+        _FinalStage accountType(@NotNull BankType accountType);
     }
 
     public interface _FinalStage {
@@ -323,22 +324,22 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
 
         @java.lang.Override
         @JsonSetter("routingNumber")
-        public AccountNumberStage routingNumber(String routingNumber) {
-            this.routingNumber = routingNumber;
+        public AccountNumberStage routingNumber(@NotNull String routingNumber) {
+            this.routingNumber = Objects.requireNonNull(routingNumber, "routingNumber must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("accountNumber")
-        public AccountTypeStage accountNumber(String accountNumber) {
-            this.accountNumber = accountNumber;
+        public AccountTypeStage accountNumber(@NotNull String accountNumber) {
+            this.accountNumber = Objects.requireNonNull(accountNumber, "accountNumber must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("accountType")
-        public _FinalStage accountType(BankType accountType) {
-            this.accountType = accountType;
+        public _FinalStage accountType(@NotNull BankType accountType) {
+            this.accountType = Objects.requireNonNull(accountType, "accountType must not be null");
             return this;
         }
 

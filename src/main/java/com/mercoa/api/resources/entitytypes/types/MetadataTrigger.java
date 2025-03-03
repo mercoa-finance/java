@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = MetadataTrigger.Builder.class)
@@ -76,13 +77,13 @@ public final class MetadataTrigger {
     }
 
     public interface KeyStage {
-        ValueStage key(String key);
+        ValueStage key(@NotNull String key);
 
         Builder from(MetadataTrigger other);
     }
 
     public interface ValueStage {
-        _FinalStage value(String value);
+        _FinalStage value(@NotNull String value);
     }
 
     public interface _FinalStage {
@@ -113,8 +114,8 @@ public final class MetadataTrigger {
          */
         @java.lang.Override
         @JsonSetter("key")
-        public ValueStage key(String key) {
-            this.key = key;
+        public ValueStage key(@NotNull String key) {
+            this.key = Objects.requireNonNull(key, "key must not be null");
             return this;
         }
 
@@ -124,8 +125,8 @@ public final class MetadataTrigger {
          */
         @java.lang.Override
         @JsonSetter("value")
-        public _FinalStage value(String value) {
-            this.value = value;
+        public _FinalStage value(@NotNull String value) {
+            this.value = Objects.requireNonNull(value, "value must not be null");
             return this;
         }
 

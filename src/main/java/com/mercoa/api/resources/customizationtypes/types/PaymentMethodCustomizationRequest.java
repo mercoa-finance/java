@@ -217,6 +217,7 @@ public final class PaymentMethodCustomizationRequest {
     }
 
     @JsonTypeName("bankAccount")
+    @JsonIgnoreProperties("type")
     private static final class BankAccountValue implements Value {
         @JsonUnwrapped
         private BankAccountPaymentMethodCustomizationRequest value;
@@ -255,6 +256,7 @@ public final class PaymentMethodCustomizationRequest {
     }
 
     @JsonTypeName("card")
+    @JsonIgnoreProperties("type")
     private static final class CardValue implements Value {
         @JsonUnwrapped
         private GenericPaymentMethodCustomizationRequest value;
@@ -293,6 +295,7 @@ public final class PaymentMethodCustomizationRequest {
     }
 
     @JsonTypeName("virtualCard")
+    @JsonIgnoreProperties("type")
     private static final class VirtualCardValue implements Value {
         @JsonUnwrapped
         private GenericPaymentMethodCustomizationRequest value;
@@ -331,6 +334,7 @@ public final class PaymentMethodCustomizationRequest {
     }
 
     @JsonTypeName("check")
+    @JsonIgnoreProperties("type")
     private static final class CheckValue implements Value {
         @JsonUnwrapped
         private CheckPaymentMethodCustomizationRequest value;
@@ -369,6 +373,7 @@ public final class PaymentMethodCustomizationRequest {
     }
 
     @JsonTypeName("custom")
+    @JsonIgnoreProperties("type")
     private static final class CustomValue implements Value {
         @JsonUnwrapped
         private CustomPaymentMethodCustomizationRequest value;
@@ -407,6 +412,7 @@ public final class PaymentMethodCustomizationRequest {
     }
 
     @JsonTypeName("bnpl")
+    @JsonIgnoreProperties("type")
     private static final class BnplValue implements Value {
         @JsonUnwrapped
         private GenericPaymentMethodCustomizationRequest value;
@@ -445,6 +451,7 @@ public final class PaymentMethodCustomizationRequest {
     }
 
     @JsonTypeName("offPlatform")
+    @JsonIgnoreProperties("type")
     private static final class OffPlatformValue implements Value {
         @JsonUnwrapped
         private GenericPaymentMethodCustomizationRequest value;
@@ -483,6 +490,7 @@ public final class PaymentMethodCustomizationRequest {
     }
 
     @JsonTypeName("utility")
+    @JsonIgnoreProperties("type")
     private static final class UtilityValue implements Value {
         @JsonUnwrapped
         private GenericPaymentMethodCustomizationRequest value;
@@ -521,6 +529,7 @@ public final class PaymentMethodCustomizationRequest {
     }
 
     @JsonTypeName("na")
+    @JsonIgnoreProperties("type")
     private static final class NaValue implements Value {
         @JsonUnwrapped
         private GenericPaymentMethodCustomizationRequest value;
@@ -558,6 +567,7 @@ public final class PaymentMethodCustomizationRequest {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

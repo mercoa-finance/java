@@ -78,7 +78,7 @@ public final class EntityIdOrBoolean {
         }
 
         @java.lang.Override
-        public EntityIdOrBoolean deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        public EntityIdOrBoolean deserialize(JsonParser p, DeserializationContext context) throws IOException {
             Object value = p.readValueAs(Object.class);
             if (value instanceof Boolean) {
                 return of((Boolean) value);

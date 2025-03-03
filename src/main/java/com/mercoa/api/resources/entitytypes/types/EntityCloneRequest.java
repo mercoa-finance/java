@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityCloneRequest.Builder.class)
@@ -85,7 +86,7 @@ public final class EntityCloneRequest {
     }
 
     /**
-     * @return Base64 encoded PNG image data for the entity logo. Max size 100KB.
+     * @return Base64 data URL of the entity logo. Must be in the <code>data:image/*;base64,XXXX</code> format. We recommend a PNG image under 100KB. Supported file types are <code>png</code>, <code>jpeg</code>, <code>gif</code>, <code>svg</code>.
      */
     @JsonProperty("logo")
     public Optional<String> getLogo() {
@@ -136,7 +137,7 @@ public final class EntityCloneRequest {
     }
 
     public interface CreateFromIdStage {
-        _FinalStage createFromId(String createFromId);
+        _FinalStage createFromId(@NotNull String createFromId);
 
         Builder from(EntityCloneRequest other);
     }
@@ -201,8 +202,8 @@ public final class EntityCloneRequest {
          */
         @java.lang.Override
         @JsonSetter("createFromId")
-        public _FinalStage createFromId(String createFromId) {
-            this.createFromId = createFromId;
+        public _FinalStage createFromId(@NotNull String createFromId) {
+            this.createFromId = Objects.requireNonNull(createFromId, "createFromId must not be null");
             return this;
         }
 
@@ -224,7 +225,7 @@ public final class EntityCloneRequest {
         }
 
         /**
-         * <p>Base64 encoded PNG image data for the entity logo. Max size 100KB.</p>
+         * <p>Base64 data URL of the entity logo. Must be in the <code>data:image/*;base64,XXXX</code> format. We recommend a PNG image under 100KB. Supported file types are <code>png</code>, <code>jpeg</code>, <code>gif</code>, <code>svg</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

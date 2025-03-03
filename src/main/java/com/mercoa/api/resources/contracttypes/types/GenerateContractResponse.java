@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GenerateContractResponse.Builder.class)
@@ -77,13 +78,13 @@ public final class GenerateContractResponse {
     }
 
     public interface JobIdStage {
-        ContractStage jobId(String jobId);
+        ContractStage jobId(@NotNull String jobId);
 
         Builder from(GenerateContractResponse other);
     }
 
     public interface ContractStage {
-        _FinalStage contract(ContractResponse contract);
+        _FinalStage contract(@NotNull ContractResponse contract);
     }
 
     public interface _FinalStage {
@@ -114,8 +115,8 @@ public final class GenerateContractResponse {
          */
         @java.lang.Override
         @JsonSetter("jobId")
-        public ContractStage jobId(String jobId) {
-            this.jobId = jobId;
+        public ContractStage jobId(@NotNull String jobId) {
+            this.jobId = Objects.requireNonNull(jobId, "jobId must not be null");
             return this;
         }
 
@@ -125,8 +126,8 @@ public final class GenerateContractResponse {
          */
         @java.lang.Override
         @JsonSetter("contract")
-        public _FinalStage contract(ContractResponse contract) {
-            this.contract = contract;
+        public _FinalStage contract(@NotNull ContractResponse contract) {
+            this.contract = Objects.requireNonNull(contract, "contract must not be null");
             return this;
         }
 

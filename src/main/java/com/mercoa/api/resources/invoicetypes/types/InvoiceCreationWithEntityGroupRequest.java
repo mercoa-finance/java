@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceCreationWithEntityGroupRequest.Builder.class)
@@ -523,7 +524,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
     }
 
     public interface CreatorEntityGroupIdStage {
-        _FinalStage creatorEntityGroupId(String creatorEntityGroupId);
+        _FinalStage creatorEntityGroupId(@NotNull String creatorEntityGroupId);
 
         Builder from(InvoiceCreationWithEntityGroupRequest other);
     }
@@ -770,8 +771,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
          */
         @java.lang.Override
         @JsonSetter("creatorEntityGroupId")
-        public _FinalStage creatorEntityGroupId(String creatorEntityGroupId) {
-            this.creatorEntityGroupId = creatorEntityGroupId;
+        public _FinalStage creatorEntityGroupId(@NotNull String creatorEntityGroupId) {
+            this.creatorEntityGroupId =
+                    Objects.requireNonNull(creatorEntityGroupId, "creatorEntityGroupId must not be null");
             return this;
         }
 

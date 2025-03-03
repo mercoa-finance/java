@@ -109,6 +109,7 @@ public final class ExternalAccountingSystemProviderRequest {
     }
 
     @JsonTypeName("none")
+    @JsonIgnoreProperties("type")
     private static final class NoneValue implements Value {
         @JsonUnwrapped
         private CodatProviderRequest value;
@@ -147,6 +148,7 @@ public final class ExternalAccountingSystemProviderRequest {
     }
 
     @JsonTypeName("codat")
+    @JsonIgnoreProperties("type")
     private static final class CodatValue implements Value {
         @JsonUnwrapped
         private CodatProviderRequest value;
@@ -185,6 +187,7 @@ public final class ExternalAccountingSystemProviderRequest {
     }
 
     @JsonTypeName("rutter")
+    @JsonIgnoreProperties("type")
     private static final class RutterValue implements Value {
         @JsonUnwrapped
         private RutterProviderRequest value;
@@ -222,6 +225,7 @@ public final class ExternalAccountingSystemProviderRequest {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

@@ -163,6 +163,7 @@ public final class PaymentMethodResponse {
     }
 
     @JsonTypeName("bankAccount")
+    @JsonIgnoreProperties("type")
     private static final class BankAccountValue implements Value {
         @JsonUnwrapped
         private BankAccountResponse value;
@@ -201,6 +202,7 @@ public final class PaymentMethodResponse {
     }
 
     @JsonTypeName("card")
+    @JsonIgnoreProperties("type")
     private static final class CardValue implements Value {
         @JsonUnwrapped
         private CardResponse value;
@@ -239,6 +241,7 @@ public final class PaymentMethodResponse {
     }
 
     @JsonTypeName("check")
+    @JsonIgnoreProperties("type")
     private static final class CheckValue implements Value {
         @JsonUnwrapped
         private CheckResponse value;
@@ -277,6 +280,7 @@ public final class PaymentMethodResponse {
     }
 
     @JsonTypeName("custom")
+    @JsonIgnoreProperties("type")
     private static final class CustomValue implements Value {
         @JsonUnwrapped
         private CustomPaymentMethodResponse value;
@@ -315,6 +319,7 @@ public final class PaymentMethodResponse {
     }
 
     @JsonTypeName("offPlatform")
+    @JsonIgnoreProperties("type")
     private static final class OffPlatformValue implements Value {
         @JsonUnwrapped
         private PaymentMethodBaseResponse value;
@@ -353,6 +358,7 @@ public final class PaymentMethodResponse {
     }
 
     @JsonTypeName("utility")
+    @JsonIgnoreProperties("type")
     private static final class UtilityValue implements Value {
         @JsonUnwrapped
         private UtilityPaymentMethodResponse value;
@@ -390,6 +396,7 @@ public final class PaymentMethodResponse {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

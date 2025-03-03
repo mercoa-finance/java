@@ -9,6 +9,7 @@ import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.MercoaApiException;
 import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.entity.counterparty.requests.FindPayeeCounterpartiesRequest;
@@ -64,46 +65,51 @@ public class CounterpartyClient {
                 .addPathSegment(entityId)
                 .addPathSegments("counterparties/payees");
         if (request.getName().isPresent()) {
-            httpUrl.addQueryParameter("name", request.getName().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "name", request.getName().get(), false);
         }
         if (request.getSearch().isPresent()) {
-            httpUrl.addQueryParameter("search", request.getSearch().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "search", request.getSearch().get(), false);
         }
         if (request.getNetworkType().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "networkType", request.getNetworkType().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "networkType", request.getNetworkType().get().toString(), false);
         }
         if (request.getPaymentMethods().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "paymentMethods", request.getPaymentMethods().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "paymentMethods", request.getPaymentMethods().get().toString(), false);
         }
         if (request.getInvoiceMetrics().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "invoiceMetrics", request.getInvoiceMetrics().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "invoiceMetrics", request.getInvoiceMetrics().get().toString(), false);
         }
         if (request.getCounterpartyId().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "counterpartyId", request.getCounterpartyId().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "counterpartyId", request.getCounterpartyId().get(), false);
         }
         if (request.getMetadata().isPresent()) {
-            httpUrl.addQueryParameter("metadata", request.getMetadata().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "metadata", request.getMetadata().get().toString(), false);
         }
         if (request.getReturnMetadata().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "returnMetadata", request.getReturnMetadata().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "returnMetadata", request.getReturnMetadata().get(), false);
         }
         if (request.getLimit().isPresent()) {
-            httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "limit", request.getLimit().get().toString(), false);
         }
         if (request.getStartingAfter().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "startingAfter", request.getStartingAfter().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -149,46 +155,51 @@ public class CounterpartyClient {
                 .addPathSegment(entityId)
                 .addPathSegments("counterparties/payors");
         if (request.getName().isPresent()) {
-            httpUrl.addQueryParameter("name", request.getName().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "name", request.getName().get(), false);
         }
         if (request.getSearch().isPresent()) {
-            httpUrl.addQueryParameter("search", request.getSearch().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "search", request.getSearch().get(), false);
         }
         if (request.getNetworkType().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "networkType", request.getNetworkType().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "networkType", request.getNetworkType().get().toString(), false);
         }
         if (request.getPaymentMethods().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "paymentMethods", request.getPaymentMethods().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "paymentMethods", request.getPaymentMethods().get().toString(), false);
         }
         if (request.getInvoiceMetrics().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "invoiceMetrics", request.getInvoiceMetrics().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "invoiceMetrics", request.getInvoiceMetrics().get().toString(), false);
         }
         if (request.getCounterpartyId().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "counterpartyId", request.getCounterpartyId().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "counterpartyId", request.getCounterpartyId().get(), false);
         }
         if (request.getMetadata().isPresent()) {
-            httpUrl.addQueryParameter("metadata", request.getMetadata().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "metadata", request.getMetadata().get().toString(), false);
         }
         if (request.getReturnMetadata().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "returnMetadata", request.getReturnMetadata().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "returnMetadata", request.getReturnMetadata().get(), false);
         }
         if (request.getLimit().isPresent()) {
-            httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "limit", request.getLimit().get().toString(), false);
         }
         if (request.getStartingAfter().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "startingAfter", request.getStartingAfter().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -238,6 +249,7 @@ public class CounterpartyClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -287,6 +299,7 @@ public class CounterpartyClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -336,6 +349,7 @@ public class CounterpartyClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -385,6 +399,7 @@ public class CounterpartyClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {

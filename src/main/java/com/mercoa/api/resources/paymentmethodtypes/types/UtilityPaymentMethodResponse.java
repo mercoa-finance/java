@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = UtilityPaymentMethodResponse.Builder.class)
@@ -197,7 +198,7 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
     }
 
     public interface IdStage {
-        IsDefaultSourceStage id(String id);
+        IsDefaultSourceStage id(@NotNull String id);
 
         Builder from(UtilityPaymentMethodResponse other);
     }
@@ -215,15 +216,15 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
     }
 
     public interface CreatedAtStage {
-        UpdatedAtStage createdAt(OffsetDateTime createdAt);
+        UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface UpdatedAtStage {
-        UtilityIdStage updatedAt(OffsetDateTime updatedAt);
+        UtilityIdStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
     public interface UtilityIdStage {
-        _FinalStage utilityId(String utilityId);
+        _FinalStage utilityId(@NotNull String utilityId);
     }
 
     public interface _FinalStage {
@@ -298,8 +299,8 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
 
         @java.lang.Override
         @JsonSetter("id")
-        public IsDefaultSourceStage id(String id) {
-            this.id = id;
+        public IsDefaultSourceStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
@@ -338,15 +339,15 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
 
         @java.lang.Override
         @JsonSetter("createdAt")
-        public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        public UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("updatedAt")
-        public UtilityIdStage updatedAt(OffsetDateTime updatedAt) {
-            this.updatedAt = updatedAt;
+        public UtilityIdStage updatedAt(@NotNull OffsetDateTime updatedAt) {
+            this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
             return this;
         }
 
@@ -356,8 +357,8 @@ public final class UtilityPaymentMethodResponse implements IPaymentMethodBaseRes
          */
         @java.lang.Override
         @JsonSetter("utilityId")
-        public _FinalStage utilityId(String utilityId) {
-            this.utilityId = utilityId;
+        public _FinalStage utilityId(@NotNull String utilityId) {
+            this.utilityId = Objects.requireNonNull(utilityId, "utilityId must not be null");
             return this;
         }
 

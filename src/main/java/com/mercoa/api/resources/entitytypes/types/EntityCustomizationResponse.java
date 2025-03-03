@@ -25,6 +25,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityCustomizationResponse.Builder.class)
@@ -164,21 +165,21 @@ public final class EntityCustomizationResponse {
     }
 
     public interface OcrStage {
-        NotificationsStage ocr(OcrCustomizationResponse ocr);
+        NotificationsStage ocr(@NotNull OcrCustomizationResponse ocr);
 
         Builder from(EntityCustomizationResponse other);
     }
 
     public interface NotificationsStage {
-        WorkflowStage notifications(NotificationCustomizationRequest notifications);
+        WorkflowStage notifications(@NotNull NotificationCustomizationRequest notifications);
     }
 
     public interface WorkflowStage {
-        FeesStage workflow(WorkflowCustomizationRequest workflow);
+        FeesStage workflow(@NotNull WorkflowCustomizationRequest workflow);
     }
 
     public interface FeesStage {
-        _FinalStage fees(FeeCustomizationRequest fees);
+        _FinalStage fees(@NotNull FeeCustomizationRequest fees);
     }
 
     public interface _FinalStage {
@@ -256,29 +257,29 @@ public final class EntityCustomizationResponse {
 
         @java.lang.Override
         @JsonSetter("ocr")
-        public NotificationsStage ocr(OcrCustomizationResponse ocr) {
-            this.ocr = ocr;
+        public NotificationsStage ocr(@NotNull OcrCustomizationResponse ocr) {
+            this.ocr = Objects.requireNonNull(ocr, "ocr must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("notifications")
-        public WorkflowStage notifications(NotificationCustomizationRequest notifications) {
-            this.notifications = notifications;
+        public WorkflowStage notifications(@NotNull NotificationCustomizationRequest notifications) {
+            this.notifications = Objects.requireNonNull(notifications, "notifications must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("workflow")
-        public FeesStage workflow(WorkflowCustomizationRequest workflow) {
-            this.workflow = workflow;
+        public FeesStage workflow(@NotNull WorkflowCustomizationRequest workflow) {
+            this.workflow = Objects.requireNonNull(workflow, "workflow must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("fees")
-        public _FinalStage fees(FeeCustomizationRequest fees) {
-            this.fees = fees;
+        public _FinalStage fees(@NotNull FeeCustomizationRequest fees) {
+            this.fees = Objects.requireNonNull(fees, "fees must not be null");
             return this;
         }
 

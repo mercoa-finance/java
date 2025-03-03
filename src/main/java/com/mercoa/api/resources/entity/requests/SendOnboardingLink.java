@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = SendOnboardingLink.Builder.class)
@@ -96,7 +97,7 @@ public final class SendOnboardingLink {
     }
 
     public interface TypeStage {
-        _FinalStage type(EntityOnboardingLinkType type);
+        _FinalStage type(@NotNull EntityOnboardingLinkType type);
 
         Builder from(SendOnboardingLink other);
     }
@@ -140,8 +141,8 @@ public final class SendOnboardingLink {
          */
         @java.lang.Override
         @JsonSetter("type")
-        public _FinalStage type(EntityOnboardingLinkType type) {
-            this.type = type;
+        public _FinalStage type(@NotNull EntityOnboardingLinkType type) {
+            this.type = Objects.requireNonNull(type, "type must not be null");
             return this;
         }
 

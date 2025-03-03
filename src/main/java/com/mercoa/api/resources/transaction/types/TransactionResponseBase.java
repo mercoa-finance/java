@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = TransactionResponseBase.Builder.class)
@@ -253,13 +254,13 @@ public final class TransactionResponseBase implements ITransactionResponseBase {
     }
 
     public interface IdStage {
-        StatusStage id(String id);
+        StatusStage id(@NotNull String id);
 
         Builder from(TransactionResponseBase other);
     }
 
     public interface StatusStage {
-        AmountStage status(TransactionStatus status);
+        AmountStage status(@NotNull TransactionStatus status);
     }
 
     public interface AmountStage {
@@ -267,47 +268,47 @@ public final class TransactionResponseBase implements ITransactionResponseBase {
     }
 
     public interface CurrencyStage {
-        PayerIdStage currency(String currency);
+        PayerIdStage currency(@NotNull String currency);
     }
 
     public interface PayerIdStage {
-        PayerStage payerId(String payerId);
+        PayerStage payerId(@NotNull String payerId);
     }
 
     public interface PayerStage {
-        PaymentSourceStage payer(CounterpartyResponse payer);
+        PaymentSourceStage payer(@NotNull CounterpartyResponse payer);
     }
 
     public interface PaymentSourceStage {
-        PaymentSourceIdStage paymentSource(PaymentMethodResponse paymentSource);
+        PaymentSourceIdStage paymentSource(@NotNull PaymentMethodResponse paymentSource);
     }
 
     public interface PaymentSourceIdStage {
-        VendorIdStage paymentSourceId(String paymentSourceId);
+        VendorIdStage paymentSourceId(@NotNull String paymentSourceId);
     }
 
     public interface VendorIdStage {
-        VendorStage vendorId(String vendorId);
+        VendorStage vendorId(@NotNull String vendorId);
     }
 
     public interface VendorStage {
-        PaymentDestinationStage vendor(CounterpartyResponse vendor);
+        PaymentDestinationStage vendor(@NotNull CounterpartyResponse vendor);
     }
 
     public interface PaymentDestinationStage {
-        PaymentDestinationIdStage paymentDestination(PaymentMethodResponse paymentDestination);
+        PaymentDestinationIdStage paymentDestination(@NotNull PaymentMethodResponse paymentDestination);
     }
 
     public interface PaymentDestinationIdStage {
-        CreatedAtStage paymentDestinationId(String paymentDestinationId);
+        CreatedAtStage paymentDestinationId(@NotNull String paymentDestinationId);
     }
 
     public interface CreatedAtStage {
-        UpdatedAtStage createdAt(OffsetDateTime createdAt);
+        UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface UpdatedAtStage {
-        _FinalStage updatedAt(OffsetDateTime updatedAt);
+        _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
     public interface _FinalStage {
@@ -399,15 +400,15 @@ public final class TransactionResponseBase implements ITransactionResponseBase {
 
         @java.lang.Override
         @JsonSetter("id")
-        public StatusStage id(String id) {
-            this.id = id;
+        public StatusStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("status")
-        public AmountStage status(TransactionStatus status) {
-            this.status = status;
+        public AmountStage status(@NotNull TransactionStatus status) {
+            this.status = Objects.requireNonNull(status, "status must not be null");
             return this;
         }
 
@@ -420,78 +421,79 @@ public final class TransactionResponseBase implements ITransactionResponseBase {
 
         @java.lang.Override
         @JsonSetter("currency")
-        public PayerIdStage currency(String currency) {
-            this.currency = currency;
+        public PayerIdStage currency(@NotNull String currency) {
+            this.currency = Objects.requireNonNull(currency, "currency must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("payerId")
-        public PayerStage payerId(String payerId) {
-            this.payerId = payerId;
+        public PayerStage payerId(@NotNull String payerId) {
+            this.payerId = Objects.requireNonNull(payerId, "payerId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("payer")
-        public PaymentSourceStage payer(CounterpartyResponse payer) {
-            this.payer = payer;
+        public PaymentSourceStage payer(@NotNull CounterpartyResponse payer) {
+            this.payer = Objects.requireNonNull(payer, "payer must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("paymentSource")
-        public PaymentSourceIdStage paymentSource(PaymentMethodResponse paymentSource) {
-            this.paymentSource = paymentSource;
+        public PaymentSourceIdStage paymentSource(@NotNull PaymentMethodResponse paymentSource) {
+            this.paymentSource = Objects.requireNonNull(paymentSource, "paymentSource must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("paymentSourceId")
-        public VendorIdStage paymentSourceId(String paymentSourceId) {
-            this.paymentSourceId = paymentSourceId;
+        public VendorIdStage paymentSourceId(@NotNull String paymentSourceId) {
+            this.paymentSourceId = Objects.requireNonNull(paymentSourceId, "paymentSourceId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("vendorId")
-        public VendorStage vendorId(String vendorId) {
-            this.vendorId = vendorId;
+        public VendorStage vendorId(@NotNull String vendorId) {
+            this.vendorId = Objects.requireNonNull(vendorId, "vendorId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("vendor")
-        public PaymentDestinationStage vendor(CounterpartyResponse vendor) {
-            this.vendor = vendor;
+        public PaymentDestinationStage vendor(@NotNull CounterpartyResponse vendor) {
+            this.vendor = Objects.requireNonNull(vendor, "vendor must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("paymentDestination")
-        public PaymentDestinationIdStage paymentDestination(PaymentMethodResponse paymentDestination) {
-            this.paymentDestination = paymentDestination;
+        public PaymentDestinationIdStage paymentDestination(@NotNull PaymentMethodResponse paymentDestination) {
+            this.paymentDestination = Objects.requireNonNull(paymentDestination, "paymentDestination must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("paymentDestinationId")
-        public CreatedAtStage paymentDestinationId(String paymentDestinationId) {
-            this.paymentDestinationId = paymentDestinationId;
+        public CreatedAtStage paymentDestinationId(@NotNull String paymentDestinationId) {
+            this.paymentDestinationId =
+                    Objects.requireNonNull(paymentDestinationId, "paymentDestinationId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("createdAt")
-        public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        public UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("updatedAt")
-        public _FinalStage updatedAt(OffsetDateTime updatedAt) {
-            this.updatedAt = updatedAt;
+        public _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt) {
+            this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
             return this;
         }
 

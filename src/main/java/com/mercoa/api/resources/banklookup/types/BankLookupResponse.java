@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BankLookupResponse.Builder.class)
@@ -70,13 +71,13 @@ public final class BankLookupResponse {
     }
 
     public interface BankNameStage {
-        BankAddressStage bankName(String bankName);
+        BankAddressStage bankName(@NotNull String bankName);
 
         Builder from(BankLookupResponse other);
     }
 
     public interface BankAddressStage {
-        _FinalStage bankAddress(BankAddress bankAddress);
+        _FinalStage bankAddress(@NotNull BankAddress bankAddress);
     }
 
     public interface _FinalStage {
@@ -103,15 +104,15 @@ public final class BankLookupResponse {
 
         @java.lang.Override
         @JsonSetter("bankName")
-        public BankAddressStage bankName(String bankName) {
-            this.bankName = bankName;
+        public BankAddressStage bankName(@NotNull String bankName) {
+            this.bankName = Objects.requireNonNull(bankName, "bankName must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("bankAddress")
-        public _FinalStage bankAddress(BankAddress bankAddress) {
-            this.bankAddress = bankAddress;
+        public _FinalStage bankAddress(@NotNull BankAddress bankAddress) {
+            this.bankAddress = Objects.requireNonNull(bankAddress, "bankAddress must not be null");
             return this;
         }
 

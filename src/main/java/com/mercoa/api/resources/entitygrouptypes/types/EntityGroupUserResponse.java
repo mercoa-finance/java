@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGroupUserResponse.Builder.class)
@@ -125,17 +126,17 @@ public final class EntityGroupUserResponse {
     }
 
     public interface ForeignIdStage {
-        CreatedAtStage foreignId(String foreignId);
+        CreatedAtStage foreignId(@NotNull String foreignId);
 
         Builder from(EntityGroupUserResponse other);
     }
 
     public interface CreatedAtStage {
-        UpdatedAtStage createdAt(OffsetDateTime createdAt);
+        UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface UpdatedAtStage {
-        _FinalStage updatedAt(OffsetDateTime updatedAt);
+        _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
     public interface _FinalStage {
@@ -192,22 +193,22 @@ public final class EntityGroupUserResponse {
          */
         @java.lang.Override
         @JsonSetter("foreignId")
-        public CreatedAtStage foreignId(String foreignId) {
-            this.foreignId = foreignId;
+        public CreatedAtStage foreignId(@NotNull String foreignId) {
+            this.foreignId = Objects.requireNonNull(foreignId, "foreignId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("createdAt")
-        public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        public UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("updatedAt")
-        public _FinalStage updatedAt(OffsetDateTime updatedAt) {
-            this.updatedAt = updatedAt;
+        public _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt) {
+            this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
             return this;
         }
 

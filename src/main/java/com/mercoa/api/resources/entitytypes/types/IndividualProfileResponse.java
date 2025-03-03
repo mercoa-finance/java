@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = IndividualProfileResponse.Builder.class)
@@ -120,7 +121,7 @@ public final class IndividualProfileResponse {
     }
 
     public interface NameStage {
-        BirthDateProvidedStage name(FullName name);
+        BirthDateProvidedStage name(@NotNull FullName name);
 
         Builder from(IndividualProfileResponse other);
     }
@@ -182,8 +183,8 @@ public final class IndividualProfileResponse {
 
         @java.lang.Override
         @JsonSetter("name")
-        public BirthDateProvidedStage name(FullName name) {
-            this.name = name;
+        public BirthDateProvidedStage name(@NotNull FullName name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 

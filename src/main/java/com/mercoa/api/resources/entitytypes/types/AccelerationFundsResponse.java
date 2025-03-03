@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = AccelerationFundsResponse.Builder.class)
@@ -100,21 +101,21 @@ public final class AccelerationFundsResponse {
     }
 
     public interface EntityIdStage {
-        PaymentMethodIdStage entityId(String entityId);
+        PaymentMethodIdStage entityId(@NotNull String entityId);
 
         Builder from(AccelerationFundsResponse other);
     }
 
     public interface PaymentMethodIdStage {
-        AvailableBalanceStage paymentMethodId(String paymentMethodId);
+        AvailableBalanceStage paymentMethodId(@NotNull String paymentMethodId);
     }
 
     public interface AvailableBalanceStage {
-        PendingBalanceStage availableBalance(AccelerationFundsBalanceResponse availableBalance);
+        PendingBalanceStage availableBalance(@NotNull AccelerationFundsBalanceResponse availableBalance);
     }
 
     public interface PendingBalanceStage {
-        _FinalStage pendingBalance(AccelerationFundsBalanceResponse pendingBalance);
+        _FinalStage pendingBalance(@NotNull AccelerationFundsBalanceResponse pendingBalance);
     }
 
     public interface _FinalStage {
@@ -152,8 +153,8 @@ public final class AccelerationFundsResponse {
          */
         @java.lang.Override
         @JsonSetter("entityId")
-        public PaymentMethodIdStage entityId(String entityId) {
-            this.entityId = entityId;
+        public PaymentMethodIdStage entityId(@NotNull String entityId) {
+            this.entityId = Objects.requireNonNull(entityId, "entityId must not be null");
             return this;
         }
 
@@ -163,22 +164,22 @@ public final class AccelerationFundsResponse {
          */
         @java.lang.Override
         @JsonSetter("paymentMethodId")
-        public AvailableBalanceStage paymentMethodId(String paymentMethodId) {
-            this.paymentMethodId = paymentMethodId;
+        public AvailableBalanceStage paymentMethodId(@NotNull String paymentMethodId) {
+            this.paymentMethodId = Objects.requireNonNull(paymentMethodId, "paymentMethodId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("availableBalance")
-        public PendingBalanceStage availableBalance(AccelerationFundsBalanceResponse availableBalance) {
-            this.availableBalance = availableBalance;
+        public PendingBalanceStage availableBalance(@NotNull AccelerationFundsBalanceResponse availableBalance) {
+            this.availableBalance = Objects.requireNonNull(availableBalance, "availableBalance must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("pendingBalance")
-        public _FinalStage pendingBalance(AccelerationFundsBalanceResponse pendingBalance) {
-            this.pendingBalance = pendingBalance;
+        public _FinalStage pendingBalance(@NotNull AccelerationFundsBalanceResponse pendingBalance) {
+            this.pendingBalance = Objects.requireNonNull(pendingBalance, "pendingBalance must not be null");
             return this;
         }
 

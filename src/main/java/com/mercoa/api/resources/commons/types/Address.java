@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Address.Builder.class)
@@ -123,21 +124,21 @@ public final class Address {
     }
 
     public interface AddressLine1Stage {
-        CityStage addressLine1(String addressLine1);
+        CityStage addressLine1(@NotNull String addressLine1);
 
         Builder from(Address other);
     }
 
     public interface CityStage {
-        StateOrProvinceStage city(String city);
+        StateOrProvinceStage city(@NotNull String city);
     }
 
     public interface StateOrProvinceStage {
-        PostalCodeStage stateOrProvince(String stateOrProvince);
+        PostalCodeStage stateOrProvince(@NotNull String stateOrProvince);
     }
 
     public interface PostalCodeStage {
-        _FinalStage postalCode(String postalCode);
+        _FinalStage postalCode(@NotNull String postalCode);
     }
 
     public interface _FinalStage {
@@ -185,15 +186,15 @@ public final class Address {
 
         @java.lang.Override
         @JsonSetter("addressLine1")
-        public CityStage addressLine1(String addressLine1) {
-            this.addressLine1 = addressLine1;
+        public CityStage addressLine1(@NotNull String addressLine1) {
+            this.addressLine1 = Objects.requireNonNull(addressLine1, "addressLine1 must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("city")
-        public StateOrProvinceStage city(String city) {
-            this.city = city;
+        public StateOrProvinceStage city(@NotNull String city) {
+            this.city = Objects.requireNonNull(city, "city must not be null");
             return this;
         }
 
@@ -203,8 +204,8 @@ public final class Address {
          */
         @java.lang.Override
         @JsonSetter("stateOrProvince")
-        public PostalCodeStage stateOrProvince(String stateOrProvince) {
-            this.stateOrProvince = stateOrProvince;
+        public PostalCodeStage stateOrProvince(@NotNull String stateOrProvince) {
+            this.stateOrProvince = Objects.requireNonNull(stateOrProvince, "stateOrProvince must not be null");
             return this;
         }
 
@@ -214,8 +215,8 @@ public final class Address {
          */
         @java.lang.Override
         @JsonSetter("postalCode")
-        public _FinalStage postalCode(String postalCode) {
-            this.postalCode = postalCode;
+        public _FinalStage postalCode(@NotNull String postalCode) {
+            this.postalCode = Objects.requireNonNull(postalCode, "postalCode must not be null");
             return this;
         }
 

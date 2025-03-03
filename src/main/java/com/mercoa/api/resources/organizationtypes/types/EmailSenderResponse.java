@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EmailSenderResponse.Builder.class)
@@ -94,17 +95,17 @@ public final class EmailSenderResponse {
     }
 
     public interface ProviderStage {
-        FromEmailStage provider(EmailSenderProvider provider);
+        FromEmailStage provider(@NotNull EmailSenderProvider provider);
 
         Builder from(EmailSenderResponse other);
     }
 
     public interface FromEmailStage {
-        FromNameStage fromEmail(String fromEmail);
+        FromNameStage fromEmail(@NotNull String fromEmail);
     }
 
     public interface FromNameStage {
-        HasApiKeyStage fromName(String fromName);
+        HasApiKeyStage fromName(@NotNull String fromName);
     }
 
     public interface HasApiKeyStage {
@@ -142,22 +143,22 @@ public final class EmailSenderResponse {
 
         @java.lang.Override
         @JsonSetter("provider")
-        public FromEmailStage provider(EmailSenderProvider provider) {
-            this.provider = provider;
+        public FromEmailStage provider(@NotNull EmailSenderProvider provider) {
+            this.provider = Objects.requireNonNull(provider, "provider must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("fromEmail")
-        public FromNameStage fromEmail(String fromEmail) {
-            this.fromEmail = fromEmail;
+        public FromNameStage fromEmail(@NotNull String fromEmail) {
+            this.fromEmail = Objects.requireNonNull(fromEmail, "fromEmail must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("fromName")
-        public HasApiKeyStage fromName(String fromName) {
-            this.fromName = fromName;
+        public HasApiKeyStage fromName(@NotNull String fromName) {
+            this.fromName = Objects.requireNonNull(fromName, "fromName must not be null");
             return this;
         }
 

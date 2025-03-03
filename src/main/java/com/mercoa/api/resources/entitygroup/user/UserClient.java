@@ -9,6 +9,7 @@ import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.MercoaApiException;
 import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.entitygroup.user.requests.EntityFindEntityRequest;
 import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupUserRequest;
@@ -56,29 +57,35 @@ public class UserClient {
                 .addPathSegment(entityGroupId)
                 .addPathSegments("users");
         if (request.getForeignId().isPresent()) {
-            httpUrl.addQueryParameter("foreignId", request.getForeignId().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "foreignId", request.getForeignId().get(), false);
         }
         if (request.getRole().isPresent()) {
-            httpUrl.addQueryParameter("role", request.getRole().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "role", request.getRole().get(), false);
         }
         if (request.getName().isPresent()) {
-            httpUrl.addQueryParameter("name", request.getName().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "name", request.getName().get(), false);
         }
         if (request.getEmail().isPresent()) {
-            httpUrl.addQueryParameter("email", request.getEmail().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "email", request.getEmail().get(), false);
         }
         if (request.getLimit().isPresent()) {
-            httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "limit", request.getLimit().get().toString(), false);
         }
         if (request.getStartingAfter().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "startingAfter", request.getStartingAfter().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -129,6 +136,7 @@ public class UserClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -172,6 +180,7 @@ public class UserClient {
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -223,6 +232,7 @@ public class UserClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -265,6 +275,7 @@ public class UserClient {
                 .url(httpUrl)
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -325,6 +336,7 @@ public class UserClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {

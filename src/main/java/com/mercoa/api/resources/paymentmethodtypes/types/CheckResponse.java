@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CheckResponse.Builder.class)
@@ -260,7 +261,7 @@ public final class CheckResponse implements IPaymentMethodBaseResponse {
     }
 
     public interface IdStage {
-        IsDefaultSourceStage id(String id);
+        IsDefaultSourceStage id(@NotNull String id);
 
         Builder from(CheckResponse other);
     }
@@ -278,35 +279,35 @@ public final class CheckResponse implements IPaymentMethodBaseResponse {
     }
 
     public interface CreatedAtStage {
-        UpdatedAtStage createdAt(OffsetDateTime createdAt);
+        UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface UpdatedAtStage {
-        PayToTheOrderOfStage updatedAt(OffsetDateTime updatedAt);
+        PayToTheOrderOfStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
     public interface PayToTheOrderOfStage {
-        AddressLine1Stage payToTheOrderOf(String payToTheOrderOf);
+        AddressLine1Stage payToTheOrderOf(@NotNull String payToTheOrderOf);
     }
 
     public interface AddressLine1Stage {
-        CityStage addressLine1(String addressLine1);
+        CityStage addressLine1(@NotNull String addressLine1);
     }
 
     public interface CityStage {
-        StateOrProvinceStage city(String city);
+        StateOrProvinceStage city(@NotNull String city);
     }
 
     public interface StateOrProvinceStage {
-        PostalCodeStage stateOrProvince(String stateOrProvince);
+        PostalCodeStage stateOrProvince(@NotNull String stateOrProvince);
     }
 
     public interface PostalCodeStage {
-        CountryStage postalCode(String postalCode);
+        CountryStage postalCode(@NotNull String postalCode);
     }
 
     public interface CountryStage {
-        _FinalStage country(String country);
+        _FinalStage country(@NotNull String country);
     }
 
     public interface _FinalStage {
@@ -408,8 +409,8 @@ public final class CheckResponse implements IPaymentMethodBaseResponse {
 
         @java.lang.Override
         @JsonSetter("id")
-        public IsDefaultSourceStage id(String id) {
-            this.id = id;
+        public IsDefaultSourceStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
@@ -448,57 +449,57 @@ public final class CheckResponse implements IPaymentMethodBaseResponse {
 
         @java.lang.Override
         @JsonSetter("createdAt")
-        public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        public UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("updatedAt")
-        public PayToTheOrderOfStage updatedAt(OffsetDateTime updatedAt) {
-            this.updatedAt = updatedAt;
+        public PayToTheOrderOfStage updatedAt(@NotNull OffsetDateTime updatedAt) {
+            this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("payToTheOrderOf")
-        public AddressLine1Stage payToTheOrderOf(String payToTheOrderOf) {
-            this.payToTheOrderOf = payToTheOrderOf;
+        public AddressLine1Stage payToTheOrderOf(@NotNull String payToTheOrderOf) {
+            this.payToTheOrderOf = Objects.requireNonNull(payToTheOrderOf, "payToTheOrderOf must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("addressLine1")
-        public CityStage addressLine1(String addressLine1) {
-            this.addressLine1 = addressLine1;
+        public CityStage addressLine1(@NotNull String addressLine1) {
+            this.addressLine1 = Objects.requireNonNull(addressLine1, "addressLine1 must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("city")
-        public StateOrProvinceStage city(String city) {
-            this.city = city;
+        public StateOrProvinceStage city(@NotNull String city) {
+            this.city = Objects.requireNonNull(city, "city must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("stateOrProvince")
-        public PostalCodeStage stateOrProvince(String stateOrProvince) {
-            this.stateOrProvince = stateOrProvince;
+        public PostalCodeStage stateOrProvince(@NotNull String stateOrProvince) {
+            this.stateOrProvince = Objects.requireNonNull(stateOrProvince, "stateOrProvince must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("postalCode")
-        public CountryStage postalCode(String postalCode) {
-            this.postalCode = postalCode;
+        public CountryStage postalCode(@NotNull String postalCode) {
+            this.postalCode = Objects.requireNonNull(postalCode, "postalCode must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("country")
-        public _FinalStage country(String country) {
-            this.country = country;
+        public _FinalStage country(@NotNull String country) {
+            this.country = Objects.requireNonNull(country, "country must not be null");
             return this;
         }
 

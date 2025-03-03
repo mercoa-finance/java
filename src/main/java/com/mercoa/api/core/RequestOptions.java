@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 public final class RequestOptions {
     private final String token;
@@ -15,10 +16,28 @@ public final class RequestOptions {
 
     private final TimeUnit timeoutTimeUnit;
 
-    private RequestOptions(String token, Optional<Integer> timeout, TimeUnit timeoutTimeUnit) {
+    /**
+     * version.get().toString() is sent as the "X-API-Version" header, overriding client options if present.
+     */
+    private final Optional<ApiVersion> version;
+
+    private final Map<String, String> headers;
+
+    private final Map<String, Supplier<String>> headerSuppliers;
+
+    private RequestOptions(
+            String token,
+            Optional<Integer> timeout,
+            TimeUnit timeoutTimeUnit,
+            Optional<ApiVersion> version,
+            Map<String, String> headers,
+            Map<String, Supplier<String>> headerSuppliers) {
         this.token = token;
         this.timeout = timeout;
         this.timeoutTimeUnit = timeoutTimeUnit;
+        this.version = version;
+        this.headers = headers;
+        this.headerSuppliers = headerSuppliers;
     }
 
     public Optional<Integer> getTimeout() {
@@ -29,11 +48,25 @@ public final class RequestOptions {
         return timeoutTimeUnit;
     }
 
+    /**
+     * version.get().toString() is sent as the "X-API-Version" header, overriding client options if present.
+     */
+    public Optional<ApiVersion> getVersion() {
+        return version;
+    }
+
     public Map<String, String> getHeaders() {
         Map<String, String> headers = new HashMap<>();
+        if (this.version.isPresent()) {
+            headers.put("X-API-Version", this.version.get().toString());
+        }
         if (this.token != null) {
             headers.put("Authorization", "Bearer " + this.token);
         }
+        headers.putAll(this.headers);
+        this.headerSuppliers.forEach((key, supplier) -> {
+            headers.put(key, supplier.get());
+        });
         return headers;
     }
 
@@ -48,8 +81,22 @@ public final class RequestOptions {
 
         private TimeUnit timeoutTimeUnit = TimeUnit.SECONDS;
 
+        private Optional<ApiVersion> version = Optional.empty();
+
+        private final Map<String, String> headers = new HashMap<>();
+
+        private final Map<String, Supplier<String>> headerSuppliers = new HashMap<>();
+
         public Builder token(String token) {
             this.token = token;
+            return this;
+        }
+
+        /**
+         * version.get().toString() is sent as the "X-API-Version" header, overriding client options if present.
+         */
+        public Builder version(ApiVersion version) {
+            this.version = Optional.of(version);
             return this;
         }
 
@@ -64,8 +111,18 @@ public final class RequestOptions {
             return this;
         }
 
+        public Builder addHeader(String key, String value) {
+            this.headers.put(key, value);
+            return this;
+        }
+
+        public Builder addHeader(String key, Supplier<String> value) {
+            this.headerSuppliers.put(key, value);
+            return this;
+        }
+
         public RequestOptions build() {
-            return new RequestOptions(token, timeout, timeoutTimeUnit);
+            return new RequestOptions(token, timeout, timeoutTimeUnit, version, headers, headerSuppliers);
         }
     }
 }

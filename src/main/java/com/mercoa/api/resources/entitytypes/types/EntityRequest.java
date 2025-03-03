@@ -78,7 +78,7 @@ public final class EntityRequest {
         }
 
         @java.lang.Override
-        public EntityRequest deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        public EntityRequest deserialize(JsonParser p, DeserializationContext context) throws IOException {
             Object value = p.readValueAs(Object.class);
             try {
                 return of(ObjectMappers.JSON_MAPPER.convertValue(value, EntityCreationRequest.class));

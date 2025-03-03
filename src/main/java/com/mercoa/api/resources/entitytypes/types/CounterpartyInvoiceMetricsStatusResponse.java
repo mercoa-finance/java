@@ -15,6 +15,7 @@ import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CounterpartyInvoiceMetricsStatusResponse.Builder.class)
@@ -81,7 +82,7 @@ public final class CounterpartyInvoiceMetricsStatusResponse {
     }
 
     public interface StatusStage {
-        TotalCountStage status(InvoiceStatus status);
+        TotalCountStage status(@NotNull InvoiceStatus status);
 
         Builder from(CounterpartyInvoiceMetricsStatusResponse other);
     }
@@ -121,8 +122,8 @@ public final class CounterpartyInvoiceMetricsStatusResponse {
 
         @java.lang.Override
         @JsonSetter("status")
-        public TotalCountStage status(InvoiceStatus status) {
-            this.status = status;
+        public TotalCountStage status(@NotNull InvoiceStatus status) {
+            this.status = Objects.requireNonNull(status, "status must not be null");
             return this;
         }
 

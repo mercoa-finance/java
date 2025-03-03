@@ -80,7 +80,7 @@ public final class StringOrStringArray {
         }
 
         @java.lang.Override
-        public StringOrStringArray deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        public StringOrStringArray deserialize(JsonParser p, DeserializationContext context) throws IOException {
             Object value = p.readValueAs(Object.class);
             try {
                 return of(ObjectMappers.JSON_MAPPER.convertValue(value, String.class));

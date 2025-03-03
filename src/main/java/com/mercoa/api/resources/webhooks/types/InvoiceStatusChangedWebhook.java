@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceStatusChangedWebhook.Builder.class)
@@ -114,21 +115,21 @@ public final class InvoiceStatusChangedWebhook implements IInvoiceWebhook {
     }
 
     public interface EventTypeStage {
-        InvoiceStage eventType(String eventType);
+        InvoiceStage eventType(@NotNull String eventType);
 
         Builder from(InvoiceStatusChangedWebhook other);
     }
 
     public interface InvoiceStage {
-        NewStatusStage invoice(InvoiceResponse invoice);
+        NewStatusStage invoice(@NotNull InvoiceResponse invoice);
     }
 
     public interface NewStatusStage {
-        PreviousStatusStage newStatus(String newStatus);
+        PreviousStatusStage newStatus(@NotNull String newStatus);
     }
 
     public interface PreviousStatusStage {
-        _FinalStage previousStatus(String previousStatus);
+        _FinalStage previousStatus(@NotNull String previousStatus);
     }
 
     public interface _FinalStage {
@@ -169,29 +170,29 @@ public final class InvoiceStatusChangedWebhook implements IInvoiceWebhook {
 
         @java.lang.Override
         @JsonSetter("eventType")
-        public InvoiceStage eventType(String eventType) {
-            this.eventType = eventType;
+        public InvoiceStage eventType(@NotNull String eventType) {
+            this.eventType = Objects.requireNonNull(eventType, "eventType must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("invoice")
-        public NewStatusStage invoice(InvoiceResponse invoice) {
-            this.invoice = invoice;
+        public NewStatusStage invoice(@NotNull InvoiceResponse invoice) {
+            this.invoice = Objects.requireNonNull(invoice, "invoice must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("newStatus")
-        public PreviousStatusStage newStatus(String newStatus) {
-            this.newStatus = newStatus;
+        public PreviousStatusStage newStatus(@NotNull String newStatus) {
+            this.newStatus = Objects.requireNonNull(newStatus, "newStatus must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("previousStatus")
-        public _FinalStage previousStatus(String previousStatus) {
-            this.previousStatus = previousStatus;
+        public _FinalStage previousStatus(@NotNull String previousStatus) {
+            this.previousStatus = Objects.requireNonNull(previousStatus, "previousStatus must not be null");
             return this;
         }
 

@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceResponse.Builder.class)
@@ -671,7 +672,7 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
     }
 
     public interface StatusStage {
-        PaymentDestinationConfirmedStage status(InvoiceStatus status);
+        PaymentDestinationConfirmedStage status(@NotNull InvoiceStatus status);
 
         Builder from(InvoiceResponse other);
     }
@@ -689,15 +690,15 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
     }
 
     public interface CreatedAtStage {
-        UpdatedAtStage createdAt(OffsetDateTime createdAt);
+        UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface UpdatedAtStage {
-        IdStage updatedAt(OffsetDateTime updatedAt);
+        IdStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
     public interface IdStage {
-        _FinalStage id(String id);
+        _FinalStage id(@NotNull String id);
     }
 
     public interface _FinalStage {
@@ -1019,8 +1020,8 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         @java.lang.Override
         @JsonSetter("status")
-        public PaymentDestinationConfirmedStage status(InvoiceStatus status) {
-            this.status = status;
+        public PaymentDestinationConfirmedStage status(@NotNull InvoiceStatus status) {
+            this.status = Objects.requireNonNull(status, "status must not be null");
             return this;
         }
 
@@ -1059,22 +1060,22 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         @java.lang.Override
         @JsonSetter("createdAt")
-        public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        public UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("updatedAt")
-        public IdStage updatedAt(OffsetDateTime updatedAt) {
-            this.updatedAt = updatedAt;
+        public IdStage updatedAt(@NotNull OffsetDateTime updatedAt) {
+            this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("id")
-        public _FinalStage id(String id) {
-            this.id = id;
+        public _FinalStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 

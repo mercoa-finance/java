@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ContractRecurrenceResponse.Builder.class)
@@ -172,37 +173,37 @@ public final class ContractRecurrenceResponse {
     }
 
     public interface IdStage {
-        ContractIdStage id(String id);
+        ContractIdStage id(@NotNull String id);
 
         Builder from(ContractRecurrenceResponse other);
     }
 
     public interface ContractIdStage {
-        RruleStage contractId(String contractId);
+        RruleStage contractId(@NotNull String contractId);
     }
 
     public interface RruleStage {
-        JustificationStage rrule(String rrule);
+        JustificationStage rrule(@NotNull String rrule);
     }
 
     public interface JustificationStage {
-        FilteredContractSummaryStage justification(String justification);
+        FilteredContractSummaryStage justification(@NotNull String justification);
     }
 
     public interface FilteredContractSummaryStage {
-        InvoiceSchemaStage filteredContractSummary(String filteredContractSummary);
+        InvoiceSchemaStage filteredContractSummary(@NotNull String filteredContractSummary);
     }
 
     public interface InvoiceSchemaStage {
-        CreatedAtStage invoiceSchema(ContractInvoiceSchema invoiceSchema);
+        CreatedAtStage invoiceSchema(@NotNull ContractInvoiceSchema invoiceSchema);
     }
 
     public interface CreatedAtStage {
-        UpdatedAtStage createdAt(OffsetDateTime createdAt);
+        UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface UpdatedAtStage {
-        _FinalStage updatedAt(OffsetDateTime updatedAt);
+        _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
     public interface _FinalStage {
@@ -265,15 +266,15 @@ public final class ContractRecurrenceResponse {
 
         @java.lang.Override
         @JsonSetter("id")
-        public ContractIdStage id(String id) {
-            this.id = id;
+        public ContractIdStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("contractId")
-        public RruleStage contractId(String contractId) {
-            this.contractId = contractId;
+        public RruleStage contractId(@NotNull String contractId) {
+            this.contractId = Objects.requireNonNull(contractId, "contractId must not be null");
             return this;
         }
 
@@ -283,8 +284,8 @@ public final class ContractRecurrenceResponse {
          */
         @java.lang.Override
         @JsonSetter("rrule")
-        public JustificationStage rrule(String rrule) {
-            this.rrule = rrule;
+        public JustificationStage rrule(@NotNull String rrule) {
+            this.rrule = Objects.requireNonNull(rrule, "rrule must not be null");
             return this;
         }
 
@@ -294,8 +295,8 @@ public final class ContractRecurrenceResponse {
          */
         @java.lang.Override
         @JsonSetter("justification")
-        public FilteredContractSummaryStage justification(String justification) {
-            this.justification = justification;
+        public FilteredContractSummaryStage justification(@NotNull String justification) {
+            this.justification = Objects.requireNonNull(justification, "justification must not be null");
             return this;
         }
 
@@ -305,8 +306,9 @@ public final class ContractRecurrenceResponse {
          */
         @java.lang.Override
         @JsonSetter("filteredContractSummary")
-        public InvoiceSchemaStage filteredContractSummary(String filteredContractSummary) {
-            this.filteredContractSummary = filteredContractSummary;
+        public InvoiceSchemaStage filteredContractSummary(@NotNull String filteredContractSummary) {
+            this.filteredContractSummary =
+                    Objects.requireNonNull(filteredContractSummary, "filteredContractSummary must not be null");
             return this;
         }
 
@@ -316,22 +318,22 @@ public final class ContractRecurrenceResponse {
          */
         @java.lang.Override
         @JsonSetter("invoiceSchema")
-        public CreatedAtStage invoiceSchema(ContractInvoiceSchema invoiceSchema) {
-            this.invoiceSchema = invoiceSchema;
+        public CreatedAtStage invoiceSchema(@NotNull ContractInvoiceSchema invoiceSchema) {
+            this.invoiceSchema = Objects.requireNonNull(invoiceSchema, "invoiceSchema must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("createdAt")
-        public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        public UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("updatedAt")
-        public _FinalStage updatedAt(OffsetDateTime updatedAt) {
-            this.updatedAt = updatedAt;
+        public _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt) {
+            this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
             return this;
         }
 

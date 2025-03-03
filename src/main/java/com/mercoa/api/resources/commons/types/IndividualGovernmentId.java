@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = IndividualGovernmentId.Builder.class)
@@ -65,7 +66,7 @@ public final class IndividualGovernmentId {
     }
 
     public interface SsnStage {
-        _FinalStage ssn(String ssn);
+        _FinalStage ssn(@NotNull String ssn);
 
         Builder from(IndividualGovernmentId other);
     }
@@ -95,8 +96,8 @@ public final class IndividualGovernmentId {
          */
         @java.lang.Override
         @JsonSetter("ssn")
-        public _FinalStage ssn(String ssn) {
-            this.ssn = ssn;
+        public _FinalStage ssn(@NotNull String ssn) {
+            this.ssn = Objects.requireNonNull(ssn, "ssn must not be null");
             return this;
         }
 

@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceWebhook.Builder.class)
@@ -92,13 +93,13 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
     }
 
     public interface EventTypeStage {
-        InvoiceStage eventType(String eventType);
+        InvoiceStage eventType(@NotNull String eventType);
 
         Builder from(InvoiceWebhook other);
     }
 
     public interface InvoiceStage {
-        _FinalStage invoice(InvoiceResponse invoice);
+        _FinalStage invoice(@NotNull InvoiceResponse invoice);
     }
 
     public interface _FinalStage {
@@ -132,15 +133,15 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
 
         @java.lang.Override
         @JsonSetter("eventType")
-        public InvoiceStage eventType(String eventType) {
-            this.eventType = eventType;
+        public InvoiceStage eventType(@NotNull String eventType) {
+            this.eventType = Objects.requireNonNull(eventType, "eventType must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("invoice")
-        public _FinalStage invoice(InvoiceResponse invoice) {
-            this.invoice = invoice;
+        public _FinalStage invoice(@NotNull InvoiceResponse invoice) {
+            this.invoice = Objects.requireNonNull(invoice, "invoice must not be null");
             return this;
         }
 

@@ -71,6 +71,7 @@ public final class MetadataValidationRule {
     }
 
     @JsonTypeName("regex")
+    @JsonIgnoreProperties("type")
     private static final class RegexValue implements Value {
         @JsonUnwrapped
         private MetadataRegexValidationRule value;
@@ -108,6 +109,7 @@ public final class MetadataValidationRule {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

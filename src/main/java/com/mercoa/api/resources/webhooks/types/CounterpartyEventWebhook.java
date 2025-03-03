@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CounterpartyEventWebhook.Builder.class)
@@ -87,17 +88,17 @@ public final class CounterpartyEventWebhook {
     }
 
     public interface EventTypeStage {
-        EntityIdStage eventType(String eventType);
+        EntityIdStage eventType(@NotNull String eventType);
 
         Builder from(CounterpartyEventWebhook other);
     }
 
     public interface EntityIdStage {
-        CounterpartyIdStage entityId(String entityId);
+        CounterpartyIdStage entityId(@NotNull String entityId);
     }
 
     public interface CounterpartyIdStage {
-        _FinalStage counterpartyId(String counterpartyId);
+        _FinalStage counterpartyId(@NotNull String counterpartyId);
     }
 
     public interface _FinalStage {
@@ -127,8 +128,8 @@ public final class CounterpartyEventWebhook {
 
         @java.lang.Override
         @JsonSetter("eventType")
-        public EntityIdStage eventType(String eventType) {
-            this.eventType = eventType;
+        public EntityIdStage eventType(@NotNull String eventType) {
+            this.eventType = Objects.requireNonNull(eventType, "eventType must not be null");
             return this;
         }
 
@@ -138,8 +139,8 @@ public final class CounterpartyEventWebhook {
          */
         @java.lang.Override
         @JsonSetter("entityId")
-        public CounterpartyIdStage entityId(String entityId) {
-            this.entityId = entityId;
+        public CounterpartyIdStage entityId(@NotNull String entityId) {
+            this.entityId = Objects.requireNonNull(entityId, "entityId must not be null");
             return this;
         }
 
@@ -149,8 +150,8 @@ public final class CounterpartyEventWebhook {
          */
         @java.lang.Override
         @JsonSetter("counterpartyId")
-        public _FinalStage counterpartyId(String counterpartyId) {
-            this.counterpartyId = counterpartyId;
+        public _FinalStage counterpartyId(@NotNull String counterpartyId) {
+            this.counterpartyId = Objects.requireNonNull(counterpartyId, "counterpartyId must not be null");
             return this;
         }
 

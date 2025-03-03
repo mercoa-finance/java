@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ApprovalPolicyResponse.Builder.class)
@@ -118,25 +119,25 @@ public final class ApprovalPolicyResponse {
     }
 
     public interface IdStage {
-        RuleStage id(String id);
+        RuleStage id(@NotNull String id);
 
         Builder from(ApprovalPolicyResponse other);
     }
 
     public interface RuleStage {
-        UpstreamPolicyIdStage rule(Rule rule);
+        UpstreamPolicyIdStage rule(@NotNull Rule rule);
     }
 
     public interface UpstreamPolicyIdStage {
-        CreatedAtStage upstreamPolicyId(String upstreamPolicyId);
+        CreatedAtStage upstreamPolicyId(@NotNull String upstreamPolicyId);
     }
 
     public interface CreatedAtStage {
-        UpdatedAtStage createdAt(OffsetDateTime createdAt);
+        UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface UpdatedAtStage {
-        _FinalStage updatedAt(OffsetDateTime updatedAt);
+        _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
     public interface _FinalStage {
@@ -182,36 +183,36 @@ public final class ApprovalPolicyResponse {
 
         @java.lang.Override
         @JsonSetter("id")
-        public RuleStage id(String id) {
-            this.id = id;
+        public RuleStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("rule")
-        public UpstreamPolicyIdStage rule(Rule rule) {
-            this.rule = rule;
+        public UpstreamPolicyIdStage rule(@NotNull Rule rule) {
+            this.rule = Objects.requireNonNull(rule, "rule must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("upstreamPolicyId")
-        public CreatedAtStage upstreamPolicyId(String upstreamPolicyId) {
-            this.upstreamPolicyId = upstreamPolicyId;
+        public CreatedAtStage upstreamPolicyId(@NotNull String upstreamPolicyId) {
+            this.upstreamPolicyId = Objects.requireNonNull(upstreamPolicyId, "upstreamPolicyId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("createdAt")
-        public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        public UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("updatedAt")
-        public _FinalStage updatedAt(OffsetDateTime updatedAt) {
-            this.updatedAt = updatedAt;
+        public _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt) {
+            this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
             return this;
         }
 

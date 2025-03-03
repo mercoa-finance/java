@@ -79,7 +79,8 @@ public final class PaymentScheduleEndCondition {
         }
 
         @java.lang.Override
-        public PaymentScheduleEndCondition deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        public PaymentScheduleEndCondition deserialize(JsonParser p, DeserializationContext context)
+                throws IOException {
             Object value = p.readValueAs(Object.class);
             if (value instanceof Integer) {
                 return of((Integer) value);

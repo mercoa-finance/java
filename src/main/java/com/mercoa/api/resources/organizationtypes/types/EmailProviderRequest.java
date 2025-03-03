@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EmailProviderRequest.Builder.class)
@@ -87,13 +88,13 @@ public final class EmailProviderRequest {
     }
 
     public interface SenderStage {
-        InboxDomainStage sender(EmailSenderRequest sender);
+        InboxDomainStage sender(@NotNull EmailSenderRequest sender);
 
         Builder from(EmailProviderRequest other);
     }
 
     public interface InboxDomainStage {
-        _FinalStage inboxDomain(String inboxDomain);
+        _FinalStage inboxDomain(@NotNull String inboxDomain);
     }
 
     public interface _FinalStage {
@@ -127,15 +128,15 @@ public final class EmailProviderRequest {
 
         @java.lang.Override
         @JsonSetter("sender")
-        public InboxDomainStage sender(EmailSenderRequest sender) {
-            this.sender = sender;
+        public InboxDomainStage sender(@NotNull EmailSenderRequest sender) {
+            this.sender = Objects.requireNonNull(sender, "sender must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("inboxDomain")
-        public _FinalStage inboxDomain(String inboxDomain) {
-            this.inboxDomain = inboxDomain;
+        public _FinalStage inboxDomain(@NotNull String inboxDomain) {
+            this.inboxDomain = Objects.requireNonNull(inboxDomain, "inboxDomain must not be null");
             return this;
         }
 

@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CounterpartyCustomizationAccount.Builder.class)
@@ -95,7 +96,7 @@ public final class CounterpartyCustomizationAccount {
     }
 
     public interface AccountIdStage {
-        _FinalStage accountId(String accountId);
+        _FinalStage accountId(@NotNull String accountId);
 
         Builder from(CounterpartyCustomizationAccount other);
     }
@@ -139,8 +140,8 @@ public final class CounterpartyCustomizationAccount {
          */
         @java.lang.Override
         @JsonSetter("accountId")
-        public _FinalStage accountId(String accountId) {
-            this.accountId = accountId;
+        public _FinalStage accountId(@NotNull String accountId) {
+            this.accountId = Objects.requireNonNull(accountId, "accountId must not be null");
             return this;
         }
 

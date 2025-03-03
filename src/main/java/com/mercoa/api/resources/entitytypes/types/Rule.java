@@ -71,6 +71,7 @@ public final class Rule {
     }
 
     @JsonTypeName("approver")
+    @JsonIgnoreProperties("type")
     private static final class ApproverValue implements Value {
         @JsonUnwrapped
         private ApproverRule value;
@@ -108,6 +109,7 @@ public final class Rule {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

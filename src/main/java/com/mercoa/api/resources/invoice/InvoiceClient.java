@@ -9,6 +9,7 @@ import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.MercoaApiException;
 import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.invoice.approval.ApprovalClient;
@@ -85,91 +86,115 @@ public class InvoiceClient {
                 .newBuilder()
                 .addPathSegments("invoices");
         if (request.getEntityId().isPresent()) {
-            httpUrl.addQueryParameter("entityId", request.getEntityId().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "entityId", request.getEntityId().get(), false);
         }
         if (request.getStartDate().isPresent()) {
-            httpUrl.addQueryParameter("startDate", request.getStartDate().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "startDate", request.getStartDate().get().toString(), false);
         }
         if (request.getEndDate().isPresent()) {
-            httpUrl.addQueryParameter("endDate", request.getEndDate().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "endDate", request.getEndDate().get().toString(), false);
         }
         if (request.getDateType().isPresent()) {
-            httpUrl.addQueryParameter("dateType", request.getDateType().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "dateType", request.getDateType().get().toString(), false);
         }
         if (request.getOrderBy().isPresent()) {
-            httpUrl.addQueryParameter("orderBy", request.getOrderBy().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "orderBy", request.getOrderBy().get().toString(), false);
         }
         if (request.getOrderDirection().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "orderDirection", request.getOrderDirection().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "orderDirection", request.getOrderDirection().get().toString(), false);
         }
         if (request.getLimit().isPresent()) {
-            httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "limit", request.getLimit().get().toString(), false);
         }
         if (request.getStartingAfter().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "startingAfter", request.getStartingAfter().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
         }
         if (request.getSearch().isPresent()) {
-            httpUrl.addQueryParameter("search", request.getSearch().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "search", request.getSearch().get(), false);
         }
         if (request.getMetadata().isPresent()) {
-            httpUrl.addQueryParameter("metadata", request.getMetadata().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "metadata", request.getMetadata().get().toString(), false);
         }
         if (request.getLineItemMetadata().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "lineItemMetadata", request.getLineItemMetadata().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "lineItemMetadata",
+                    request.getLineItemMetadata().get().toString(),
+                    false);
         }
         if (request.getLineItemGlAccountId().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "lineItemGlAccountId", request.getLineItemGlAccountId().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "lineItemGlAccountId",
+                    request.getLineItemGlAccountId().get(),
+                    false);
         }
         if (request.getPayerId().isPresent()) {
-            httpUrl.addQueryParameter("payerId", request.getPayerId().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "payerId", request.getPayerId().get(), false);
         }
         if (request.getVendorId().isPresent()) {
-            httpUrl.addQueryParameter("vendorId", request.getVendorId().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "vendorId", request.getVendorId().get(), false);
         }
         if (request.getCreatorUserId().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "creatorUserId", request.getCreatorUserId().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "creatorUserId", request.getCreatorUserId().get(), false);
         }
         if (request.getApproverId().isPresent()) {
-            httpUrl.addQueryParameter("approverId", request.getApproverId().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "approverId", request.getApproverId().get(), false);
         }
         if (request.getApproverAction().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "approverAction", request.getApproverAction().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "approverAction", request.getApproverAction().get().toString(), false);
         }
         if (request.getInvoiceId().isPresent()) {
-            httpUrl.addQueryParameter("invoiceId", request.getInvoiceId().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "invoiceId", request.getInvoiceId().get(), false);
         }
         if (request.getStatus().isPresent()) {
-            httpUrl.addQueryParameter("status", request.getStatus().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "status", request.getStatus().get().toString(), false);
         }
         if (request.getPaymentType().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "paymentType", request.getPaymentType().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "paymentType", request.getPaymentType().get().toString(), false);
         }
         if (request.getInvoiceTemplateId().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "invoiceTemplateId", request.getInvoiceTemplateId().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "invoiceTemplateId", request.getInvoiceTemplateId().get(), false);
         }
         if (request.getReturnPayerMetadata().isPresent()) {
-            httpUrl.addQueryParameter(
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
                     "returnPayerMetadata",
-                    request.getReturnPayerMetadata().get().toString());
+                    request.getReturnPayerMetadata().get().toString(),
+                    false);
         }
         if (request.getReturnVendorMetadata().isPresent()) {
-            httpUrl.addQueryParameter(
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
                     "returnVendorMetadata",
-                    request.getReturnVendorMetadata().get().toString());
+                    request.getReturnVendorMetadata().get().toString(),
+                    false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -211,6 +236,7 @@ public class InvoiceClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -246,6 +272,7 @@ public class InvoiceClient {
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -292,6 +319,7 @@ public class InvoiceClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -332,6 +360,7 @@ public class InvoiceClient {
                 .url(httpUrl)
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -377,16 +406,19 @@ public class InvoiceClient {
                 .addPathSegment(invoiceId)
                 .addPathSegments("events");
         if (request.getStartDate().isPresent()) {
-            httpUrl.addQueryParameter("startDate", request.getStartDate().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "startDate", request.getStartDate().get().toString(), false);
         }
         if (request.getEndDate().isPresent()) {
-            httpUrl.addQueryParameter("endDate", request.getEndDate().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "endDate", request.getEndDate().get().toString(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {

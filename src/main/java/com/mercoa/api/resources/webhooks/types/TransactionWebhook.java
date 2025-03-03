@@ -15,6 +15,7 @@ import com.mercoa.api.resources.transaction.types.TransactionResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = TransactionWebhook.Builder.class)
@@ -72,13 +73,13 @@ public final class TransactionWebhook {
     }
 
     public interface EventTypeStage {
-        TransactionStage eventType(String eventType);
+        TransactionStage eventType(@NotNull String eventType);
 
         Builder from(TransactionWebhook other);
     }
 
     public interface TransactionStage {
-        _FinalStage transaction(TransactionResponse transaction);
+        _FinalStage transaction(@NotNull TransactionResponse transaction);
     }
 
     public interface _FinalStage {
@@ -105,15 +106,15 @@ public final class TransactionWebhook {
 
         @java.lang.Override
         @JsonSetter("eventType")
-        public TransactionStage eventType(String eventType) {
-            this.eventType = eventType;
+        public TransactionStage eventType(@NotNull String eventType) {
+            this.eventType = Objects.requireNonNull(eventType, "eventType must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("transaction")
-        public _FinalStage transaction(TransactionResponse transaction) {
-            this.transaction = transaction;
+        public _FinalStage transaction(@NotNull TransactionResponse transaction) {
+            this.transaction = Objects.requireNonNull(transaction, "transaction must not be null");
             return this;
         }
 

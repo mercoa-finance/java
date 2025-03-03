@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceEvent.Builder.class)
@@ -122,13 +123,13 @@ public final class InvoiceEvent {
     }
 
     public interface DataStage {
-        CreatedAtStage data(InvoiceUpdateRequest data);
+        CreatedAtStage data(@NotNull InvoiceUpdateRequest data);
 
         Builder from(InvoiceEvent other);
     }
 
     public interface CreatedAtStage {
-        _FinalStage createdAt(OffsetDateTime createdAt);
+        _FinalStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface _FinalStage {
@@ -185,15 +186,15 @@ public final class InvoiceEvent {
 
         @java.lang.Override
         @JsonSetter("data")
-        public CreatedAtStage data(InvoiceUpdateRequest data) {
-            this.data = data;
+        public CreatedAtStage data(@NotNull InvoiceUpdateRequest data) {
+            this.data = Objects.requireNonNull(data, "data must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("createdAt")
-        public _FinalStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        public _FinalStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
             return this;
         }
 

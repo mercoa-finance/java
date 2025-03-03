@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGroupUserEntityRequest.Builder.class)
@@ -82,7 +83,7 @@ public final class EntityGroupUserEntityRequest implements IEntityGroupUserEntit
     }
 
     public interface EntityIdStage {
-        _FinalStage entityId(String entityId);
+        _FinalStage entityId(@NotNull String entityId);
 
         Builder from(EntityGroupUserEntityRequest other);
     }
@@ -121,8 +122,8 @@ public final class EntityGroupUserEntityRequest implements IEntityGroupUserEntit
          */
         @java.lang.Override
         @JsonSetter("entityId")
-        public _FinalStage entityId(String entityId) {
-            this.entityId = entityId;
+        public _FinalStage entityId(@NotNull String entityId) {
+            this.entityId = Objects.requireNonNull(entityId, "entityId must not be null");
             return this;
         }
 

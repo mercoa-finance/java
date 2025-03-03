@@ -15,6 +15,7 @@ import com.mercoa.api.resources.commons.types.StringOrStringArray;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = MetadataFilter.Builder.class)
@@ -74,13 +75,13 @@ public final class MetadataFilter {
     }
 
     public interface KeyStage {
-        ValueStage key(String key);
+        ValueStage key(@NotNull String key);
 
         Builder from(MetadataFilter other);
     }
 
     public interface ValueStage {
-        _FinalStage value(StringOrStringArray value);
+        _FinalStage value(@NotNull StringOrStringArray value);
     }
 
     public interface _FinalStage {
@@ -107,8 +108,8 @@ public final class MetadataFilter {
 
         @java.lang.Override
         @JsonSetter("key")
-        public ValueStage key(String key) {
-            this.key = key;
+        public ValueStage key(@NotNull String key) {
+            this.key = Objects.requireNonNull(key, "key must not be null");
             return this;
         }
 
@@ -118,8 +119,8 @@ public final class MetadataFilter {
          */
         @java.lang.Override
         @JsonSetter("value")
-        public _FinalStage value(StringOrStringArray value) {
-            this.value = value;
+        public _FinalStage value(@NotNull StringOrStringArray value) {
+            this.value = Objects.requireNonNull(value, "value must not be null");
             return this;
         }
 

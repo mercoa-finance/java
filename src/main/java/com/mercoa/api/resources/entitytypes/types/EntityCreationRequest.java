@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityCreationRequest.Builder.class)
@@ -151,7 +152,7 @@ public final class EntityCreationRequest {
     }
 
     /**
-     * @return Base64 encoded PNG image data for the entity logo. Max size 100KB.
+     * @return Base64 data URL of the entity logo. Must be in the <code>data:image/*;base64,XXXX</code> format. We recommend a PNG image under 100KB. Supported file types are <code>png</code>, <code>jpeg</code>, <code>gif</code>, <code>svg</code>.
      */
     @JsonProperty("logo")
     public Optional<String> getLogo() {
@@ -225,11 +226,11 @@ public final class EntityCreationRequest {
     }
 
     public interface AccountTypeStage {
-        ProfileStage accountType(AccountType accountType);
+        ProfileStage accountType(@NotNull AccountType accountType);
     }
 
     public interface ProfileStage {
-        IsPayorStage profile(ProfileRequest profile);
+        IsPayorStage profile(@NotNull ProfileRequest profile);
     }
 
     public interface IsPayorStage {
@@ -334,15 +335,15 @@ public final class EntityCreationRequest {
 
         @java.lang.Override
         @JsonSetter("accountType")
-        public ProfileStage accountType(AccountType accountType) {
-            this.accountType = accountType;
+        public ProfileStage accountType(@NotNull AccountType accountType) {
+            this.accountType = Objects.requireNonNull(accountType, "accountType must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("profile")
-        public IsPayorStage profile(ProfileRequest profile) {
-            this.profile = profile;
+        public IsPayorStage profile(@NotNull ProfileRequest profile) {
+            this.profile = Objects.requireNonNull(profile, "profile must not be null");
             return this;
         }
 
@@ -386,7 +387,7 @@ public final class EntityCreationRequest {
         }
 
         /**
-         * <p>Base64 encoded PNG image data for the entity logo. Max size 100KB.</p>
+         * <p>Base64 data URL of the entity logo. Must be in the <code>data:image/*;base64,XXXX</code> format. We recommend a PNG image under 100KB. Supported file types are <code>png</code>, <code>jpeg</code>, <code>gif</code>, <code>svg</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

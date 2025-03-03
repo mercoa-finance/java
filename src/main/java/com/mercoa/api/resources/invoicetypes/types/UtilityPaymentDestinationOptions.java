@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = UtilityPaymentDestinationOptions.Builder.class)
@@ -65,7 +66,7 @@ public final class UtilityPaymentDestinationOptions {
     }
 
     public interface AccountIdStage {
-        _FinalStage accountId(String accountId);
+        _FinalStage accountId(@NotNull String accountId);
 
         Builder from(UtilityPaymentDestinationOptions other);
     }
@@ -95,8 +96,8 @@ public final class UtilityPaymentDestinationOptions {
          */
         @java.lang.Override
         @JsonSetter("accountId")
-        public _FinalStage accountId(String accountId) {
-            this.accountId = accountId;
+        public _FinalStage accountId(@NotNull String accountId) {
+            this.accountId = Objects.requireNonNull(accountId, "accountId must not be null");
             return this;
         }
 

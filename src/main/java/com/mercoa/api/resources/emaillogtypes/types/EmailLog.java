@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EmailLog.Builder.class)
@@ -145,33 +146,33 @@ public final class EmailLog {
     }
 
     public interface IdStage {
-        SubjectStage id(String id);
+        SubjectStage id(@NotNull String id);
 
         Builder from(EmailLog other);
     }
 
     public interface SubjectStage {
-        FromStage subject(String subject);
+        FromStage subject(@NotNull String subject);
     }
 
     public interface FromStage {
-        ToStage from(String from);
+        ToStage from(@NotNull String from);
     }
 
     public interface ToStage {
-        HtmlBodyStage to(String to);
+        HtmlBodyStage to(@NotNull String to);
     }
 
     public interface HtmlBodyStage {
-        TextBodyStage htmlBody(String htmlBody);
+        TextBodyStage htmlBody(@NotNull String htmlBody);
     }
 
     public interface TextBodyStage {
-        CreatedAtStage textBody(String textBody);
+        CreatedAtStage textBody(@NotNull String textBody);
     }
 
     public interface CreatedAtStage {
-        _FinalStage createdAt(OffsetDateTime createdAt);
+        _FinalStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface _FinalStage {
@@ -228,50 +229,50 @@ public final class EmailLog {
 
         @java.lang.Override
         @JsonSetter("id")
-        public SubjectStage id(String id) {
-            this.id = id;
+        public SubjectStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("subject")
-        public FromStage subject(String subject) {
-            this.subject = subject;
+        public FromStage subject(@NotNull String subject) {
+            this.subject = Objects.requireNonNull(subject, "subject must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("from")
-        public ToStage from(String from) {
-            this.from = from;
+        public ToStage from(@NotNull String from) {
+            this.from = Objects.requireNonNull(from, "from must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("to")
-        public HtmlBodyStage to(String to) {
-            this.to = to;
+        public HtmlBodyStage to(@NotNull String to) {
+            this.to = Objects.requireNonNull(to, "to must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("htmlBody")
-        public TextBodyStage htmlBody(String htmlBody) {
-            this.htmlBody = htmlBody;
+        public TextBodyStage htmlBody(@NotNull String htmlBody) {
+            this.htmlBody = Objects.requireNonNull(htmlBody, "htmlBody must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("textBody")
-        public CreatedAtStage textBody(String textBody) {
-            this.textBody = textBody;
+        public CreatedAtStage textBody(@NotNull String textBody) {
+            this.textBody = Objects.requireNonNull(textBody, "textBody must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("createdAt")
-        public _FinalStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        public _FinalStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
             return this;
         }
 

@@ -109,6 +109,7 @@ public final class PaymentDestinationOptions {
     }
 
     @JsonTypeName("check")
+    @JsonIgnoreProperties("type")
     private static final class CheckValue implements Value {
         @JsonUnwrapped
         private CheckPaymentDestinationOptions value;
@@ -147,6 +148,7 @@ public final class PaymentDestinationOptions {
     }
 
     @JsonTypeName("bankAccount")
+    @JsonIgnoreProperties("type")
     private static final class BankAccountValue implements Value {
         @JsonUnwrapped
         private BankAccountPaymentDestinationOptions value;
@@ -185,6 +187,7 @@ public final class PaymentDestinationOptions {
     }
 
     @JsonTypeName("utility")
+    @JsonIgnoreProperties("type")
     private static final class UtilityValue implements Value {
         @JsonUnwrapped
         private UtilityPaymentDestinationOptions value;
@@ -222,6 +225,7 @@ public final class PaymentDestinationOptions {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

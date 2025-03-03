@@ -1,1 +1,3 @@
+rootProject.name = 'mercoa'
+
 include 'sample-app'

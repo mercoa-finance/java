@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = RutterCompanyResponse.Builder.class)
@@ -62,7 +63,7 @@ public final class RutterCompanyResponse {
     }
 
     public interface AccessTokenStage {
-        _FinalStage accessToken(String accessToken);
+        _FinalStage accessToken(@NotNull String accessToken);
 
         Builder from(RutterCompanyResponse other);
     }
@@ -88,8 +89,8 @@ public final class RutterCompanyResponse {
 
         @java.lang.Override
         @JsonSetter("accessToken")
-        public _FinalStage accessToken(String accessToken) {
-            this.accessToken = accessToken;
+        public _FinalStage accessToken(@NotNull String accessToken) {
+            this.accessToken = Objects.requireNonNull(accessToken, "accessToken must not be null");
             return this;
         }
 

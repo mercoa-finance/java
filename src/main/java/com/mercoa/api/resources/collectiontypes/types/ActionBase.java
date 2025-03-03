@@ -15,6 +15,7 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ActionBase.Builder.class)
@@ -94,17 +95,17 @@ public final class ActionBase implements IActionBase {
     }
 
     public interface IdStage {
-        ScheduledExecutionTimeStage id(String id);
+        ScheduledExecutionTimeStage id(@NotNull String id);
 
         Builder from(ActionBase other);
     }
 
     public interface ScheduledExecutionTimeStage {
-        StatusStage scheduledExecutionTime(OffsetDateTime scheduledExecutionTime);
+        StatusStage scheduledExecutionTime(@NotNull OffsetDateTime scheduledExecutionTime);
     }
 
     public interface StatusStage {
-        _FinalStage status(ActionStatus status);
+        _FinalStage status(@NotNull ActionStatus status);
     }
 
     public interface _FinalStage {
@@ -134,8 +135,8 @@ public final class ActionBase implements IActionBase {
 
         @java.lang.Override
         @JsonSetter("id")
-        public ScheduledExecutionTimeStage id(String id) {
-            this.id = id;
+        public ScheduledExecutionTimeStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
@@ -145,8 +146,9 @@ public final class ActionBase implements IActionBase {
          */
         @java.lang.Override
         @JsonSetter("scheduledExecutionTime")
-        public StatusStage scheduledExecutionTime(OffsetDateTime scheduledExecutionTime) {
-            this.scheduledExecutionTime = scheduledExecutionTime;
+        public StatusStage scheduledExecutionTime(@NotNull OffsetDateTime scheduledExecutionTime) {
+            this.scheduledExecutionTime =
+                    Objects.requireNonNull(scheduledExecutionTime, "scheduledExecutionTime must not be null");
             return this;
         }
 
@@ -156,8 +158,8 @@ public final class ActionBase implements IActionBase {
          */
         @java.lang.Override
         @JsonSetter("status")
-        public _FinalStage status(ActionStatus status) {
-            this.status = status;
+        public _FinalStage status(@NotNull ActionStatus status) {
+            this.status = Objects.requireNonNull(status, "status must not be null");
             return this;
         }
 

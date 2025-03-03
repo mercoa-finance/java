@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = FullName.Builder.class)
@@ -96,13 +97,13 @@ public final class FullName {
     }
 
     public interface FirstNameStage {
-        LastNameStage firstName(String firstName);
+        LastNameStage firstName(@NotNull String firstName);
 
         Builder from(FullName other);
     }
 
     public interface LastNameStage {
-        _FinalStage lastName(String lastName);
+        _FinalStage lastName(@NotNull String lastName);
     }
 
     public interface _FinalStage {
@@ -143,15 +144,15 @@ public final class FullName {
 
         @java.lang.Override
         @JsonSetter("firstName")
-        public LastNameStage firstName(String firstName) {
-            this.firstName = firstName;
+        public LastNameStage firstName(@NotNull String firstName) {
+            this.firstName = Objects.requireNonNull(firstName, "firstName must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("lastName")
-        public _FinalStage lastName(String lastName) {
-            this.lastName = lastName;
+        public _FinalStage lastName(@NotNull String lastName) {
+            this.lastName = Objects.requireNonNull(lastName, "lastName must not be null");
             return this;
         }
 

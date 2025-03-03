@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CodatCompanyResponse.Builder.class)
@@ -62,7 +63,7 @@ public final class CodatCompanyResponse {
     }
 
     public interface CompanyIdStage {
-        _FinalStage companyId(String companyId);
+        _FinalStage companyId(@NotNull String companyId);
 
         Builder from(CodatCompanyResponse other);
     }
@@ -88,8 +89,8 @@ public final class CodatCompanyResponse {
 
         @java.lang.Override
         @JsonSetter("companyId")
-        public _FinalStage companyId(String companyId) {
-            this.companyId = companyId;
+        public _FinalStage companyId(@NotNull String companyId) {
+            this.companyId = Objects.requireNonNull(companyId, "companyId must not be null");
             return this;
         }
 

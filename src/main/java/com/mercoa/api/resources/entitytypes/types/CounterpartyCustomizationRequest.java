@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CounterpartyCustomizationRequest.Builder.class)
@@ -79,7 +80,7 @@ public final class CounterpartyCustomizationRequest {
     }
 
     public interface CounterpartyIdStage {
-        _FinalStage counterpartyId(String counterpartyId);
+        _FinalStage counterpartyId(@NotNull String counterpartyId);
 
         Builder from(CounterpartyCustomizationRequest other);
     }
@@ -112,8 +113,8 @@ public final class CounterpartyCustomizationRequest {
 
         @java.lang.Override
         @JsonSetter("counterpartyId")
-        public _FinalStage counterpartyId(String counterpartyId) {
-            this.counterpartyId = counterpartyId;
+        public _FinalStage counterpartyId(@NotNull String counterpartyId) {
+            this.counterpartyId = Objects.requireNonNull(counterpartyId, "counterpartyId must not be null");
             return this;
         }
 

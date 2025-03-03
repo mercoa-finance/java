@@ -7,6 +7,7 @@ import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.MercoaApiException;
 import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.paymentmethods.requests.FindPaymentMethodsRequest;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodWithEntityFindResponse;
@@ -38,23 +39,27 @@ public class PaymentMethodsClient {
                 .newBuilder()
                 .addPathSegments("paymentMethods");
         if (request.getLimit().isPresent()) {
-            httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "limit", request.getLimit().get().toString(), false);
         }
         if (request.getStartingAfter().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "startingAfter", request.getStartingAfter().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
         }
         if (request.getType().isPresent()) {
-            httpUrl.addQueryParameter("type", request.getType().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "type", request.getType().get().toString(), false);
         }
         if (request.getEntityId().isPresent()) {
-            httpUrl.addQueryParameter("entityId", request.getEntityId().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "entityId", request.getEntityId().get(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {

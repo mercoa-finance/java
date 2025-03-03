@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CommonOnboardingOptionsResponse.Builder.class)
@@ -150,37 +151,37 @@ public final class CommonOnboardingOptionsResponse implements ICommonOnboardingO
     }
 
     public interface TermsOfServiceStage {
-        EmailStage termsOfService(OnboardingOptionResponse termsOfService);
+        EmailStage termsOfService(@NotNull OnboardingOptionResponse termsOfService);
 
         Builder from(CommonOnboardingOptionsResponse other);
     }
 
     public interface EmailStage {
-        NameStage email(OnboardingOptionResponse email);
+        NameStage email(@NotNull OnboardingOptionResponse email);
     }
 
     public interface NameStage {
-        AddressStage name(OnboardingOptionResponse name);
+        AddressStage name(@NotNull OnboardingOptionResponse name);
     }
 
     public interface AddressStage {
-        PhoneStage address(OnboardingOptionResponse address);
+        PhoneStage address(@NotNull OnboardingOptionResponse address);
     }
 
     public interface PhoneStage {
-        TenNinetyNineStage phone(OnboardingOptionResponse phone);
+        TenNinetyNineStage phone(@NotNull OnboardingOptionResponse phone);
     }
 
     public interface TenNinetyNineStage {
-        W9Stage tenNinetyNine(OnboardingOptionResponse tenNinetyNine);
+        W9Stage tenNinetyNine(@NotNull OnboardingOptionResponse tenNinetyNine);
     }
 
     public interface W9Stage {
-        BankStatementStage w9(OnboardingOptionResponse w9);
+        BankStatementStage w9(@NotNull OnboardingOptionResponse w9);
     }
 
     public interface BankStatementStage {
-        _FinalStage bankStatement(OnboardingOptionResponse bankStatement);
+        _FinalStage bankStatement(@NotNull OnboardingOptionResponse bankStatement);
     }
 
     public interface _FinalStage {
@@ -234,57 +235,57 @@ public final class CommonOnboardingOptionsResponse implements ICommonOnboardingO
 
         @java.lang.Override
         @JsonSetter("termsOfService")
-        public EmailStage termsOfService(OnboardingOptionResponse termsOfService) {
-            this.termsOfService = termsOfService;
+        public EmailStage termsOfService(@NotNull OnboardingOptionResponse termsOfService) {
+            this.termsOfService = Objects.requireNonNull(termsOfService, "termsOfService must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("email")
-        public NameStage email(OnboardingOptionResponse email) {
-            this.email = email;
+        public NameStage email(@NotNull OnboardingOptionResponse email) {
+            this.email = Objects.requireNonNull(email, "email must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("name")
-        public AddressStage name(OnboardingOptionResponse name) {
-            this.name = name;
+        public AddressStage name(@NotNull OnboardingOptionResponse name) {
+            this.name = Objects.requireNonNull(name, "name must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("address")
-        public PhoneStage address(OnboardingOptionResponse address) {
-            this.address = address;
+        public PhoneStage address(@NotNull OnboardingOptionResponse address) {
+            this.address = Objects.requireNonNull(address, "address must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("phone")
-        public TenNinetyNineStage phone(OnboardingOptionResponse phone) {
-            this.phone = phone;
+        public TenNinetyNineStage phone(@NotNull OnboardingOptionResponse phone) {
+            this.phone = Objects.requireNonNull(phone, "phone must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("tenNinetyNine")
-        public W9Stage tenNinetyNine(OnboardingOptionResponse tenNinetyNine) {
-            this.tenNinetyNine = tenNinetyNine;
+        public W9Stage tenNinetyNine(@NotNull OnboardingOptionResponse tenNinetyNine) {
+            this.tenNinetyNine = Objects.requireNonNull(tenNinetyNine, "tenNinetyNine must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("w9")
-        public BankStatementStage w9(OnboardingOptionResponse w9) {
-            this.w9 = w9;
+        public BankStatementStage w9(@NotNull OnboardingOptionResponse w9) {
+            this.w9 = Objects.requireNonNull(w9, "w9 must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("bankStatement")
-        public _FinalStage bankStatement(OnboardingOptionResponse bankStatement) {
-            this.bankStatement = bankStatement;
+        public _FinalStage bankStatement(@NotNull OnboardingOptionResponse bankStatement) {
+            this.bankStatement = Objects.requireNonNull(bankStatement, "bankStatement must not be null");
             return this;
         }
 

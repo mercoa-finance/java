@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = NotificationResponse.Builder.class)
@@ -110,21 +111,21 @@ public final class NotificationResponse {
     }
 
     public interface IdStage {
-        TypeStage id(String id);
+        TypeStage id(@NotNull String id);
 
         Builder from(NotificationResponse other);
     }
 
     public interface TypeStage {
-        StatusStage type(NotificationType type);
+        StatusStage type(@NotNull NotificationType type);
     }
 
     public interface StatusStage {
-        CreatedAtStage status(NotificationStatus status);
+        CreatedAtStage status(@NotNull NotificationStatus status);
     }
 
     public interface CreatedAtStage {
-        _FinalStage createdAt(OffsetDateTime createdAt);
+        _FinalStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface _FinalStage {
@@ -164,29 +165,29 @@ public final class NotificationResponse {
 
         @java.lang.Override
         @JsonSetter("id")
-        public TypeStage id(String id) {
-            this.id = id;
+        public TypeStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("type")
-        public StatusStage type(NotificationType type) {
-            this.type = type;
+        public StatusStage type(@NotNull NotificationType type) {
+            this.type = Objects.requireNonNull(type, "type must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("status")
-        public CreatedAtStage status(NotificationStatus status) {
-            this.status = status;
+        public CreatedAtStage status(@NotNull NotificationStatus status) {
+            this.status = Objects.requireNonNull(status, "status must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("createdAt")
-        public _FinalStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        public _FinalStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
             return this;
         }
 

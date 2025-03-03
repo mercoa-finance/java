@@ -78,7 +78,8 @@ public final class CalculatePaymentTimingRequest {
         }
 
         @java.lang.Override
-        public CalculatePaymentTimingRequest deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        public CalculatePaymentTimingRequest deserialize(JsonParser p, DeserializationContext context)
+                throws IOException {
             Object value = p.readValueAs(Object.class);
             try {
                 return of(ObjectMappers.JSON_MAPPER.convertValue(value, EstimatedTiming.class));

@@ -109,6 +109,7 @@ public final class Trigger {
     }
 
     @JsonTypeName("amount")
+    @JsonIgnoreProperties("type")
     private static final class AmountValue implements Value {
         @JsonUnwrapped
         private AmountTrigger value;
@@ -147,6 +148,7 @@ public final class Trigger {
     }
 
     @JsonTypeName("vendor")
+    @JsonIgnoreProperties("type")
     private static final class VendorValue implements Value {
         @JsonUnwrapped
         private VendorTrigger value;
@@ -185,6 +187,7 @@ public final class Trigger {
     }
 
     @JsonTypeName("metadata")
+    @JsonIgnoreProperties("type")
     private static final class MetadataValue implements Value {
         @JsonUnwrapped
         private MetadataTrigger value;
@@ -222,6 +225,7 @@ public final class Trigger {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

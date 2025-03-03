@@ -15,6 +15,7 @@ import com.mercoa.api.resources.entitytypes.types.EntityResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PaymentMethodWithEntityResponse.Builder.class)
@@ -72,13 +73,13 @@ public final class PaymentMethodWithEntityResponse {
     }
 
     public interface PaymentMethodStage {
-        EntityStage paymentMethod(PaymentMethodResponse paymentMethod);
+        EntityStage paymentMethod(@NotNull PaymentMethodResponse paymentMethod);
 
         Builder from(PaymentMethodWithEntityResponse other);
     }
 
     public interface EntityStage {
-        _FinalStage entity(EntityResponse entity);
+        _FinalStage entity(@NotNull EntityResponse entity);
     }
 
     public interface _FinalStage {
@@ -105,15 +106,15 @@ public final class PaymentMethodWithEntityResponse {
 
         @java.lang.Override
         @JsonSetter("paymentMethod")
-        public EntityStage paymentMethod(PaymentMethodResponse paymentMethod) {
-            this.paymentMethod = paymentMethod;
+        public EntityStage paymentMethod(@NotNull PaymentMethodResponse paymentMethod) {
+            this.paymentMethod = Objects.requireNonNull(paymentMethod, "paymentMethod must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("entity")
-        public _FinalStage entity(EntityResponse entity) {
-            this.entity = entity;
+        public _FinalStage entity(@NotNull EntityResponse entity) {
+            this.entity = Objects.requireNonNull(entity, "entity must not be null");
             return this;
         }
 

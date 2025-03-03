@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = UtilityPaymentMethodRequest.Builder.class)
@@ -145,7 +146,7 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
     }
 
     public interface UtilityIdStage {
-        _FinalStage utilityId(String utilityId);
+        _FinalStage utilityId(@NotNull String utilityId);
 
         Builder from(UtilityPaymentMethodRequest other);
     }
@@ -210,8 +211,8 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
          */
         @java.lang.Override
         @JsonSetter("utilityId")
-        public _FinalStage utilityId(String utilityId) {
-            this.utilityId = utilityId;
+        public _FinalStage utilityId(@NotNull String utilityId) {
+            this.utilityId = Objects.requireNonNull(utilityId, "utilityId must not be null");
             return this;
         }
 

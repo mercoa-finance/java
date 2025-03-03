@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ContractCreateRequest.Builder.class)
@@ -123,13 +124,13 @@ public final class ContractCreateRequest {
     }
 
     public interface SummaryStage {
-        CreatorEntityIdStage summary(String summary);
+        CreatorEntityIdStage summary(@NotNull String summary);
 
         Builder from(ContractCreateRequest other);
     }
 
     public interface CreatorEntityIdStage {
-        _FinalStage creatorEntityId(String creatorEntityId);
+        _FinalStage creatorEntityId(@NotNull String creatorEntityId);
     }
 
     public interface _FinalStage {
@@ -183,8 +184,8 @@ public final class ContractCreateRequest {
          */
         @java.lang.Override
         @JsonSetter("summary")
-        public CreatorEntityIdStage summary(String summary) {
-            this.summary = summary;
+        public CreatorEntityIdStage summary(@NotNull String summary) {
+            this.summary = Objects.requireNonNull(summary, "summary must not be null");
             return this;
         }
 
@@ -194,8 +195,8 @@ public final class ContractCreateRequest {
          */
         @java.lang.Override
         @JsonSetter("creatorEntityId")
-        public _FinalStage creatorEntityId(String creatorEntityId) {
-            this.creatorEntityId = creatorEntityId;
+        public _FinalStage creatorEntityId(@NotNull String creatorEntityId) {
+            this.creatorEntityId = Objects.requireNonNull(creatorEntityId, "creatorEntityId must not be null");
             return this;
         }
 

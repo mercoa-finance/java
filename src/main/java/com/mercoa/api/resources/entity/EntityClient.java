@@ -9,6 +9,7 @@ import com.mercoa.api.core.MediaTypes;
 import com.mercoa.api.core.MercoaApiException;
 import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.entity.approvalpolicy.ApprovalPolicyClient;
@@ -118,50 +119,59 @@ public class EntityClient {
                 .newBuilder()
                 .addPathSegments("entity");
         if (request.getPaymentMethods().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "paymentMethods", request.getPaymentMethods().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "paymentMethods", request.getPaymentMethods().get().toString(), false);
         }
         if (request.getIsCustomer().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "isCustomer", request.getIsCustomer().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "isCustomer", request.getIsCustomer().get().toString(), false);
         }
         if (request.getForeignId().isPresent()) {
-            httpUrl.addQueryParameter("foreignId", request.getForeignId().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "foreignId", request.getForeignId().get(), false);
         }
         if (request.getStatus().isPresent()) {
-            httpUrl.addQueryParameter("status", request.getStatus().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "status", request.getStatus().get().toString(), false);
         }
         if (request.getIsPayee().isPresent()) {
-            httpUrl.addQueryParameter("isPayee", request.getIsPayee().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "isPayee", request.getIsPayee().get().toString(), false);
         }
         if (request.getIsPayor().isPresent()) {
-            httpUrl.addQueryParameter("isPayor", request.getIsPayor().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "isPayor", request.getIsPayor().get().toString(), false);
         }
         if (request.getName().isPresent()) {
-            httpUrl.addQueryParameter("name", request.getName().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "name", request.getName().get(), false);
         }
         if (request.getSearch().isPresent()) {
-            httpUrl.addQueryParameter("search", request.getSearch().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "search", request.getSearch().get(), false);
         }
         if (request.getMetadata().isPresent()) {
-            httpUrl.addQueryParameter("metadata", request.getMetadata().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "metadata", request.getMetadata().get().toString(), false);
         }
         if (request.getReturnMetadata().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "returnMetadata", request.getReturnMetadata().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "returnMetadata", request.getReturnMetadata().get(), false);
         }
         if (request.getLimit().isPresent()) {
-            httpUrl.addQueryParameter("limit", request.getLimit().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "limit", request.getLimit().get().toString(), false);
         }
         if (request.getStartingAfter().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "startingAfter", request.getStartingAfter().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -203,6 +213,7 @@ public class EntityClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -237,14 +248,15 @@ public class EntityClient {
                 .addPathSegments("entity")
                 .addPathSegment(entityId);
         if (request.getReturnMetadata().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "returnMetadata", request.getReturnMetadata().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "returnMetadata", request.getReturnMetadata().get(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -291,6 +303,7 @@ public class EntityClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -331,6 +344,7 @@ public class EntityClient {
                 .url(httpUrl)
                 .method("DELETE", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -372,6 +386,7 @@ public class EntityClient {
                 .url(httpUrl)
                 .method("POST", RequestBody.create("", null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -417,6 +432,7 @@ public class EntityClient {
                 .url(httpUrl)
                 .method("POST", RequestBody.create("", null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -476,6 +492,7 @@ public class EntityClient {
                 .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -512,19 +529,21 @@ public class EntityClient {
                 .addPathSegments("entity")
                 .addPathSegment(entityId)
                 .addPathSegments("onboarding");
-        httpUrl.addQueryParameter("type", request.getType().toString());
+        QueryStringMapper.addQueryParameter(httpUrl, "type", request.getType().toString(), false);
         if (request.getExpiresIn().isPresent()) {
-            httpUrl.addQueryParameter("expiresIn", request.getExpiresIn().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "expiresIn", request.getExpiresIn().get(), false);
         }
         if (request.getConnectedEntityId().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "connectedEntityId", request.getConnectedEntityId().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "connectedEntityId", request.getConnectedEntityId().get(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -561,18 +580,20 @@ public class EntityClient {
                 .addPathSegments("entity")
                 .addPathSegment(entityId)
                 .addPathSegments("onboarding");
-        httpUrl.addQueryParameter("type", request.getType().toString());
+        QueryStringMapper.addQueryParameter(httpUrl, "type", request.getType().toString(), false);
         if (request.getExpiresIn().isPresent()) {
-            httpUrl.addQueryParameter("expiresIn", request.getExpiresIn().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "expiresIn", request.getExpiresIn().get(), false);
         }
         if (request.getConnectedEntityId().isPresent()) {
-            httpUrl.addQueryParameter(
-                    "connectedEntityId", request.getConnectedEntityId().get());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "connectedEntityId", request.getConnectedEntityId().get(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("POST", RequestBody.create("", null))
-                .headers(Headers.of(clientOptions.headers(requestOptions)));
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
@@ -618,16 +639,19 @@ public class EntityClient {
                 .addPathSegment(entityId)
                 .addPathSegments("events");
         if (request.getStartDate().isPresent()) {
-            httpUrl.addQueryParameter("startDate", request.getStartDate().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "startDate", request.getStartDate().get().toString(), false);
         }
         if (request.getEndDate().isPresent()) {
-            httpUrl.addQueryParameter("endDate", request.getEndDate().get().toString());
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "endDate", request.getEndDate().get().toString(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {

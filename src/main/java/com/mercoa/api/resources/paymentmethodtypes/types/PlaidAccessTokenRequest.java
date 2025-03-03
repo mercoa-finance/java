@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PlaidAccessTokenRequest.Builder.class)
@@ -79,7 +80,7 @@ public final class PlaidAccessTokenRequest {
     }
 
     public interface AccessTokenStage {
-        _FinalStage accessToken(String accessToken);
+        _FinalStage accessToken(@NotNull String accessToken);
 
         Builder from(PlaidAccessTokenRequest other);
     }
@@ -116,8 +117,8 @@ public final class PlaidAccessTokenRequest {
          */
         @java.lang.Override
         @JsonSetter("accessToken")
-        public _FinalStage accessToken(String accessToken) {
-            this.accessToken = accessToken;
+        public _FinalStage accessToken(@NotNull String accessToken) {
+            this.accessToken = Objects.requireNonNull(accessToken, "accessToken must not be null");
             return this;
         }
 

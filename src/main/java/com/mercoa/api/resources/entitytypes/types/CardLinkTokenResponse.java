@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CardLinkTokenResponse.Builder.class)
@@ -70,13 +71,13 @@ public final class CardLinkTokenResponse {
     }
 
     public interface TokenStage {
-        AccountIdStage token(String token);
+        AccountIdStage token(@NotNull String token);
 
         Builder from(CardLinkTokenResponse other);
     }
 
     public interface AccountIdStage {
-        _FinalStage accountId(String accountId);
+        _FinalStage accountId(@NotNull String accountId);
     }
 
     public interface _FinalStage {
@@ -103,15 +104,15 @@ public final class CardLinkTokenResponse {
 
         @java.lang.Override
         @JsonSetter("token")
-        public AccountIdStage token(String token) {
-            this.token = token;
+        public AccountIdStage token(@NotNull String token) {
+            this.token = Objects.requireNonNull(token, "token must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("accountId")
-        public _FinalStage accountId(String accountId) {
-            this.accountId = accountId;
+        public _FinalStage accountId(@NotNull String accountId) {
+            this.accountId = Objects.requireNonNull(accountId, "accountId must not be null");
             return this;
         }
 

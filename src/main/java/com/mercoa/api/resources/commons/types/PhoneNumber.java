@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PhoneNumber.Builder.class)
@@ -70,13 +71,13 @@ public final class PhoneNumber {
     }
 
     public interface CountryCodeStage {
-        NumberStage countryCode(String countryCode);
+        NumberStage countryCode(@NotNull String countryCode);
 
         Builder from(PhoneNumber other);
     }
 
     public interface NumberStage {
-        _FinalStage number(String number);
+        _FinalStage number(@NotNull String number);
     }
 
     public interface _FinalStage {
@@ -103,15 +104,15 @@ public final class PhoneNumber {
 
         @java.lang.Override
         @JsonSetter("countryCode")
-        public NumberStage countryCode(String countryCode) {
-            this.countryCode = countryCode;
+        public NumberStage countryCode(@NotNull String countryCode) {
+            this.countryCode = Objects.requireNonNull(countryCode, "countryCode must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("number")
-        public _FinalStage number(String number) {
-            this.number = number;
+        public _FinalStage number(@NotNull String number) {
+            this.number = Objects.requireNonNull(number, "number must not be null");
             return this;
         }
 

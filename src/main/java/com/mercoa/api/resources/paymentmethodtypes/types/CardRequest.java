@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CardRequest.Builder.class)
@@ -197,29 +198,29 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
     }
 
     public interface CardTypeStage {
-        CardBrandStage cardType(CardType cardType);
+        CardBrandStage cardType(@NotNull CardType cardType);
 
         Builder from(CardRequest other);
     }
 
     public interface CardBrandStage {
-        LastFourStage cardBrand(CardBrand cardBrand);
+        LastFourStage cardBrand(@NotNull CardBrand cardBrand);
     }
 
     public interface LastFourStage {
-        ExpMonthStage lastFour(String lastFour);
+        ExpMonthStage lastFour(@NotNull String lastFour);
     }
 
     public interface ExpMonthStage {
-        ExpYearStage expMonth(String expMonth);
+        ExpYearStage expMonth(@NotNull String expMonth);
     }
 
     public interface ExpYearStage {
-        TokenStage expYear(String expYear);
+        TokenStage expYear(@NotNull String expYear);
     }
 
     public interface TokenStage {
-        _FinalStage token(String token);
+        _FinalStage token(@NotNull String token);
     }
 
     public interface _FinalStage {
@@ -300,43 +301,43 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
 
         @java.lang.Override
         @JsonSetter("cardType")
-        public CardBrandStage cardType(CardType cardType) {
-            this.cardType = cardType;
+        public CardBrandStage cardType(@NotNull CardType cardType) {
+            this.cardType = Objects.requireNonNull(cardType, "cardType must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("cardBrand")
-        public LastFourStage cardBrand(CardBrand cardBrand) {
-            this.cardBrand = cardBrand;
+        public LastFourStage cardBrand(@NotNull CardBrand cardBrand) {
+            this.cardBrand = Objects.requireNonNull(cardBrand, "cardBrand must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("lastFour")
-        public ExpMonthStage lastFour(String lastFour) {
-            this.lastFour = lastFour;
+        public ExpMonthStage lastFour(@NotNull String lastFour) {
+            this.lastFour = Objects.requireNonNull(lastFour, "lastFour must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("expMonth")
-        public ExpYearStage expMonth(String expMonth) {
-            this.expMonth = expMonth;
+        public ExpYearStage expMonth(@NotNull String expMonth) {
+            this.expMonth = Objects.requireNonNull(expMonth, "expMonth must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("expYear")
-        public TokenStage expYear(String expYear) {
-            this.expYear = expYear;
+        public TokenStage expYear(@NotNull String expYear) {
+            this.expYear = Objects.requireNonNull(expYear, "expYear must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("token")
-        public _FinalStage token(String token) {
-            this.token = token;
+        public _FinalStage token(@NotNull String token) {
+            this.token = Objects.requireNonNull(token, "token must not be null");
             return this;
         }
 

@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = PaymentMethodWebhook.Builder.class)
@@ -112,21 +113,21 @@ public final class PaymentMethodWebhook {
     }
 
     public interface EventTypeStage {
-        EntityIdStage eventType(String eventType);
+        EntityIdStage eventType(@NotNull String eventType);
 
         Builder from(PaymentMethodWebhook other);
     }
 
     public interface EntityIdStage {
-        PaymentMethodStage entityId(String entityId);
+        PaymentMethodStage entityId(@NotNull String entityId);
     }
 
     public interface PaymentMethodStage {
-        EntityStage paymentMethod(PaymentMethodResponse paymentMethod);
+        EntityStage paymentMethod(@NotNull PaymentMethodResponse paymentMethod);
     }
 
     public interface EntityStage {
-        _FinalStage entity(EntityResponse entity);
+        _FinalStage entity(@NotNull EntityResponse entity);
     }
 
     public interface _FinalStage {
@@ -167,29 +168,29 @@ public final class PaymentMethodWebhook {
 
         @java.lang.Override
         @JsonSetter("eventType")
-        public EntityIdStage eventType(String eventType) {
-            this.eventType = eventType;
+        public EntityIdStage eventType(@NotNull String eventType) {
+            this.eventType = Objects.requireNonNull(eventType, "eventType must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("entityId")
-        public PaymentMethodStage entityId(String entityId) {
-            this.entityId = entityId;
+        public PaymentMethodStage entityId(@NotNull String entityId) {
+            this.entityId = Objects.requireNonNull(entityId, "entityId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("paymentMethod")
-        public EntityStage paymentMethod(PaymentMethodResponse paymentMethod) {
-            this.paymentMethod = paymentMethod;
+        public EntityStage paymentMethod(@NotNull PaymentMethodResponse paymentMethod) {
+            this.paymentMethod = Objects.requireNonNull(paymentMethod, "paymentMethod must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("entity")
-        public _FinalStage entity(EntityResponse entity) {
-            this.entity = entity;
+        public _FinalStage entity(@NotNull EntityResponse entity) {
+            this.entity = Objects.requireNonNull(entity, "entity must not be null");
             return this;
         }
 

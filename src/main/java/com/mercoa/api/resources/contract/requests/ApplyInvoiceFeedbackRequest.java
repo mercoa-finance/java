@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ApplyInvoiceFeedbackRequest.Builder.class)
@@ -76,13 +77,13 @@ public final class ApplyInvoiceFeedbackRequest {
     }
 
     public interface FeedbackStage {
-        InvoiceIdStage feedback(String feedback);
+        InvoiceIdStage feedback(@NotNull String feedback);
 
         Builder from(ApplyInvoiceFeedbackRequest other);
     }
 
     public interface InvoiceIdStage {
-        _FinalStage invoiceId(String invoiceId);
+        _FinalStage invoiceId(@NotNull String invoiceId);
     }
 
     public interface _FinalStage {
@@ -113,8 +114,8 @@ public final class ApplyInvoiceFeedbackRequest {
          */
         @java.lang.Override
         @JsonSetter("feedback")
-        public InvoiceIdStage feedback(String feedback) {
-            this.feedback = feedback;
+        public InvoiceIdStage feedback(@NotNull String feedback) {
+            this.feedback = Objects.requireNonNull(feedback, "feedback must not be null");
             return this;
         }
 
@@ -124,8 +125,8 @@ public final class ApplyInvoiceFeedbackRequest {
          */
         @java.lang.Override
         @JsonSetter("invoiceId")
-        public _FinalStage invoiceId(String invoiceId) {
-            this.invoiceId = invoiceId;
+        public _FinalStage invoiceId(@NotNull String invoiceId) {
+            this.invoiceId = Objects.requireNonNull(invoiceId, "invoiceId must not be null");
             return this;
         }
 

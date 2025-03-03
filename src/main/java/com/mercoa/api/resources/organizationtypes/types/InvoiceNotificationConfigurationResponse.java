@@ -15,6 +15,7 @@ import com.mercoa.api.resources.entitytypes.types.NotificationType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceNotificationConfigurationResponse.Builder.class)
@@ -74,13 +75,13 @@ public final class InvoiceNotificationConfigurationResponse implements IInvoiceN
     }
 
     public interface UrlStage {
-        TypeStage url(String url);
+        TypeStage url(@NotNull String url);
 
         Builder from(InvoiceNotificationConfigurationResponse other);
     }
 
     public interface TypeStage {
-        _FinalStage type(NotificationType type);
+        _FinalStage type(@NotNull NotificationType type);
     }
 
     public interface _FinalStage {
@@ -107,15 +108,15 @@ public final class InvoiceNotificationConfigurationResponse implements IInvoiceN
 
         @java.lang.Override
         @JsonSetter("url")
-        public TypeStage url(String url) {
-            this.url = url;
+        public TypeStage url(@NotNull String url) {
+            this.url = Objects.requireNonNull(url, "url must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("type")
-        public _FinalStage type(NotificationType type) {
-            this.type = type;
+        public _FinalStage type(@NotNull NotificationType type) {
+            this.type = Objects.requireNonNull(type, "type must not be null");
             return this;
         }
 

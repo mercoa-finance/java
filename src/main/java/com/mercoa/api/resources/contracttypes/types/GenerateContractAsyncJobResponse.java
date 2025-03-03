@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GenerateContractAsyncJobResponse.Builder.class)
@@ -93,13 +94,13 @@ public final class GenerateContractAsyncJobResponse {
     }
 
     public interface JobIdStage {
-        StatusStage jobId(String jobId);
+        StatusStage jobId(@NotNull String jobId);
 
         Builder from(GenerateContractAsyncJobResponse other);
     }
 
     public interface StatusStage {
-        _FinalStage status(ContractJobStatus status);
+        _FinalStage status(@NotNull ContractJobStatus status);
     }
 
     public interface _FinalStage {
@@ -137,8 +138,8 @@ public final class GenerateContractAsyncJobResponse {
          */
         @java.lang.Override
         @JsonSetter("jobId")
-        public StatusStage jobId(String jobId) {
-            this.jobId = jobId;
+        public StatusStage jobId(@NotNull String jobId) {
+            this.jobId = Objects.requireNonNull(jobId, "jobId must not be null");
             return this;
         }
 
@@ -148,8 +149,8 @@ public final class GenerateContractAsyncJobResponse {
          */
         @java.lang.Override
         @JsonSetter("status")
-        public _FinalStage status(ContractJobStatus status) {
-            this.status = status;
+        public _FinalStage status(@NotNull ContractJobStatus status) {
+            this.status = Objects.requireNonNull(status, "status must not be null");
             return this;
         }
 

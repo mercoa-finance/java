@@ -15,6 +15,7 @@ import com.mercoa.api.resources.commons.types.DocumentType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = UploadDocumentRequest.Builder.class)
@@ -74,13 +75,13 @@ public final class UploadDocumentRequest {
     }
 
     public interface DocumentStage {
-        TypeStage document(String document);
+        TypeStage document(@NotNull String document);
 
         Builder from(UploadDocumentRequest other);
     }
 
     public interface TypeStage {
-        _FinalStage type(DocumentType type);
+        _FinalStage type(@NotNull DocumentType type);
     }
 
     public interface _FinalStage {
@@ -111,15 +112,15 @@ public final class UploadDocumentRequest {
          */
         @java.lang.Override
         @JsonSetter("document")
-        public TypeStage document(String document) {
-            this.document = document;
+        public TypeStage document(@NotNull String document) {
+            this.document = Objects.requireNonNull(document, "document must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("type")
-        public _FinalStage type(DocumentType type) {
-            this.type = type;
+        public _FinalStage type(@NotNull DocumentType type) {
+            this.type = Objects.requireNonNull(type, "type must not be null");
             return this;
         }
 

@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ApprovalSlotAssignment.Builder.class)
@@ -77,13 +78,13 @@ public final class ApprovalSlotAssignment {
     }
 
     public interface ApprovalSlotIdStage {
-        AssignedUserIdStage approvalSlotId(String approvalSlotId);
+        AssignedUserIdStage approvalSlotId(@NotNull String approvalSlotId);
 
         Builder from(ApprovalSlotAssignment other);
     }
 
     public interface AssignedUserIdStage {
-        _FinalStage assignedUserId(String assignedUserId);
+        _FinalStage assignedUserId(@NotNull String assignedUserId);
     }
 
     public interface _FinalStage {
@@ -114,8 +115,8 @@ public final class ApprovalSlotAssignment {
          */
         @java.lang.Override
         @JsonSetter("approvalSlotId")
-        public AssignedUserIdStage approvalSlotId(String approvalSlotId) {
-            this.approvalSlotId = approvalSlotId;
+        public AssignedUserIdStage approvalSlotId(@NotNull String approvalSlotId) {
+            this.approvalSlotId = Objects.requireNonNull(approvalSlotId, "approvalSlotId must not be null");
             return this;
         }
 
@@ -125,8 +126,8 @@ public final class ApprovalSlotAssignment {
          */
         @java.lang.Override
         @JsonSetter("assignedUserId")
-        public _FinalStage assignedUserId(String assignedUserId) {
-            this.assignedUserId = assignedUserId;
+        public _FinalStage assignedUserId(@NotNull String assignedUserId) {
+            this.assignedUserId = Objects.requireNonNull(assignedUserId, "assignedUserId must not be null");
             return this;
         }
 

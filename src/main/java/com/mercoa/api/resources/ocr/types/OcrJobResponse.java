@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = OcrJobResponse.Builder.class)
@@ -81,13 +82,13 @@ public final class OcrJobResponse {
     }
 
     public interface JobIdStage {
-        StatusStage jobId(String jobId);
+        StatusStage jobId(@NotNull String jobId);
 
         Builder from(OcrJobResponse other);
     }
 
     public interface StatusStage {
-        _FinalStage status(OcrJobStatus status);
+        _FinalStage status(@NotNull OcrJobStatus status);
     }
 
     public interface _FinalStage {
@@ -121,15 +122,15 @@ public final class OcrJobResponse {
 
         @java.lang.Override
         @JsonSetter("jobId")
-        public StatusStage jobId(String jobId) {
-            this.jobId = jobId;
+        public StatusStage jobId(@NotNull String jobId) {
+            this.jobId = Objects.requireNonNull(jobId, "jobId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("status")
-        public _FinalStage status(OcrJobStatus status) {
-            this.status = status;
+        public _FinalStage status(@NotNull OcrJobStatus status) {
+            this.status = Objects.requireNonNull(status, "status must not be null");
             return this;
         }
 

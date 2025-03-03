@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityEvent.Builder.class)
@@ -102,13 +103,13 @@ public final class EntityEvent {
     }
 
     public interface DataStage {
-        CreatedAtStage data(EntityResponse data);
+        CreatedAtStage data(@NotNull EntityResponse data);
 
         Builder from(EntityEvent other);
     }
 
     public interface CreatedAtStage {
-        _FinalStage createdAt(OffsetDateTime createdAt);
+        _FinalStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface _FinalStage {
@@ -151,15 +152,15 @@ public final class EntityEvent {
 
         @java.lang.Override
         @JsonSetter("data")
-        public CreatedAtStage data(EntityResponse data) {
-            this.data = data;
+        public CreatedAtStage data(@NotNull EntityResponse data) {
+            this.data = Objects.requireNonNull(data, "data must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("createdAt")
-        public _FinalStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        public _FinalStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
             return this;
         }
 

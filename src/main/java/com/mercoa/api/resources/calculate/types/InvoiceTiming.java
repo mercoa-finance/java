@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceTiming.Builder.class)
@@ -62,7 +63,7 @@ public final class InvoiceTiming {
     }
 
     public interface InvoiceIdStage {
-        _FinalStage invoiceId(String invoiceId);
+        _FinalStage invoiceId(@NotNull String invoiceId);
 
         Builder from(InvoiceTiming other);
     }
@@ -88,8 +89,8 @@ public final class InvoiceTiming {
 
         @java.lang.Override
         @JsonSetter("invoiceId")
-        public _FinalStage invoiceId(String invoiceId) {
-            this.invoiceId = invoiceId;
+        public _FinalStage invoiceId(@NotNull String invoiceId) {
+            this.invoiceId = Objects.requireNonNull(invoiceId, "invoiceId must not be null");
             return this;
         }
 

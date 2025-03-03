@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BankLookupRequest.Builder.class)
@@ -65,7 +66,7 @@ public final class BankLookupRequest {
     }
 
     public interface RoutingNumberStage {
-        _FinalStage routingNumber(String routingNumber);
+        _FinalStage routingNumber(@NotNull String routingNumber);
 
         Builder from(BankLookupRequest other);
     }
@@ -95,8 +96,8 @@ public final class BankLookupRequest {
          */
         @java.lang.Override
         @JsonSetter("routingNumber")
-        public _FinalStage routingNumber(String routingNumber) {
-            this.routingNumber = routingNumber;
+        public _FinalStage routingNumber(@NotNull String routingNumber) {
+            this.routingNumber = Objects.requireNonNull(routingNumber, "routingNumber must not be null");
             return this;
         }
 

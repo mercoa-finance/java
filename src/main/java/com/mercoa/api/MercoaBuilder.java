@@ -5,6 +5,7 @@ package com.mercoa.api;
 
 import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.Environment;
+import okhttp3.OkHttpClient;
 
 public final class MercoaBuilder {
     private ClientOptions.Builder clientOptionsBuilder = ClientOptions.builder();
@@ -28,6 +29,22 @@ public final class MercoaBuilder {
 
     public MercoaBuilder url(String url) {
         this.environment = Environment.custom(url);
+        return this;
+    }
+
+    /**
+     * Sets the timeout (in seconds) for the client
+     */
+    public MercoaBuilder timeout(int timeout) {
+        this.clientOptionsBuilder.timeout(timeout);
+        return this;
+    }
+
+    /**
+     * Sets the underlying OkHttp client
+     */
+    public MercoaBuilder httpClient(OkHttpClient httpClient) {
+        this.clientOptionsBuilder.httpClient(httpClient);
         return this;
     }
 

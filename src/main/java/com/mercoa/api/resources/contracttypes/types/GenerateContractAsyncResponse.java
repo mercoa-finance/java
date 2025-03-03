@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GenerateContractAsyncResponse.Builder.class)
@@ -65,7 +66,7 @@ public final class GenerateContractAsyncResponse {
     }
 
     public interface JobIdStage {
-        _FinalStage jobId(String jobId);
+        _FinalStage jobId(@NotNull String jobId);
 
         Builder from(GenerateContractAsyncResponse other);
     }
@@ -95,8 +96,8 @@ public final class GenerateContractAsyncResponse {
          */
         @java.lang.Override
         @JsonSetter("jobId")
-        public _FinalStage jobId(String jobId) {
-            this.jobId = jobId;
+        public _FinalStage jobId(@NotNull String jobId) {
+            this.jobId = Objects.requireNonNull(jobId, "jobId must not be null");
             return this;
         }
 

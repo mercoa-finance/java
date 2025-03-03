@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Ein.Builder.class)
@@ -65,7 +66,7 @@ public final class Ein {
     }
 
     public interface NumberStage {
-        _FinalStage number(String number);
+        _FinalStage number(@NotNull String number);
 
         Builder from(Ein other);
     }
@@ -95,8 +96,8 @@ public final class Ein {
          */
         @java.lang.Override
         @JsonSetter("number")
-        public _FinalStage number(String number) {
-            this.number = number;
+        public _FinalStage number(@NotNull String number) {
+            this.number = Objects.requireNonNull(number, "number must not be null");
             return this;
         }
 

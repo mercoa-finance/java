@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CodatProviderRequest.Builder.class)
@@ -62,7 +63,7 @@ public final class CodatProviderRequest {
     }
 
     public interface ApiKeyStage {
-        _FinalStage apiKey(String apiKey);
+        _FinalStage apiKey(@NotNull String apiKey);
 
         Builder from(CodatProviderRequest other);
     }
@@ -88,8 +89,8 @@ public final class CodatProviderRequest {
 
         @java.lang.Override
         @JsonSetter("apiKey")
-        public _FinalStage apiKey(String apiKey) {
-            this.apiKey = apiKey;
+        public _FinalStage apiKey(@NotNull String apiKey) {
+            this.apiKey = Objects.requireNonNull(apiKey, "apiKey must not be null");
             return this;
         }
 

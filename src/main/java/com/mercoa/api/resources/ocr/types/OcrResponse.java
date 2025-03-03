@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = OcrResponse.Builder.class)
@@ -121,17 +122,17 @@ public final class OcrResponse {
     }
 
     public interface JobIdStage {
-        InvoiceStage jobId(String jobId);
+        InvoiceStage jobId(@NotNull String jobId);
 
         Builder from(OcrResponse other);
     }
 
     public interface InvoiceStage {
-        VendorStage invoice(InvoiceResponse invoice);
+        VendorStage invoice(@NotNull InvoiceResponse invoice);
     }
 
     public interface VendorStage {
-        _FinalStage vendor(CounterpartyResponse vendor);
+        _FinalStage vendor(@NotNull CounterpartyResponse vendor);
     }
 
     public interface _FinalStage {
@@ -182,22 +183,22 @@ public final class OcrResponse {
 
         @java.lang.Override
         @JsonSetter("jobId")
-        public InvoiceStage jobId(String jobId) {
-            this.jobId = jobId;
+        public InvoiceStage jobId(@NotNull String jobId) {
+            this.jobId = Objects.requireNonNull(jobId, "jobId must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("invoice")
-        public VendorStage invoice(InvoiceResponse invoice) {
-            this.invoice = invoice;
+        public VendorStage invoice(@NotNull InvoiceResponse invoice) {
+            this.invoice = Objects.requireNonNull(invoice, "invoice must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("vendor")
-        public _FinalStage vendor(CounterpartyResponse vendor) {
-            this.vendor = vendor;
+        public _FinalStage vendor(@NotNull CounterpartyResponse vendor) {
+            this.vendor = Objects.requireNonNull(vendor, "vendor must not be null");
             return this;
         }
 

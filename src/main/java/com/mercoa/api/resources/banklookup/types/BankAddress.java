@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BankAddress.Builder.class)
@@ -104,25 +105,25 @@ public final class BankAddress {
     }
 
     public interface AddressStage {
-        CityStage address(String address);
+        CityStage address(@NotNull String address);
 
         Builder from(BankAddress other);
     }
 
     public interface CityStage {
-        StateStage city(String city);
+        StateStage city(@NotNull String city);
     }
 
     public interface StateStage {
-        PostalCodeStage state(String state);
+        PostalCodeStage state(@NotNull String state);
     }
 
     public interface PostalCodeStage {
-        PostalCodeExtensionStage postalCode(String postalCode);
+        PostalCodeExtensionStage postalCode(@NotNull String postalCode);
     }
 
     public interface PostalCodeExtensionStage {
-        _FinalStage postalCodeExtension(String postalCodeExtension);
+        _FinalStage postalCodeExtension(@NotNull String postalCodeExtension);
     }
 
     public interface _FinalStage {
@@ -159,36 +160,37 @@ public final class BankAddress {
 
         @java.lang.Override
         @JsonSetter("address")
-        public CityStage address(String address) {
-            this.address = address;
+        public CityStage address(@NotNull String address) {
+            this.address = Objects.requireNonNull(address, "address must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("city")
-        public StateStage city(String city) {
-            this.city = city;
+        public StateStage city(@NotNull String city) {
+            this.city = Objects.requireNonNull(city, "city must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("state")
-        public PostalCodeStage state(String state) {
-            this.state = state;
+        public PostalCodeStage state(@NotNull String state) {
+            this.state = Objects.requireNonNull(state, "state must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("postalCode")
-        public PostalCodeExtensionStage postalCode(String postalCode) {
-            this.postalCode = postalCode;
+        public PostalCodeExtensionStage postalCode(@NotNull String postalCode) {
+            this.postalCode = Objects.requireNonNull(postalCode, "postalCode must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("postalCodeExtension")
-        public _FinalStage postalCodeExtension(String postalCodeExtension) {
-            this.postalCodeExtension = postalCodeExtension;
+        public _FinalStage postalCodeExtension(@NotNull String postalCodeExtension) {
+            this.postalCodeExtension =
+                    Objects.requireNonNull(postalCodeExtension, "postalCodeExtension must not be null");
             return this;
         }
 

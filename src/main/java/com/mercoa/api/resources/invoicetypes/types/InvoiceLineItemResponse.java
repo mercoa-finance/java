@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceLineItemResponse.Builder.class)
@@ -224,25 +225,25 @@ public final class InvoiceLineItemResponse {
     }
 
     public interface IdStage {
-        CurrencyStage id(String id);
+        CurrencyStage id(@NotNull String id);
 
         Builder from(InvoiceLineItemResponse other);
     }
 
     public interface CurrencyStage {
-        CategoryStage currency(CurrencyCode currency);
+        CategoryStage currency(@NotNull CurrencyCode currency);
     }
 
     public interface CategoryStage {
-        CreatedAtStage category(String category);
+        CreatedAtStage category(@NotNull String category);
     }
 
     public interface CreatedAtStage {
-        UpdatedAtStage createdAt(OffsetDateTime createdAt);
+        UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface UpdatedAtStage {
-        _FinalStage updatedAt(OffsetDateTime updatedAt);
+        _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
     public interface _FinalStage {
@@ -342,15 +343,15 @@ public final class InvoiceLineItemResponse {
 
         @java.lang.Override
         @JsonSetter("id")
-        public CurrencyStage id(String id) {
-            this.id = id;
+        public CurrencyStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("currency")
-        public CategoryStage currency(CurrencyCode currency) {
-            this.currency = currency;
+        public CategoryStage currency(@NotNull CurrencyCode currency) {
+            this.currency = Objects.requireNonNull(currency, "currency must not be null");
             return this;
         }
 
@@ -360,22 +361,22 @@ public final class InvoiceLineItemResponse {
          */
         @java.lang.Override
         @JsonSetter("category")
-        public CreatedAtStage category(String category) {
-            this.category = category;
+        public CreatedAtStage category(@NotNull String category) {
+            this.category = Objects.requireNonNull(category, "category must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("createdAt")
-        public UpdatedAtStage createdAt(OffsetDateTime createdAt) {
-            this.createdAt = createdAt;
+        public UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("updatedAt")
-        public _FinalStage updatedAt(OffsetDateTime updatedAt) {
-            this.updatedAt = updatedAt;
+        public _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt) {
+            this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
             return this;
         }
 

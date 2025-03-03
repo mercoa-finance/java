@@ -88,6 +88,7 @@ public final class IdentifierList {
     }
 
     @JsonTypeName("rolesList")
+    @JsonIgnoreProperties("type")
     private static final class RolesListValue implements Value {
         @JsonProperty("value")
         private List<String> value;
@@ -124,6 +125,7 @@ public final class IdentifierList {
     }
 
     @JsonTypeName("userList")
+    @JsonIgnoreProperties("type")
     private static final class UserListValue implements Value {
         @JsonProperty("value")
         private List<String> value;
@@ -159,6 +161,7 @@ public final class IdentifierList {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

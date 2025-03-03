@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = CalculateVendorCreditUsageResponse.Builder.class)
@@ -104,7 +105,7 @@ public final class CalculateVendorCreditUsageResponse {
     }
 
     public interface CurrencyStage {
-        _FinalStage currency(CurrencyCode currency);
+        _FinalStage currency(@NotNull CurrencyCode currency);
     }
 
     public interface _FinalStage {
@@ -155,8 +156,8 @@ public final class CalculateVendorCreditUsageResponse {
          */
         @java.lang.Override
         @JsonSetter("currency")
-        public _FinalStage currency(CurrencyCode currency) {
-            this.currency = currency;
+        public _FinalStage currency(@NotNull CurrencyCode currency) {
+            this.currency = Objects.requireNonNull(currency, "currency must not be null");
             return this;
         }
 

@@ -14,6 +14,7 @@ import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BulkConnectedEntity.Builder.class)
@@ -93,7 +94,7 @@ public final class BulkConnectedEntity {
     }
 
     public interface IdStage {
-        LinkCreatedAsPayorStage id(String id);
+        LinkCreatedAsPayorStage id(@NotNull String id);
 
         Builder from(BulkConnectedEntity other);
     }
@@ -138,8 +139,8 @@ public final class BulkConnectedEntity {
          */
         @java.lang.Override
         @JsonSetter("id")
-        public LinkCreatedAsPayorStage id(String id) {
-            this.id = id;
+        public LinkCreatedAsPayorStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 

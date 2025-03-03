@@ -182,6 +182,7 @@ public final class TransactionResponseWithoutInvoices {
     }
 
     @JsonTypeName("bankAccountToBankAccount")
+    @JsonIgnoreProperties("type")
     private static final class BankAccountToBankAccountValue implements Value {
         @JsonUnwrapped
         private TransactionResponseAchBase value;
@@ -220,6 +221,7 @@ public final class TransactionResponseWithoutInvoices {
     }
 
     @JsonTypeName("bankAccountToMailedCheck")
+    @JsonIgnoreProperties("type")
     private static final class BankAccountToMailedCheckValue implements Value {
         @JsonUnwrapped
         private TransactionResponseMailedCheckBase value;
@@ -258,6 +260,7 @@ public final class TransactionResponseWithoutInvoices {
     }
 
     @JsonTypeName("bankAccountToWallet")
+    @JsonIgnoreProperties("type")
     private static final class BankAccountToWalletValue implements Value {
         @JsonUnwrapped
         private TransactionResponseAchBase value;
@@ -296,6 +299,7 @@ public final class TransactionResponseWithoutInvoices {
     }
 
     @JsonTypeName("cardToWallet")
+    @JsonIgnoreProperties("type")
     private static final class CardToWalletValue implements Value {
         @JsonUnwrapped
         private TransactionResponseBase value;
@@ -334,6 +338,7 @@ public final class TransactionResponseWithoutInvoices {
     }
 
     @JsonTypeName("walletToBankAccount")
+    @JsonIgnoreProperties("type")
     private static final class WalletToBankAccountValue implements Value {
         @JsonUnwrapped
         private TransactionResponseAchBase value;
@@ -372,6 +377,7 @@ public final class TransactionResponseWithoutInvoices {
     }
 
     @JsonTypeName("custom")
+    @JsonIgnoreProperties("type")
     private static final class CustomValue implements Value {
         @JsonUnwrapped
         private TransactionResponseBase value;
@@ -410,6 +416,7 @@ public final class TransactionResponseWithoutInvoices {
     }
 
     @JsonTypeName("offPlatform")
+    @JsonIgnoreProperties("type")
     private static final class OffPlatformValue implements Value {
         @JsonUnwrapped
         private TransactionResponseBase value;
@@ -447,6 +454,7 @@ public final class TransactionResponseWithoutInvoices {
         }
     }
 
+    @JsonIgnoreProperties("type")
     private static final class _UnknownValue implements Value {
         private String type;
 

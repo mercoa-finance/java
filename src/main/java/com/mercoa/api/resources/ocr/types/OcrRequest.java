@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = OcrRequest.Builder.class)
@@ -109,13 +110,13 @@ public final class OcrRequest {
     }
 
     public interface MimeTypeStage {
-        ImageStage mimeType(String mimeType);
+        ImageStage mimeType(@NotNull String mimeType);
 
         Builder from(OcrRequest other);
     }
 
     public interface ImageStage {
-        _FinalStage image(String image);
+        _FinalStage image(@NotNull String image);
     }
 
     public interface _FinalStage {
@@ -160,8 +161,8 @@ public final class OcrRequest {
          */
         @java.lang.Override
         @JsonSetter("mimeType")
-        public ImageStage mimeType(String mimeType) {
-            this.mimeType = mimeType;
+        public ImageStage mimeType(@NotNull String mimeType) {
+            this.mimeType = Objects.requireNonNull(mimeType, "mimeType must not be null");
             return this;
         }
 
@@ -171,8 +172,8 @@ public final class OcrRequest {
          */
         @java.lang.Override
         @JsonSetter("image")
-        public _FinalStage image(String image) {
-            this.image = image;
+        public _FinalStage image(@NotNull String image) {
+            this.image = Objects.requireNonNull(image, "image must not be null");
             return this;
         }
 

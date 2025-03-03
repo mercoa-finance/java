@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BusinessProfileResponse.Builder.class)
@@ -238,7 +239,7 @@ public final class BusinessProfileResponse {
     }
 
     public interface LegalBusinessNameStage {
-        TaxIdProvidedStage legalBusinessName(String legalBusinessName);
+        TaxIdProvidedStage legalBusinessName(@NotNull String legalBusinessName);
 
         Builder from(BusinessProfileResponse other);
     }
@@ -369,8 +370,8 @@ public final class BusinessProfileResponse {
 
         @java.lang.Override
         @JsonSetter("legalBusinessName")
-        public TaxIdProvidedStage legalBusinessName(String legalBusinessName) {
-            this.legalBusinessName = legalBusinessName;
+        public TaxIdProvidedStage legalBusinessName(@NotNull String legalBusinessName) {
+            this.legalBusinessName = Objects.requireNonNull(legalBusinessName, "legalBusinessName must not be null");
             return this;
         }
 

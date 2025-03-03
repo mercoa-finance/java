@@ -7,6 +7,7 @@ import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.MercoaApiException;
 import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.banklookup.requests.BankLookupRequest;
 import com.mercoa.api.resources.banklookup.types.BankLookupResponse;
@@ -39,12 +40,13 @@ public class BankLookupClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("bankLookup");
-        httpUrl.addQueryParameter("routingNumber", request.getRoutingNumber());
+        QueryStringMapper.addQueryParameter(httpUrl, "routingNumber", request.getRoutingNumber(), false);
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json");
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
         OkHttpClient client = clientOptions.httpClient();
         if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
