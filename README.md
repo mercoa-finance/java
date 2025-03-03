@@ -15,7 +15,7 @@ API documentation is available at <https://docs.mercoa.com>.
 Add this dependency to your project's build file:
 
 ```groovy
-implementation 'com.mercoa:mercoa:v0.3.21'
+implementation 'com.mercoa:mercoa:0.6.12'
 ```
 
 ### Maven users
@@ -26,7 +26,7 @@ Add this dependency to your project's POM:
 <dependency>
     <groupId>com.mercoa</groupId>
     <artifactId>mercoa</artifactId>
-    <version>v0.3.21</version>
+    <version>0.6.12</version>
 </dependency>
 ```
 
