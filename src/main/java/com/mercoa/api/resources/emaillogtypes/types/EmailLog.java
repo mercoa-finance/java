@@ -34,6 +34,8 @@ public final class EmailLog {
 
     private final String textBody;
 
+    private final Optional<EmailLogAttachment> attachment;
+
     private final OffsetDateTime createdAt;
 
     private final Optional<String> invoiceId;
@@ -47,6 +49,7 @@ public final class EmailLog {
             String to,
             String htmlBody,
             String textBody,
+            Optional<EmailLogAttachment> attachment,
             OffsetDateTime createdAt,
             Optional<String> invoiceId,
             Map<String, Object> additionalProperties) {
@@ -56,6 +59,7 @@ public final class EmailLog {
         this.to = to;
         this.htmlBody = htmlBody;
         this.textBody = textBody;
+        this.attachment = attachment;
         this.createdAt = createdAt;
         this.invoiceId = invoiceId;
         this.additionalProperties = additionalProperties;
@@ -91,6 +95,11 @@ public final class EmailLog {
         return textBody;
     }
 
+    @JsonProperty("attachment")
+    public Optional<EmailLogAttachment> getAttachment() {
+        return attachment;
+    }
+
     @JsonProperty("createdAt")
     public OffsetDateTime getCreatedAt() {
         return createdAt;
@@ -119,6 +128,7 @@ public final class EmailLog {
                 && to.equals(other.to)
                 && htmlBody.equals(other.htmlBody)
                 && textBody.equals(other.textBody)
+                && attachment.equals(other.attachment)
                 && createdAt.equals(other.createdAt)
                 && invoiceId.equals(other.invoiceId);
     }
@@ -132,6 +142,7 @@ public final class EmailLog {
                 this.to,
                 this.htmlBody,
                 this.textBody,
+                this.attachment,
                 this.createdAt,
                 this.invoiceId);
     }
@@ -178,6 +189,10 @@ public final class EmailLog {
     public interface _FinalStage {
         EmailLog build();
 
+        _FinalStage attachment(Optional<EmailLogAttachment> attachment);
+
+        _FinalStage attachment(EmailLogAttachment attachment);
+
         _FinalStage invoiceId(Optional<String> invoiceId);
 
         _FinalStage invoiceId(String invoiceId);
@@ -209,6 +224,8 @@ public final class EmailLog {
 
         private Optional<String> invoiceId = Optional.empty();
 
+        private Optional<EmailLogAttachment> attachment = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -222,6 +239,7 @@ public final class EmailLog {
             to(other.getTo());
             htmlBody(other.getHtmlBody());
             textBody(other.getTextBody());
+            attachment(other.getAttachment());
             createdAt(other.getCreatedAt());
             invoiceId(other.getInvoiceId());
             return this;
@@ -290,8 +308,22 @@ public final class EmailLog {
         }
 
         @java.lang.Override
+        public _FinalStage attachment(EmailLogAttachment attachment) {
+            this.attachment = Optional.ofNullable(attachment);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "attachment", nulls = Nulls.SKIP)
+        public _FinalStage attachment(Optional<EmailLogAttachment> attachment) {
+            this.attachment = attachment;
+            return this;
+        }
+
+        @java.lang.Override
         public EmailLog build() {
-            return new EmailLog(id, subject, from, to, htmlBody, textBody, createdAt, invoiceId, additionalProperties);
+            return new EmailLog(
+                    id, subject, from, to, htmlBody, textBody, attachment, createdAt, invoiceId, additionalProperties);
         }
     }
 }

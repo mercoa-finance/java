@@ -28,6 +28,10 @@ public final class FeeCustomizationRailRequest {
 
     private final Optional<PaymentMethodFee> checkMail;
 
+    private final Optional<PaymentMethodFee> checkMailPriority;
+
+    private final Optional<PaymentMethodFee> checkMailUpsNextDay;
+
     private final Map<String, Object> additionalProperties;
 
     private FeeCustomizationRailRequest(
@@ -35,11 +39,15 @@ public final class FeeCustomizationRailRequest {
             Optional<PaymentMethodFee> achSameDay,
             Optional<PaymentMethodFee> checkPrint,
             Optional<PaymentMethodFee> checkMail,
+            Optional<PaymentMethodFee> checkMailPriority,
+            Optional<PaymentMethodFee> checkMailUpsNextDay,
             Map<String, Object> additionalProperties) {
         this.achStandard = achStandard;
         this.achSameDay = achSameDay;
         this.checkPrint = checkPrint;
         this.checkMail = checkMail;
+        this.checkMailPriority = checkMailPriority;
+        this.checkMailUpsNextDay = checkMailUpsNextDay;
         this.additionalProperties = additionalProperties;
     }
 
@@ -75,6 +83,22 @@ public final class FeeCustomizationRailRequest {
         return checkMail;
     }
 
+    /**
+     * @return The fee for the check mail priority rail.
+     */
+    @JsonProperty("CHECK_MAIL_PRIORITY")
+    public Optional<PaymentMethodFee> getCheckMailPriority() {
+        return checkMailPriority;
+    }
+
+    /**
+     * @return The fee for the check mail UPS next day rail.
+     */
+    @JsonProperty("CHECK_MAIL_UPS_NEXT_DAY")
+    public Optional<PaymentMethodFee> getCheckMailUpsNextDay() {
+        return checkMailUpsNextDay;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -90,12 +114,20 @@ public final class FeeCustomizationRailRequest {
         return achStandard.equals(other.achStandard)
                 && achSameDay.equals(other.achSameDay)
                 && checkPrint.equals(other.checkPrint)
-                && checkMail.equals(other.checkMail);
+                && checkMail.equals(other.checkMail)
+                && checkMailPriority.equals(other.checkMailPriority)
+                && checkMailUpsNextDay.equals(other.checkMailUpsNextDay);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.achStandard, this.achSameDay, this.checkPrint, this.checkMail);
+        return Objects.hash(
+                this.achStandard,
+                this.achSameDay,
+                this.checkPrint,
+                this.checkMail,
+                this.checkMailPriority,
+                this.checkMailUpsNextDay);
     }
 
     @java.lang.Override
@@ -117,6 +149,10 @@ public final class FeeCustomizationRailRequest {
 
         private Optional<PaymentMethodFee> checkMail = Optional.empty();
 
+        private Optional<PaymentMethodFee> checkMailPriority = Optional.empty();
+
+        private Optional<PaymentMethodFee> checkMailUpsNextDay = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -127,6 +163,8 @@ public final class FeeCustomizationRailRequest {
             achSameDay(other.getAchSameDay());
             checkPrint(other.getCheckPrint());
             checkMail(other.getCheckMail());
+            checkMailPriority(other.getCheckMailPriority());
+            checkMailUpsNextDay(other.getCheckMailUpsNextDay());
             return this;
         }
 
@@ -174,9 +212,37 @@ public final class FeeCustomizationRailRequest {
             return this;
         }
 
+        @JsonSetter(value = "CHECK_MAIL_PRIORITY", nulls = Nulls.SKIP)
+        public Builder checkMailPriority(Optional<PaymentMethodFee> checkMailPriority) {
+            this.checkMailPriority = checkMailPriority;
+            return this;
+        }
+
+        public Builder checkMailPriority(PaymentMethodFee checkMailPriority) {
+            this.checkMailPriority = Optional.ofNullable(checkMailPriority);
+            return this;
+        }
+
+        @JsonSetter(value = "CHECK_MAIL_UPS_NEXT_DAY", nulls = Nulls.SKIP)
+        public Builder checkMailUpsNextDay(Optional<PaymentMethodFee> checkMailUpsNextDay) {
+            this.checkMailUpsNextDay = checkMailUpsNextDay;
+            return this;
+        }
+
+        public Builder checkMailUpsNextDay(PaymentMethodFee checkMailUpsNextDay) {
+            this.checkMailUpsNextDay = Optional.ofNullable(checkMailUpsNextDay);
+            return this;
+        }
+
         public FeeCustomizationRailRequest build() {
             return new FeeCustomizationRailRequest(
-                    achStandard, achSameDay, checkPrint, checkMail, additionalProperties);
+                    achStandard,
+                    achSameDay,
+                    checkPrint,
+                    checkMail,
+                    checkMailPriority,
+                    checkMailUpsNextDay,
+                    additionalProperties);
         }
     }
 }

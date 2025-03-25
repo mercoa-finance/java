@@ -23,6 +23,8 @@ public interface IPaymentMethodBaseResponse {
 
     Map<String, String> getMetadata();
 
+    Optional<Boolean> getConfirmedByEntity();
+
     OffsetDateTime getCreatedAt();
 
     OffsetDateTime getUpdatedAt();

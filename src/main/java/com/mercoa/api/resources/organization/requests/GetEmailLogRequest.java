@@ -25,6 +25,10 @@ public final class GetEmailLogRequest {
 
     private final Optional<OffsetDateTime> endDate;
 
+    private final Optional<String> from;
+
+    private final Optional<String> to;
+
     private final Optional<Integer> limit;
 
     private final Optional<String> startingAfter;
@@ -34,11 +38,15 @@ public final class GetEmailLogRequest {
     private GetEmailLogRequest(
             Optional<OffsetDateTime> startDate,
             Optional<OffsetDateTime> endDate,
+            Optional<String> from,
+            Optional<String> to,
             Optional<Integer> limit,
             Optional<String> startingAfter,
             Map<String, Object> additionalProperties) {
         this.startDate = startDate;
         this.endDate = endDate;
+        this.from = from;
+        this.to = to;
         this.limit = limit;
         this.startingAfter = startingAfter;
         this.additionalProperties = additionalProperties;
@@ -52,6 +60,22 @@ public final class GetEmailLogRequest {
     @JsonProperty("endDate")
     public Optional<OffsetDateTime> getEndDate() {
         return endDate;
+    }
+
+    /**
+     * @return Filter by sender email address
+     */
+    @JsonProperty("from")
+    public Optional<String> getFrom() {
+        return from;
+    }
+
+    /**
+     * @return Filter by recipient email address
+     */
+    @JsonProperty("to")
+    public Optional<String> getTo() {
+        return to;
     }
 
     /**
@@ -84,13 +108,15 @@ public final class GetEmailLogRequest {
     private boolean equalTo(GetEmailLogRequest other) {
         return startDate.equals(other.startDate)
                 && endDate.equals(other.endDate)
+                && from.equals(other.from)
+                && to.equals(other.to)
                 && limit.equals(other.limit)
                 && startingAfter.equals(other.startingAfter);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.startDate, this.endDate, this.limit, this.startingAfter);
+        return Objects.hash(this.startDate, this.endDate, this.from, this.to, this.limit, this.startingAfter);
     }
 
     @java.lang.Override
@@ -108,6 +134,10 @@ public final class GetEmailLogRequest {
 
         private Optional<OffsetDateTime> endDate = Optional.empty();
 
+        private Optional<String> from = Optional.empty();
+
+        private Optional<String> to = Optional.empty();
+
         private Optional<Integer> limit = Optional.empty();
 
         private Optional<String> startingAfter = Optional.empty();
@@ -120,6 +150,8 @@ public final class GetEmailLogRequest {
         public Builder from(GetEmailLogRequest other) {
             startDate(other.getStartDate());
             endDate(other.getEndDate());
+            from(other.getFrom());
+            to(other.getTo());
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
             return this;
@@ -147,6 +179,28 @@ public final class GetEmailLogRequest {
             return this;
         }
 
+        @JsonSetter(value = "from", nulls = Nulls.SKIP)
+        public Builder from(Optional<String> from) {
+            this.from = from;
+            return this;
+        }
+
+        public Builder from(String from) {
+            this.from = Optional.ofNullable(from);
+            return this;
+        }
+
+        @JsonSetter(value = "to", nulls = Nulls.SKIP)
+        public Builder to(Optional<String> to) {
+            this.to = to;
+            return this;
+        }
+
+        public Builder to(String to) {
+            this.to = Optional.ofNullable(to);
+            return this;
+        }
+
         @JsonSetter(value = "limit", nulls = Nulls.SKIP)
         public Builder limit(Optional<Integer> limit) {
             this.limit = limit;
@@ -170,7 +224,7 @@ public final class GetEmailLogRequest {
         }
 
         public GetEmailLogRequest build() {
-            return new GetEmailLogRequest(startDate, endDate, limit, startingAfter, additionalProperties);
+            return new GetEmailLogRequest(startDate, endDate, from, to, limit, startingAfter, additionalProperties);
         }
     }
 }

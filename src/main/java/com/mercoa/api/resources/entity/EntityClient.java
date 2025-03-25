@@ -538,6 +538,13 @@ public class EntityClient {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "connectedEntityId", request.getConnectedEntityId().get(), false);
         }
+        if (request.getRedirectToPortal().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "redirectToPortal",
+                    request.getRedirectToPortal().get().toString(),
+                    false);
+        }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
@@ -645,6 +652,14 @@ public class EntityClient {
         if (request.getEndDate().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "endDate", request.getEndDate().get().toString(), false);
+        }
+        if (request.getLimit().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "limit", request.getLimit().get().toString(), false);
+        }
+        if (request.getStartingAfter().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,16 +24,27 @@ import org.jetbrains.annotations.NotNull;
 public final class OcrJobResponse {
     private final String jobId;
 
+    private final Optional<List<String>> linkedJobIds;
+
     private final OcrJobStatus status;
+
+    private final Optional<OcrPageRange> pageRange;
 
     private final Optional<OcrResponse> data;
 
     private final Map<String, Object> additionalProperties;
 
     private OcrJobResponse(
-            String jobId, OcrJobStatus status, Optional<OcrResponse> data, Map<String, Object> additionalProperties) {
+            String jobId,
+            Optional<List<String>> linkedJobIds,
+            OcrJobStatus status,
+            Optional<OcrPageRange> pageRange,
+            Optional<OcrResponse> data,
+            Map<String, Object> additionalProperties) {
         this.jobId = jobId;
+        this.linkedJobIds = linkedJobIds;
         this.status = status;
+        this.pageRange = pageRange;
         this.data = data;
         this.additionalProperties = additionalProperties;
     }
@@ -42,9 +54,28 @@ public final class OcrJobResponse {
         return jobId;
     }
 
+    /**
+     * @return The IDs of any OCR jobs that are processing other subdocuments of the same document.
+     */
+    @JsonProperty("linkedJobIds")
+    public Optional<List<String>> getLinkedJobIds() {
+        return linkedJobIds;
+    }
+
+    /**
+     * @return The status of the OCR job.
+     */
     @JsonProperty("status")
     public OcrJobStatus getStatus() {
         return status;
+    }
+
+    /**
+     * @return The start and end page numbers of the corresponding subdocument (zero-indexed, inclusive). If not provided, the document was not split during OCR.
+     */
+    @JsonProperty("pageRange")
+    public Optional<OcrPageRange> getPageRange() {
+        return pageRange;
     }
 
     @JsonProperty("data")
@@ -64,12 +95,16 @@ public final class OcrJobResponse {
     }
 
     private boolean equalTo(OcrJobResponse other) {
-        return jobId.equals(other.jobId) && status.equals(other.status) && data.equals(other.data);
+        return jobId.equals(other.jobId)
+                && linkedJobIds.equals(other.linkedJobIds)
+                && status.equals(other.status)
+                && pageRange.equals(other.pageRange)
+                && data.equals(other.data);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.jobId, this.status, this.data);
+        return Objects.hash(this.jobId, this.linkedJobIds, this.status, this.pageRange, this.data);
     }
 
     @java.lang.Override
@@ -94,6 +129,14 @@ public final class OcrJobResponse {
     public interface _FinalStage {
         OcrJobResponse build();
 
+        _FinalStage linkedJobIds(Optional<List<String>> linkedJobIds);
+
+        _FinalStage linkedJobIds(List<String> linkedJobIds);
+
+        _FinalStage pageRange(Optional<OcrPageRange> pageRange);
+
+        _FinalStage pageRange(OcrPageRange pageRange);
+
         _FinalStage data(Optional<OcrResponse> data);
 
         _FinalStage data(OcrResponse data);
@@ -107,6 +150,10 @@ public final class OcrJobResponse {
 
         private Optional<OcrResponse> data = Optional.empty();
 
+        private Optional<OcrPageRange> pageRange = Optional.empty();
+
+        private Optional<List<String>> linkedJobIds = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -115,7 +162,9 @@ public final class OcrJobResponse {
         @java.lang.Override
         public Builder from(OcrJobResponse other) {
             jobId(other.getJobId());
+            linkedJobIds(other.getLinkedJobIds());
             status(other.getStatus());
+            pageRange(other.getPageRange());
             data(other.getData());
             return this;
         }
@@ -127,6 +176,10 @@ public final class OcrJobResponse {
             return this;
         }
 
+        /**
+         * <p>The status of the OCR job.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("status")
         public _FinalStage status(@NotNull OcrJobStatus status) {
@@ -147,9 +200,43 @@ public final class OcrJobResponse {
             return this;
         }
 
+        /**
+         * <p>The start and end page numbers of the corresponding subdocument (zero-indexed, inclusive). If not provided, the document was not split during OCR.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage pageRange(OcrPageRange pageRange) {
+            this.pageRange = Optional.ofNullable(pageRange);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "pageRange", nulls = Nulls.SKIP)
+        public _FinalStage pageRange(Optional<OcrPageRange> pageRange) {
+            this.pageRange = pageRange;
+            return this;
+        }
+
+        /**
+         * <p>The IDs of any OCR jobs that are processing other subdocuments of the same document.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage linkedJobIds(List<String> linkedJobIds) {
+            this.linkedJobIds = Optional.ofNullable(linkedJobIds);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "linkedJobIds", nulls = Nulls.SKIP)
+        public _FinalStage linkedJobIds(Optional<List<String>> linkedJobIds) {
+            this.linkedJobIds = linkedJobIds;
+            return this;
+        }
+
         @java.lang.Override
         public OcrJobResponse build() {
-            return new OcrJobResponse(jobId, status, data, additionalProperties);
+            return new OcrJobResponse(jobId, linkedJobIds, status, pageRange, data, additionalProperties);
         }
     }
 }

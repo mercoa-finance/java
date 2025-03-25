@@ -44,7 +44,7 @@ java {
 
 group = 'com.mercoa'
 
-version = '0.6.12'
+version = '0.6.13'
 
 jar {
     dependsOn(":generatePomFileForMavenPublication")
@@ -71,7 +71,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.mercoa'
             artifactId = 'mercoa'
-            version = '0.6.12'
+            version = '0.6.13'
             from components.java
             pom {
                 licenses {

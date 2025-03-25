@@ -31,6 +31,8 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
 
     private final Optional<Map<String, String>> metadata;
 
+    private final Optional<Boolean> confirmedByEntity;
+
     private final String payToTheOrderOf;
 
     private final String addressLine1;
@@ -53,6 +55,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
             Optional<String> externalAccountingSystemId,
             Optional<Boolean> frozen,
             Optional<Map<String, String>> metadata,
+            Optional<Boolean> confirmedByEntity,
             String payToTheOrderOf,
             String addressLine1,
             Optional<String> addressLine2,
@@ -66,6 +69,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
         this.externalAccountingSystemId = externalAccountingSystemId;
         this.frozen = frozen;
         this.metadata = metadata;
+        this.confirmedByEntity = confirmedByEntity;
         this.payToTheOrderOf = payToTheOrderOf;
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
@@ -121,6 +125,15 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
         return metadata;
     }
 
+    /**
+     * @return (ALPHA, MAY BE REMOVED) Indicate whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.
+     */
+    @JsonProperty("confirmedByEntity")
+    @java.lang.Override
+    public Optional<Boolean> getConfirmedByEntity() {
+        return confirmedByEntity;
+    }
+
     @JsonProperty("payToTheOrderOf")
     public String getPayToTheOrderOf() {
         return payToTheOrderOf;
@@ -173,6 +186,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
                 && externalAccountingSystemId.equals(other.externalAccountingSystemId)
                 && frozen.equals(other.frozen)
                 && metadata.equals(other.metadata)
+                && confirmedByEntity.equals(other.confirmedByEntity)
                 && payToTheOrderOf.equals(other.payToTheOrderOf)
                 && addressLine1.equals(other.addressLine1)
                 && addressLine2.equals(other.addressLine2)
@@ -190,6 +204,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
                 this.externalAccountingSystemId,
                 this.frozen,
                 this.metadata,
+                this.confirmedByEntity,
                 this.payToTheOrderOf,
                 this.addressLine1,
                 this.addressLine2,
@@ -257,6 +272,10 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
 
         _FinalStage metadata(Map<String, String> metadata);
 
+        _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity);
+
+        _FinalStage confirmedByEntity(Boolean confirmedByEntity);
+
         _FinalStage addressLine2(Optional<String> addressLine2);
 
         _FinalStage addressLine2(String addressLine2);
@@ -285,6 +304,8 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
 
         private Optional<String> addressLine2 = Optional.empty();
 
+        private Optional<Boolean> confirmedByEntity = Optional.empty();
+
         private Optional<Map<String, String>> metadata = Optional.empty();
 
         private Optional<Boolean> frozen = Optional.empty();
@@ -307,6 +328,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
             externalAccountingSystemId(other.getExternalAccountingSystemId());
             frozen(other.getFrozen());
             metadata(other.getMetadata());
+            confirmedByEntity(other.getConfirmedByEntity());
             payToTheOrderOf(other.getPayToTheOrderOf());
             addressLine1(other.getAddressLine1());
             addressLine2(other.getAddressLine2());
@@ -369,6 +391,23 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
         @JsonSetter(value = "addressLine2", nulls = Nulls.SKIP)
         public _FinalStage addressLine2(Optional<String> addressLine2) {
             this.addressLine2 = addressLine2;
+            return this;
+        }
+
+        /**
+         * <p>(ALPHA, MAY BE REMOVED) Indicate whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage confirmedByEntity(Boolean confirmedByEntity) {
+            this.confirmedByEntity = Optional.ofNullable(confirmedByEntity);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "confirmedByEntity", nulls = Nulls.SKIP)
+        public _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity) {
+            this.confirmedByEntity = confirmedByEntity;
             return this;
         }
 
@@ -465,6 +504,7 @@ public final class CheckRequest implements IPaymentMethodBaseRequest {
                     externalAccountingSystemId,
                     frozen,
                     metadata,
+                    confirmedByEntity,
                     payToTheOrderOf,
                     addressLine1,
                     addressLine2,

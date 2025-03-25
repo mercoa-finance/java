@@ -15,8 +15,10 @@ import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.entity.paymentmethod.bankaccount.BankAccountClient;
 import com.mercoa.api.resources.entity.paymentmethod.requests.GetAllPaymentMethodsRequest;
+import com.mercoa.api.resources.entity.paymentmethod.requests.PaymentMethodEventsRequest;
 import com.mercoa.api.resources.entity.paymentmethod.requests.PlaidLinkTokenRequest;
 import com.mercoa.api.resources.entitytypes.types.CardLinkTokenResponse;
+import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodEventsResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodRequest;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodUpdateRequest;
@@ -352,6 +354,70 @@ public class PaymentMethodClient {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), CardLinkTokenResponse.class);
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            throw new MercoaApiException(
+                    "Error with status code " + response.code(),
+                    response.code(),
+                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
+        } catch (IOException e) {
+            throw new MercoaException("Network error executing HTTP request", e);
+        }
+    }
+
+    public PaymentMethodEventsResponse events(String entityId, String paymentMethodId) {
+        return events(
+                entityId, paymentMethodId, PaymentMethodEventsRequest.builder().build());
+    }
+
+    public PaymentMethodEventsResponse events(
+            String entityId, String paymentMethodId, PaymentMethodEventsRequest request) {
+        return events(entityId, paymentMethodId, request, null);
+    }
+
+    public PaymentMethodEventsResponse events(
+            String entityId,
+            String paymentMethodId,
+            PaymentMethodEventsRequest request,
+            RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entity")
+                .addPathSegment(entityId)
+                .addPathSegments("paymentMethod")
+                .addPathSegment(paymentMethodId)
+                .addPathSegments("events");
+        if (request.getStartDate().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "startDate", request.getStartDate().get().toString(), false);
+        }
+        if (request.getEndDate().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "endDate", request.getEndDate().get().toString(), false);
+        }
+        if (request.getLimit().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "limit", request.getLimit().get().toString(), false);
+        }
+        if (request.getStartingAfter().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), PaymentMethodEventsResponse.class);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             throw new MercoaApiException(

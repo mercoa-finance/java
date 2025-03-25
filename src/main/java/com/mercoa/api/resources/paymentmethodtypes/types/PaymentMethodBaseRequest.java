@@ -30,6 +30,8 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
 
     private final Optional<Map<String, String>> metadata;
 
+    private final Optional<Boolean> confirmedByEntity;
+
     private final Map<String, Object> additionalProperties;
 
     private PaymentMethodBaseRequest(
@@ -38,12 +40,14 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
             Optional<String> externalAccountingSystemId,
             Optional<Boolean> frozen,
             Optional<Map<String, String>> metadata,
+            Optional<Boolean> confirmedByEntity,
             Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
         this.defaultDestination = defaultDestination;
         this.externalAccountingSystemId = externalAccountingSystemId;
         this.frozen = frozen;
         this.metadata = metadata;
+        this.confirmedByEntity = confirmedByEntity;
         this.additionalProperties = additionalProperties;
     }
 
@@ -92,6 +96,15 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
         return metadata;
     }
 
+    /**
+     * @return (ALPHA, MAY BE REMOVED) Indicate whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.
+     */
+    @JsonProperty("confirmedByEntity")
+    @java.lang.Override
+    public Optional<Boolean> getConfirmedByEntity() {
+        return confirmedByEntity;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -108,7 +121,8 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
                 && defaultDestination.equals(other.defaultDestination)
                 && externalAccountingSystemId.equals(other.externalAccountingSystemId)
                 && frozen.equals(other.frozen)
-                && metadata.equals(other.metadata);
+                && metadata.equals(other.metadata)
+                && confirmedByEntity.equals(other.confirmedByEntity);
     }
 
     @java.lang.Override
@@ -118,7 +132,8 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
                 this.defaultDestination,
                 this.externalAccountingSystemId,
                 this.frozen,
-                this.metadata);
+                this.metadata,
+                this.confirmedByEntity);
     }
 
     @java.lang.Override
@@ -142,6 +157,8 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
 
         private Optional<Map<String, String>> metadata = Optional.empty();
 
+        private Optional<Boolean> confirmedByEntity = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -153,6 +170,7 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
             externalAccountingSystemId(other.getExternalAccountingSystemId());
             frozen(other.getFrozen());
             metadata(other.getMetadata());
+            confirmedByEntity(other.getConfirmedByEntity());
             return this;
         }
 
@@ -211,6 +229,17 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
             return this;
         }
 
+        @JsonSetter(value = "confirmedByEntity", nulls = Nulls.SKIP)
+        public Builder confirmedByEntity(Optional<Boolean> confirmedByEntity) {
+            this.confirmedByEntity = confirmedByEntity;
+            return this;
+        }
+
+        public Builder confirmedByEntity(Boolean confirmedByEntity) {
+            this.confirmedByEntity = Optional.ofNullable(confirmedByEntity);
+            return this;
+        }
+
         public PaymentMethodBaseRequest build() {
             return new PaymentMethodBaseRequest(
                     defaultSource,
@@ -218,6 +247,7 @@ public final class PaymentMethodBaseRequest implements IPaymentMethodBaseRequest
                     externalAccountingSystemId,
                     frozen,
                     metadata,
+                    confirmedByEntity,
                     additionalProperties);
         }
     }

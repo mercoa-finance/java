@@ -39,6 +39,8 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
 
     private final Map<String, String> metadata;
 
+    private final Optional<Boolean> confirmedByEntity;
+
     private final OffsetDateTime createdAt;
 
     private final OffsetDateTime updatedAt;
@@ -53,6 +55,7 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
             Optional<String> externalAccountingSystemId,
             boolean frozen,
             Map<String, String> metadata,
+            Optional<Boolean> confirmedByEntity,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Map<String, Object> additionalProperties) {
@@ -63,6 +66,7 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
         this.externalAccountingSystemId = externalAccountingSystemId;
         this.frozen = frozen;
         this.metadata = metadata;
+        this.confirmedByEntity = confirmedByEntity;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
@@ -125,6 +129,15 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
         return metadata;
     }
 
+    /**
+     * @return (ALPHA, MAY BE REMOVED) Indicates whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.
+     */
+    @JsonProperty("confirmedByEntity")
+    @java.lang.Override
+    public Optional<Boolean> getConfirmedByEntity() {
+        return confirmedByEntity;
+    }
+
     @JsonProperty("createdAt")
     @java.lang.Override
     public OffsetDateTime getCreatedAt() {
@@ -156,6 +169,7 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
                 && externalAccountingSystemId.equals(other.externalAccountingSystemId)
                 && frozen == other.frozen
                 && metadata.equals(other.metadata)
+                && confirmedByEntity.equals(other.confirmedByEntity)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt);
     }
@@ -170,6 +184,7 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
                 this.externalAccountingSystemId,
                 this.frozen,
                 this.metadata,
+                this.confirmedByEntity,
                 this.createdAt,
                 this.updatedAt);
     }
@@ -227,6 +242,10 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
         _FinalStage putAllMetadata(Map<String, String> metadata);
 
         _FinalStage metadata(String key, String value);
+
+        _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity);
+
+        _FinalStage confirmedByEntity(Boolean confirmedByEntity);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -250,6 +269,8 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
 
         private OffsetDateTime updatedAt;
 
+        private Optional<Boolean> confirmedByEntity = Optional.empty();
+
         private Map<String, String> metadata = new LinkedHashMap<>();
 
         private Optional<String> externalAccountingSystemId = Optional.empty();
@@ -270,6 +291,7 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
             externalAccountingSystemId(other.getExternalAccountingSystemId());
             frozen(other.getFrozen());
             metadata(other.getMetadata());
+            confirmedByEntity(other.getConfirmedByEntity());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             return this;
@@ -326,6 +348,23 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
         @JsonSetter("updatedAt")
         public _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt) {
             this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
+            return this;
+        }
+
+        /**
+         * <p>(ALPHA, MAY BE REMOVED) Indicates whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage confirmedByEntity(Boolean confirmedByEntity) {
+            this.confirmedByEntity = Optional.ofNullable(confirmedByEntity);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "confirmedByEntity", nulls = Nulls.SKIP)
+        public _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity) {
+            this.confirmedByEntity = confirmedByEntity;
             return this;
         }
 
@@ -404,6 +443,7 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
                     externalAccountingSystemId,
                     frozen,
                     metadata,
+                    confirmedByEntity,
                     createdAt,
                     updatedAt,
                     additionalProperties);

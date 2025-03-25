@@ -30,6 +30,8 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
 
     private final Optional<Map<String, String>> metadata;
 
+    private final Optional<Boolean> confirmedByEntity;
+
     private final Optional<String> foreignId;
 
     private final Optional<String> accountName;
@@ -50,6 +52,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             Optional<String> externalAccountingSystemId,
             Optional<Boolean> frozen,
             Optional<Map<String, String>> metadata,
+            Optional<Boolean> confirmedByEntity,
             Optional<String> foreignId,
             Optional<String> accountName,
             Optional<String> accountNumber,
@@ -62,6 +65,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
         this.externalAccountingSystemId = externalAccountingSystemId;
         this.frozen = frozen;
         this.metadata = metadata;
+        this.confirmedByEntity = confirmedByEntity;
         this.foreignId = foreignId;
         this.accountName = accountName;
         this.accountNumber = accountNumber;
@@ -114,6 +118,15 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
     @java.lang.Override
     public Optional<Map<String, String>> getMetadata() {
         return metadata;
+    }
+
+    /**
+     * @return (ALPHA, MAY BE REMOVED) Indicate whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.
+     */
+    @JsonProperty("confirmedByEntity")
+    @java.lang.Override
+    public Optional<Boolean> getConfirmedByEntity() {
+        return confirmedByEntity;
     }
 
     /**
@@ -175,6 +188,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
                 && externalAccountingSystemId.equals(other.externalAccountingSystemId)
                 && frozen.equals(other.frozen)
                 && metadata.equals(other.metadata)
+                && confirmedByEntity.equals(other.confirmedByEntity)
                 && foreignId.equals(other.foreignId)
                 && accountName.equals(other.accountName)
                 && accountNumber.equals(other.accountNumber)
@@ -191,6 +205,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
                 this.externalAccountingSystemId,
                 this.frozen,
                 this.metadata,
+                this.confirmedByEntity,
                 this.foreignId,
                 this.accountName,
                 this.accountNumber,
@@ -220,6 +235,8 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
 
         private Optional<Map<String, String>> metadata = Optional.empty();
 
+        private Optional<Boolean> confirmedByEntity = Optional.empty();
+
         private Optional<String> foreignId = Optional.empty();
 
         private Optional<String> accountName = Optional.empty();
@@ -243,6 +260,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             externalAccountingSystemId(other.getExternalAccountingSystemId());
             frozen(other.getFrozen());
             metadata(other.getMetadata());
+            confirmedByEntity(other.getConfirmedByEntity());
             foreignId(other.getForeignId());
             accountName(other.getAccountName());
             accountNumber(other.getAccountNumber());
@@ -304,6 +322,17 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
 
         public Builder metadata(Map<String, String> metadata) {
             this.metadata = Optional.ofNullable(metadata);
+            return this;
+        }
+
+        @JsonSetter(value = "confirmedByEntity", nulls = Nulls.SKIP)
+        public Builder confirmedByEntity(Optional<Boolean> confirmedByEntity) {
+            this.confirmedByEntity = confirmedByEntity;
+            return this;
+        }
+
+        public Builder confirmedByEntity(Boolean confirmedByEntity) {
+            this.confirmedByEntity = Optional.ofNullable(confirmedByEntity);
             return this;
         }
 
@@ -380,6 +409,7 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
                     externalAccountingSystemId,
                     frozen,
                     metadata,
+                    confirmedByEntity,
                     foreignId,
                     accountName,
                     accountNumber,

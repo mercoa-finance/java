@@ -25,11 +25,15 @@ public final class EntityEventsResponse {
 
     private final int count;
 
+    private final boolean hasMore;
+
     private final Map<String, Object> additionalProperties;
 
-    private EntityEventsResponse(List<EntityEvent> data, int count, Map<String, Object> additionalProperties) {
+    private EntityEventsResponse(
+            List<EntityEvent> data, int count, boolean hasMore, Map<String, Object> additionalProperties) {
         this.data = data;
         this.count = count;
+        this.hasMore = hasMore;
         this.additionalProperties = additionalProperties;
     }
 
@@ -41,6 +45,11 @@ public final class EntityEventsResponse {
     @JsonProperty("count")
     public int getCount() {
         return count;
+    }
+
+    @JsonProperty("hasMore")
+    public boolean getHasMore() {
+        return hasMore;
     }
 
     @java.lang.Override
@@ -55,12 +64,12 @@ public final class EntityEventsResponse {
     }
 
     private boolean equalTo(EntityEventsResponse other) {
-        return data.equals(other.data) && count == other.count;
+        return data.equals(other.data) && count == other.count && hasMore == other.hasMore;
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.data, this.count);
+        return Objects.hash(this.data, this.count, this.hasMore);
     }
 
     @java.lang.Override
@@ -73,9 +82,13 @@ public final class EntityEventsResponse {
     }
 
     public interface CountStage {
-        _FinalStage count(int count);
+        HasMoreStage count(int count);
 
         Builder from(EntityEventsResponse other);
+    }
+
+    public interface HasMoreStage {
+        _FinalStage hasMore(boolean hasMore);
     }
 
     public interface _FinalStage {
@@ -89,8 +102,10 @@ public final class EntityEventsResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements CountStage, _FinalStage {
+    public static final class Builder implements CountStage, HasMoreStage, _FinalStage {
         private int count;
+
+        private boolean hasMore;
 
         private List<EntityEvent> data = new ArrayList<>();
 
@@ -103,13 +118,21 @@ public final class EntityEventsResponse {
         public Builder from(EntityEventsResponse other) {
             data(other.getData());
             count(other.getCount());
+            hasMore(other.getHasMore());
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("count")
-        public _FinalStage count(int count) {
+        public HasMoreStage count(int count) {
             this.count = count;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("hasMore")
+        public _FinalStage hasMore(boolean hasMore) {
+            this.hasMore = hasMore;
             return this;
         }
 
@@ -135,7 +158,7 @@ public final class EntityEventsResponse {
 
         @java.lang.Override
         public EntityEventsResponse build() {
-            return new EntityEventsResponse(data, count, additionalProperties);
+            return new EntityEventsResponse(data, count, hasMore, additionalProperties);
         }
     }
 }

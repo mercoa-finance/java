@@ -24,50 +24,83 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityEvent.Builder.class)
 public final class EntityEvent {
-    private final List<String> webhookIds;
+    private final String id;
 
     private final EntityResponse data;
 
-    private final OffsetDateTime createdAt;
+    private final List<String> webhookIds;
 
     private final Optional<String> userId;
+
+    private final Optional<String> updatedByEntityId;
+
+    private final OffsetDateTime createdAt;
 
     private final Map<String, Object> additionalProperties;
 
     private EntityEvent(
-            List<String> webhookIds,
+            String id,
             EntityResponse data,
-            OffsetDateTime createdAt,
+            List<String> webhookIds,
             Optional<String> userId,
+            Optional<String> updatedByEntityId,
+            OffsetDateTime createdAt,
             Map<String, Object> additionalProperties) {
-        this.webhookIds = webhookIds;
+        this.id = id;
         this.data = data;
-        this.createdAt = createdAt;
+        this.webhookIds = webhookIds;
         this.userId = userId;
+        this.updatedByEntityId = updatedByEntityId;
+        this.createdAt = createdAt;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("webhookIds")
-    public List<String> getWebhookIds() {
-        return webhookIds;
+    /**
+     * @return The ID of the event
+     */
+    @JsonProperty("id")
+    public String getId() {
+        return id;
     }
 
+    /**
+     * @return The payment method data at the time of the event
+     */
     @JsonProperty("data")
     public EntityResponse getData() {
         return data;
     }
 
-    @JsonProperty("createdAt")
-    public OffsetDateTime getCreatedAt() {
-        return createdAt;
+    /**
+     * @return The list of webhook IDs associated with this event
+     */
+    @JsonProperty("webhookIds")
+    public List<String> getWebhookIds() {
+        return webhookIds;
     }
 
     /**
-     * @return The ID of the user who triggered this event
+     * @return The ID of the user who triggered the event
      */
     @JsonProperty("userId")
     public Optional<String> getUserId() {
         return userId;
+    }
+
+    /**
+     * @return The ID of the entity that updated the payment method
+     */
+    @JsonProperty("updatedByEntityId")
+    public Optional<String> getUpdatedByEntityId() {
+        return updatedByEntityId;
+    }
+
+    /**
+     * @return The timestamp when the event was created
+     */
+    @JsonProperty("createdAt")
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
     }
 
     @java.lang.Override
@@ -82,15 +115,17 @@ public final class EntityEvent {
     }
 
     private boolean equalTo(EntityEvent other) {
-        return webhookIds.equals(other.webhookIds)
+        return id.equals(other.id)
                 && data.equals(other.data)
-                && createdAt.equals(other.createdAt)
-                && userId.equals(other.userId);
+                && webhookIds.equals(other.webhookIds)
+                && userId.equals(other.userId)
+                && updatedByEntityId.equals(other.updatedByEntityId)
+                && createdAt.equals(other.createdAt);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.webhookIds, this.data, this.createdAt, this.userId);
+        return Objects.hash(this.id, this.data, this.webhookIds, this.userId, this.updatedByEntityId, this.createdAt);
     }
 
     @java.lang.Override
@@ -98,14 +133,18 @@ public final class EntityEvent {
         return ObjectMappers.stringify(this);
     }
 
-    public static DataStage builder() {
+    public static IdStage builder() {
         return new Builder();
+    }
+
+    public interface IdStage {
+        DataStage id(@NotNull String id);
+
+        Builder from(EntityEvent other);
     }
 
     public interface DataStage {
         CreatedAtStage data(@NotNull EntityResponse data);
-
-        Builder from(EntityEvent other);
     }
 
     public interface CreatedAtStage {
@@ -124,13 +163,21 @@ public final class EntityEvent {
         _FinalStage userId(Optional<String> userId);
 
         _FinalStage userId(String userId);
+
+        _FinalStage updatedByEntityId(Optional<String> updatedByEntityId);
+
+        _FinalStage updatedByEntityId(String updatedByEntityId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements DataStage, CreatedAtStage, _FinalStage {
+    public static final class Builder implements IdStage, DataStage, CreatedAtStage, _FinalStage {
+        private String id;
+
         private EntityResponse data;
 
         private OffsetDateTime createdAt;
+
+        private Optional<String> updatedByEntityId = Optional.empty();
 
         private Optional<String> userId = Optional.empty();
 
@@ -143,13 +190,30 @@ public final class EntityEvent {
 
         @java.lang.Override
         public Builder from(EntityEvent other) {
-            webhookIds(other.getWebhookIds());
+            id(other.getId());
             data(other.getData());
-            createdAt(other.getCreatedAt());
+            webhookIds(other.getWebhookIds());
             userId(other.getUserId());
+            updatedByEntityId(other.getUpdatedByEntityId());
+            createdAt(other.getCreatedAt());
             return this;
         }
 
+        /**
+         * <p>The ID of the event</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("id")
+        public DataStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The payment method data at the time of the event</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("data")
         public CreatedAtStage data(@NotNull EntityResponse data) {
@@ -157,6 +221,10 @@ public final class EntityEvent {
             return this;
         }
 
+        /**
+         * <p>The timestamp when the event was created</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("createdAt")
         public _FinalStage createdAt(@NotNull OffsetDateTime createdAt) {
@@ -165,7 +233,24 @@ public final class EntityEvent {
         }
 
         /**
-         * <p>The ID of the user who triggered this event</p>
+         * <p>The ID of the entity that updated the payment method</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage updatedByEntityId(String updatedByEntityId) {
+            this.updatedByEntityId = Optional.ofNullable(updatedByEntityId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "updatedByEntityId", nulls = Nulls.SKIP)
+        public _FinalStage updatedByEntityId(Optional<String> updatedByEntityId) {
+            this.updatedByEntityId = updatedByEntityId;
+            return this;
+        }
+
+        /**
+         * <p>The ID of the user who triggered the event</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -181,12 +266,20 @@ public final class EntityEvent {
             return this;
         }
 
+        /**
+         * <p>The list of webhook IDs associated with this event</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage addAllWebhookIds(List<String> webhookIds) {
             this.webhookIds.addAll(webhookIds);
             return this;
         }
 
+        /**
+         * <p>The list of webhook IDs associated with this event</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage addWebhookIds(String webhookIds) {
             this.webhookIds.add(webhookIds);
@@ -203,7 +296,7 @@ public final class EntityEvent {
 
         @java.lang.Override
         public EntityEvent build() {
-            return new EntityEvent(webhookIds, data, createdAt, userId, additionalProperties);
+            return new EntityEvent(id, data, webhookIds, userId, updatedByEntityId, createdAt, additionalProperties);
         }
     }
 }

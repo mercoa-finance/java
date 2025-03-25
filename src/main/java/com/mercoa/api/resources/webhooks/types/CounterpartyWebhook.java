@@ -47,16 +47,25 @@ public final class CounterpartyWebhook {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return The type of the event.
+     */
     @JsonProperty("eventType")
     public String getEventType() {
         return eventType;
     }
 
+    /**
+     * @return A list of IDs for the payees involved.
+     */
     @JsonProperty("payeeId")
     public List<String> getPayeeId() {
         return payeeId;
     }
 
+    /**
+     * @return A list of IDs for the payors involved.
+     */
     @JsonProperty("payorId")
     public List<String> getPayorId() {
         return payorId;
@@ -152,6 +161,10 @@ public final class CounterpartyWebhook {
             return this;
         }
 
+        /**
+         * <p>The type of the event.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("eventType")
         public _FinalStage eventType(@NotNull String eventType) {
@@ -176,12 +189,20 @@ public final class CounterpartyWebhook {
             return this;
         }
 
+        /**
+         * <p>A list of IDs for the payors involved.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage addAllPayorId(List<String> payorId) {
             this.payorId.addAll(payorId);
             return this;
         }
 
+        /**
+         * <p>A list of IDs for the payors involved.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage addPayorId(String payorId) {
             this.payorId.add(payorId);
@@ -196,12 +217,20 @@ public final class CounterpartyWebhook {
             return this;
         }
 
+        /**
+         * <p>A list of IDs for the payees involved.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage addAllPayeeId(List<String> payeeId) {
             this.payeeId.addAll(payeeId);
             return this;
         }
 
+        /**
+         * <p>A list of IDs for the payees involved.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage addPayeeId(String payeeId) {
             this.payeeId.add(payeeId);

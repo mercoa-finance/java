@@ -42,12 +42,18 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return The type of the event.
+     */
     @JsonProperty("eventType")
     @java.lang.Override
     public String getEventType() {
         return eventType;
     }
 
+    /**
+     * @return The invoice involved in the event.
+     */
     @JsonProperty("invoice")
     @java.lang.Override
     public InvoiceResponse getInvoice() {
@@ -131,6 +137,10 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
             return this;
         }
 
+        /**
+         * <p>The type of the event.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("eventType")
         public InvoiceStage eventType(@NotNull String eventType) {
@@ -138,6 +148,10 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
             return this;
         }
 
+        /**
+         * <p>The invoice involved in the event.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("invoice")
         public _FinalStage invoice(@NotNull InvoiceResponse invoice) {

@@ -32,6 +32,8 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
 
     private final Optional<Map<String, String>> metadata;
 
+    private final Optional<Boolean> confirmedByEntity;
+
     private final Optional<String> foreignId;
 
     private final Optional<String> accountName;
@@ -52,6 +54,7 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
             Optional<String> externalAccountingSystemId,
             Optional<Boolean> frozen,
             Optional<Map<String, String>> metadata,
+            Optional<Boolean> confirmedByEntity,
             Optional<String> foreignId,
             Optional<String> accountName,
             Optional<String> accountNumber,
@@ -64,6 +67,7 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
         this.externalAccountingSystemId = externalAccountingSystemId;
         this.frozen = frozen;
         this.metadata = metadata;
+        this.confirmedByEntity = confirmedByEntity;
         this.foreignId = foreignId;
         this.accountName = accountName;
         this.accountNumber = accountNumber;
@@ -116,6 +120,15 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
     @java.lang.Override
     public Optional<Map<String, String>> getMetadata() {
         return metadata;
+    }
+
+    /**
+     * @return (ALPHA, MAY BE REMOVED) Indicate whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.
+     */
+    @JsonProperty("confirmedByEntity")
+    @java.lang.Override
+    public Optional<Boolean> getConfirmedByEntity() {
+        return confirmedByEntity;
     }
 
     /**
@@ -177,6 +190,7 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
                 && externalAccountingSystemId.equals(other.externalAccountingSystemId)
                 && frozen.equals(other.frozen)
                 && metadata.equals(other.metadata)
+                && confirmedByEntity.equals(other.confirmedByEntity)
                 && foreignId.equals(other.foreignId)
                 && accountName.equals(other.accountName)
                 && accountNumber.equals(other.accountNumber)
@@ -193,6 +207,7 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
                 this.externalAccountingSystemId,
                 this.frozen,
                 this.metadata,
+                this.confirmedByEntity,
                 this.foreignId,
                 this.accountName,
                 this.accountNumber,
@@ -239,6 +254,10 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
 
         _FinalStage metadata(Map<String, String> metadata);
 
+        _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity);
+
+        _FinalStage confirmedByEntity(Boolean confirmedByEntity);
+
         _FinalStage foreignId(Optional<String> foreignId);
 
         _FinalStage foreignId(String foreignId);
@@ -276,6 +295,8 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
 
         private Optional<String> foreignId = Optional.empty();
 
+        private Optional<Boolean> confirmedByEntity = Optional.empty();
+
         private Optional<Map<String, String>> metadata = Optional.empty();
 
         private Optional<Boolean> frozen = Optional.empty();
@@ -298,6 +319,7 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
             externalAccountingSystemId(other.getExternalAccountingSystemId());
             frozen(other.getFrozen());
             metadata(other.getMetadata());
+            confirmedByEntity(other.getConfirmedByEntity());
             foreignId(other.getForeignId());
             accountName(other.getAccountName());
             accountNumber(other.getAccountNumber());
@@ -407,6 +429,23 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
         }
 
         /**
+         * <p>(ALPHA, MAY BE REMOVED) Indicate whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage confirmedByEntity(Boolean confirmedByEntity) {
+            this.confirmedByEntity = Optional.ofNullable(confirmedByEntity);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "confirmedByEntity", nulls = Nulls.SKIP)
+        public _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity) {
+            this.confirmedByEntity = confirmedByEntity;
+            return this;
+        }
+
+        /**
          * <p>Metadata associated with this payment method.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -499,6 +538,7 @@ public final class CustomPaymentMethodRequest implements IPaymentMethodBaseReque
                     externalAccountingSystemId,
                     frozen,
                     metadata,
+                    confirmedByEntity,
                     foreignId,
                     accountName,
                     accountNumber,

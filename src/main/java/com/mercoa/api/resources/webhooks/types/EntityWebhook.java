@@ -27,6 +27,8 @@ public final class EntityWebhook {
 
     private final EntityResponse entity;
 
+    private final String updatedByEntityId;
+
     private final Optional<EntityUserResponse> user;
 
     private final Map<String, Object> additionalProperties;
@@ -34,22 +36,39 @@ public final class EntityWebhook {
     private EntityWebhook(
             String eventType,
             EntityResponse entity,
+            String updatedByEntityId,
             Optional<EntityUserResponse> user,
             Map<String, Object> additionalProperties) {
         this.eventType = eventType;
         this.entity = entity;
+        this.updatedByEntityId = updatedByEntityId;
         this.user = user;
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return The type of the event.
+     */
     @JsonProperty("eventType")
     public String getEventType() {
         return eventType;
     }
 
+    /**
+     * @return The entity involved in the event.
+     */
     @JsonProperty("entity")
     public EntityResponse getEntity() {
         return entity;
+    }
+
+    /**
+     * @return The ID of the entity that updated the entity. This will be different from the entityId if the entity was updated by a different entity (e.g. a C2 updating a C3).
+     * If the entity was created or updated by an admin, this will be 'admin'.
+     */
+    @JsonProperty("updatedByEntityId")
+    public String getUpdatedByEntityId() {
+        return updatedByEntityId;
     }
 
     /**
@@ -72,12 +91,15 @@ public final class EntityWebhook {
     }
 
     private boolean equalTo(EntityWebhook other) {
-        return eventType.equals(other.eventType) && entity.equals(other.entity) && user.equals(other.user);
+        return eventType.equals(other.eventType)
+                && entity.equals(other.entity)
+                && updatedByEntityId.equals(other.updatedByEntityId)
+                && user.equals(other.user);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.eventType, this.entity, this.user);
+        return Objects.hash(this.eventType, this.entity, this.updatedByEntityId, this.user);
     }
 
     @java.lang.Override
@@ -96,7 +118,11 @@ public final class EntityWebhook {
     }
 
     public interface EntityStage {
-        _FinalStage entity(@NotNull EntityResponse entity);
+        UpdatedByEntityIdStage entity(@NotNull EntityResponse entity);
+    }
+
+    public interface UpdatedByEntityIdStage {
+        _FinalStage updatedByEntityId(@NotNull String updatedByEntityId);
     }
 
     public interface _FinalStage {
@@ -108,10 +134,12 @@ public final class EntityWebhook {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements EventTypeStage, EntityStage, _FinalStage {
+    public static final class Builder implements EventTypeStage, EntityStage, UpdatedByEntityIdStage, _FinalStage {
         private String eventType;
 
         private EntityResponse entity;
+
+        private String updatedByEntityId;
 
         private Optional<EntityUserResponse> user = Optional.empty();
 
@@ -124,10 +152,15 @@ public final class EntityWebhook {
         public Builder from(EntityWebhook other) {
             eventType(other.getEventType());
             entity(other.getEntity());
+            updatedByEntityId(other.getUpdatedByEntityId());
             user(other.getUser());
             return this;
         }
 
+        /**
+         * <p>The type of the event.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("eventType")
         public EntityStage eventType(@NotNull String eventType) {
@@ -135,10 +168,26 @@ public final class EntityWebhook {
             return this;
         }
 
+        /**
+         * <p>The entity involved in the event.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("entity")
-        public _FinalStage entity(@NotNull EntityResponse entity) {
+        public UpdatedByEntityIdStage entity(@NotNull EntityResponse entity) {
             this.entity = Objects.requireNonNull(entity, "entity must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The ID of the entity that updated the entity. This will be different from the entityId if the entity was updated by a different entity (e.g. a C2 updating a C3).
+         * If the entity was created or updated by an admin, this will be 'admin'.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("updatedByEntityId")
+        public _FinalStage updatedByEntityId(@NotNull String updatedByEntityId) {
+            this.updatedByEntityId = Objects.requireNonNull(updatedByEntityId, "updatedByEntityId must not be null");
             return this;
         }
 
@@ -161,7 +210,7 @@ public final class EntityWebhook {
 
         @java.lang.Override
         public EntityWebhook build() {
-            return new EntityWebhook(eventType, entity, user, additionalProperties);
+            return new EntityWebhook(eventType, entity, updatedByEntityId, user, additionalProperties);
         }
     }
 }

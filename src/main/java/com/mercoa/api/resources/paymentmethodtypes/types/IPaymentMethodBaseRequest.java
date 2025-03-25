@@ -16,4 +16,6 @@ public interface IPaymentMethodBaseRequest {
     Optional<Boolean> getFrozen();
 
     Optional<Map<String, String>> getMetadata();
+
+    Optional<Boolean> getConfirmedByEntity();
 }

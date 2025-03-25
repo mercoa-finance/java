@@ -33,11 +33,17 @@ public final class TransactionWebhook {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return The type of the event.
+     */
     @JsonProperty("eventType")
     public String getEventType() {
         return eventType;
     }
 
+    /**
+     * @return The transaction details.
+     */
     @JsonProperty("transaction")
     public TransactionResponse getTransaction() {
         return transaction;
@@ -104,6 +110,10 @@ public final class TransactionWebhook {
             return this;
         }
 
+        /**
+         * <p>The type of the event.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("eventType")
         public TransactionStage eventType(@NotNull String eventType) {
@@ -111,6 +121,10 @@ public final class TransactionWebhook {
             return this;
         }
 
+        /**
+         * <p>The transaction details.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("transaction")
         public _FinalStage transaction(@NotNull TransactionResponse transaction) {

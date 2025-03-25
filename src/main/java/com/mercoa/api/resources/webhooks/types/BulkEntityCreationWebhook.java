@@ -38,11 +38,17 @@ public final class BulkEntityCreationWebhook {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return The type of the event.
+     */
     @JsonProperty("eventType")
     public String getEventType() {
         return eventType;
     }
 
+    /**
+     * @return A list of bulk entity creation responses.
+     */
     @JsonProperty("data")
     public List<BulkEntityCreationFromObjectResponse> getData() {
         return data;
@@ -111,6 +117,10 @@ public final class BulkEntityCreationWebhook {
             return this;
         }
 
+        /**
+         * <p>The type of the event.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("eventType")
         public _FinalStage eventType(@NotNull String eventType) {
@@ -118,12 +128,20 @@ public final class BulkEntityCreationWebhook {
             return this;
         }
 
+        /**
+         * <p>A list of bulk entity creation responses.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage addAllData(List<BulkEntityCreationFromObjectResponse> data) {
             this.data.addAll(data);
             return this;
         }
 
+        /**
+         * <p>A list of bulk entity creation responses.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage addData(BulkEntityCreationFromObjectResponse data) {
             this.data.add(data);

@@ -28,16 +28,20 @@ public final class GenerateOnboardingLink {
 
     private final Optional<String> connectedEntityId;
 
+    private final Optional<Boolean> redirectToPortal;
+
     private final Map<String, Object> additionalProperties;
 
     private GenerateOnboardingLink(
             EntityOnboardingLinkType type,
             Optional<String> expiresIn,
             Optional<String> connectedEntityId,
+            Optional<Boolean> redirectToPortal,
             Map<String, Object> additionalProperties) {
         this.type = type;
         this.expiresIn = expiresIn;
         this.connectedEntityId = connectedEntityId;
+        this.redirectToPortal = redirectToPortal;
         this.additionalProperties = additionalProperties;
     }
 
@@ -65,6 +69,14 @@ public final class GenerateOnboardingLink {
         return connectedEntityId;
     }
 
+    /**
+     * @return If true, the onboarding link will redirect to the vendor/customer portal if the entity is already onboarded. If false, the onboarding link will not redirect to the portal. The default is false.
+     */
+    @JsonProperty("redirectToPortal")
+    public Optional<Boolean> getRedirectToPortal() {
+        return redirectToPortal;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -79,12 +91,13 @@ public final class GenerateOnboardingLink {
     private boolean equalTo(GenerateOnboardingLink other) {
         return type.equals(other.type)
                 && expiresIn.equals(other.expiresIn)
-                && connectedEntityId.equals(other.connectedEntityId);
+                && connectedEntityId.equals(other.connectedEntityId)
+                && redirectToPortal.equals(other.redirectToPortal);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.type, this.expiresIn, this.connectedEntityId);
+        return Objects.hash(this.type, this.expiresIn, this.connectedEntityId, this.redirectToPortal);
     }
 
     @java.lang.Override
@@ -112,11 +125,17 @@ public final class GenerateOnboardingLink {
         _FinalStage connectedEntityId(Optional<String> connectedEntityId);
 
         _FinalStage connectedEntityId(String connectedEntityId);
+
+        _FinalStage redirectToPortal(Optional<Boolean> redirectToPortal);
+
+        _FinalStage redirectToPortal(Boolean redirectToPortal);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements TypeStage, _FinalStage {
         private EntityOnboardingLinkType type;
+
+        private Optional<Boolean> redirectToPortal = Optional.empty();
 
         private Optional<String> connectedEntityId = Optional.empty();
 
@@ -132,6 +151,7 @@ public final class GenerateOnboardingLink {
             type(other.getType());
             expiresIn(other.getExpiresIn());
             connectedEntityId(other.getConnectedEntityId());
+            redirectToPortal(other.getRedirectToPortal());
             return this;
         }
 
@@ -143,6 +163,23 @@ public final class GenerateOnboardingLink {
         @JsonSetter("type")
         public _FinalStage type(@NotNull EntityOnboardingLinkType type) {
             this.type = Objects.requireNonNull(type, "type must not be null");
+            return this;
+        }
+
+        /**
+         * <p>If true, the onboarding link will redirect to the vendor/customer portal if the entity is already onboarded. If false, the onboarding link will not redirect to the portal. The default is false.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage redirectToPortal(Boolean redirectToPortal) {
+            this.redirectToPortal = Optional.ofNullable(redirectToPortal);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "redirectToPortal", nulls = Nulls.SKIP)
+        public _FinalStage redirectToPortal(Optional<Boolean> redirectToPortal) {
+            this.redirectToPortal = redirectToPortal;
             return this;
         }
 
@@ -182,7 +219,8 @@ public final class GenerateOnboardingLink {
 
         @java.lang.Override
         public GenerateOnboardingLink build() {
-            return new GenerateOnboardingLink(type, expiresIn, connectedEntityId, additionalProperties);
+            return new GenerateOnboardingLink(
+                    type, expiresIn, connectedEntityId, redirectToPortal, additionalProperties);
         }
     }
 }

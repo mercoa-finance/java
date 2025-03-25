@@ -31,6 +31,8 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
 
     private final Optional<Map<String, String>> metadata;
 
+    private final Optional<Boolean> confirmedByEntity;
+
     private final String utilityId;
 
     private final Map<String, Object> additionalProperties;
@@ -41,6 +43,7 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
             Optional<String> externalAccountingSystemId,
             Optional<Boolean> frozen,
             Optional<Map<String, String>> metadata,
+            Optional<Boolean> confirmedByEntity,
             String utilityId,
             Map<String, Object> additionalProperties) {
         this.defaultSource = defaultSource;
@@ -48,6 +51,7 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
         this.externalAccountingSystemId = externalAccountingSystemId;
         this.frozen = frozen;
         this.metadata = metadata;
+        this.confirmedByEntity = confirmedByEntity;
         this.utilityId = utilityId;
         this.additionalProperties = additionalProperties;
     }
@@ -98,6 +102,15 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
     }
 
     /**
+     * @return (ALPHA, MAY BE REMOVED) Indicate whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.
+     */
+    @JsonProperty("confirmedByEntity")
+    @java.lang.Override
+    public Optional<Boolean> getConfirmedByEntity() {
+        return confirmedByEntity;
+    }
+
+    /**
      * @return The ID of the utility that this payment method is linked to.
      */
     @JsonProperty("utilityId")
@@ -122,6 +135,7 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
                 && externalAccountingSystemId.equals(other.externalAccountingSystemId)
                 && frozen.equals(other.frozen)
                 && metadata.equals(other.metadata)
+                && confirmedByEntity.equals(other.confirmedByEntity)
                 && utilityId.equals(other.utilityId);
     }
 
@@ -133,6 +147,7 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
                 this.externalAccountingSystemId,
                 this.frozen,
                 this.metadata,
+                this.confirmedByEntity,
                 this.utilityId);
     }
 
@@ -173,11 +188,17 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
         _FinalStage metadata(Optional<Map<String, String>> metadata);
 
         _FinalStage metadata(Map<String, String> metadata);
+
+        _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity);
+
+        _FinalStage confirmedByEntity(Boolean confirmedByEntity);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements UtilityIdStage, _FinalStage {
         private String utilityId;
+
+        private Optional<Boolean> confirmedByEntity = Optional.empty();
 
         private Optional<Map<String, String>> metadata = Optional.empty();
 
@@ -201,6 +222,7 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
             externalAccountingSystemId(other.getExternalAccountingSystemId());
             frozen(other.getFrozen());
             metadata(other.getMetadata());
+            confirmedByEntity(other.getConfirmedByEntity());
             utilityId(other.getUtilityId());
             return this;
         }
@@ -213,6 +235,23 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
         @JsonSetter("utilityId")
         public _FinalStage utilityId(@NotNull String utilityId) {
             this.utilityId = Objects.requireNonNull(utilityId, "utilityId must not be null");
+            return this;
+        }
+
+        /**
+         * <p>(ALPHA, MAY BE REMOVED) Indicate whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage confirmedByEntity(Boolean confirmedByEntity) {
+            this.confirmedByEntity = Optional.ofNullable(confirmedByEntity);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "confirmedByEntity", nulls = Nulls.SKIP)
+        public _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity) {
+            this.confirmedByEntity = confirmedByEntity;
             return this;
         }
 
@@ -309,6 +348,7 @@ public final class UtilityPaymentMethodRequest implements IPaymentMethodBaseRequ
                     externalAccountingSystemId,
                     frozen,
                     metadata,
+                    confirmedByEntity,
                     utilityId,
                     additionalProperties);
         }

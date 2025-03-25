@@ -24,45 +24,71 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceEvent.Builder.class)
 public final class InvoiceEvent {
-    private final List<String> webhookIds;
+    private final String id;
 
     private final InvoiceUpdateRequest data;
 
-    private final Optional<String> userId;
+    private final List<String> webhookIds;
 
-    private final OffsetDateTime createdAt;
+    private final Optional<InvoiceStatus> status;
+
+    private final Optional<String> userId;
 
     private final Optional<String> ipAddress;
 
-    private final Optional<InvoiceStatus> status;
+    private final OffsetDateTime createdAt;
 
     private final Map<String, Object> additionalProperties;
 
     private InvoiceEvent(
-            List<String> webhookIds,
+            String id,
             InvoiceUpdateRequest data,
-            Optional<String> userId,
-            OffsetDateTime createdAt,
-            Optional<String> ipAddress,
+            List<String> webhookIds,
             Optional<InvoiceStatus> status,
+            Optional<String> userId,
+            Optional<String> ipAddress,
+            OffsetDateTime createdAt,
             Map<String, Object> additionalProperties) {
-        this.webhookIds = webhookIds;
+        this.id = id;
         this.data = data;
-        this.userId = userId;
-        this.createdAt = createdAt;
-        this.ipAddress = ipAddress;
+        this.webhookIds = webhookIds;
         this.status = status;
+        this.userId = userId;
+        this.ipAddress = ipAddress;
+        this.createdAt = createdAt;
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return The ID of the event
+     */
+    @JsonProperty("id")
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @return The data related to the invoice update
+     */
+    @JsonProperty("data")
+    public InvoiceUpdateRequest getData() {
+        return data;
+    }
+
+    /**
+     * @return The list of webhook IDs associated with this event
+     */
     @JsonProperty("webhookIds")
     public List<String> getWebhookIds() {
         return webhookIds;
     }
 
-    @JsonProperty("data")
-    public InvoiceUpdateRequest getData() {
-        return data;
+    /**
+     * @return The current status of the invoice event
+     */
+    @JsonProperty("status")
+    public Optional<InvoiceStatus> getStatus() {
+        return status;
     }
 
     /**
@@ -73,19 +99,20 @@ public final class InvoiceEvent {
         return userId;
     }
 
-    @JsonProperty("createdAt")
-    public OffsetDateTime getCreatedAt() {
-        return createdAt;
-    }
-
+    /**
+     * @return The IP address of the user who triggered the event
+     */
     @JsonProperty("ipAddress")
     public Optional<String> getIpAddress() {
         return ipAddress;
     }
 
-    @JsonProperty("status")
-    public Optional<InvoiceStatus> getStatus() {
-        return status;
+    /**
+     * @return The timestamp when the event was created
+     */
+    @JsonProperty("createdAt")
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
     }
 
     @java.lang.Override
@@ -100,17 +127,19 @@ public final class InvoiceEvent {
     }
 
     private boolean equalTo(InvoiceEvent other) {
-        return webhookIds.equals(other.webhookIds)
+        return id.equals(other.id)
                 && data.equals(other.data)
+                && webhookIds.equals(other.webhookIds)
+                && status.equals(other.status)
                 && userId.equals(other.userId)
-                && createdAt.equals(other.createdAt)
                 && ipAddress.equals(other.ipAddress)
-                && status.equals(other.status);
+                && createdAt.equals(other.createdAt);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.webhookIds, this.data, this.userId, this.createdAt, this.ipAddress, this.status);
+        return Objects.hash(
+                this.id, this.data, this.webhookIds, this.status, this.userId, this.ipAddress, this.createdAt);
     }
 
     @java.lang.Override
@@ -118,14 +147,18 @@ public final class InvoiceEvent {
         return ObjectMappers.stringify(this);
     }
 
-    public static DataStage builder() {
+    public static IdStage builder() {
         return new Builder();
+    }
+
+    public interface IdStage {
+        DataStage id(@NotNull String id);
+
+        Builder from(InvoiceEvent other);
     }
 
     public interface DataStage {
         CreatedAtStage data(@NotNull InvoiceUpdateRequest data);
-
-        Builder from(InvoiceEvent other);
     }
 
     public interface CreatedAtStage {
@@ -141,6 +174,10 @@ public final class InvoiceEvent {
 
         _FinalStage addAllWebhookIds(List<String> webhookIds);
 
+        _FinalStage status(Optional<InvoiceStatus> status);
+
+        _FinalStage status(InvoiceStatus status);
+
         _FinalStage userId(Optional<String> userId);
 
         _FinalStage userId(String userId);
@@ -148,23 +185,21 @@ public final class InvoiceEvent {
         _FinalStage ipAddress(Optional<String> ipAddress);
 
         _FinalStage ipAddress(String ipAddress);
-
-        _FinalStage status(Optional<InvoiceStatus> status);
-
-        _FinalStage status(InvoiceStatus status);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements DataStage, CreatedAtStage, _FinalStage {
+    public static final class Builder implements IdStage, DataStage, CreatedAtStage, _FinalStage {
+        private String id;
+
         private InvoiceUpdateRequest data;
 
         private OffsetDateTime createdAt;
 
-        private Optional<InvoiceStatus> status = Optional.empty();
-
         private Optional<String> ipAddress = Optional.empty();
 
         private Optional<String> userId = Optional.empty();
+
+        private Optional<InvoiceStatus> status = Optional.empty();
 
         private List<String> webhookIds = new ArrayList<>();
 
@@ -175,15 +210,31 @@ public final class InvoiceEvent {
 
         @java.lang.Override
         public Builder from(InvoiceEvent other) {
-            webhookIds(other.getWebhookIds());
+            id(other.getId());
             data(other.getData());
-            userId(other.getUserId());
-            createdAt(other.getCreatedAt());
-            ipAddress(other.getIpAddress());
+            webhookIds(other.getWebhookIds());
             status(other.getStatus());
+            userId(other.getUserId());
+            ipAddress(other.getIpAddress());
+            createdAt(other.getCreatedAt());
             return this;
         }
 
+        /**
+         * <p>The ID of the event</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("id")
+        public DataStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The data related to the invoice update</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("data")
         public CreatedAtStage data(@NotNull InvoiceUpdateRequest data) {
@@ -191,6 +242,10 @@ public final class InvoiceEvent {
             return this;
         }
 
+        /**
+         * <p>The timestamp when the event was created</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("createdAt")
         public _FinalStage createdAt(@NotNull OffsetDateTime createdAt) {
@@ -198,19 +253,10 @@ public final class InvoiceEvent {
             return this;
         }
 
-        @java.lang.Override
-        public _FinalStage status(InvoiceStatus status) {
-            this.status = Optional.ofNullable(status);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "status", nulls = Nulls.SKIP)
-        public _FinalStage status(Optional<InvoiceStatus> status) {
-            this.status = status;
-            return this;
-        }
-
+        /**
+         * <p>The IP address of the user who triggered the event</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage ipAddress(String ipAddress) {
             this.ipAddress = Optional.ofNullable(ipAddress);
@@ -241,12 +287,37 @@ public final class InvoiceEvent {
             return this;
         }
 
+        /**
+         * <p>The current status of the invoice event</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage status(InvoiceStatus status) {
+            this.status = Optional.ofNullable(status);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "status", nulls = Nulls.SKIP)
+        public _FinalStage status(Optional<InvoiceStatus> status) {
+            this.status = status;
+            return this;
+        }
+
+        /**
+         * <p>The list of webhook IDs associated with this event</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage addAllWebhookIds(List<String> webhookIds) {
             this.webhookIds.addAll(webhookIds);
             return this;
         }
 
+        /**
+         * <p>The list of webhook IDs associated with this event</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage addWebhookIds(String webhookIds) {
             this.webhookIds.add(webhookIds);
@@ -263,7 +334,7 @@ public final class InvoiceEvent {
 
         @java.lang.Override
         public InvoiceEvent build() {
-            return new InvoiceEvent(webhookIds, data, userId, createdAt, ipAddress, status, additionalProperties);
+            return new InvoiceEvent(id, data, webhookIds, status, userId, ipAddress, createdAt, additionalProperties);
         }
     }
 }

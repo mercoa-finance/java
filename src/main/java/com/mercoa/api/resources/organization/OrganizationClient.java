@@ -225,6 +225,13 @@ public class OrganizationClient {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "endDate", request.getEndDate().get().toString(), false);
         }
+        if (request.getFrom().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "from", request.getFrom().get(), false);
+        }
+        if (request.getTo().isPresent()) {
+            QueryStringMapper.addQueryParameter(httpUrl, "to", request.getTo().get(), false);
+        }
         if (request.getLimit().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "limit", request.getLimit().get().toString(), false);

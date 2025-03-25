@@ -41,6 +41,9 @@ public final class InvoiceEmailWebhook {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return The type of the event.
+     */
     @JsonProperty("eventType")
     public String getEventType() {
         return eventType;
@@ -132,6 +135,10 @@ public final class InvoiceEmailWebhook {
             return this;
         }
 
+        /**
+         * <p>The type of the event.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("eventType")
         public _FinalStage eventType(@NotNull String eventType) {

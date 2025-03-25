@@ -28,6 +28,8 @@ public final class PaymentMethodWebhook {
 
     private final String entityId;
 
+    private final String updatedByEntityId;
+
     private final PaymentMethodResponse paymentMethod;
 
     private final EntityResponse entity;
@@ -39,33 +41,57 @@ public final class PaymentMethodWebhook {
     private PaymentMethodWebhook(
             String eventType,
             String entityId,
+            String updatedByEntityId,
             PaymentMethodResponse paymentMethod,
             EntityResponse entity,
             Optional<EntityUserResponse> user,
             Map<String, Object> additionalProperties) {
         this.eventType = eventType;
         this.entityId = entityId;
+        this.updatedByEntityId = updatedByEntityId;
         this.paymentMethod = paymentMethod;
         this.entity = entity;
         this.user = user;
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return The type of the event.
+     */
     @JsonProperty("eventType")
     public String getEventType() {
         return eventType;
     }
 
+    /**
+     * @return ID of the entity that the payment method belongs to.
+     */
     @JsonProperty("entityId")
     public String getEntityId() {
         return entityId;
     }
 
+    /**
+     * @return ID of the entity that created or updated the payment method.
+     * This will be different from the entityId if the payment method was added by a different entity (e.g. a C2 creating a payment method for a C3).
+     * If the payment method was created or updated by an admin, this will be 'admin'.
+     */
+    @JsonProperty("updatedByEntityId")
+    public String getUpdatedByEntityId() {
+        return updatedByEntityId;
+    }
+
+    /**
+     * @return The payment method details.
+     */
     @JsonProperty("paymentMethod")
     public PaymentMethodResponse getPaymentMethod() {
         return paymentMethod;
     }
 
+    /**
+     * @return Entity that the payment method belongs to.
+     */
     @JsonProperty("entity")
     public EntityResponse getEntity() {
         return entity;
@@ -93,6 +119,7 @@ public final class PaymentMethodWebhook {
     private boolean equalTo(PaymentMethodWebhook other) {
         return eventType.equals(other.eventType)
                 && entityId.equals(other.entityId)
+                && updatedByEntityId.equals(other.updatedByEntityId)
                 && paymentMethod.equals(other.paymentMethod)
                 && entity.equals(other.entity)
                 && user.equals(other.user);
@@ -100,7 +127,8 @@ public final class PaymentMethodWebhook {
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.eventType, this.entityId, this.paymentMethod, this.entity, this.user);
+        return Objects.hash(
+                this.eventType, this.entityId, this.updatedByEntityId, this.paymentMethod, this.entity, this.user);
     }
 
     @java.lang.Override
@@ -119,7 +147,11 @@ public final class PaymentMethodWebhook {
     }
 
     public interface EntityIdStage {
-        PaymentMethodStage entityId(@NotNull String entityId);
+        UpdatedByEntityIdStage entityId(@NotNull String entityId);
+    }
+
+    public interface UpdatedByEntityIdStage {
+        PaymentMethodStage updatedByEntityId(@NotNull String updatedByEntityId);
     }
 
     public interface PaymentMethodStage {
@@ -140,10 +172,17 @@ public final class PaymentMethodWebhook {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements EventTypeStage, EntityIdStage, PaymentMethodStage, EntityStage, _FinalStage {
+            implements EventTypeStage,
+                    EntityIdStage,
+                    UpdatedByEntityIdStage,
+                    PaymentMethodStage,
+                    EntityStage,
+                    _FinalStage {
         private String eventType;
 
         private String entityId;
+
+        private String updatedByEntityId;
 
         private PaymentMethodResponse paymentMethod;
 
@@ -160,12 +199,17 @@ public final class PaymentMethodWebhook {
         public Builder from(PaymentMethodWebhook other) {
             eventType(other.getEventType());
             entityId(other.getEntityId());
+            updatedByEntityId(other.getUpdatedByEntityId());
             paymentMethod(other.getPaymentMethod());
             entity(other.getEntity());
             user(other.getUser());
             return this;
         }
 
+        /**
+         * <p>The type of the event.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("eventType")
         public EntityIdStage eventType(@NotNull String eventType) {
@@ -173,13 +217,34 @@ public final class PaymentMethodWebhook {
             return this;
         }
 
+        /**
+         * <p>ID of the entity that the payment method belongs to.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("entityId")
-        public PaymentMethodStage entityId(@NotNull String entityId) {
+        public UpdatedByEntityIdStage entityId(@NotNull String entityId) {
             this.entityId = Objects.requireNonNull(entityId, "entityId must not be null");
             return this;
         }
 
+        /**
+         * <p>ID of the entity that created or updated the payment method.
+         * This will be different from the entityId if the payment method was added by a different entity (e.g. a C2 creating a payment method for a C3).
+         * If the payment method was created or updated by an admin, this will be 'admin'.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("updatedByEntityId")
+        public PaymentMethodStage updatedByEntityId(@NotNull String updatedByEntityId) {
+            this.updatedByEntityId = Objects.requireNonNull(updatedByEntityId, "updatedByEntityId must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The payment method details.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("paymentMethod")
         public EntityStage paymentMethod(@NotNull PaymentMethodResponse paymentMethod) {
@@ -187,6 +252,10 @@ public final class PaymentMethodWebhook {
             return this;
         }
 
+        /**
+         * <p>Entity that the payment method belongs to.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("entity")
         public _FinalStage entity(@NotNull EntityResponse entity) {
@@ -213,7 +282,8 @@ public final class PaymentMethodWebhook {
 
         @java.lang.Override
         public PaymentMethodWebhook build() {
-            return new PaymentMethodWebhook(eventType, entityId, paymentMethod, entity, user, additionalProperties);
+            return new PaymentMethodWebhook(
+                    eventType, entityId, updatedByEntityId, paymentMethod, entity, user, additionalProperties);
         }
     }
 }

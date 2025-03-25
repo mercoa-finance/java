@@ -50,12 +50,18 @@ public final class InvoiceStatusChangedWebhook implements IInvoiceWebhook {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return The type of the event.
+     */
     @JsonProperty("eventType")
     @java.lang.Override
     public String getEventType() {
         return eventType;
     }
 
+    /**
+     * @return The invoice involved in the event.
+     */
     @JsonProperty("invoice")
     @java.lang.Override
     public InvoiceResponse getInvoice() {
@@ -71,11 +77,17 @@ public final class InvoiceStatusChangedWebhook implements IInvoiceWebhook {
         return user;
     }
 
+    /**
+     * @return The new status of the invoice.
+     */
     @JsonProperty("newStatus")
     public String getNewStatus() {
         return newStatus;
     }
 
+    /**
+     * @return The previous status of the invoice.
+     */
     @JsonProperty("previousStatus")
     public String getPreviousStatus() {
         return previousStatus;
@@ -168,6 +180,10 @@ public final class InvoiceStatusChangedWebhook implements IInvoiceWebhook {
             return this;
         }
 
+        /**
+         * <p>The type of the event.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("eventType")
         public InvoiceStage eventType(@NotNull String eventType) {
@@ -175,6 +191,10 @@ public final class InvoiceStatusChangedWebhook implements IInvoiceWebhook {
             return this;
         }
 
+        /**
+         * <p>The invoice involved in the event.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("invoice")
         public NewStatusStage invoice(@NotNull InvoiceResponse invoice) {
@@ -182,6 +202,10 @@ public final class InvoiceStatusChangedWebhook implements IInvoiceWebhook {
             return this;
         }
 
+        /**
+         * <p>The new status of the invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("newStatus")
         public PreviousStatusStage newStatus(@NotNull String newStatus) {
@@ -189,6 +213,10 @@ public final class InvoiceStatusChangedWebhook implements IInvoiceWebhook {
             return this;
         }
 
+        /**
+         * <p>The previous status of the invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("previousStatus")
         public _FinalStage previousStatus(@NotNull String previousStatus) {

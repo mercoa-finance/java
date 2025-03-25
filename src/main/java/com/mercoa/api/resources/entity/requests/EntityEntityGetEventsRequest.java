@@ -25,14 +25,22 @@ public final class EntityEntityGetEventsRequest {
 
     private final Optional<OffsetDateTime> endDate;
 
+    private final Optional<Integer> limit;
+
+    private final Optional<String> startingAfter;
+
     private final Map<String, Object> additionalProperties;
 
     private EntityEntityGetEventsRequest(
             Optional<OffsetDateTime> startDate,
             Optional<OffsetDateTime> endDate,
+            Optional<Integer> limit,
+            Optional<String> startingAfter,
             Map<String, Object> additionalProperties) {
         this.startDate = startDate;
         this.endDate = endDate;
+        this.limit = limit;
+        this.startingAfter = startingAfter;
         this.additionalProperties = additionalProperties;
     }
 
@@ -52,6 +60,22 @@ public final class EntityEntityGetEventsRequest {
         return endDate;
     }
 
+    /**
+     * @return Number of events to return. Limit can range between 1 and 100, and the default is 50.
+     */
+    @JsonProperty("limit")
+    public Optional<Integer> getLimit() {
+        return limit;
+    }
+
+    /**
+     * @return The ID of the event to start after. If not provided, the first page of events will be returned.
+     */
+    @JsonProperty("startingAfter")
+    public Optional<String> getStartingAfter() {
+        return startingAfter;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -64,12 +88,15 @@ public final class EntityEntityGetEventsRequest {
     }
 
     private boolean equalTo(EntityEntityGetEventsRequest other) {
-        return startDate.equals(other.startDate) && endDate.equals(other.endDate);
+        return startDate.equals(other.startDate)
+                && endDate.equals(other.endDate)
+                && limit.equals(other.limit)
+                && startingAfter.equals(other.startingAfter);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.startDate, this.endDate);
+        return Objects.hash(this.startDate, this.endDate, this.limit, this.startingAfter);
     }
 
     @java.lang.Override
@@ -87,6 +114,10 @@ public final class EntityEntityGetEventsRequest {
 
         private Optional<OffsetDateTime> endDate = Optional.empty();
 
+        private Optional<Integer> limit = Optional.empty();
+
+        private Optional<String> startingAfter = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -95,6 +126,8 @@ public final class EntityEntityGetEventsRequest {
         public Builder from(EntityEntityGetEventsRequest other) {
             startDate(other.getStartDate());
             endDate(other.getEndDate());
+            limit(other.getLimit());
+            startingAfter(other.getStartingAfter());
             return this;
         }
 
@@ -120,8 +153,30 @@ public final class EntityEntityGetEventsRequest {
             return this;
         }
 
+        @JsonSetter(value = "limit", nulls = Nulls.SKIP)
+        public Builder limit(Optional<Integer> limit) {
+            this.limit = limit;
+            return this;
+        }
+
+        public Builder limit(Integer limit) {
+            this.limit = Optional.ofNullable(limit);
+            return this;
+        }
+
+        @JsonSetter(value = "startingAfter", nulls = Nulls.SKIP)
+        public Builder startingAfter(Optional<String> startingAfter) {
+            this.startingAfter = startingAfter;
+            return this;
+        }
+
+        public Builder startingAfter(String startingAfter) {
+            this.startingAfter = Optional.ofNullable(startingAfter);
+            return this;
+        }
+
         public EntityEntityGetEventsRequest build() {
-            return new EntityEntityGetEventsRequest(startDate, endDate, additionalProperties);
+            return new EntityEntityGetEventsRequest(startDate, endDate, limit, startingAfter, additionalProperties);
         }
     }
 }

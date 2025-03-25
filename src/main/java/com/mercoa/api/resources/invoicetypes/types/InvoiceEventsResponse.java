@@ -25,11 +25,15 @@ public final class InvoiceEventsResponse {
 
     private final int count;
 
+    private final boolean hasMore;
+
     private final Map<String, Object> additionalProperties;
 
-    private InvoiceEventsResponse(List<InvoiceEvent> data, int count, Map<String, Object> additionalProperties) {
+    private InvoiceEventsResponse(
+            List<InvoiceEvent> data, int count, boolean hasMore, Map<String, Object> additionalProperties) {
         this.data = data;
         this.count = count;
+        this.hasMore = hasMore;
         this.additionalProperties = additionalProperties;
     }
 
@@ -41,6 +45,11 @@ public final class InvoiceEventsResponse {
     @JsonProperty("count")
     public int getCount() {
         return count;
+    }
+
+    @JsonProperty("hasMore")
+    public boolean getHasMore() {
+        return hasMore;
     }
 
     @java.lang.Override
@@ -55,12 +64,12 @@ public final class InvoiceEventsResponse {
     }
 
     private boolean equalTo(InvoiceEventsResponse other) {
-        return data.equals(other.data) && count == other.count;
+        return data.equals(other.data) && count == other.count && hasMore == other.hasMore;
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.data, this.count);
+        return Objects.hash(this.data, this.count, this.hasMore);
     }
 
     @java.lang.Override
@@ -73,9 +82,13 @@ public final class InvoiceEventsResponse {
     }
 
     public interface CountStage {
-        _FinalStage count(int count);
+        HasMoreStage count(int count);
 
         Builder from(InvoiceEventsResponse other);
+    }
+
+    public interface HasMoreStage {
+        _FinalStage hasMore(boolean hasMore);
     }
 
     public interface _FinalStage {
@@ -89,8 +102,10 @@ public final class InvoiceEventsResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements CountStage, _FinalStage {
+    public static final class Builder implements CountStage, HasMoreStage, _FinalStage {
         private int count;
+
+        private boolean hasMore;
 
         private List<InvoiceEvent> data = new ArrayList<>();
 
@@ -103,13 +118,21 @@ public final class InvoiceEventsResponse {
         public Builder from(InvoiceEventsResponse other) {
             data(other.getData());
             count(other.getCount());
+            hasMore(other.getHasMore());
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("count")
-        public _FinalStage count(int count) {
+        public HasMoreStage count(int count) {
             this.count = count;
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("hasMore")
+        public _FinalStage hasMore(boolean hasMore) {
+            this.hasMore = hasMore;
             return this;
         }
 
@@ -135,7 +158,7 @@ public final class InvoiceEventsResponse {
 
         @java.lang.Override
         public InvoiceEventsResponse build() {
-            return new InvoiceEventsResponse(data, count, additionalProperties);
+            return new InvoiceEventsResponse(data, count, hasMore, additionalProperties);
         }
     }
 }
