@@ -596,6 +596,13 @@ public class EntityClient {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "connectedEntityId", request.getConnectedEntityId().get(), false);
         }
+        if (request.getRedirectToPortal().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "redirectToPortal",
+                    request.getRedirectToPortal().get().toString(),
+                    false);
+        }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("POST", RequestBody.create("", null))

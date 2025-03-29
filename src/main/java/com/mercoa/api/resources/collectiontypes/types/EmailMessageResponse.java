@@ -21,13 +21,13 @@ import org.jetbrains.annotations.NotNull;
 public final class EmailMessageResponse {
     private final String subject;
 
-    private final String text;
+    private final String body;
 
     private final Map<String, Object> additionalProperties;
 
-    private EmailMessageResponse(String subject, String text, Map<String, Object> additionalProperties) {
+    private EmailMessageResponse(String subject, String body, Map<String, Object> additionalProperties) {
         this.subject = subject;
-        this.text = text;
+        this.body = body;
         this.additionalProperties = additionalProperties;
     }
 
@@ -42,9 +42,9 @@ public final class EmailMessageResponse {
     /**
      * @return The body of the email in plaintext
      */
-    @JsonProperty("text")
-    public String getText() {
-        return text;
+    @JsonProperty("body")
+    public String getBody() {
+        return body;
     }
 
     @java.lang.Override
@@ -59,12 +59,12 @@ public final class EmailMessageResponse {
     }
 
     private boolean equalTo(EmailMessageResponse other) {
-        return subject.equals(other.subject) && text.equals(other.text);
+        return subject.equals(other.subject) && body.equals(other.body);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.subject, this.text);
+        return Objects.hash(this.subject, this.body);
     }
 
     @java.lang.Override
@@ -77,13 +77,13 @@ public final class EmailMessageResponse {
     }
 
     public interface SubjectStage {
-        TextStage subject(@NotNull String subject);
+        BodyStage subject(@NotNull String subject);
 
         Builder from(EmailMessageResponse other);
     }
 
-    public interface TextStage {
-        _FinalStage text(@NotNull String text);
+    public interface BodyStage {
+        _FinalStage body(@NotNull String body);
     }
 
     public interface _FinalStage {
@@ -91,10 +91,10 @@ public final class EmailMessageResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements SubjectStage, TextStage, _FinalStage {
+    public static final class Builder implements SubjectStage, BodyStage, _FinalStage {
         private String subject;
 
-        private String text;
+        private String body;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -104,7 +104,7 @@ public final class EmailMessageResponse {
         @java.lang.Override
         public Builder from(EmailMessageResponse other) {
             subject(other.getSubject());
-            text(other.getText());
+            body(other.getBody());
             return this;
         }
 
@@ -114,7 +114,7 @@ public final class EmailMessageResponse {
          */
         @java.lang.Override
         @JsonSetter("subject")
-        public TextStage subject(@NotNull String subject) {
+        public BodyStage subject(@NotNull String subject) {
             this.subject = Objects.requireNonNull(subject, "subject must not be null");
             return this;
         }
@@ -124,15 +124,15 @@ public final class EmailMessageResponse {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        @JsonSetter("text")
-        public _FinalStage text(@NotNull String text) {
-            this.text = Objects.requireNonNull(text, "text must not be null");
+        @JsonSetter("body")
+        public _FinalStage body(@NotNull String body) {
+            this.body = Objects.requireNonNull(body, "body must not be null");
             return this;
         }
 
         @java.lang.Override
         public EmailMessageResponse build() {
-            return new EmailMessageResponse(subject, text, additionalProperties);
+            return new EmailMessageResponse(subject, body, additionalProperties);
         }
     }
 }
