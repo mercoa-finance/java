@@ -107,14 +107,14 @@ public class UserClient {
     }
 
     /**
-     * Create entity user that will be added to all entities in the group.
+     * Create entity user that will be added to all entities in the group. If a user with the same foreignId already exists, the user will be updated with the new information.
      */
     public EntityGroupUserResponse create(String entityGroupId, EntityGroupUserRequest request) {
         return create(entityGroupId, request, null);
     }
 
     /**
-     * Create entity user that will be added to all entities in the group.
+     * Create entity user that will be added to all entities in the group. If a user with the same foreignId already exists, the user will be updated with the new information.
      */
     public EntityGroupUserResponse create(
             String entityGroupId, EntityGroupUserRequest request, RequestOptions requestOptions) {

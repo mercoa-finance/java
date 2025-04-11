@@ -9,9 +9,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
@@ -21,11 +24,11 @@ import org.jetbrains.annotations.NotNull;
 public final class MetadataTrigger {
     private final String key;
 
-    private final String value;
+    private final List<String> value;
 
     private final Map<String, Object> additionalProperties;
 
-    private MetadataTrigger(String key, String value, Map<String, Object> additionalProperties) {
+    private MetadataTrigger(String key, List<String> value, Map<String, Object> additionalProperties) {
         this.key = key;
         this.value = value;
         this.additionalProperties = additionalProperties;
@@ -43,7 +46,7 @@ public final class MetadataTrigger {
      * @return The metadata value the invoice must have to trigger this policy
      */
     @JsonProperty("value")
-    public String getValue() {
+    public List<String> getValue() {
         return value;
     }
 
@@ -77,24 +80,26 @@ public final class MetadataTrigger {
     }
 
     public interface KeyStage {
-        ValueStage key(@NotNull String key);
+        _FinalStage key(@NotNull String key);
 
         Builder from(MetadataTrigger other);
     }
 
-    public interface ValueStage {
-        _FinalStage value(@NotNull String value);
-    }
-
     public interface _FinalStage {
         MetadataTrigger build();
+
+        _FinalStage value(List<String> value);
+
+        _FinalStage addValue(String value);
+
+        _FinalStage addAllValue(List<String> value);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements KeyStage, ValueStage, _FinalStage {
+    public static final class Builder implements KeyStage, _FinalStage {
         private String key;
 
-        private String value;
+        private List<String> value = new ArrayList<>();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -114,7 +119,7 @@ public final class MetadataTrigger {
          */
         @java.lang.Override
         @JsonSetter("key")
-        public ValueStage key(@NotNull String key) {
+        public _FinalStage key(@NotNull String key) {
             this.key = Objects.requireNonNull(key, "key must not be null");
             return this;
         }
@@ -124,9 +129,26 @@ public final class MetadataTrigger {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        @JsonSetter("value")
-        public _FinalStage value(@NotNull String value) {
-            this.value = Objects.requireNonNull(value, "value must not be null");
+        public _FinalStage addAllValue(List<String> value) {
+            this.value.addAll(value);
+            return this;
+        }
+
+        /**
+         * <p>The metadata value the invoice must have to trigger this policy</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addValue(String value) {
+            this.value.add(value);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "value", nulls = Nulls.SKIP)
+        public _FinalStage value(List<String> value) {
+            this.value.clear();
+            this.value.addAll(value);
             return this;
         }
 

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.EntityOnboardingLinkType;
+import com.mercoa.api.resources.entitytypes.types.VendorPortalOptions;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -30,6 +31,8 @@ public final class SendOnboardingLink {
 
     private final Optional<Boolean> redirectToPortal;
 
+    private final Optional<VendorPortalOptions> vendorPortalOptions;
+
     private final Map<String, Object> additionalProperties;
 
     private SendOnboardingLink(
@@ -37,11 +40,13 @@ public final class SendOnboardingLink {
             Optional<String> expiresIn,
             Optional<String> connectedEntityId,
             Optional<Boolean> redirectToPortal,
+            Optional<VendorPortalOptions> vendorPortalOptions,
             Map<String, Object> additionalProperties) {
         this.type = type;
         this.expiresIn = expiresIn;
         this.connectedEntityId = connectedEntityId;
         this.redirectToPortal = redirectToPortal;
+        this.vendorPortalOptions = vendorPortalOptions;
         this.additionalProperties = additionalProperties;
     }
 
@@ -77,6 +82,14 @@ public final class SendOnboardingLink {
         return redirectToPortal;
     }
 
+    /**
+     * @return The options for the vendor portal.
+     */
+    @JsonProperty("vendorPortalOptions")
+    public Optional<VendorPortalOptions> getVendorPortalOptions() {
+        return vendorPortalOptions;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -92,12 +105,14 @@ public final class SendOnboardingLink {
         return type.equals(other.type)
                 && expiresIn.equals(other.expiresIn)
                 && connectedEntityId.equals(other.connectedEntityId)
-                && redirectToPortal.equals(other.redirectToPortal);
+                && redirectToPortal.equals(other.redirectToPortal)
+                && vendorPortalOptions.equals(other.vendorPortalOptions);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.type, this.expiresIn, this.connectedEntityId, this.redirectToPortal);
+        return Objects.hash(
+                this.type, this.expiresIn, this.connectedEntityId, this.redirectToPortal, this.vendorPortalOptions);
     }
 
     @java.lang.Override
@@ -129,11 +144,17 @@ public final class SendOnboardingLink {
         _FinalStage redirectToPortal(Optional<Boolean> redirectToPortal);
 
         _FinalStage redirectToPortal(Boolean redirectToPortal);
+
+        _FinalStage vendorPortalOptions(Optional<VendorPortalOptions> vendorPortalOptions);
+
+        _FinalStage vendorPortalOptions(VendorPortalOptions vendorPortalOptions);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements TypeStage, _FinalStage {
         private EntityOnboardingLinkType type;
+
+        private Optional<VendorPortalOptions> vendorPortalOptions = Optional.empty();
 
         private Optional<Boolean> redirectToPortal = Optional.empty();
 
@@ -152,6 +173,7 @@ public final class SendOnboardingLink {
             expiresIn(other.getExpiresIn());
             connectedEntityId(other.getConnectedEntityId());
             redirectToPortal(other.getRedirectToPortal());
+            vendorPortalOptions(other.getVendorPortalOptions());
             return this;
         }
 
@@ -163,6 +185,23 @@ public final class SendOnboardingLink {
         @JsonSetter("type")
         public _FinalStage type(@NotNull EntityOnboardingLinkType type) {
             this.type = Objects.requireNonNull(type, "type must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The options for the vendor portal.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage vendorPortalOptions(VendorPortalOptions vendorPortalOptions) {
+            this.vendorPortalOptions = Optional.ofNullable(vendorPortalOptions);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "vendorPortalOptions", nulls = Nulls.SKIP)
+        public _FinalStage vendorPortalOptions(Optional<VendorPortalOptions> vendorPortalOptions) {
+            this.vendorPortalOptions = vendorPortalOptions;
             return this;
         }
 
@@ -219,7 +258,8 @@ public final class SendOnboardingLink {
 
         @java.lang.Override
         public SendOnboardingLink build() {
-            return new SendOnboardingLink(type, expiresIn, connectedEntityId, redirectToPortal, additionalProperties);
+            return new SendOnboardingLink(
+                    type, expiresIn, connectedEntityId, redirectToPortal, vendorPortalOptions, additionalProperties);
         }
     }
 }

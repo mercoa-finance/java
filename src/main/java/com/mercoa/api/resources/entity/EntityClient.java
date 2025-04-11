@@ -545,6 +545,13 @@ public class EntityClient {
                     request.getRedirectToPortal().get().toString(),
                     false);
         }
+        if (request.getVendorPortalOptions().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "vendorPortalOptions",
+                    request.getVendorPortalOptions().get().toString(),
+                    false);
+        }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)
@@ -601,6 +608,13 @@ public class EntityClient {
                     httpUrl,
                     "redirectToPortal",
                     request.getRedirectToPortal().get().toString(),
+                    false);
+        }
+        if (request.getVendorPortalOptions().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "vendorPortalOptions",
+                    request.getVendorPortalOptions().get().toString(),
                     false);
         }
         Request.Builder _requestBuilder = new Request.Builder()

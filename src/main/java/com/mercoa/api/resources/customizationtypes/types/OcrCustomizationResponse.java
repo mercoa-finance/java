@@ -32,6 +32,8 @@ public final class OcrCustomizationResponse {
 
     private final boolean taxAndShippingAsLineItems;
 
+    private final boolean splitDocuments;
+
     private final Map<String, Object> additionalProperties;
 
     private OcrCustomizationResponse(
@@ -42,6 +44,7 @@ public final class OcrCustomizationResponse {
             boolean lineItemGlAccountId,
             boolean predictMetadata,
             boolean taxAndShippingAsLineItems,
+            boolean splitDocuments,
             Map<String, Object> additionalProperties) {
         this.lineItems = lineItems;
         this.collapseLineItems = collapseLineItems;
@@ -50,6 +53,7 @@ public final class OcrCustomizationResponse {
         this.lineItemGlAccountId = lineItemGlAccountId;
         this.predictMetadata = predictMetadata;
         this.taxAndShippingAsLineItems = taxAndShippingAsLineItems;
+        this.splitDocuments = splitDocuments;
         this.additionalProperties = additionalProperties;
     }
 
@@ -109,6 +113,14 @@ public final class OcrCustomizationResponse {
         return taxAndShippingAsLineItems;
     }
 
+    /**
+     * @return Use AI to intelligently split documents into multiple subdocuments. Defaults to false.
+     */
+    @JsonProperty("splitDocuments")
+    public boolean getSplitDocuments() {
+        return splitDocuments;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -127,7 +139,8 @@ public final class OcrCustomizationResponse {
                 && lineItemMetadata == other.lineItemMetadata
                 && lineItemGlAccountId == other.lineItemGlAccountId
                 && predictMetadata == other.predictMetadata
-                && taxAndShippingAsLineItems == other.taxAndShippingAsLineItems;
+                && taxAndShippingAsLineItems == other.taxAndShippingAsLineItems
+                && splitDocuments == other.splitDocuments;
     }
 
     @java.lang.Override
@@ -139,7 +152,8 @@ public final class OcrCustomizationResponse {
                 this.lineItemMetadata,
                 this.lineItemGlAccountId,
                 this.predictMetadata,
-                this.taxAndShippingAsLineItems);
+                this.taxAndShippingAsLineItems,
+                this.splitDocuments);
     }
 
     @java.lang.Override
@@ -178,7 +192,11 @@ public final class OcrCustomizationResponse {
     }
 
     public interface TaxAndShippingAsLineItemsStage {
-        _FinalStage taxAndShippingAsLineItems(boolean taxAndShippingAsLineItems);
+        SplitDocumentsStage taxAndShippingAsLineItems(boolean taxAndShippingAsLineItems);
+    }
+
+    public interface SplitDocumentsStage {
+        _FinalStage splitDocuments(boolean splitDocuments);
     }
 
     public interface _FinalStage {
@@ -194,6 +212,7 @@ public final class OcrCustomizationResponse {
                     LineItemGlAccountIdStage,
                     PredictMetadataStage,
                     TaxAndShippingAsLineItemsStage,
+                    SplitDocumentsStage,
                     _FinalStage {
         private boolean lineItems;
 
@@ -209,6 +228,8 @@ public final class OcrCustomizationResponse {
 
         private boolean taxAndShippingAsLineItems;
 
+        private boolean splitDocuments;
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -223,6 +244,7 @@ public final class OcrCustomizationResponse {
             lineItemGlAccountId(other.getLineItemGlAccountId());
             predictMetadata(other.getPredictMetadata());
             taxAndShippingAsLineItems(other.getTaxAndShippingAsLineItems());
+            splitDocuments(other.getSplitDocuments());
             return this;
         }
 
@@ -298,8 +320,19 @@ public final class OcrCustomizationResponse {
          */
         @java.lang.Override
         @JsonSetter("taxAndShippingAsLineItems")
-        public _FinalStage taxAndShippingAsLineItems(boolean taxAndShippingAsLineItems) {
+        public SplitDocumentsStage taxAndShippingAsLineItems(boolean taxAndShippingAsLineItems) {
             this.taxAndShippingAsLineItems = taxAndShippingAsLineItems;
+            return this;
+        }
+
+        /**
+         * <p>Use AI to intelligently split documents into multiple subdocuments. Defaults to false.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("splitDocuments")
+        public _FinalStage splitDocuments(boolean splitDocuments) {
+            this.splitDocuments = splitDocuments;
             return this;
         }
 
@@ -313,6 +346,7 @@ public final class OcrCustomizationResponse {
                     lineItemGlAccountId,
                     predictMetadata,
                     taxAndShippingAsLineItems,
+                    splitDocuments,
                     additionalProperties);
         }
     }

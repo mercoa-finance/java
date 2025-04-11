@@ -64,10 +64,10 @@ public final class ClientOptions {
         this.headers.putAll(headers);
         this.headers.putAll(new HashMap<String, String>() {
             {
-                put("User-Agent", "com.mercoa:mercoa/0.6.14");
+                put("User-Agent", "com.mercoa:mercoa/0.6.15");
                 put("X-Fern-Language", "JAVA");
                 put("X-Fern-SDK-Name", "com.mercoa.fern:api-sdk");
-                put("X-Fern-SDK-Version", "0.6.14");
+                put("X-Fern-SDK-Version", "0.6.15");
             }
         });
         this.headerSuppliers = headerSuppliers;
