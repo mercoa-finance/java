@@ -14,19 +14,22 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.CounterpartyResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceFeesResponse;
+import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
 import com.mercoa.api.resources.invoicetypes.types.PaymentDestinationOptions;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = TransactionResponseMailedCheckBase.Builder.class)
-public final class TransactionResponseMailedCheckBase
-        implements ITransactionResponseMailedCheckBase, ITransactionResponseBase {
+@JsonDeserialize(builder = TransactionResponseBankToCheckWithInvoices.Builder.class)
+public final class TransactionResponseBankToCheckWithInvoices
+        implements ITransactionResponseCheckBase, ITransactionResponseBase {
     private final int checkNumber;
 
     private final String id;
@@ -61,9 +64,11 @@ public final class TransactionResponseMailedCheckBase
 
     private final OffsetDateTime updatedAt;
 
+    private final List<InvoiceResponse> invoices;
+
     private final Map<String, Object> additionalProperties;
 
-    private TransactionResponseMailedCheckBase(
+    private TransactionResponseBankToCheckWithInvoices(
             int checkNumber,
             String id,
             TransactionStatus status,
@@ -81,6 +86,7 @@ public final class TransactionResponseMailedCheckBase
             Optional<InvoiceFeesResponse> fees,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
+            List<InvoiceResponse> invoices,
             Map<String, Object> additionalProperties) {
         this.checkNumber = checkNumber;
         this.id = id;
@@ -99,6 +105,7 @@ public final class TransactionResponseMailedCheckBase
         this.fees = fees;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.invoices = invoices;
         this.additionalProperties = additionalProperties;
     }
 
@@ -207,11 +214,19 @@ public final class TransactionResponseMailedCheckBase
         return updatedAt;
     }
 
+    /**
+     * @return Invoices associated with this transaction
+     */
+    @JsonProperty("invoices")
+    public List<InvoiceResponse> getInvoices() {
+        return invoices;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof TransactionResponseMailedCheckBase
-                && equalTo((TransactionResponseMailedCheckBase) other);
+        return other instanceof TransactionResponseBankToCheckWithInvoices
+                && equalTo((TransactionResponseBankToCheckWithInvoices) other);
     }
 
     @JsonAnyGetter
@@ -219,7 +234,7 @@ public final class TransactionResponseMailedCheckBase
         return this.additionalProperties;
     }
 
-    private boolean equalTo(TransactionResponseMailedCheckBase other) {
+    private boolean equalTo(TransactionResponseBankToCheckWithInvoices other) {
         return checkNumber == other.checkNumber
                 && id.equals(other.id)
                 && status.equals(other.status)
@@ -236,7 +251,8 @@ public final class TransactionResponseMailedCheckBase
                 && paymentDestinationOptions.equals(other.paymentDestinationOptions)
                 && fees.equals(other.fees)
                 && createdAt.equals(other.createdAt)
-                && updatedAt.equals(other.updatedAt);
+                && updatedAt.equals(other.updatedAt)
+                && invoices.equals(other.invoices);
     }
 
     @java.lang.Override
@@ -258,7 +274,8 @@ public final class TransactionResponseMailedCheckBase
                 this.paymentDestinationOptions,
                 this.fees,
                 this.createdAt,
-                this.updatedAt);
+                this.updatedAt,
+                this.invoices);
     }
 
     @java.lang.Override
@@ -273,7 +290,7 @@ public final class TransactionResponseMailedCheckBase
     public interface CheckNumberStage {
         IdStage checkNumber(int checkNumber);
 
-        Builder from(TransactionResponseMailedCheckBase other);
+        Builder from(TransactionResponseBankToCheckWithInvoices other);
     }
 
     public interface IdStage {
@@ -333,7 +350,7 @@ public final class TransactionResponseMailedCheckBase
     }
 
     public interface _FinalStage {
-        TransactionResponseMailedCheckBase build();
+        TransactionResponseBankToCheckWithInvoices build();
 
         _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions);
 
@@ -342,6 +359,12 @@ public final class TransactionResponseMailedCheckBase
         _FinalStage fees(Optional<InvoiceFeesResponse> fees);
 
         _FinalStage fees(InvoiceFeesResponse fees);
+
+        _FinalStage invoices(List<InvoiceResponse> invoices);
+
+        _FinalStage addInvoices(InvoiceResponse invoices);
+
+        _FinalStage addAllInvoices(List<InvoiceResponse> invoices);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -392,6 +415,8 @@ public final class TransactionResponseMailedCheckBase
 
         private OffsetDateTime updatedAt;
 
+        private List<InvoiceResponse> invoices = new ArrayList<>();
+
         private Optional<InvoiceFeesResponse> fees = Optional.empty();
 
         private Optional<PaymentDestinationOptions> paymentDestinationOptions = Optional.empty();
@@ -402,7 +427,7 @@ public final class TransactionResponseMailedCheckBase
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(TransactionResponseMailedCheckBase other) {
+        public Builder from(TransactionResponseBankToCheckWithInvoices other) {
             checkNumber(other.getCheckNumber());
             id(other.getId());
             status(other.getStatus());
@@ -420,6 +445,7 @@ public final class TransactionResponseMailedCheckBase
             fees(other.getFees());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
+            invoices(other.getInvoices());
             return this;
         }
 
@@ -533,6 +559,34 @@ public final class TransactionResponseMailedCheckBase
             return this;
         }
 
+        /**
+         * <p>Invoices associated with this transaction</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addAllInvoices(List<InvoiceResponse> invoices) {
+            this.invoices.addAll(invoices);
+            return this;
+        }
+
+        /**
+         * <p>Invoices associated with this transaction</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addInvoices(InvoiceResponse invoices) {
+            this.invoices.add(invoices);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "invoices", nulls = Nulls.SKIP)
+        public _FinalStage invoices(List<InvoiceResponse> invoices) {
+            this.invoices.clear();
+            this.invoices.addAll(invoices);
+            return this;
+        }
+
         @java.lang.Override
         public _FinalStage fees(InvoiceFeesResponse fees) {
             this.fees = Optional.ofNullable(fees);
@@ -560,8 +614,8 @@ public final class TransactionResponseMailedCheckBase
         }
 
         @java.lang.Override
-        public TransactionResponseMailedCheckBase build() {
-            return new TransactionResponseMailedCheckBase(
+        public TransactionResponseBankToCheckWithInvoices build() {
+            return new TransactionResponseBankToCheckWithInvoices(
                     checkNumber,
                     id,
                     status,
@@ -579,6 +633,7 @@ public final class TransactionResponseMailedCheckBase
                     fees,
                     createdAt,
                     updatedAt,
+                    invoices,
                     additionalProperties);
         }
     }

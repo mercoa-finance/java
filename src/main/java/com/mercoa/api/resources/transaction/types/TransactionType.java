@@ -10,6 +10,8 @@ public enum TransactionType {
 
     BANK_ACCOUNT_TO_MAILED_CHECK("bankAccountToMailedCheck"),
 
+    BANK_ACCOUNT_TO_PRINTED_CHECK("bankAccountToPrintedCheck"),
+
     BANK_ACCOUNT_TO_WALLET("bankAccountToWallet"),
 
     CARD_TO_WALLET("cardToWallet"),

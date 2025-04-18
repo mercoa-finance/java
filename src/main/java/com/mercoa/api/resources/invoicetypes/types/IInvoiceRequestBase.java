@@ -32,6 +32,8 @@ public interface IInvoiceRequestBase {
 
     Optional<OffsetDateTime> getServiceEndDate();
 
+    Optional<Integer> getNetTerms();
+
     Optional<String> getPayerId();
 
     Optional<String> getPaymentSourceId();

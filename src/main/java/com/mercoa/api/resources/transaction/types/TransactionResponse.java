@@ -30,8 +30,12 @@ public final class TransactionResponse {
         return new TransactionResponse(new BankAccountToBankAccountValue(value));
     }
 
-    public static TransactionResponse bankAccountToMailedCheck(TransactionResponseBankToMailedCheckWithInvoices value) {
+    public static TransactionResponse bankAccountToMailedCheck(TransactionResponseBankToCheckWithInvoices value) {
         return new TransactionResponse(new BankAccountToMailedCheckValue(value));
+    }
+
+    public static TransactionResponse bankAccountToPrintedCheck(TransactionResponseBankToCheckWithInvoices value) {
+        return new TransactionResponse(new BankAccountToPrintedCheckValue(value));
     }
 
     public static TransactionResponse bankAccountToWallet(TransactionResponseBankToWalletWithInvoices value) {
@@ -60,6 +64,10 @@ public final class TransactionResponse {
 
     public boolean isBankAccountToMailedCheck() {
         return value instanceof BankAccountToMailedCheckValue;
+    }
+
+    public boolean isBankAccountToPrintedCheck() {
+        return value instanceof BankAccountToPrintedCheckValue;
     }
 
     public boolean isBankAccountToWallet() {
@@ -93,9 +101,16 @@ public final class TransactionResponse {
         return Optional.empty();
     }
 
-    public Optional<TransactionResponseBankToMailedCheckWithInvoices> getBankAccountToMailedCheck() {
+    public Optional<TransactionResponseBankToCheckWithInvoices> getBankAccountToMailedCheck() {
         if (isBankAccountToMailedCheck()) {
             return Optional.of(((BankAccountToMailedCheckValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<TransactionResponseBankToCheckWithInvoices> getBankAccountToPrintedCheck() {
+        if (isBankAccountToPrintedCheck()) {
+            return Optional.of(((BankAccountToPrintedCheckValue) value).value);
         }
         return Optional.empty();
     }
@@ -150,7 +165,9 @@ public final class TransactionResponse {
     public interface Visitor<T> {
         T visitBankAccountToBankAccount(TransactionResponseBankToBankWithInvoices bankAccountToBankAccount);
 
-        T visitBankAccountToMailedCheck(TransactionResponseBankToMailedCheckWithInvoices bankAccountToMailedCheck);
+        T visitBankAccountToMailedCheck(TransactionResponseBankToCheckWithInvoices bankAccountToMailedCheck);
+
+        T visitBankAccountToPrintedCheck(TransactionResponseBankToCheckWithInvoices bankAccountToPrintedCheck);
 
         T visitBankAccountToWallet(TransactionResponseBankToWalletWithInvoices bankAccountToWallet);
 
@@ -169,6 +186,7 @@ public final class TransactionResponse {
     @JsonSubTypes({
         @JsonSubTypes.Type(BankAccountToBankAccountValue.class),
         @JsonSubTypes.Type(BankAccountToMailedCheckValue.class),
+        @JsonSubTypes.Type(BankAccountToPrintedCheckValue.class),
         @JsonSubTypes.Type(BankAccountToWalletValue.class),
         @JsonSubTypes.Type(CardToWalletValue.class),
         @JsonSubTypes.Type(WalletToBankAccountValue.class),
@@ -223,12 +241,12 @@ public final class TransactionResponse {
     @JsonIgnoreProperties("type")
     private static final class BankAccountToMailedCheckValue implements Value {
         @JsonUnwrapped
-        private TransactionResponseBankToMailedCheckWithInvoices value;
+        private TransactionResponseBankToCheckWithInvoices value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private BankAccountToMailedCheckValue() {}
 
-        private BankAccountToMailedCheckValue(TransactionResponseBankToMailedCheckWithInvoices value) {
+        private BankAccountToMailedCheckValue(TransactionResponseBankToCheckWithInvoices value) {
             this.value = value;
         }
 
@@ -244,6 +262,45 @@ public final class TransactionResponse {
         }
 
         private boolean equalTo(BankAccountToMailedCheckValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "TransactionResponse{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("bankAccountToPrintedCheck")
+    @JsonIgnoreProperties("type")
+    private static final class BankAccountToPrintedCheckValue implements Value {
+        @JsonUnwrapped
+        private TransactionResponseBankToCheckWithInvoices value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private BankAccountToPrintedCheckValue() {}
+
+        private BankAccountToPrintedCheckValue(TransactionResponseBankToCheckWithInvoices value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitBankAccountToPrintedCheck(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof BankAccountToPrintedCheckValue && equalTo((BankAccountToPrintedCheckValue) other);
+        }
+
+        private boolean equalTo(BankAccountToPrintedCheckValue other) {
             return value.equals(other.value);
         }
 

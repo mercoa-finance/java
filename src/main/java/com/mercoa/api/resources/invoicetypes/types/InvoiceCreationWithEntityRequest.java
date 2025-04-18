@@ -46,6 +46,8 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
 
     private final Optional<OffsetDateTime> serviceEndDate;
 
+    private final Optional<Integer> netTerms;
+
     private final Optional<String> payerId;
 
     private final Optional<String> paymentSourceId;
@@ -102,6 +104,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
             Optional<String> noteToSelf,
             Optional<OffsetDateTime> serviceStartDate,
             Optional<OffsetDateTime> serviceEndDate,
+            Optional<Integer> netTerms,
             Optional<String> payerId,
             Optional<String> paymentSourceId,
             Optional<String> vendorId,
@@ -135,6 +138,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
         this.noteToSelf = noteToSelf;
         this.serviceStartDate = serviceStartDate;
         this.serviceEndDate = serviceEndDate;
+        this.netTerms = netTerms;
         this.payerId = payerId;
         this.paymentSourceId = paymentSourceId;
         this.vendorId = vendorId;
@@ -244,6 +248,15 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
     @java.lang.Override
     public Optional<OffsetDateTime> getServiceEndDate() {
         return serviceEndDate;
+    }
+
+    /**
+     * @return Net terms in days. Must be a positive number.
+     */
+    @JsonProperty("netTerms")
+    @java.lang.Override
+    public Optional<Integer> getNetTerms() {
+        return netTerms;
     }
 
     /**
@@ -453,6 +466,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
                 && noteToSelf.equals(other.noteToSelf)
                 && serviceStartDate.equals(other.serviceStartDate)
                 && serviceEndDate.equals(other.serviceEndDate)
+                && netTerms.equals(other.netTerms)
                 && payerId.equals(other.payerId)
                 && paymentSourceId.equals(other.paymentSourceId)
                 && vendorId.equals(other.vendorId)
@@ -490,6 +504,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
                 this.noteToSelf,
                 this.serviceStartDate,
                 this.serviceEndDate,
+                this.netTerms,
                 this.payerId,
                 this.paymentSourceId,
                 this.vendorId,
@@ -574,6 +589,10 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
         _FinalStage serviceEndDate(Optional<OffsetDateTime> serviceEndDate);
 
         _FinalStage serviceEndDate(OffsetDateTime serviceEndDate);
+
+        _FinalStage netTerms(Optional<Integer> netTerms);
+
+        _FinalStage netTerms(Integer netTerms);
 
         _FinalStage payerId(Optional<String> payerId);
 
@@ -700,6 +719,8 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
 
         private Optional<String> payerId = Optional.empty();
 
+        private Optional<Integer> netTerms = Optional.empty();
+
         private Optional<OffsetDateTime> serviceEndDate = Optional.empty();
 
         private Optional<OffsetDateTime> serviceStartDate = Optional.empty();
@@ -740,6 +761,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
             noteToSelf(other.getNoteToSelf());
             serviceStartDate(other.getServiceStartDate());
             serviceEndDate(other.getServiceEndDate());
+            netTerms(other.getNetTerms());
             payerId(other.getPayerId());
             paymentSourceId(other.getPaymentSourceId());
             vendorId(other.getVendorId());
@@ -1111,6 +1133,23 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
             return this;
         }
 
+        /**
+         * <p>Net terms in days. Must be a positive number.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage netTerms(Integer netTerms) {
+            this.netTerms = Optional.ofNullable(netTerms);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "netTerms", nulls = Nulls.SKIP)
+        public _FinalStage netTerms(Optional<Integer> netTerms) {
+            this.netTerms = netTerms;
+            return this;
+        }
+
         @java.lang.Override
         public _FinalStage serviceEndDate(OffsetDateTime serviceEndDate) {
             this.serviceEndDate = Optional.ofNullable(serviceEndDate);
@@ -1296,6 +1335,7 @@ public final class InvoiceCreationWithEntityRequest implements IInvoiceRequestBa
                     noteToSelf,
                     serviceStartDate,
                     serviceEndDate,
+                    netTerms,
                     payerId,
                     paymentSourceId,
                     vendorId,

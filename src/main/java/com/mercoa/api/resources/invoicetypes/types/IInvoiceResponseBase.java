@@ -36,6 +36,8 @@ public interface IInvoiceResponseBase {
 
     Optional<OffsetDateTime> getServiceEndDate();
 
+    Optional<Integer> getNetTerms();
+
     Optional<String> getPayerId();
 
     Optional<CounterpartyResponse> getPayer();

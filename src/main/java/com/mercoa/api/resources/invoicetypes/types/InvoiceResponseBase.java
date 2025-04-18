@@ -52,6 +52,8 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
 
     private final Optional<OffsetDateTime> serviceEndDate;
 
+    private final Optional<Integer> netTerms;
+
     private final Optional<String> payerId;
 
     private final Optional<CounterpartyResponse> payer;
@@ -120,6 +122,7 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
             Optional<String> noteToSelf,
             Optional<OffsetDateTime> serviceStartDate,
             Optional<OffsetDateTime> serviceEndDate,
+            Optional<Integer> netTerms,
             Optional<String> payerId,
             Optional<CounterpartyResponse> payer,
             Optional<PaymentMethodResponse> paymentSource,
@@ -159,6 +162,7 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
         this.noteToSelf = noteToSelf;
         this.serviceStartDate = serviceStartDate;
         this.serviceEndDate = serviceEndDate;
+        this.netTerms = netTerms;
         this.payerId = payerId;
         this.payer = payer;
         this.paymentSource = paymentSource;
@@ -271,6 +275,15 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
     @java.lang.Override
     public Optional<OffsetDateTime> getServiceEndDate() {
         return serviceEndDate;
+    }
+
+    /**
+     * @return Net terms in days. Must be a positive number.
+     */
+    @JsonProperty("netTerms")
+    @java.lang.Override
+    public Optional<Integer> getNetTerms() {
+        return netTerms;
     }
 
     @JsonProperty("payerId")
@@ -494,6 +507,7 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
                 && noteToSelf.equals(other.noteToSelf)
                 && serviceStartDate.equals(other.serviceStartDate)
                 && serviceEndDate.equals(other.serviceEndDate)
+                && netTerms.equals(other.netTerms)
                 && payerId.equals(other.payerId)
                 && payer.equals(other.payer)
                 && paymentSource.equals(other.paymentSource)
@@ -537,6 +551,7 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
                 this.noteToSelf,
                 this.serviceStartDate,
                 this.serviceEndDate,
+                this.netTerms,
                 this.payerId,
                 this.payer,
                 this.paymentSource,
@@ -643,6 +658,10 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
         _FinalStage serviceEndDate(Optional<OffsetDateTime> serviceEndDate);
 
         _FinalStage serviceEndDate(OffsetDateTime serviceEndDate);
+
+        _FinalStage netTerms(Optional<Integer> netTerms);
+
+        _FinalStage netTerms(Integer netTerms);
 
         _FinalStage payerId(Optional<String> payerId);
 
@@ -804,6 +823,8 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
 
         private Optional<String> payerId = Optional.empty();
 
+        private Optional<Integer> netTerms = Optional.empty();
+
         private Optional<OffsetDateTime> serviceEndDate = Optional.empty();
 
         private Optional<OffsetDateTime> serviceStartDate = Optional.empty();
@@ -842,6 +863,7 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
             noteToSelf(other.getNoteToSelf());
             serviceStartDate(other.getServiceStartDate());
             serviceEndDate(other.getServiceEndDate());
+            netTerms(other.getNetTerms());
             payerId(other.getPayerId());
             payer(other.getPayer());
             paymentSource(other.getPaymentSource());
@@ -1273,6 +1295,23 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>Net terms in days. Must be a positive number.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage netTerms(Integer netTerms) {
+            this.netTerms = Optional.ofNullable(netTerms);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "netTerms", nulls = Nulls.SKIP)
+        public _FinalStage netTerms(Optional<Integer> netTerms) {
+            this.netTerms = netTerms;
+            return this;
+        }
+
         @java.lang.Override
         public _FinalStage serviceEndDate(OffsetDateTime serviceEndDate) {
             this.serviceEndDate = Optional.ofNullable(serviceEndDate);
@@ -1441,6 +1480,7 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
                     noteToSelf,
                     serviceStartDate,
                     serviceEndDate,
+                    netTerms,
                     payerId,
                     payer,
                     paymentSource,
