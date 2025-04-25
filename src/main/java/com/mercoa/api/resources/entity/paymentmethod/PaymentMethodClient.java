@@ -17,6 +17,7 @@ import com.mercoa.api.resources.entity.paymentmethod.bankaccount.BankAccountClie
 import com.mercoa.api.resources.entity.paymentmethod.requests.GetAllPaymentMethodsRequest;
 import com.mercoa.api.resources.entity.paymentmethod.requests.PaymentMethodEventsRequest;
 import com.mercoa.api.resources.entity.paymentmethod.requests.PlaidLinkTokenRequest;
+import com.mercoa.api.resources.entity.paymentmethod.wallet.WalletClient;
 import com.mercoa.api.resources.entitytypes.types.CardLinkTokenResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodEventsResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodRequest;
@@ -38,9 +39,12 @@ public class PaymentMethodClient {
 
     protected final Supplier<BankAccountClient> bankAccountClient;
 
+    protected final Supplier<WalletClient> walletClient;
+
     public PaymentMethodClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.bankAccountClient = Suppliers.memoize(() -> new BankAccountClient(clientOptions));
+        this.walletClient = Suppliers.memoize(() -> new WalletClient(clientOptions));
     }
 
     public List<PaymentMethodResponse> getAll(String entityId) {
@@ -431,5 +435,9 @@ public class PaymentMethodClient {
 
     public BankAccountClient bankAccount() {
         return this.bankAccountClient.get();
+    }
+
+    public WalletClient wallet() {
+        return this.walletClient.get();
     }
 }

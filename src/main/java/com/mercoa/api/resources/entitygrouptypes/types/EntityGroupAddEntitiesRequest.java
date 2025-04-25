@@ -26,14 +26,18 @@ public final class EntityGroupAddEntitiesRequest {
 
     private final Optional<EntityIdOrBoolean> copyUsersFrom;
 
+    private final Optional<List<String>> filterRoles;
+
     private final Map<String, Object> additionalProperties;
 
     private EntityGroupAddEntitiesRequest(
             List<String> entityIds,
             Optional<EntityIdOrBoolean> copyUsersFrom,
+            Optional<List<String>> filterRoles,
             Map<String, Object> additionalProperties) {
         this.entityIds = entityIds;
         this.copyUsersFrom = copyUsersFrom;
+        this.filterRoles = filterRoles;
         this.additionalProperties = additionalProperties;
     }
 
@@ -48,13 +52,21 @@ public final class EntityGroupAddEntitiesRequest {
     /**
      * @return Entity ID / foreign ID of an entity currently in the group to copy users and roles from OR a boolean defining if users should be copied to the new entities.
      * <p>If not provided or false, users and roles will not be copied.
-     * If true, users and roles will be copied from the first entity the group.
+     * If true, users and roles will be copied from the entity with the most users that has been updated most recently.
      * If a valid ID is provided, users and roles will be copied from the corresponding provided entity in the group.</p>
      * <p>Note: If users copied, any preexisting users will be left alone, and users with the same foreign ID will not be copied.</p>
      */
     @JsonProperty("copyUsersFrom")
     public Optional<EntityIdOrBoolean> getCopyUsersFrom() {
         return copyUsersFrom;
+    }
+
+    /**
+     * @return List of roles to filter users by. If not provided, all users will be copied. If provided, only users with the provided roles will be copied.
+     */
+    @JsonProperty("filterRoles")
+    public Optional<List<String>> getFilterRoles() {
+        return filterRoles;
     }
 
     @java.lang.Override
@@ -69,12 +81,14 @@ public final class EntityGroupAddEntitiesRequest {
     }
 
     private boolean equalTo(EntityGroupAddEntitiesRequest other) {
-        return entityIds.equals(other.entityIds) && copyUsersFrom.equals(other.copyUsersFrom);
+        return entityIds.equals(other.entityIds)
+                && copyUsersFrom.equals(other.copyUsersFrom)
+                && filterRoles.equals(other.filterRoles);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.entityIds, this.copyUsersFrom);
+        return Objects.hash(this.entityIds, this.copyUsersFrom, this.filterRoles);
     }
 
     @java.lang.Override
@@ -92,6 +106,8 @@ public final class EntityGroupAddEntitiesRequest {
 
         private Optional<EntityIdOrBoolean> copyUsersFrom = Optional.empty();
 
+        private Optional<List<String>> filterRoles = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -100,6 +116,7 @@ public final class EntityGroupAddEntitiesRequest {
         public Builder from(EntityGroupAddEntitiesRequest other) {
             entityIds(other.getEntityIds());
             copyUsersFrom(other.getCopyUsersFrom());
+            filterRoles(other.getFilterRoles());
             return this;
         }
 
@@ -131,8 +148,19 @@ public final class EntityGroupAddEntitiesRequest {
             return this;
         }
 
+        @JsonSetter(value = "filterRoles", nulls = Nulls.SKIP)
+        public Builder filterRoles(Optional<List<String>> filterRoles) {
+            this.filterRoles = filterRoles;
+            return this;
+        }
+
+        public Builder filterRoles(List<String> filterRoles) {
+            this.filterRoles = Optional.ofNullable(filterRoles);
+            return this;
+        }
+
         public EntityGroupAddEntitiesRequest build() {
-            return new EntityGroupAddEntitiesRequest(entityIds, copyUsersFrom, additionalProperties);
+            return new EntityGroupAddEntitiesRequest(entityIds, copyUsersFrom, filterRoles, additionalProperties);
         }
     }
 }

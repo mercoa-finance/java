@@ -28,6 +28,8 @@ public final class EntityGroupUserRequest {
 
     private final Optional<String> name;
 
+    private final Optional<List<String>> roles;
+
     private final Optional<List<EntityGroupUserEntityRequest>> entities;
 
     private final Map<String, Object> additionalProperties;
@@ -36,11 +38,13 @@ public final class EntityGroupUserRequest {
             String foreignId,
             Optional<String> email,
             Optional<String> name,
+            Optional<List<String>> roles,
             Optional<List<EntityGroupUserEntityRequest>> entities,
             Map<String, Object> additionalProperties) {
         this.foreignId = foreignId;
         this.email = email;
         this.name = name;
+        this.roles = roles;
         this.entities = entities;
         this.additionalProperties = additionalProperties;
     }
@@ -64,7 +68,16 @@ public final class EntityGroupUserRequest {
     }
 
     /**
-     * @return List of roles per entity. By default, the user will have no roles.
+     * @return List of roles to assign to the user. A role can be any string. For example: &quot;payer&quot;, &quot;approver&quot;, &quot;viewer&quot;
+     * If not provided, the user will have no roles. Per entity roles will override these global roles.
+     */
+    @JsonProperty("roles")
+    public Optional<List<String>> getRoles() {
+        return roles;
+    }
+
+    /**
+     * @return List of roles per entity. Useful for assigning roles to specific entities.
      */
     @JsonProperty("entities")
     public Optional<List<EntityGroupUserEntityRequest>> getEntities() {
@@ -86,12 +99,13 @@ public final class EntityGroupUserRequest {
         return foreignId.equals(other.foreignId)
                 && email.equals(other.email)
                 && name.equals(other.name)
+                && roles.equals(other.roles)
                 && entities.equals(other.entities);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.foreignId, this.email, this.name, this.entities);
+        return Objects.hash(this.foreignId, this.email, this.name, this.roles, this.entities);
     }
 
     @java.lang.Override
@@ -120,6 +134,10 @@ public final class EntityGroupUserRequest {
 
         _FinalStage name(String name);
 
+        _FinalStage roles(Optional<List<String>> roles);
+
+        _FinalStage roles(List<String> roles);
+
         _FinalStage entities(Optional<List<EntityGroupUserEntityRequest>> entities);
 
         _FinalStage entities(List<EntityGroupUserEntityRequest> entities);
@@ -130,6 +148,8 @@ public final class EntityGroupUserRequest {
         private String foreignId;
 
         private Optional<List<EntityGroupUserEntityRequest>> entities = Optional.empty();
+
+        private Optional<List<String>> roles = Optional.empty();
 
         private Optional<String> name = Optional.empty();
 
@@ -145,6 +165,7 @@ public final class EntityGroupUserRequest {
             foreignId(other.getForeignId());
             email(other.getEmail());
             name(other.getName());
+            roles(other.getRoles());
             entities(other.getEntities());
             return this;
         }
@@ -161,7 +182,7 @@ public final class EntityGroupUserRequest {
         }
 
         /**
-         * <p>List of roles per entity. By default, the user will have no roles.</p>
+         * <p>List of roles per entity. Useful for assigning roles to specific entities.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -174,6 +195,24 @@ public final class EntityGroupUserRequest {
         @JsonSetter(value = "entities", nulls = Nulls.SKIP)
         public _FinalStage entities(Optional<List<EntityGroupUserEntityRequest>> entities) {
             this.entities = entities;
+            return this;
+        }
+
+        /**
+         * <p>List of roles to assign to the user. A role can be any string. For example: &quot;payer&quot;, &quot;approver&quot;, &quot;viewer&quot;
+         * If not provided, the user will have no roles. Per entity roles will override these global roles.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage roles(List<String> roles) {
+            this.roles = Optional.ofNullable(roles);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "roles", nulls = Nulls.SKIP)
+        public _FinalStage roles(Optional<List<String>> roles) {
+            this.roles = roles;
             return this;
         }
 
@@ -205,7 +244,7 @@ public final class EntityGroupUserRequest {
 
         @java.lang.Override
         public EntityGroupUserRequest build() {
-            return new EntityGroupUserRequest(foreignId, email, name, entities, additionalProperties);
+            return new EntityGroupUserRequest(foreignId, email, name, roles, entities, additionalProperties);
         }
     }
 }

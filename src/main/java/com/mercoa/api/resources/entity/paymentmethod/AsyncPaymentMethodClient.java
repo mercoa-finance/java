@@ -17,6 +17,7 @@ import com.mercoa.api.resources.entity.paymentmethod.bankaccount.AsyncBankAccoun
 import com.mercoa.api.resources.entity.paymentmethod.requests.GetAllPaymentMethodsRequest;
 import com.mercoa.api.resources.entity.paymentmethod.requests.PaymentMethodEventsRequest;
 import com.mercoa.api.resources.entity.paymentmethod.requests.PlaidLinkTokenRequest;
+import com.mercoa.api.resources.entity.paymentmethod.wallet.AsyncWalletClient;
 import com.mercoa.api.resources.entitytypes.types.CardLinkTokenResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodEventsResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodRequest;
@@ -42,9 +43,12 @@ public class AsyncPaymentMethodClient {
 
     protected final Supplier<AsyncBankAccountClient> bankAccountClient;
 
+    protected final Supplier<AsyncWalletClient> walletClient;
+
     public AsyncPaymentMethodClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.bankAccountClient = Suppliers.memoize(() -> new AsyncBankAccountClient(clientOptions));
+        this.walletClient = Suppliers.memoize(() -> new AsyncWalletClient(clientOptions));
     }
 
     public CompletableFuture<List<PaymentMethodResponse>> getAll(String entityId) {
@@ -548,5 +552,9 @@ public class AsyncPaymentMethodClient {
 
     public AsyncBankAccountClient bankAccount() {
         return this.bankAccountClient.get();
+    }
+
+    public AsyncWalletClient wallet() {
+        return this.walletClient.get();
     }
 }

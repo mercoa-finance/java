@@ -22,7 +22,9 @@ public enum PaymentMethodType {
 
     OFF_PLATFORM("offPlatform"),
 
-    UTILITY("utility");
+    UTILITY("utility"),
+
+    WALLET("wallet");
 
     private final String value;
 

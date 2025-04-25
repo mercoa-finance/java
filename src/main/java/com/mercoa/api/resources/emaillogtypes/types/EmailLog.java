@@ -24,6 +24,8 @@ import org.jetbrains.annotations.NotNull;
 public final class EmailLog {
     private final String id;
 
+    private final IncomingEmailLogStatus status;
+
     private final String subject;
 
     private final String from;
@@ -44,6 +46,7 @@ public final class EmailLog {
 
     private EmailLog(
             String id,
+            IncomingEmailLogStatus status,
             String subject,
             String from,
             String to,
@@ -54,6 +57,7 @@ public final class EmailLog {
             Optional<String> invoiceId,
             Map<String, Object> additionalProperties) {
         this.id = id;
+        this.status = status;
         this.subject = subject;
         this.from = from;
         this.to = to;
@@ -68,6 +72,14 @@ public final class EmailLog {
     @JsonProperty("id")
     public String getId() {
         return id;
+    }
+
+    /**
+     * @return The status of the email log. If the status is PENDING, the email has not been processed yet. If the status is PROCESSED, the email has been processed and the invoice has been created. If the status is FAILED, the email was not processed due to an error.
+     */
+    @JsonProperty("status")
+    public IncomingEmailLogStatus getStatus() {
+        return status;
     }
 
     @JsonProperty("subject")
@@ -123,6 +135,7 @@ public final class EmailLog {
 
     private boolean equalTo(EmailLog other) {
         return id.equals(other.id)
+                && status.equals(other.status)
                 && subject.equals(other.subject)
                 && from.equals(other.from)
                 && to.equals(other.to)
@@ -137,6 +150,7 @@ public final class EmailLog {
     public int hashCode() {
         return Objects.hash(
                 this.id,
+                this.status,
                 this.subject,
                 this.from,
                 this.to,
@@ -157,9 +171,13 @@ public final class EmailLog {
     }
 
     public interface IdStage {
-        SubjectStage id(@NotNull String id);
+        StatusStage id(@NotNull String id);
 
         Builder from(EmailLog other);
+    }
+
+    public interface StatusStage {
+        SubjectStage status(@NotNull IncomingEmailLogStatus status);
     }
 
     public interface SubjectStage {
@@ -201,6 +219,7 @@ public final class EmailLog {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
             implements IdStage,
+                    StatusStage,
                     SubjectStage,
                     FromStage,
                     ToStage,
@@ -209,6 +228,8 @@ public final class EmailLog {
                     CreatedAtStage,
                     _FinalStage {
         private String id;
+
+        private IncomingEmailLogStatus status;
 
         private String subject;
 
@@ -234,6 +255,7 @@ public final class EmailLog {
         @java.lang.Override
         public Builder from(EmailLog other) {
             id(other.getId());
+            status(other.getStatus());
             subject(other.getSubject());
             from(other.getFrom());
             to(other.getTo());
@@ -247,8 +269,19 @@ public final class EmailLog {
 
         @java.lang.Override
         @JsonSetter("id")
-        public SubjectStage id(@NotNull String id) {
+        public StatusStage id(@NotNull String id) {
             this.id = Objects.requireNonNull(id, "id must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The status of the email log. If the status is PENDING, the email has not been processed yet. If the status is PROCESSED, the email has been processed and the invoice has been created. If the status is FAILED, the email was not processed due to an error.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("status")
+        public SubjectStage status(@NotNull IncomingEmailLogStatus status) {
+            this.status = Objects.requireNonNull(status, "status must not be null");
             return this;
         }
 
@@ -323,7 +356,17 @@ public final class EmailLog {
         @java.lang.Override
         public EmailLog build() {
             return new EmailLog(
-                    id, subject, from, to, htmlBody, textBody, attachment, createdAt, invoiceId, additionalProperties);
+                    id,
+                    status,
+                    subject,
+                    from,
+                    to,
+                    htmlBody,
+                    textBody,
+                    attachment,
+                    createdAt,
+                    invoiceId,
+                    additionalProperties);
         }
     }
 }

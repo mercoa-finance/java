@@ -62,6 +62,10 @@ public final class PaymentRailRequest {
         return new PaymentRailRequest(new NaValue(value));
     }
 
+    public static PaymentRailRequest wallet(GenericPaymentRailRequest value) {
+        return new PaymentRailRequest(new WalletValue(value));
+    }
+
     public boolean isBankAccount() {
         return value instanceof BankAccountValue;
     }
@@ -96,6 +100,10 @@ public final class PaymentRailRequest {
 
     public boolean isNa() {
         return value instanceof NaValue;
+    }
+
+    public boolean isWallet() {
+        return value instanceof WalletValue;
     }
 
     public boolean _isUnknown() {
@@ -165,6 +173,13 @@ public final class PaymentRailRequest {
         return Optional.empty();
     }
 
+    public Optional<GenericPaymentRailRequest> getWallet() {
+        if (isWallet()) {
+            return Optional.of(((WalletValue) value).value);
+        }
+        return Optional.empty();
+    }
+
     public Optional<Object> _getUnknown() {
         if (_isUnknown()) {
             return Optional.of(((_UnknownValue) value).value);
@@ -196,6 +211,8 @@ public final class PaymentRailRequest {
 
         T visitNa(GenericPaymentRailRequest na);
 
+        T visitWallet(GenericPaymentRailRequest wallet);
+
         T _visitUnknown(Object unknownType);
     }
 
@@ -209,7 +226,8 @@ public final class PaymentRailRequest {
         @JsonSubTypes.Type(BnplValue.class),
         @JsonSubTypes.Type(OffPlatformValue.class),
         @JsonSubTypes.Type(UtilityValue.class),
-        @JsonSubTypes.Type(NaValue.class)
+        @JsonSubTypes.Type(NaValue.class),
+        @JsonSubTypes.Type(WalletValue.class)
     })
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
@@ -553,6 +571,45 @@ public final class PaymentRailRequest {
         }
 
         private boolean equalTo(NaValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentRailRequest{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("wallet")
+    @JsonIgnoreProperties("type")
+    private static final class WalletValue implements Value {
+        @JsonUnwrapped
+        private GenericPaymentRailRequest value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private WalletValue() {}
+
+        private WalletValue(GenericPaymentRailRequest value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitWallet(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof WalletValue && equalTo((WalletValue) other);
+        }
+
+        private boolean equalTo(WalletValue other) {
             return value.equals(other.value);
         }
 
