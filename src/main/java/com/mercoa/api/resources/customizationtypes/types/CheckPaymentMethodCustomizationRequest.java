@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.invoicetypes.types.CheckDeliveryMethod;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,6 +26,8 @@ public final class CheckPaymentMethodCustomizationRequest implements IGenericPay
 
     private final Optional<CheckDeliveryMethod> defaultDeliveryMethod;
 
+    private final Optional<List<CheckDeliveryMethod>> availableDeliveryMethods;
+
     private final Optional<Boolean> printDescription;
 
     private final Map<String, Object> additionalProperties;
@@ -32,10 +35,12 @@ public final class CheckPaymentMethodCustomizationRequest implements IGenericPay
     private CheckPaymentMethodCustomizationRequest(
             boolean disabled,
             Optional<CheckDeliveryMethod> defaultDeliveryMethod,
+            Optional<List<CheckDeliveryMethod>> availableDeliveryMethods,
             Optional<Boolean> printDescription,
             Map<String, Object> additionalProperties) {
         this.disabled = disabled;
         this.defaultDeliveryMethod = defaultDeliveryMethod;
+        this.availableDeliveryMethods = availableDeliveryMethods;
         this.printDescription = printDescription;
         this.additionalProperties = additionalProperties;
     }
@@ -55,6 +60,14 @@ public final class CheckPaymentMethodCustomizationRequest implements IGenericPay
     @JsonProperty("defaultDeliveryMethod")
     public Optional<CheckDeliveryMethod> getDefaultDeliveryMethod() {
         return defaultDeliveryMethod;
+    }
+
+    /**
+     * @return The delivery methods that are available for this payment method.
+     */
+    @JsonProperty("availableDeliveryMethods")
+    public Optional<List<CheckDeliveryMethod>> getAvailableDeliveryMethods() {
+        return availableDeliveryMethods;
     }
 
     /**
@@ -80,12 +93,14 @@ public final class CheckPaymentMethodCustomizationRequest implements IGenericPay
     private boolean equalTo(CheckPaymentMethodCustomizationRequest other) {
         return disabled == other.disabled
                 && defaultDeliveryMethod.equals(other.defaultDeliveryMethod)
+                && availableDeliveryMethods.equals(other.availableDeliveryMethods)
                 && printDescription.equals(other.printDescription);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.disabled, this.defaultDeliveryMethod, this.printDescription);
+        return Objects.hash(
+                this.disabled, this.defaultDeliveryMethod, this.availableDeliveryMethods, this.printDescription);
     }
 
     @java.lang.Override
@@ -110,6 +125,10 @@ public final class CheckPaymentMethodCustomizationRequest implements IGenericPay
 
         _FinalStage defaultDeliveryMethod(CheckDeliveryMethod defaultDeliveryMethod);
 
+        _FinalStage availableDeliveryMethods(Optional<List<CheckDeliveryMethod>> availableDeliveryMethods);
+
+        _FinalStage availableDeliveryMethods(List<CheckDeliveryMethod> availableDeliveryMethods);
+
         _FinalStage printDescription(Optional<Boolean> printDescription);
 
         _FinalStage printDescription(Boolean printDescription);
@@ -120,6 +139,8 @@ public final class CheckPaymentMethodCustomizationRequest implements IGenericPay
         private boolean disabled;
 
         private Optional<Boolean> printDescription = Optional.empty();
+
+        private Optional<List<CheckDeliveryMethod>> availableDeliveryMethods = Optional.empty();
 
         private Optional<CheckDeliveryMethod> defaultDeliveryMethod = Optional.empty();
 
@@ -132,6 +153,7 @@ public final class CheckPaymentMethodCustomizationRequest implements IGenericPay
         public Builder from(CheckPaymentMethodCustomizationRequest other) {
             disabled(other.getDisabled());
             defaultDeliveryMethod(other.getDefaultDeliveryMethod());
+            availableDeliveryMethods(other.getAvailableDeliveryMethods());
             printDescription(other.getPrintDescription());
             return this;
         }
@@ -165,6 +187,23 @@ public final class CheckPaymentMethodCustomizationRequest implements IGenericPay
         }
 
         /**
+         * <p>The delivery methods that are available for this payment method.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage availableDeliveryMethods(List<CheckDeliveryMethod> availableDeliveryMethods) {
+            this.availableDeliveryMethods = Optional.ofNullable(availableDeliveryMethods);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "availableDeliveryMethods", nulls = Nulls.SKIP)
+        public _FinalStage availableDeliveryMethods(Optional<List<CheckDeliveryMethod>> availableDeliveryMethods) {
+            this.availableDeliveryMethods = availableDeliveryMethods;
+            return this;
+        }
+
+        /**
          * <p>The default delivery method for this payment method.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -184,7 +223,7 @@ public final class CheckPaymentMethodCustomizationRequest implements IGenericPay
         @java.lang.Override
         public CheckPaymentMethodCustomizationRequest build() {
             return new CheckPaymentMethodCustomizationRequest(
-                    disabled, defaultDeliveryMethod, printDescription, additionalProperties);
+                    disabled, defaultDeliveryMethod, availableDeliveryMethods, printDescription, additionalProperties);
         }
     }
 }

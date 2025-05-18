@@ -14,9 +14,13 @@ public enum TransactionType {
 
     BANK_ACCOUNT_TO_WALLET("bankAccountToWallet"),
 
+    CARD_TO_BANK_ACCOUNT("cardToBankAccount"),
+
     CARD_TO_WALLET("cardToWallet"),
 
     WALLET_TO_BANK_ACCOUNT("walletToBankAccount"),
+
+    WALLET_TO_WALLET("walletToWallet"),
 
     CUSTOM("custom"),
 

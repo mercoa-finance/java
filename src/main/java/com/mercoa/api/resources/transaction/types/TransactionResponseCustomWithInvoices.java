@@ -33,7 +33,7 @@ public final class TransactionResponseCustomWithInvoices implements ITransaction
 
     private final TransactionStatus status;
 
-    private final int amount;
+    private final double amount;
 
     private final String currency;
 
@@ -68,7 +68,7 @@ public final class TransactionResponseCustomWithInvoices implements ITransaction
     private TransactionResponseCustomWithInvoices(
             String id,
             TransactionStatus status,
-            int amount,
+            double amount,
             String currency,
             String payerId,
             CounterpartyResponse payer,
@@ -118,7 +118,7 @@ public final class TransactionResponseCustomWithInvoices implements ITransaction
 
     @JsonProperty("amount")
     @java.lang.Override
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
@@ -282,7 +282,7 @@ public final class TransactionResponseCustomWithInvoices implements ITransaction
     }
 
     public interface AmountStage {
-        CurrencyStage amount(int amount);
+        CurrencyStage amount(double amount);
     }
 
     public interface CurrencyStage {
@@ -368,7 +368,7 @@ public final class TransactionResponseCustomWithInvoices implements ITransaction
 
         private TransactionStatus status;
 
-        private int amount;
+        private double amount;
 
         private String currency;
 
@@ -441,7 +441,7 @@ public final class TransactionResponseCustomWithInvoices implements ITransaction
 
         @java.lang.Override
         @JsonSetter("amount")
-        public CurrencyStage amount(int amount) {
+        public CurrencyStage amount(double amount) {
             this.amount = amount;
             return this;
         }

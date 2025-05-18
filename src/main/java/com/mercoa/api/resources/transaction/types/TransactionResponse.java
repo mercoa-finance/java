@@ -42,12 +42,20 @@ public final class TransactionResponse {
         return new TransactionResponse(new BankAccountToWalletValue(value));
     }
 
+    public static TransactionResponse cardToBankAccount(TransactionResponseCardToBankAccountWithInvoices value) {
+        return new TransactionResponse(new CardToBankAccountValue(value));
+    }
+
     public static TransactionResponse cardToWallet(TransactionResponseCardToWalletWithInvoices value) {
         return new TransactionResponse(new CardToWalletValue(value));
     }
 
     public static TransactionResponse walletToBankAccount(TransactionResponseWalletToBankWithInvoices value) {
         return new TransactionResponse(new WalletToBankAccountValue(value));
+    }
+
+    public static TransactionResponse walletToWallet(TransactionResponseWalletToWalletWithInvoices value) {
+        return new TransactionResponse(new WalletToWalletValue(value));
     }
 
     public static TransactionResponse custom(TransactionResponseCustomWithInvoices value) {
@@ -74,12 +82,20 @@ public final class TransactionResponse {
         return value instanceof BankAccountToWalletValue;
     }
 
+    public boolean isCardToBankAccount() {
+        return value instanceof CardToBankAccountValue;
+    }
+
     public boolean isCardToWallet() {
         return value instanceof CardToWalletValue;
     }
 
     public boolean isWalletToBankAccount() {
         return value instanceof WalletToBankAccountValue;
+    }
+
+    public boolean isWalletToWallet() {
+        return value instanceof WalletToWalletValue;
     }
 
     public boolean isCustom() {
@@ -122,6 +138,13 @@ public final class TransactionResponse {
         return Optional.empty();
     }
 
+    public Optional<TransactionResponseCardToBankAccountWithInvoices> getCardToBankAccount() {
+        if (isCardToBankAccount()) {
+            return Optional.of(((CardToBankAccountValue) value).value);
+        }
+        return Optional.empty();
+    }
+
     public Optional<TransactionResponseCardToWalletWithInvoices> getCardToWallet() {
         if (isCardToWallet()) {
             return Optional.of(((CardToWalletValue) value).value);
@@ -132,6 +155,13 @@ public final class TransactionResponse {
     public Optional<TransactionResponseWalletToBankWithInvoices> getWalletToBankAccount() {
         if (isWalletToBankAccount()) {
             return Optional.of(((WalletToBankAccountValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<TransactionResponseWalletToWalletWithInvoices> getWalletToWallet() {
+        if (isWalletToWallet()) {
+            return Optional.of(((WalletToWalletValue) value).value);
         }
         return Optional.empty();
     }
@@ -171,9 +201,13 @@ public final class TransactionResponse {
 
         T visitBankAccountToWallet(TransactionResponseBankToWalletWithInvoices bankAccountToWallet);
 
+        T visitCardToBankAccount(TransactionResponseCardToBankAccountWithInvoices cardToBankAccount);
+
         T visitCardToWallet(TransactionResponseCardToWalletWithInvoices cardToWallet);
 
         T visitWalletToBankAccount(TransactionResponseWalletToBankWithInvoices walletToBankAccount);
+
+        T visitWalletToWallet(TransactionResponseWalletToWalletWithInvoices walletToWallet);
 
         T visitCustom(TransactionResponseCustomWithInvoices custom);
 
@@ -188,8 +222,10 @@ public final class TransactionResponse {
         @JsonSubTypes.Type(BankAccountToMailedCheckValue.class),
         @JsonSubTypes.Type(BankAccountToPrintedCheckValue.class),
         @JsonSubTypes.Type(BankAccountToWalletValue.class),
+        @JsonSubTypes.Type(CardToBankAccountValue.class),
         @JsonSubTypes.Type(CardToWalletValue.class),
         @JsonSubTypes.Type(WalletToBankAccountValue.class),
+        @JsonSubTypes.Type(WalletToWalletValue.class),
         @JsonSubTypes.Type(CustomValue.class),
         @JsonSubTypes.Type(OffPlatformValue.class)
     })
@@ -354,6 +390,45 @@ public final class TransactionResponse {
         }
     }
 
+    @JsonTypeName("cardToBankAccount")
+    @JsonIgnoreProperties("type")
+    private static final class CardToBankAccountValue implements Value {
+        @JsonUnwrapped
+        private TransactionResponseCardToBankAccountWithInvoices value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private CardToBankAccountValue() {}
+
+        private CardToBankAccountValue(TransactionResponseCardToBankAccountWithInvoices value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitCardToBankAccount(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof CardToBankAccountValue && equalTo((CardToBankAccountValue) other);
+        }
+
+        private boolean equalTo(CardToBankAccountValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "TransactionResponse{" + "value: " + value + "}";
+        }
+    }
+
     @JsonTypeName("cardToWallet")
     @JsonIgnoreProperties("type")
     private static final class CardToWalletValue implements Value {
@@ -418,6 +493,45 @@ public final class TransactionResponse {
         }
 
         private boolean equalTo(WalletToBankAccountValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "TransactionResponse{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("walletToWallet")
+    @JsonIgnoreProperties("type")
+    private static final class WalletToWalletValue implements Value {
+        @JsonUnwrapped
+        private TransactionResponseWalletToWalletWithInvoices value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private WalletToWalletValue() {}
+
+        private WalletToWalletValue(TransactionResponseWalletToWalletWithInvoices value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitWalletToWallet(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof WalletToWalletValue && equalTo((WalletToWalletValue) other);
+        }
+
+        private boolean equalTo(WalletToWalletValue other) {
             return value.equals(other.value);
         }
 

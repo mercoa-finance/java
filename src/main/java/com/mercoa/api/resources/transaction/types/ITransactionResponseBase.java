@@ -15,7 +15,7 @@ public interface ITransactionResponseBase {
 
     TransactionStatus getStatus();
 
-    int getAmount();
+    double getAmount();
 
     String getCurrency();
 

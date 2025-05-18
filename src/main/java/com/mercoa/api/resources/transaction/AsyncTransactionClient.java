@@ -57,6 +57,10 @@ public class AsyncTransactionClient {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "entityId", request.getEntityId().get(), false);
         }
+        if (request.getEntityGroupId().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "entityGroupId", request.getEntityGroupId().get(), false);
+        }
         if (request.getStartDate().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "startDate", request.getStartDate().get().toString(), false);

@@ -14,19 +14,23 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.CounterpartyResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceFeesResponse;
+import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
 import com.mercoa.api.resources.invoicetypes.types.PaymentDestinationOptions;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = TransactionResponseCheckBase.Builder.class)
-public final class TransactionResponseCheckBase implements ITransactionResponseCheckBase, ITransactionResponseBase {
-    private final int checkNumber;
+@JsonDeserialize(builder = TransactionResponseCardToBankAccountWithInvoices.Builder.class)
+public final class TransactionResponseCardToBankAccountWithInvoices
+        implements ITransactionResponseAchBase, ITransactionResponseBase {
+    private final Optional<TransactionFailureReason> failureReason;
 
     private final String id;
 
@@ -60,10 +64,12 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
 
     private final OffsetDateTime updatedAt;
 
+    private final List<InvoiceResponse> invoices;
+
     private final Map<String, Object> additionalProperties;
 
-    private TransactionResponseCheckBase(
-            int checkNumber,
+    private TransactionResponseCardToBankAccountWithInvoices(
+            Optional<TransactionFailureReason> failureReason,
             String id,
             TransactionStatus status,
             double amount,
@@ -80,8 +86,9 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
             Optional<InvoiceFeesResponse> fees,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
+            List<InvoiceResponse> invoices,
             Map<String, Object> additionalProperties) {
-        this.checkNumber = checkNumber;
+        this.failureReason = failureReason;
         this.id = id;
         this.status = status;
         this.amount = amount;
@@ -98,16 +105,17 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
         this.fees = fees;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.invoices = invoices;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return The number of the check
+     * @return If the invoice failed to be paid, this field will be populated with the reason of failure.
      */
-    @JsonProperty("checkNumber")
+    @JsonProperty("failureReason")
     @java.lang.Override
-    public int getCheckNumber() {
-        return checkNumber;
+    public Optional<TransactionFailureReason> getFailureReason() {
+        return failureReason;
     }
 
     @JsonProperty("id")
@@ -206,10 +214,19 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
         return updatedAt;
     }
 
+    /**
+     * @return Invoices associated with this transaction
+     */
+    @JsonProperty("invoices")
+    public List<InvoiceResponse> getInvoices() {
+        return invoices;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof TransactionResponseCheckBase && equalTo((TransactionResponseCheckBase) other);
+        return other instanceof TransactionResponseCardToBankAccountWithInvoices
+                && equalTo((TransactionResponseCardToBankAccountWithInvoices) other);
     }
 
     @JsonAnyGetter
@@ -217,8 +234,8 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
         return this.additionalProperties;
     }
 
-    private boolean equalTo(TransactionResponseCheckBase other) {
-        return checkNumber == other.checkNumber
+    private boolean equalTo(TransactionResponseCardToBankAccountWithInvoices other) {
+        return failureReason.equals(other.failureReason)
                 && id.equals(other.id)
                 && status.equals(other.status)
                 && amount == other.amount
@@ -234,13 +251,14 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
                 && paymentDestinationOptions.equals(other.paymentDestinationOptions)
                 && fees.equals(other.fees)
                 && createdAt.equals(other.createdAt)
-                && updatedAt.equals(other.updatedAt);
+                && updatedAt.equals(other.updatedAt)
+                && invoices.equals(other.invoices);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.checkNumber,
+                this.failureReason,
                 this.id,
                 this.status,
                 this.amount,
@@ -256,7 +274,8 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
                 this.paymentDestinationOptions,
                 this.fees,
                 this.createdAt,
-                this.updatedAt);
+                this.updatedAt,
+                this.invoices);
     }
 
     @java.lang.Override
@@ -264,18 +283,14 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
         return ObjectMappers.stringify(this);
     }
 
-    public static CheckNumberStage builder() {
+    public static IdStage builder() {
         return new Builder();
-    }
-
-    public interface CheckNumberStage {
-        IdStage checkNumber(int checkNumber);
-
-        Builder from(TransactionResponseCheckBase other);
     }
 
     public interface IdStage {
         StatusStage id(@NotNull String id);
+
+        Builder from(TransactionResponseCardToBankAccountWithInvoices other);
     }
 
     public interface StatusStage {
@@ -331,7 +346,11 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
     }
 
     public interface _FinalStage {
-        TransactionResponseCheckBase build();
+        TransactionResponseCardToBankAccountWithInvoices build();
+
+        _FinalStage failureReason(Optional<TransactionFailureReason> failureReason);
+
+        _FinalStage failureReason(TransactionFailureReason failureReason);
 
         _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions);
 
@@ -340,12 +359,17 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
         _FinalStage fees(Optional<InvoiceFeesResponse> fees);
 
         _FinalStage fees(InvoiceFeesResponse fees);
+
+        _FinalStage invoices(List<InvoiceResponse> invoices);
+
+        _FinalStage addInvoices(InvoiceResponse invoices);
+
+        _FinalStage addAllInvoices(List<InvoiceResponse> invoices);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements CheckNumberStage,
-                    IdStage,
+            implements IdStage,
                     StatusStage,
                     AmountStage,
                     CurrencyStage,
@@ -360,8 +384,6 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
                     CreatedAtStage,
                     UpdatedAtStage,
                     _FinalStage {
-        private int checkNumber;
-
         private String id;
 
         private TransactionStatus status;
@@ -390,9 +412,13 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
 
         private OffsetDateTime updatedAt;
 
+        private List<InvoiceResponse> invoices = new ArrayList<>();
+
         private Optional<InvoiceFeesResponse> fees = Optional.empty();
 
         private Optional<PaymentDestinationOptions> paymentDestinationOptions = Optional.empty();
+
+        private Optional<TransactionFailureReason> failureReason = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -400,8 +426,8 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(TransactionResponseCheckBase other) {
-            checkNumber(other.getCheckNumber());
+        public Builder from(TransactionResponseCardToBankAccountWithInvoices other) {
+            failureReason(other.getFailureReason());
             id(other.getId());
             status(other.getStatus());
             amount(other.getAmount());
@@ -418,17 +444,7 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
             fees(other.getFees());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
-            return this;
-        }
-
-        /**
-         * <p>The number of the check</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        @JsonSetter("checkNumber")
-        public IdStage checkNumber(int checkNumber) {
-            this.checkNumber = checkNumber;
+            invoices(other.getInvoices());
             return this;
         }
 
@@ -531,6 +547,34 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
             return this;
         }
 
+        /**
+         * <p>Invoices associated with this transaction</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addAllInvoices(List<InvoiceResponse> invoices) {
+            this.invoices.addAll(invoices);
+            return this;
+        }
+
+        /**
+         * <p>Invoices associated with this transaction</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addInvoices(InvoiceResponse invoices) {
+            this.invoices.add(invoices);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "invoices", nulls = Nulls.SKIP)
+        public _FinalStage invoices(List<InvoiceResponse> invoices) {
+            this.invoices.clear();
+            this.invoices.addAll(invoices);
+            return this;
+        }
+
         @java.lang.Override
         public _FinalStage fees(InvoiceFeesResponse fees) {
             this.fees = Optional.ofNullable(fees);
@@ -557,10 +601,27 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
             return this;
         }
 
+        /**
+         * <p>If the invoice failed to be paid, this field will be populated with the reason of failure.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
-        public TransactionResponseCheckBase build() {
-            return new TransactionResponseCheckBase(
-                    checkNumber,
+        public _FinalStage failureReason(TransactionFailureReason failureReason) {
+            this.failureReason = Optional.ofNullable(failureReason);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "failureReason", nulls = Nulls.SKIP)
+        public _FinalStage failureReason(Optional<TransactionFailureReason> failureReason) {
+            this.failureReason = failureReason;
+            return this;
+        }
+
+        @java.lang.Override
+        public TransactionResponseCardToBankAccountWithInvoices build() {
+            return new TransactionResponseCardToBankAccountWithInvoices(
+                    failureReason,
                     id,
                     status,
                     amount,
@@ -577,6 +638,7 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
                     fees,
                     createdAt,
                     updatedAt,
+                    invoices,
                     additionalProperties);
         }
     }

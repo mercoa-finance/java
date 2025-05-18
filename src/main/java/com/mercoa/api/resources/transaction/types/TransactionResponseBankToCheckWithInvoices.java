@@ -36,7 +36,7 @@ public final class TransactionResponseBankToCheckWithInvoices
 
     private final TransactionStatus status;
 
-    private final int amount;
+    private final double amount;
 
     private final String currency;
 
@@ -72,7 +72,7 @@ public final class TransactionResponseBankToCheckWithInvoices
             int checkNumber,
             String id,
             TransactionStatus status,
-            int amount,
+            double amount,
             String currency,
             String payerId,
             CounterpartyResponse payer,
@@ -132,7 +132,7 @@ public final class TransactionResponseBankToCheckWithInvoices
 
     @JsonProperty("amount")
     @java.lang.Override
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
@@ -302,7 +302,7 @@ public final class TransactionResponseBankToCheckWithInvoices
     }
 
     public interface AmountStage {
-        CurrencyStage amount(int amount);
+        CurrencyStage amount(double amount);
     }
 
     public interface CurrencyStage {
@@ -391,7 +391,7 @@ public final class TransactionResponseBankToCheckWithInvoices
 
         private TransactionStatus status;
 
-        private int amount;
+        private double amount;
 
         private String currency;
 
@@ -476,7 +476,7 @@ public final class TransactionResponseBankToCheckWithInvoices
 
         @java.lang.Override
         @JsonSetter("amount")
-        public CurrencyStage amount(int amount) {
+        public CurrencyStage amount(double amount) {
             this.amount = amount;
             return this;
         }

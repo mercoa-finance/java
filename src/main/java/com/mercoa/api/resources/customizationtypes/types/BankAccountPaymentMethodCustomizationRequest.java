@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.invoicetypes.types.BankDeliveryMethod;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,14 +26,22 @@ public final class BankAccountPaymentMethodCustomizationRequest implements IGene
 
     private final Optional<BankDeliveryMethod> defaultDeliveryMethod;
 
+    private final Optional<List<BankDeliveryMethod>> availableDeliveryMethods;
+
+    private final Optional<OriginatingCompanyNameOptions> originatingCompanyName;
+
     private final Map<String, Object> additionalProperties;
 
     private BankAccountPaymentMethodCustomizationRequest(
             boolean disabled,
             Optional<BankDeliveryMethod> defaultDeliveryMethod,
+            Optional<List<BankDeliveryMethod>> availableDeliveryMethods,
+            Optional<OriginatingCompanyNameOptions> originatingCompanyName,
             Map<String, Object> additionalProperties) {
         this.disabled = disabled;
         this.defaultDeliveryMethod = defaultDeliveryMethod;
+        this.availableDeliveryMethods = availableDeliveryMethods;
+        this.originatingCompanyName = originatingCompanyName;
         this.additionalProperties = additionalProperties;
     }
 
@@ -53,6 +62,22 @@ public final class BankAccountPaymentMethodCustomizationRequest implements IGene
         return defaultDeliveryMethod;
     }
 
+    /**
+     * @return The delivery methods that are available for this payment method.
+     */
+    @JsonProperty("availableDeliveryMethods")
+    public Optional<List<BankDeliveryMethod>> getAvailableDeliveryMethods() {
+        return availableDeliveryMethods;
+    }
+
+    /**
+     * @return The originating company name for this payment method. If not set, the entity name will be used.
+     */
+    @JsonProperty("originatingCompanyName")
+    public Optional<OriginatingCompanyNameOptions> getOriginatingCompanyName() {
+        return originatingCompanyName;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -66,12 +91,16 @@ public final class BankAccountPaymentMethodCustomizationRequest implements IGene
     }
 
     private boolean equalTo(BankAccountPaymentMethodCustomizationRequest other) {
-        return disabled == other.disabled && defaultDeliveryMethod.equals(other.defaultDeliveryMethod);
+        return disabled == other.disabled
+                && defaultDeliveryMethod.equals(other.defaultDeliveryMethod)
+                && availableDeliveryMethods.equals(other.availableDeliveryMethods)
+                && originatingCompanyName.equals(other.originatingCompanyName);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.disabled, this.defaultDeliveryMethod);
+        return Objects.hash(
+                this.disabled, this.defaultDeliveryMethod, this.availableDeliveryMethods, this.originatingCompanyName);
     }
 
     @java.lang.Override
@@ -95,11 +124,23 @@ public final class BankAccountPaymentMethodCustomizationRequest implements IGene
         _FinalStage defaultDeliveryMethod(Optional<BankDeliveryMethod> defaultDeliveryMethod);
 
         _FinalStage defaultDeliveryMethod(BankDeliveryMethod defaultDeliveryMethod);
+
+        _FinalStage availableDeliveryMethods(Optional<List<BankDeliveryMethod>> availableDeliveryMethods);
+
+        _FinalStage availableDeliveryMethods(List<BankDeliveryMethod> availableDeliveryMethods);
+
+        _FinalStage originatingCompanyName(Optional<OriginatingCompanyNameOptions> originatingCompanyName);
+
+        _FinalStage originatingCompanyName(OriginatingCompanyNameOptions originatingCompanyName);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements DisabledStage, _FinalStage {
         private boolean disabled;
+
+        private Optional<OriginatingCompanyNameOptions> originatingCompanyName = Optional.empty();
+
+        private Optional<List<BankDeliveryMethod>> availableDeliveryMethods = Optional.empty();
 
         private Optional<BankDeliveryMethod> defaultDeliveryMethod = Optional.empty();
 
@@ -112,6 +153,8 @@ public final class BankAccountPaymentMethodCustomizationRequest implements IGene
         public Builder from(BankAccountPaymentMethodCustomizationRequest other) {
             disabled(other.getDisabled());
             defaultDeliveryMethod(other.getDefaultDeliveryMethod());
+            availableDeliveryMethods(other.getAvailableDeliveryMethods());
+            originatingCompanyName(other.getOriginatingCompanyName());
             return this;
         }
 
@@ -123,6 +166,40 @@ public final class BankAccountPaymentMethodCustomizationRequest implements IGene
         @JsonSetter("disabled")
         public _FinalStage disabled(boolean disabled) {
             this.disabled = disabled;
+            return this;
+        }
+
+        /**
+         * <p>The originating company name for this payment method. If not set, the entity name will be used.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage originatingCompanyName(OriginatingCompanyNameOptions originatingCompanyName) {
+            this.originatingCompanyName = Optional.ofNullable(originatingCompanyName);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "originatingCompanyName", nulls = Nulls.SKIP)
+        public _FinalStage originatingCompanyName(Optional<OriginatingCompanyNameOptions> originatingCompanyName) {
+            this.originatingCompanyName = originatingCompanyName;
+            return this;
+        }
+
+        /**
+         * <p>The delivery methods that are available for this payment method.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage availableDeliveryMethods(List<BankDeliveryMethod> availableDeliveryMethods) {
+            this.availableDeliveryMethods = Optional.ofNullable(availableDeliveryMethods);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "availableDeliveryMethods", nulls = Nulls.SKIP)
+        public _FinalStage availableDeliveryMethods(Optional<List<BankDeliveryMethod>> availableDeliveryMethods) {
+            this.availableDeliveryMethods = availableDeliveryMethods;
             return this;
         }
 
@@ -146,7 +223,11 @@ public final class BankAccountPaymentMethodCustomizationRequest implements IGene
         @java.lang.Override
         public BankAccountPaymentMethodCustomizationRequest build() {
             return new BankAccountPaymentMethodCustomizationRequest(
-                    disabled, defaultDeliveryMethod, additionalProperties);
+                    disabled,
+                    defaultDeliveryMethod,
+                    availableDeliveryMethods,
+                    originatingCompanyName,
+                    additionalProperties);
         }
     }
 }

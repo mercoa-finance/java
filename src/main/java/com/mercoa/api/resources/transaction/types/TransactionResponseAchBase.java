@@ -32,7 +32,7 @@ public final class TransactionResponseAchBase implements ITransactionResponseAch
 
     private final TransactionStatus status;
 
-    private final int amount;
+    private final double amount;
 
     private final String currency;
 
@@ -66,7 +66,7 @@ public final class TransactionResponseAchBase implements ITransactionResponseAch
             Optional<TransactionFailureReason> failureReason,
             String id,
             TransactionStatus status,
-            int amount,
+            double amount,
             String currency,
             String payerId,
             CounterpartyResponse payer,
@@ -124,7 +124,7 @@ public final class TransactionResponseAchBase implements ITransactionResponseAch
 
     @JsonProperty("amount")
     @java.lang.Override
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
@@ -279,7 +279,7 @@ public final class TransactionResponseAchBase implements ITransactionResponseAch
     }
 
     public interface AmountStage {
-        CurrencyStage amount(int amount);
+        CurrencyStage amount(double amount);
     }
 
     public interface CurrencyStage {
@@ -363,7 +363,7 @@ public final class TransactionResponseAchBase implements ITransactionResponseAch
 
         private TransactionStatus status;
 
-        private int amount;
+        private double amount;
 
         private String currency;
 
@@ -436,7 +436,7 @@ public final class TransactionResponseAchBase implements ITransactionResponseAch
 
         @java.lang.Override
         @JsonSetter("amount")
-        public CurrencyStage amount(int amount) {
+        public CurrencyStage amount(double amount) {
             this.amount = amount;
             return this;
         }
