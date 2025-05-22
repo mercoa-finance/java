@@ -3,6 +3,7 @@
  */
 package com.mercoa.api.resources.invoicetypes.types;
 
+import com.mercoa.api.resources.calculate.types.CalculatePaymentTimingResponse;
 import com.mercoa.api.resources.entitytypes.types.ApprovalPolicyResponse;
 import com.mercoa.api.resources.entitytypes.types.CounterpartyResponse;
 import com.mercoa.api.resources.entitytypes.types.EntityUserResponse;
@@ -55,6 +56,8 @@ public interface IInvoiceResponseBase {
     Optional<String> getPaymentDestinationId();
 
     Optional<PaymentDestinationOptions> getPaymentDestinationOptions();
+
+    Optional<CalculatePaymentTimingResponse> getPaymentTiming();
 
     boolean getPaymentDestinationConfirmed();
 

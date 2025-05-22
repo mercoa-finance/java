@@ -16,6 +16,7 @@ import com.mercoa.api.resources.emaillogtypes.types.EmailLogResponse;
 import com.mercoa.api.resources.organization.notificationconfiguration.AsyncNotificationConfigurationClient;
 import com.mercoa.api.resources.organization.requests.GetEmailLogRequest;
 import com.mercoa.api.resources.organization.requests.GetOrganizationRequest;
+import com.mercoa.api.resources.organization.requests.InvalidateTokensRequest;
 import com.mercoa.api.resources.organizationtypes.types.OrganizationRequest;
 import com.mercoa.api.resources.organizationtypes.types.OrganizationResponse;
 import java.io.IOException;
@@ -316,21 +317,36 @@ public class AsyncOrganizationClient {
      * Invalidate all JWT tokens for the current organization. This is considered a break-glass action and should be used only if tokens have been compromised. All tokens will be invalidated, including tokens on links, emails, and currently logged in sessions. API keys are not affected by this action. This action may take 60 seconds to propagate.
      */
     public CompletableFuture<Void> invalidateTokens() {
-        return invalidateTokens(null);
+        return invalidateTokens(InvalidateTokensRequest.builder().build());
     }
 
     /**
      * Invalidate all JWT tokens for the current organization. This is considered a break-glass action and should be used only if tokens have been compromised. All tokens will be invalidated, including tokens on links, emails, and currently logged in sessions. API keys are not affected by this action. This action may take 60 seconds to propagate.
      */
-    public CompletableFuture<Void> invalidateTokens(RequestOptions requestOptions) {
+    public CompletableFuture<Void> invalidateTokens(InvalidateTokensRequest request) {
+        return invalidateTokens(request, null);
+    }
+
+    /**
+     * Invalidate all JWT tokens for the current organization. This is considered a break-glass action and should be used only if tokens have been compromised. All tokens will be invalidated, including tokens on links, emails, and currently logged in sessions. API keys are not affected by this action. This action may take 60 seconds to propagate.
+     */
+    public CompletableFuture<Void> invalidateTokens(InvalidateTokensRequest request, RequestOptions requestOptions) {
         HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("organization/invalidateTokens")
                 .build();
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new MercoaException("Failed to serialize request", e);
+        }
         Request okhttpRequest = new Request.Builder()
                 .url(httpUrl)
-                .method("POST", RequestBody.create("", null))
+                .method("POST", body)
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
                 .addHeader("Accept", "application/json")
                 .build();
         OkHttpClient client = clientOptions.httpClient();

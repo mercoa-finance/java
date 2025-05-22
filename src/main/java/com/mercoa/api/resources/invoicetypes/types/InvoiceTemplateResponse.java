@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.resources.calculate.types.CalculatePaymentTimingResponse;
 import com.mercoa.api.resources.entitytypes.types.ApprovalPolicyResponse;
 import com.mercoa.api.resources.entitytypes.types.CounterpartyResponse;
 import com.mercoa.api.resources.entitytypes.types.EntityUserResponse;
@@ -71,6 +72,8 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
     private final Optional<String> paymentDestinationId;
 
     private final Optional<PaymentDestinationOptions> paymentDestinationOptions;
+
+    private final Optional<CalculatePaymentTimingResponse> paymentTiming;
 
     private final boolean paymentDestinationConfirmed;
 
@@ -134,6 +137,7 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
             Optional<PaymentMethodResponse> paymentDestination,
             Optional<String> paymentDestinationId,
             Optional<PaymentDestinationOptions> paymentDestinationOptions,
+            Optional<CalculatePaymentTimingResponse> paymentTiming,
             boolean paymentDestinationConfirmed,
             Optional<Boolean> batchPayment,
             boolean hasDocuments,
@@ -175,6 +179,7 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
         this.paymentDestination = paymentDestination;
         this.paymentDestinationId = paymentDestinationId;
         this.paymentDestinationOptions = paymentDestinationOptions;
+        this.paymentTiming = paymentTiming;
         this.paymentDestinationConfirmed = paymentDestinationConfirmed;
         this.batchPayment = batchPayment;
         this.hasDocuments = hasDocuments;
@@ -342,6 +347,12 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
     @java.lang.Override
     public Optional<PaymentDestinationOptions> getPaymentDestinationOptions() {
         return paymentDestinationOptions;
+    }
+
+    @JsonProperty("paymentTiming")
+    @java.lang.Override
+    public Optional<CalculatePaymentTimingResponse> getPaymentTiming() {
+        return paymentTiming;
     }
 
     /**
@@ -526,6 +537,7 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
                 && paymentDestination.equals(other.paymentDestination)
                 && paymentDestinationId.equals(other.paymentDestinationId)
                 && paymentDestinationOptions.equals(other.paymentDestinationOptions)
+                && paymentTiming.equals(other.paymentTiming)
                 && paymentDestinationConfirmed == other.paymentDestinationConfirmed
                 && batchPayment.equals(other.batchPayment)
                 && hasDocuments == other.hasDocuments
@@ -571,6 +583,7 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
                 this.paymentDestination,
                 this.paymentDestinationId,
                 this.paymentDestinationOptions,
+                this.paymentTiming,
                 this.paymentDestinationConfirmed,
                 this.batchPayment,
                 this.hasDocuments,
@@ -714,6 +727,10 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
 
         _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions);
 
+        _FinalStage paymentTiming(Optional<CalculatePaymentTimingResponse> paymentTiming);
+
+        _FinalStage paymentTiming(CalculatePaymentTimingResponse paymentTiming);
+
         _FinalStage batchPayment(Optional<Boolean> batchPayment);
 
         _FinalStage batchPayment(Boolean batchPayment);
@@ -823,6 +840,8 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
 
         private Optional<Boolean> batchPayment = Optional.empty();
 
+        private Optional<CalculatePaymentTimingResponse> paymentTiming = Optional.empty();
+
         private Optional<PaymentDestinationOptions> paymentDestinationOptions = Optional.empty();
 
         private Optional<String> paymentDestinationId = Optional.empty();
@@ -891,6 +910,7 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
             paymentDestination(other.getPaymentDestination());
             paymentDestinationId(other.getPaymentDestinationId());
             paymentDestinationOptions(other.getPaymentDestinationOptions());
+            paymentTiming(other.getPaymentTiming());
             paymentDestinationConfirmed(other.getPaymentDestinationConfirmed());
             batchPayment(other.getBatchPayment());
             hasDocuments(other.getHasDocuments());
@@ -1201,6 +1221,19 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
         @JsonSetter(value = "batchPayment", nulls = Nulls.SKIP)
         public _FinalStage batchPayment(Optional<Boolean> batchPayment) {
             this.batchPayment = batchPayment;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage paymentTiming(CalculatePaymentTimingResponse paymentTiming) {
+            this.paymentTiming = Optional.ofNullable(paymentTiming);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "paymentTiming", nulls = Nulls.SKIP)
+        public _FinalStage paymentTiming(Optional<CalculatePaymentTimingResponse> paymentTiming) {
+            this.paymentTiming = paymentTiming;
             return this;
         }
 
@@ -1516,6 +1549,7 @@ public final class InvoiceTemplateResponse implements IInvoiceResponseBase {
                     paymentDestination,
                     paymentDestinationId,
                     paymentDestinationOptions,
+                    paymentTiming,
                     paymentDestinationConfirmed,
                     batchPayment,
                     hasDocuments,

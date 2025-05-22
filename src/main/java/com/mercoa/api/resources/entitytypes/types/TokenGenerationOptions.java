@@ -32,6 +32,8 @@ public final class TokenGenerationOptions {
 
     private final Optional<TokenGenerationEntityOptions> entity;
 
+    private final Optional<String> sessionId;
+
     private final Map<String, Object> additionalProperties;
 
     private TokenGenerationOptions(
@@ -41,6 +43,7 @@ public final class TokenGenerationOptions {
             Optional<TokenGenerationStyleOptions> style,
             Optional<TokenGenerationVendorOptions> vendors,
             Optional<TokenGenerationEntityOptions> entity,
+            Optional<String> sessionId,
             Map<String, Object> additionalProperties) {
         this.expiresIn = expiresIn;
         this.invoice = invoice;
@@ -48,6 +51,7 @@ public final class TokenGenerationOptions {
         this.style = style;
         this.vendors = vendors;
         this.entity = entity;
+        this.sessionId = sessionId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -84,6 +88,14 @@ public final class TokenGenerationOptions {
         return entity;
     }
 
+    /**
+     * @return Optional session ID to use for the token. If not provided, this token will not be associated with a session.
+     */
+    @JsonProperty("sessionId")
+    public Optional<String> getSessionId() {
+        return sessionId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -101,12 +113,14 @@ public final class TokenGenerationOptions {
                 && pages.equals(other.pages)
                 && style.equals(other.style)
                 && vendors.equals(other.vendors)
-                && entity.equals(other.entity);
+                && entity.equals(other.entity)
+                && sessionId.equals(other.sessionId);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.expiresIn, this.invoice, this.pages, this.style, this.vendors, this.entity);
+        return Objects.hash(
+                this.expiresIn, this.invoice, this.pages, this.style, this.vendors, this.entity, this.sessionId);
     }
 
     @java.lang.Override
@@ -132,6 +146,8 @@ public final class TokenGenerationOptions {
 
         private Optional<TokenGenerationEntityOptions> entity = Optional.empty();
 
+        private Optional<String> sessionId = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -144,6 +160,7 @@ public final class TokenGenerationOptions {
             style(other.getStyle());
             vendors(other.getVendors());
             entity(other.getEntity());
+            sessionId(other.getSessionId());
             return this;
         }
 
@@ -213,8 +230,20 @@ public final class TokenGenerationOptions {
             return this;
         }
 
+        @JsonSetter(value = "sessionId", nulls = Nulls.SKIP)
+        public Builder sessionId(Optional<String> sessionId) {
+            this.sessionId = sessionId;
+            return this;
+        }
+
+        public Builder sessionId(String sessionId) {
+            this.sessionId = Optional.ofNullable(sessionId);
+            return this;
+        }
+
         public TokenGenerationOptions build() {
-            return new TokenGenerationOptions(expiresIn, invoice, pages, style, vendors, entity, additionalProperties);
+            return new TokenGenerationOptions(
+                    expiresIn, invoice, pages, style, vendors, entity, sessionId, additionalProperties);
         }
     }
 }
