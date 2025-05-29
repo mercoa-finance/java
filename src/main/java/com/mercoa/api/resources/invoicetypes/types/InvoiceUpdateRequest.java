@@ -22,7 +22,11 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceUpdateRequest.Builder.class)
-public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
+public final class InvoiceUpdateRequest implements IInvoiceUpdateRequest, IInvoiceRequestBase {
+    private final Optional<List<InvoiceLineItemUpdateRequest>> lineItems;
+
+    private final Optional<String> creatorEntityId;
+
     private final Optional<InvoiceStatus> status;
 
     private final Optional<Double> amount;
@@ -85,13 +89,11 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
 
     private final Optional<String> ocrJobId;
 
-    private final Optional<List<InvoiceLineItemUpdateRequest>> lineItems;
-
-    private final Optional<String> creatorEntityId;
-
     private final Map<String, Object> additionalProperties;
 
     private InvoiceUpdateRequest(
+            Optional<List<InvoiceLineItemUpdateRequest>> lineItems,
+            Optional<String> creatorEntityId,
             Optional<InvoiceStatus> status,
             Optional<Double> amount,
             Optional<CurrencyCode> currency,
@@ -123,9 +125,9 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
             Optional<Double> taxAmount,
             Optional<Double> shippingAmount,
             Optional<String> ocrJobId,
-            Optional<List<InvoiceLineItemUpdateRequest>> lineItems,
-            Optional<String> creatorEntityId,
             Map<String, Object> additionalProperties) {
+        this.lineItems = lineItems;
+        this.creatorEntityId = creatorEntityId;
         this.status = status;
         this.amount = amount;
         this.currency = currency;
@@ -157,9 +159,22 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
         this.taxAmount = taxAmount;
         this.shippingAmount = shippingAmount;
         this.ocrJobId = ocrJobId;
-        this.lineItems = lineItems;
-        this.creatorEntityId = creatorEntityId;
         this.additionalProperties = additionalProperties;
+    }
+
+    @JsonProperty("lineItems")
+    @java.lang.Override
+    public Optional<List<InvoiceLineItemUpdateRequest>> getLineItems() {
+        return lineItems;
+    }
+
+    /**
+     * @return ID or foreign ID of entity who created this invoice. If creating a payable invoice (AP), this must be the same as the payerId. If creating a receivable invoice (AR), this must be the same as the vendorId.
+     */
+    @JsonProperty("creatorEntityId")
+    @java.lang.Override
+    public Optional<String> getCreatorEntityId() {
+        return creatorEntityId;
     }
 
     @JsonProperty("status")
@@ -429,19 +444,6 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
         return ocrJobId;
     }
 
-    @JsonProperty("lineItems")
-    public Optional<List<InvoiceLineItemUpdateRequest>> getLineItems() {
-        return lineItems;
-    }
-
-    /**
-     * @return ID or foreign ID of entity who created this invoice. If creating a payable invoice (AP), this must be the same as the payerId. If creating a receivable invoice (AR), this must be the same as the vendorId.
-     */
-    @JsonProperty("creatorEntityId")
-    public Optional<String> getCreatorEntityId() {
-        return creatorEntityId;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -454,7 +456,9 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
     }
 
     private boolean equalTo(InvoiceUpdateRequest other) {
-        return status.equals(other.status)
+        return lineItems.equals(other.lineItems)
+                && creatorEntityId.equals(other.creatorEntityId)
+                && status.equals(other.status)
                 && amount.equals(other.amount)
                 && currency.equals(other.currency)
                 && invoiceDate.equals(other.invoiceDate)
@@ -484,14 +488,14 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
                 && vendorCreditIds.equals(other.vendorCreditIds)
                 && taxAmount.equals(other.taxAmount)
                 && shippingAmount.equals(other.shippingAmount)
-                && ocrJobId.equals(other.ocrJobId)
-                && lineItems.equals(other.lineItems)
-                && creatorEntityId.equals(other.creatorEntityId);
+                && ocrJobId.equals(other.ocrJobId);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.lineItems,
+                this.creatorEntityId,
                 this.status,
                 this.amount,
                 this.currency,
@@ -522,9 +526,7 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
                 this.vendorCreditIds,
                 this.taxAmount,
                 this.shippingAmount,
-                this.ocrJobId,
-                this.lineItems,
-                this.creatorEntityId);
+                this.ocrJobId);
     }
 
     @java.lang.Override
@@ -538,6 +540,10 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<List<InvoiceLineItemUpdateRequest>> lineItems = Optional.empty();
+
+        private Optional<String> creatorEntityId = Optional.empty();
+
         private Optional<InvoiceStatus> status = Optional.empty();
 
         private Optional<Double> amount = Optional.empty();
@@ -600,16 +606,14 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
 
         private Optional<String> ocrJobId = Optional.empty();
 
-        private Optional<List<InvoiceLineItemUpdateRequest>> lineItems = Optional.empty();
-
-        private Optional<String> creatorEntityId = Optional.empty();
-
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
         public Builder from(InvoiceUpdateRequest other) {
+            lineItems(other.getLineItems());
+            creatorEntityId(other.getCreatorEntityId());
             status(other.getStatus());
             amount(other.getAmount());
             currency(other.getCurrency());
@@ -641,8 +645,28 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
             taxAmount(other.getTaxAmount());
             shippingAmount(other.getShippingAmount());
             ocrJobId(other.getOcrJobId());
-            lineItems(other.getLineItems());
-            creatorEntityId(other.getCreatorEntityId());
+            return this;
+        }
+
+        @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
+        public Builder lineItems(Optional<List<InvoiceLineItemUpdateRequest>> lineItems) {
+            this.lineItems = lineItems;
+            return this;
+        }
+
+        public Builder lineItems(List<InvoiceLineItemUpdateRequest> lineItems) {
+            this.lineItems = Optional.ofNullable(lineItems);
+            return this;
+        }
+
+        @JsonSetter(value = "creatorEntityId", nulls = Nulls.SKIP)
+        public Builder creatorEntityId(Optional<String> creatorEntityId) {
+            this.creatorEntityId = creatorEntityId;
+            return this;
+        }
+
+        public Builder creatorEntityId(String creatorEntityId) {
+            this.creatorEntityId = Optional.ofNullable(creatorEntityId);
             return this;
         }
 
@@ -987,30 +1011,10 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
             return this;
         }
 
-        @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
-        public Builder lineItems(Optional<List<InvoiceLineItemUpdateRequest>> lineItems) {
-            this.lineItems = lineItems;
-            return this;
-        }
-
-        public Builder lineItems(List<InvoiceLineItemUpdateRequest> lineItems) {
-            this.lineItems = Optional.ofNullable(lineItems);
-            return this;
-        }
-
-        @JsonSetter(value = "creatorEntityId", nulls = Nulls.SKIP)
-        public Builder creatorEntityId(Optional<String> creatorEntityId) {
-            this.creatorEntityId = creatorEntityId;
-            return this;
-        }
-
-        public Builder creatorEntityId(String creatorEntityId) {
-            this.creatorEntityId = Optional.ofNullable(creatorEntityId);
-            return this;
-        }
-
         public InvoiceUpdateRequest build() {
             return new InvoiceUpdateRequest(
+                    lineItems,
+                    creatorEntityId,
                     status,
                     amount,
                     currency,
@@ -1042,8 +1046,6 @@ public final class InvoiceUpdateRequest implements IInvoiceRequestBase {
                     taxAmount,
                     shippingAmount,
                     ocrJobId,
-                    lineItems,
-                    creatorEntityId,
                     additionalProperties);
         }
     }

@@ -19,17 +19,21 @@ import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = ApprovalRequest.Builder.class)
-public final class ApprovalRequest implements IApprovalRequest {
+@JsonDeserialize(builder = ApprovalRequestWithId.Builder.class)
+public final class ApprovalRequestWithId implements IApprovalRequest {
     private final Optional<String> text;
 
     private final String userId;
 
+    private final String invoiceId;
+
     private final Map<String, Object> additionalProperties;
 
-    private ApprovalRequest(Optional<String> text, String userId, Map<String, Object> additionalProperties) {
+    private ApprovalRequestWithId(
+            Optional<String> text, String userId, String invoiceId, Map<String, Object> additionalProperties) {
         this.text = text;
         this.userId = userId;
+        this.invoiceId = invoiceId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -51,10 +55,18 @@ public final class ApprovalRequest implements IApprovalRequest {
         return userId;
     }
 
+    /**
+     * @return The ID or foreign ID of the invoice to approve
+     */
+    @JsonProperty("invoiceId")
+    public String getInvoiceId() {
+        return invoiceId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof ApprovalRequest && equalTo((ApprovalRequest) other);
+        return other instanceof ApprovalRequestWithId && equalTo((ApprovalRequestWithId) other);
     }
 
     @JsonAnyGetter
@@ -62,13 +74,13 @@ public final class ApprovalRequest implements IApprovalRequest {
         return this.additionalProperties;
     }
 
-    private boolean equalTo(ApprovalRequest other) {
-        return text.equals(other.text) && userId.equals(other.userId);
+    private boolean equalTo(ApprovalRequestWithId other) {
+        return text.equals(other.text) && userId.equals(other.userId) && invoiceId.equals(other.invoiceId);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.text, this.userId);
+        return Objects.hash(this.text, this.userId, this.invoiceId);
     }
 
     @java.lang.Override
@@ -81,13 +93,17 @@ public final class ApprovalRequest implements IApprovalRequest {
     }
 
     public interface UserIdStage {
-        _FinalStage userId(@NotNull String userId);
+        InvoiceIdStage userId(@NotNull String userId);
 
-        Builder from(ApprovalRequest other);
+        Builder from(ApprovalRequestWithId other);
+    }
+
+    public interface InvoiceIdStage {
+        _FinalStage invoiceId(@NotNull String invoiceId);
     }
 
     public interface _FinalStage {
-        ApprovalRequest build();
+        ApprovalRequestWithId build();
 
         _FinalStage text(Optional<String> text);
 
@@ -95,8 +111,10 @@ public final class ApprovalRequest implements IApprovalRequest {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements UserIdStage, _FinalStage {
+    public static final class Builder implements UserIdStage, InvoiceIdStage, _FinalStage {
         private String userId;
+
+        private String invoiceId;
 
         private Optional<String> text = Optional.empty();
 
@@ -106,9 +124,10 @@ public final class ApprovalRequest implements IApprovalRequest {
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(ApprovalRequest other) {
+        public Builder from(ApprovalRequestWithId other) {
             text(other.getText());
             userId(other.getUserId());
+            invoiceId(other.getInvoiceId());
             return this;
         }
 
@@ -118,8 +137,19 @@ public final class ApprovalRequest implements IApprovalRequest {
          */
         @java.lang.Override
         @JsonSetter("userId")
-        public _FinalStage userId(@NotNull String userId) {
+        public InvoiceIdStage userId(@NotNull String userId) {
             this.userId = Objects.requireNonNull(userId, "userId must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The ID or foreign ID of the invoice to approve</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("invoiceId")
+        public _FinalStage invoiceId(@NotNull String invoiceId) {
+            this.invoiceId = Objects.requireNonNull(invoiceId, "invoiceId must not be null");
             return this;
         }
 
@@ -141,8 +171,8 @@ public final class ApprovalRequest implements IApprovalRequest {
         }
 
         @java.lang.Override
-        public ApprovalRequest build() {
-            return new ApprovalRequest(text, userId, additionalProperties);
+        public ApprovalRequestWithId build() {
+            return new ApprovalRequestWithId(text, userId, invoiceId, additionalProperties);
         }
     }
 }

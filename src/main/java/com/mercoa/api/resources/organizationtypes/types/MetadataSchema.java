@@ -37,6 +37,8 @@ public final class MetadataSchema {
 
     private final Optional<MetadataShowConditions> showConditions;
 
+    private final Optional<MetadataOcrRules> ocrRules;
+
     private final Map<String, Object> additionalProperties;
 
     private MetadataSchema(
@@ -48,6 +50,7 @@ public final class MetadataSchema {
             Optional<Boolean> allowMultiple,
             Optional<MetadataValidationRule> validationRules,
             Optional<MetadataShowConditions> showConditions,
+            Optional<MetadataOcrRules> ocrRules,
             Map<String, Object> additionalProperties) {
         this.key = key;
         this.displayName = displayName;
@@ -57,6 +60,7 @@ public final class MetadataSchema {
         this.allowMultiple = allowMultiple;
         this.validationRules = validationRules;
         this.showConditions = showConditions;
+        this.ocrRules = ocrRules;
         this.additionalProperties = additionalProperties;
     }
 
@@ -112,6 +116,14 @@ public final class MetadataSchema {
         return showConditions;
     }
 
+    /**
+     * @return A collection of rules that determine how this field is populated during OCR.
+     */
+    @JsonProperty("ocrRules")
+    public Optional<MetadataOcrRules> getOcrRules() {
+        return ocrRules;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -131,7 +143,8 @@ public final class MetadataSchema {
                 && type.equals(other.type)
                 && allowMultiple.equals(other.allowMultiple)
                 && validationRules.equals(other.validationRules)
-                && showConditions.equals(other.showConditions);
+                && showConditions.equals(other.showConditions)
+                && ocrRules.equals(other.ocrRules);
     }
 
     @java.lang.Override
@@ -144,7 +157,8 @@ public final class MetadataSchema {
                 this.type,
                 this.allowMultiple,
                 this.validationRules,
-                this.showConditions);
+                this.showConditions,
+                this.ocrRules);
     }
 
     @java.lang.Override
@@ -192,6 +206,10 @@ public final class MetadataSchema {
         _FinalStage showConditions(Optional<MetadataShowConditions> showConditions);
 
         _FinalStage showConditions(MetadataShowConditions showConditions);
+
+        _FinalStage ocrRules(Optional<MetadataOcrRules> ocrRules);
+
+        _FinalStage ocrRules(MetadataOcrRules ocrRules);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -201,6 +219,8 @@ public final class MetadataSchema {
         private String displayName;
 
         private MetadataType type;
+
+        private Optional<MetadataOcrRules> ocrRules = Optional.empty();
 
         private Optional<MetadataShowConditions> showConditions = Optional.empty();
 
@@ -227,6 +247,7 @@ public final class MetadataSchema {
             allowMultiple(other.getAllowMultiple());
             validationRules(other.getValidationRules());
             showConditions(other.getShowConditions());
+            ocrRules(other.getOcrRules());
             return this;
         }
 
@@ -248,6 +269,23 @@ public final class MetadataSchema {
         @JsonSetter("type")
         public _FinalStage type(@NotNull MetadataType type) {
             this.type = Objects.requireNonNull(type, "type must not be null");
+            return this;
+        }
+
+        /**
+         * <p>A collection of rules that determine how this field is populated during OCR.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage ocrRules(MetadataOcrRules ocrRules) {
+            this.ocrRules = Optional.ofNullable(ocrRules);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "ocrRules", nulls = Nulls.SKIP)
+        public _FinalStage ocrRules(Optional<MetadataOcrRules> ocrRules) {
+            this.ocrRules = ocrRules;
             return this;
         }
 
@@ -343,6 +381,7 @@ public final class MetadataSchema {
                     allowMultiple,
                     validationRules,
                     showConditions,
+                    ocrRules,
                     additionalProperties);
         }
     }
