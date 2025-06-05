@@ -38,6 +38,10 @@ public final class Trigger {
         return new Trigger(new MetadataValue(value));
     }
 
+    public static Trigger catchall(CatchallTrigger value) {
+        return new Trigger(new CatchallValue(value));
+    }
+
     public boolean isAmount() {
         return value instanceof AmountValue;
     }
@@ -48,6 +52,10 @@ public final class Trigger {
 
     public boolean isMetadata() {
         return value instanceof MetadataValue;
+    }
+
+    public boolean isCatchall() {
+        return value instanceof CatchallValue;
     }
 
     public boolean _isUnknown() {
@@ -75,6 +83,13 @@ public final class Trigger {
         return Optional.empty();
     }
 
+    public Optional<CatchallTrigger> getCatchall() {
+        if (isCatchall()) {
+            return Optional.of(((CatchallValue) value).value);
+        }
+        return Optional.empty();
+    }
+
     public Optional<Object> _getUnknown() {
         if (_isUnknown()) {
             return Optional.of(((_UnknownValue) value).value);
@@ -94,6 +109,8 @@ public final class Trigger {
 
         T visitMetadata(MetadataTrigger metadata);
 
+        T visitCatchall(CatchallTrigger catchall);
+
         T _visitUnknown(Object unknownType);
     }
 
@@ -101,7 +118,8 @@ public final class Trigger {
     @JsonSubTypes({
         @JsonSubTypes.Type(AmountValue.class),
         @JsonSubTypes.Type(VendorValue.class),
-        @JsonSubTypes.Type(MetadataValue.class)
+        @JsonSubTypes.Type(MetadataValue.class),
+        @JsonSubTypes.Type(CatchallValue.class)
     })
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
@@ -211,6 +229,45 @@ public final class Trigger {
         }
 
         private boolean equalTo(MetadataValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "Trigger{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("catchall")
+    @JsonIgnoreProperties("type")
+    private static final class CatchallValue implements Value {
+        @JsonUnwrapped
+        private CatchallTrigger value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private CatchallValue() {}
+
+        private CatchallValue(CatchallTrigger value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitCatchall(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof CatchallValue && equalTo((CatchallValue) other);
+        }
+
+        private boolean equalTo(CatchallValue other) {
             return value.equals(other.value);
         }
 

@@ -150,6 +150,13 @@ public class InvoiceClient {
                     request.getReturnVendorMetadata().get().toString(),
                     false);
         }
+        if (request.getReturnPaymentTiming().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "returnPaymentTiming",
+                    request.getReturnPaymentTiming().get().toString(),
+                    false);
+        }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
                 .method("GET", null)

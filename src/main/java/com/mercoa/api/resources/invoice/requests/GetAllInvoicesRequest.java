@@ -75,6 +75,8 @@ public final class GetAllInvoicesRequest {
 
     private final Optional<Boolean> returnVendorMetadata;
 
+    private final Optional<Boolean> returnPaymentTiming;
+
     private final Map<String, Object> additionalProperties;
 
     private GetAllInvoicesRequest(
@@ -101,6 +103,7 @@ public final class GetAllInvoicesRequest {
             Optional<String> invoiceTemplateId,
             Optional<Boolean> returnPayerMetadata,
             Optional<Boolean> returnVendorMetadata,
+            Optional<Boolean> returnPaymentTiming,
             Map<String, Object> additionalProperties) {
         this.entityId = entityId;
         this.startDate = startDate;
@@ -125,6 +128,7 @@ public final class GetAllInvoicesRequest {
         this.invoiceTemplateId = invoiceTemplateId;
         this.returnPayerMetadata = returnPayerMetadata;
         this.returnVendorMetadata = returnVendorMetadata;
+        this.returnPaymentTiming = returnPaymentTiming;
         this.additionalProperties = additionalProperties;
     }
 
@@ -312,6 +316,14 @@ public final class GetAllInvoicesRequest {
         return returnVendorMetadata;
     }
 
+    /**
+     * @return Whether to return payment timing in the response
+     */
+    @JsonProperty("returnPaymentTiming")
+    public Optional<Boolean> getReturnPaymentTiming() {
+        return returnPaymentTiming;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -346,7 +358,8 @@ public final class GetAllInvoicesRequest {
                 && paymentType.equals(other.paymentType)
                 && invoiceTemplateId.equals(other.invoiceTemplateId)
                 && returnPayerMetadata.equals(other.returnPayerMetadata)
-                && returnVendorMetadata.equals(other.returnVendorMetadata);
+                && returnVendorMetadata.equals(other.returnVendorMetadata)
+                && returnPaymentTiming.equals(other.returnPaymentTiming);
     }
 
     @java.lang.Override
@@ -374,7 +387,8 @@ public final class GetAllInvoicesRequest {
                 this.paymentType,
                 this.invoiceTemplateId,
                 this.returnPayerMetadata,
-                this.returnVendorMetadata);
+                this.returnVendorMetadata,
+                this.returnPaymentTiming);
     }
 
     @java.lang.Override
@@ -434,6 +448,8 @@ public final class GetAllInvoicesRequest {
 
         private Optional<Boolean> returnVendorMetadata = Optional.empty();
 
+        private Optional<Boolean> returnPaymentTiming = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -463,6 +479,7 @@ public final class GetAllInvoicesRequest {
             invoiceTemplateId(other.getInvoiceTemplateId());
             returnPayerMetadata(other.getReturnPayerMetadata());
             returnVendorMetadata(other.getReturnVendorMetadata());
+            returnPaymentTiming(other.getReturnPaymentTiming());
             return this;
         }
 
@@ -719,6 +736,17 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
+        @JsonSetter(value = "returnPaymentTiming", nulls = Nulls.SKIP)
+        public Builder returnPaymentTiming(Optional<Boolean> returnPaymentTiming) {
+            this.returnPaymentTiming = returnPaymentTiming;
+            return this;
+        }
+
+        public Builder returnPaymentTiming(Boolean returnPaymentTiming) {
+            this.returnPaymentTiming = Optional.ofNullable(returnPaymentTiming);
+            return this;
+        }
+
         public GetAllInvoicesRequest build() {
             return new GetAllInvoicesRequest(
                     entityId,
@@ -744,6 +772,7 @@ public final class GetAllInvoicesRequest {
                     invoiceTemplateId,
                     returnPayerMetadata,
                     returnVendorMetadata,
+                    returnPaymentTiming,
                     additionalProperties);
         }
     }
