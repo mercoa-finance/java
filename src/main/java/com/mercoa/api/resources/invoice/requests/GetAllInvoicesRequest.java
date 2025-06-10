@@ -31,6 +31,8 @@ import java.util.Optional;
 public final class GetAllInvoicesRequest {
     private final Optional<String> entityId;
 
+    private final Optional<String> entityGroupId;
+
     private final Optional<OffsetDateTime> startDate;
 
     private final Optional<OffsetDateTime> endDate;
@@ -81,6 +83,7 @@ public final class GetAllInvoicesRequest {
 
     private GetAllInvoicesRequest(
             Optional<String> entityId,
+            Optional<String> entityGroupId,
             Optional<OffsetDateTime> startDate,
             Optional<OffsetDateTime> endDate,
             Optional<InvoiceDateFilter> dateType,
@@ -106,6 +109,7 @@ public final class GetAllInvoicesRequest {
             Optional<Boolean> returnPaymentTiming,
             Map<String, Object> additionalProperties) {
         this.entityId = entityId;
+        this.entityGroupId = entityGroupId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.dateType = dateType;
@@ -138,6 +142,14 @@ public final class GetAllInvoicesRequest {
     @JsonProperty("entityId")
     public Optional<String> getEntityId() {
         return entityId;
+    }
+
+    /**
+     * @return Filter invoices by the ID or foreign ID of the entity group that the entity belongs to.
+     */
+    @JsonProperty("entityGroupId")
+    public Optional<String> getEntityGroupId() {
+        return entityGroupId;
     }
 
     /**
@@ -337,6 +349,7 @@ public final class GetAllInvoicesRequest {
 
     private boolean equalTo(GetAllInvoicesRequest other) {
         return entityId.equals(other.entityId)
+                && entityGroupId.equals(other.entityGroupId)
                 && startDate.equals(other.startDate)
                 && endDate.equals(other.endDate)
                 && dateType.equals(other.dateType)
@@ -366,6 +379,7 @@ public final class GetAllInvoicesRequest {
     public int hashCode() {
         return Objects.hash(
                 this.entityId,
+                this.entityGroupId,
                 this.startDate,
                 this.endDate,
                 this.dateType,
@@ -403,6 +417,8 @@ public final class GetAllInvoicesRequest {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
         private Optional<String> entityId = Optional.empty();
+
+        private Optional<String> entityGroupId = Optional.empty();
 
         private Optional<OffsetDateTime> startDate = Optional.empty();
 
@@ -457,6 +473,7 @@ public final class GetAllInvoicesRequest {
 
         public Builder from(GetAllInvoicesRequest other) {
             entityId(other.getEntityId());
+            entityGroupId(other.getEntityGroupId());
             startDate(other.getStartDate());
             endDate(other.getEndDate());
             dateType(other.getDateType());
@@ -491,6 +508,17 @@ public final class GetAllInvoicesRequest {
 
         public Builder entityId(String entityId) {
             this.entityId = Optional.ofNullable(entityId);
+            return this;
+        }
+
+        @JsonSetter(value = "entityGroupId", nulls = Nulls.SKIP)
+        public Builder entityGroupId(Optional<String> entityGroupId) {
+            this.entityGroupId = entityGroupId;
+            return this;
+        }
+
+        public Builder entityGroupId(String entityGroupId) {
+            this.entityGroupId = Optional.ofNullable(entityGroupId);
             return this;
         }
 
@@ -750,6 +778,7 @@ public final class GetAllInvoicesRequest {
         public GetAllInvoicesRequest build() {
             return new GetAllInvoicesRequest(
                     entityId,
+                    entityGroupId,
                     startDate,
                     endDate,
                     dateType,

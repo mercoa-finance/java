@@ -102,10 +102,6 @@ public class TransactionClient {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "vendorId", request.getVendorId().get(), false);
         }
-        if (request.getCreatorUserId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "creatorUserId", request.getCreatorUserId().get(), false);
-        }
         if (request.getInvoiceId().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "invoiceId", request.getInvoiceId().get(), false);
@@ -124,6 +120,10 @@ public class TransactionClient {
                     "transactionType",
                     request.getTransactionType().get().toString(),
                     false);
+        }
+        if (request.getCreatorUserId().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "creatorUserId", request.getCreatorUserId().get(), false);
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())

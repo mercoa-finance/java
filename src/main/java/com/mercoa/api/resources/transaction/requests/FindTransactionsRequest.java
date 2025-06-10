@@ -48,8 +48,6 @@ public final class FindTransactionsRequest {
 
     private final Optional<String> vendorId;
 
-    private final Optional<String> creatorUserId;
-
     private final Optional<String> invoiceId;
 
     private final Optional<String> transactionId;
@@ -57,6 +55,8 @@ public final class FindTransactionsRequest {
     private final Optional<TransactionStatus> status;
 
     private final Optional<TransactionType> transactionType;
+
+    private final Optional<String> creatorUserId;
 
     private final Map<String, Object> additionalProperties;
 
@@ -73,11 +73,11 @@ public final class FindTransactionsRequest {
             Optional<String> lineItemGlAccountId,
             Optional<String> payerId,
             Optional<String> vendorId,
-            Optional<String> creatorUserId,
             Optional<String> invoiceId,
             Optional<String> transactionId,
             Optional<TransactionStatus> status,
             Optional<TransactionType> transactionType,
+            Optional<String> creatorUserId,
             Map<String, Object> additionalProperties) {
         this.entityId = entityId;
         this.entityGroupId = entityGroupId;
@@ -91,11 +91,11 @@ public final class FindTransactionsRequest {
         this.lineItemGlAccountId = lineItemGlAccountId;
         this.payerId = payerId;
         this.vendorId = vendorId;
-        this.creatorUserId = creatorUserId;
         this.invoiceId = invoiceId;
         this.transactionId = transactionId;
         this.status = status;
         this.transactionType = transactionType;
+        this.creatorUserId = creatorUserId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -196,15 +196,7 @@ public final class FindTransactionsRequest {
     }
 
     /**
-     * @return Filter transactions by the ID or foreign ID of the user that created the invoice that created the transaction.
-     */
-    @JsonProperty("creatorUserId")
-    public Optional<String> getCreatorUserId() {
-        return creatorUserId;
-    }
-
-    /**
-     * @return Filter transactions by invoice ID. Does not support foreign ID.
+     * @return Filter transactions by invoice ID or invoice foreign ID.
      */
     @JsonProperty("invoiceId")
     public Optional<String> getInvoiceId() {
@@ -235,6 +227,14 @@ public final class FindTransactionsRequest {
         return transactionType;
     }
 
+    /**
+     * @return Filter transactions by creator user ID. Does not work, do not use.
+     */
+    @JsonProperty("creatorUserId")
+    public Optional<String> getCreatorUserId() {
+        return creatorUserId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -259,11 +259,11 @@ public final class FindTransactionsRequest {
                 && lineItemGlAccountId.equals(other.lineItemGlAccountId)
                 && payerId.equals(other.payerId)
                 && vendorId.equals(other.vendorId)
-                && creatorUserId.equals(other.creatorUserId)
                 && invoiceId.equals(other.invoiceId)
                 && transactionId.equals(other.transactionId)
                 && status.equals(other.status)
-                && transactionType.equals(other.transactionType);
+                && transactionType.equals(other.transactionType)
+                && creatorUserId.equals(other.creatorUserId);
     }
 
     @java.lang.Override
@@ -281,11 +281,11 @@ public final class FindTransactionsRequest {
                 this.lineItemGlAccountId,
                 this.payerId,
                 this.vendorId,
-                this.creatorUserId,
                 this.invoiceId,
                 this.transactionId,
                 this.status,
-                this.transactionType);
+                this.transactionType,
+                this.creatorUserId);
     }
 
     @java.lang.Override
@@ -323,8 +323,6 @@ public final class FindTransactionsRequest {
 
         private Optional<String> vendorId = Optional.empty();
 
-        private Optional<String> creatorUserId = Optional.empty();
-
         private Optional<String> invoiceId = Optional.empty();
 
         private Optional<String> transactionId = Optional.empty();
@@ -332,6 +330,8 @@ public final class FindTransactionsRequest {
         private Optional<TransactionStatus> status = Optional.empty();
 
         private Optional<TransactionType> transactionType = Optional.empty();
+
+        private Optional<String> creatorUserId = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -351,11 +351,11 @@ public final class FindTransactionsRequest {
             lineItemGlAccountId(other.getLineItemGlAccountId());
             payerId(other.getPayerId());
             vendorId(other.getVendorId());
-            creatorUserId(other.getCreatorUserId());
             invoiceId(other.getInvoiceId());
             transactionId(other.getTransactionId());
             status(other.getStatus());
             transactionType(other.getTransactionType());
+            creatorUserId(other.getCreatorUserId());
             return this;
         }
 
@@ -491,17 +491,6 @@ public final class FindTransactionsRequest {
             return this;
         }
 
-        @JsonSetter(value = "creatorUserId", nulls = Nulls.SKIP)
-        public Builder creatorUserId(Optional<String> creatorUserId) {
-            this.creatorUserId = creatorUserId;
-            return this;
-        }
-
-        public Builder creatorUserId(String creatorUserId) {
-            this.creatorUserId = Optional.ofNullable(creatorUserId);
-            return this;
-        }
-
         @JsonSetter(value = "invoiceId", nulls = Nulls.SKIP)
         public Builder invoiceId(Optional<String> invoiceId) {
             this.invoiceId = invoiceId;
@@ -546,6 +535,17 @@ public final class FindTransactionsRequest {
             return this;
         }
 
+        @JsonSetter(value = "creatorUserId", nulls = Nulls.SKIP)
+        public Builder creatorUserId(Optional<String> creatorUserId) {
+            this.creatorUserId = creatorUserId;
+            return this;
+        }
+
+        public Builder creatorUserId(String creatorUserId) {
+            this.creatorUserId = Optional.ofNullable(creatorUserId);
+            return this;
+        }
+
         public FindTransactionsRequest build() {
             return new FindTransactionsRequest(
                     entityId,
@@ -560,11 +560,11 @@ public final class FindTransactionsRequest {
                     lineItemGlAccountId,
                     payerId,
                     vendorId,
-                    creatorUserId,
                     invoiceId,
                     transactionId,
                     status,
                     transactionType,
+                    creatorUserId,
                     additionalProperties);
         }
     }

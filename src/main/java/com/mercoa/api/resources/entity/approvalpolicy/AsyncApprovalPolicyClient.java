@@ -11,6 +11,7 @@ import com.mercoa.api.core.MercoaApiException;
 import com.mercoa.api.core.MercoaException;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
+import com.mercoa.api.resources.entitytypes.types.ApprovalPolicyHistoryResponse;
 import com.mercoa.api.resources.entitytypes.types.ApprovalPolicyRequest;
 import com.mercoa.api.resources.entitytypes.types.ApprovalPolicyResponse;
 import com.mercoa.api.resources.entitytypes.types.ApprovalPolicyUpdateRequest;
@@ -325,6 +326,124 @@ public class AsyncApprovalPolicyClient {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
                         future.complete(null);
+                        return;
+                    }
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    future.completeExceptionally(new MercoaApiException(
+                            "Error with status code " + response.code(),
+                            response.code(),
+                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Retrieve the history of approval policy changes for an entity
+     */
+    public CompletableFuture<List<ApprovalPolicyHistoryResponse>> history(String entityId) {
+        return history(entityId, null);
+    }
+
+    /**
+     * Retrieve the history of approval policy changes for an entity
+     */
+    public CompletableFuture<List<ApprovalPolicyHistoryResponse>> history(
+            String entityId, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entity")
+                .addPathSegment(entityId)
+                .addPathSegments("approval-policies/history")
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<List<ApprovalPolicyHistoryResponse>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    if (response.isSuccessful()) {
+                        future.complete(ObjectMappers.JSON_MAPPER.readValue(
+                                responseBody.string(), new TypeReference<List<ApprovalPolicyHistoryResponse>>() {}));
+                        return;
+                    }
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    future.completeExceptionally(new MercoaApiException(
+                            "Error with status code " + response.code(),
+                            response.code(),
+                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
+                    return;
+                } catch (IOException e) {
+                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * Restore approval policies from a history entry.
+     */
+    public CompletableFuture<List<ApprovalPolicyResponse>> restore(String entityId, String approvalPolicyHistoryId) {
+        return restore(entityId, approvalPolicyHistoryId, null);
+    }
+
+    /**
+     * Restore approval policies from a history entry.
+     */
+    public CompletableFuture<List<ApprovalPolicyResponse>> restore(
+            String entityId, String approvalPolicyHistoryId, RequestOptions requestOptions) {
+        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("entity")
+                .addPathSegment(entityId)
+                .addPathSegments("approval-policies/history")
+                .addPathSegment(approvalPolicyHistoryId)
+                .addPathSegments("restore")
+                .build();
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl)
+                .method("POST", RequestBody.create("", null))
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        CompletableFuture<List<ApprovalPolicyResponse>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    if (response.isSuccessful()) {
+                        future.complete(ObjectMappers.JSON_MAPPER.readValue(
+                                responseBody.string(), new TypeReference<List<ApprovalPolicyResponse>>() {}));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
