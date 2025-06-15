@@ -9,11 +9,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
@@ -21,17 +23,33 @@ import org.jetbrains.annotations.NotNull;
 public final class InvoiceNotificationConfigurationRequest implements IInvoiceNotificationConfigurationRequest {
     private final String url;
 
+    private final Optional<String> subject;
+
     private final Map<String, Object> additionalProperties;
 
-    private InvoiceNotificationConfigurationRequest(String url, Map<String, Object> additionalProperties) {
+    private InvoiceNotificationConfigurationRequest(
+            String url, Optional<String> subject, Map<String, Object> additionalProperties) {
         this.url = url;
+        this.subject = subject;
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return The URL that the email will link to.
+     */
     @JsonProperty("url")
     @java.lang.Override
     public String getUrl() {
         return url;
+    }
+
+    /**
+     * @return The subject of the email. If not provided, the default subject will be used.
+     */
+    @JsonProperty("subject")
+    @java.lang.Override
+    public Optional<String> getSubject() {
+        return subject;
     }
 
     @java.lang.Override
@@ -47,12 +65,12 @@ public final class InvoiceNotificationConfigurationRequest implements IInvoiceNo
     }
 
     private boolean equalTo(InvoiceNotificationConfigurationRequest other) {
-        return url.equals(other.url);
+        return url.equals(other.url) && subject.equals(other.subject);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.url);
+        return Objects.hash(this.url, this.subject);
     }
 
     @java.lang.Override
@@ -72,11 +90,17 @@ public final class InvoiceNotificationConfigurationRequest implements IInvoiceNo
 
     public interface _FinalStage {
         InvoiceNotificationConfigurationRequest build();
+
+        _FinalStage subject(Optional<String> subject);
+
+        _FinalStage subject(String subject);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements UrlStage, _FinalStage {
         private String url;
+
+        private Optional<String> subject = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -86,9 +110,14 @@ public final class InvoiceNotificationConfigurationRequest implements IInvoiceNo
         @java.lang.Override
         public Builder from(InvoiceNotificationConfigurationRequest other) {
             url(other.getUrl());
+            subject(other.getSubject());
             return this;
         }
 
+        /**
+         * <p>The URL that the email will link to.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         @JsonSetter("url")
         public _FinalStage url(@NotNull String url) {
@@ -96,9 +125,26 @@ public final class InvoiceNotificationConfigurationRequest implements IInvoiceNo
             return this;
         }
 
+        /**
+         * <p>The subject of the email. If not provided, the default subject will be used.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage subject(String subject) {
+            this.subject = Optional.ofNullable(subject);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "subject", nulls = Nulls.SKIP)
+        public _FinalStage subject(Optional<String> subject) {
+            this.subject = subject;
+            return this;
+        }
+
         @java.lang.Override
         public InvoiceNotificationConfigurationRequest build() {
-            return new InvoiceNotificationConfigurationRequest(url, additionalProperties);
+            return new InvoiceNotificationConfigurationRequest(url, subject, additionalProperties);
         }
     }
 }

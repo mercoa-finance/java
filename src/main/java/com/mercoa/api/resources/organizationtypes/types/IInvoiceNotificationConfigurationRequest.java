@@ -3,6 +3,10 @@
  */
 package com.mercoa.api.resources.organizationtypes.types;
 
+import java.util.Optional;
+
 public interface IInvoiceNotificationConfigurationRequest {
     String getUrl();
+
+    Optional<String> getSubject();
 }

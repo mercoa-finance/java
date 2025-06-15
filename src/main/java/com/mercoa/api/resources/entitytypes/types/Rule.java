@@ -30,8 +30,16 @@ public final class Rule {
         return new Rule(new ApproverValue(value));
     }
 
+    public static Rule automatic(AutomaticRule value) {
+        return new Rule(new AutomaticValue(value));
+    }
+
     public boolean isApprover() {
         return value instanceof ApproverValue;
+    }
+
+    public boolean isAutomatic() {
+        return value instanceof AutomaticValue;
     }
 
     public boolean _isUnknown() {
@@ -41,6 +49,13 @@ public final class Rule {
     public Optional<ApproverRule> getApprover() {
         if (isApprover()) {
             return Optional.of(((ApproverValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<AutomaticRule> getAutomatic() {
+        if (isAutomatic()) {
+            return Optional.of(((AutomaticValue) value).value);
         }
         return Optional.empty();
     }
@@ -60,11 +75,13 @@ public final class Rule {
     public interface Visitor<T> {
         T visitApprover(ApproverRule approver);
 
+        T visitAutomatic(AutomaticRule automatic);
+
         T _visitUnknown(Object unknownType);
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = _UnknownValue.class)
-    @JsonSubTypes(@JsonSubTypes.Type(ApproverValue.class))
+    @JsonSubTypes({@JsonSubTypes.Type(ApproverValue.class), @JsonSubTypes.Type(AutomaticValue.class)})
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
         <T> T visit(Visitor<T> visitor);
@@ -95,6 +112,45 @@ public final class Rule {
         }
 
         private boolean equalTo(ApproverValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "Rule{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("automatic")
+    @JsonIgnoreProperties("type")
+    private static final class AutomaticValue implements Value {
+        @JsonUnwrapped
+        private AutomaticRule value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private AutomaticValue() {}
+
+        private AutomaticValue(AutomaticRule value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitAutomatic(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof AutomaticValue && equalTo((AutomaticValue) other);
+        }
+
+        private boolean equalTo(AutomaticValue other) {
             return value.equals(other.value);
         }
 
