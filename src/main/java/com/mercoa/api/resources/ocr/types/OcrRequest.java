@@ -30,6 +30,8 @@ public final class OcrRequest {
 
     private final Optional<String> entityId;
 
+    private final Optional<Boolean> splitDocument;
+
     private final Map<String, Object> additionalProperties;
 
     private OcrRequest(
@@ -37,11 +39,13 @@ public final class OcrRequest {
             String image,
             Optional<VendorNetwork> vendorNetwork,
             Optional<String> entityId,
+            Optional<Boolean> splitDocument,
             Map<String, Object> additionalProperties) {
         this.mimeType = mimeType;
         this.image = image;
         this.vendorNetwork = vendorNetwork;
         this.entityId = entityId;
+        this.splitDocument = splitDocument;
         this.additionalProperties = additionalProperties;
     }
 
@@ -70,11 +74,19 @@ public final class OcrRequest {
     }
 
     /**
-     * @return When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.
+     * @return When using the Entity vendor network, specify the entity to use. EntityId on an auth token will take precedence over this parameter.
      */
     @JsonProperty("entityId")
     public Optional<String> getEntityId() {
         return entityId;
+    }
+
+    /**
+     * @return If true, attempt to split the document into subdocuments before processing. Default is false. If a document is split into subdocuments, the linked OCR jobs will be accessible via the linkedJobIds field on each OCR job response.
+     */
+    @JsonProperty("splitDocument")
+    public Optional<Boolean> getSplitDocument() {
+        return splitDocument;
     }
 
     @java.lang.Override
@@ -92,12 +104,13 @@ public final class OcrRequest {
         return mimeType.equals(other.mimeType)
                 && image.equals(other.image)
                 && vendorNetwork.equals(other.vendorNetwork)
-                && entityId.equals(other.entityId);
+                && entityId.equals(other.entityId)
+                && splitDocument.equals(other.splitDocument);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.mimeType, this.image, this.vendorNetwork, this.entityId);
+        return Objects.hash(this.mimeType, this.image, this.vendorNetwork, this.entityId, this.splitDocument);
     }
 
     @java.lang.Override
@@ -129,6 +142,10 @@ public final class OcrRequest {
         _FinalStage entityId(Optional<String> entityId);
 
         _FinalStage entityId(String entityId);
+
+        _FinalStage splitDocument(Optional<Boolean> splitDocument);
+
+        _FinalStage splitDocument(Boolean splitDocument);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -136,6 +153,8 @@ public final class OcrRequest {
         private String mimeType;
 
         private String image;
+
+        private Optional<Boolean> splitDocument = Optional.empty();
 
         private Optional<String> entityId = Optional.empty();
 
@@ -152,6 +171,7 @@ public final class OcrRequest {
             image(other.getImage());
             vendorNetwork(other.getVendorNetwork());
             entityId(other.getEntityId());
+            splitDocument(other.getSplitDocument());
             return this;
         }
 
@@ -178,7 +198,24 @@ public final class OcrRequest {
         }
 
         /**
-         * <p>When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.</p>
+         * <p>If true, attempt to split the document into subdocuments before processing. Default is false. If a document is split into subdocuments, the linked OCR jobs will be accessible via the linkedJobIds field on each OCR job response.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage splitDocument(Boolean splitDocument) {
+            this.splitDocument = Optional.ofNullable(splitDocument);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "splitDocument", nulls = Nulls.SKIP)
+        public _FinalStage splitDocument(Optional<Boolean> splitDocument) {
+            this.splitDocument = splitDocument;
+            return this;
+        }
+
+        /**
+         * <p>When using the Entity vendor network, specify the entity to use. EntityId on an auth token will take precedence over this parameter.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -213,7 +250,7 @@ public final class OcrRequest {
 
         @java.lang.Override
         public OcrRequest build() {
-            return new OcrRequest(mimeType, image, vendorNetwork, entityId, additionalProperties);
+            return new OcrRequest(mimeType, image, vendorNetwork, entityId, splitDocument, additionalProperties);
         }
     }
 }

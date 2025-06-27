@@ -30,6 +30,8 @@ public final class OrganizationResponse {
 
     private final Optional<String> logoUrl;
 
+    private final Optional<String> faviconUrl;
+
     private final Optional<String> websiteUrl;
 
     private final Optional<String> supportEmail;
@@ -63,6 +65,7 @@ public final class OrganizationResponse {
             boolean sandbox,
             String name,
             Optional<String> logoUrl,
+            Optional<String> faviconUrl,
             Optional<String> websiteUrl,
             Optional<String> supportEmail,
             Optional<PaymentMethodsResponse> paymentMethods,
@@ -81,6 +84,7 @@ public final class OrganizationResponse {
         this.sandbox = sandbox;
         this.name = name;
         this.logoUrl = logoUrl;
+        this.faviconUrl = faviconUrl;
         this.websiteUrl = websiteUrl;
         this.supportEmail = supportEmail;
         this.paymentMethods = paymentMethods;
@@ -115,6 +119,11 @@ public final class OrganizationResponse {
     @JsonProperty("logoUrl")
     public Optional<String> getLogoUrl() {
         return logoUrl;
+    }
+
+    @JsonProperty("faviconUrl")
+    public Optional<String> getFaviconUrl() {
+        return faviconUrl;
     }
 
     @JsonProperty("websiteUrl")
@@ -198,6 +207,7 @@ public final class OrganizationResponse {
                 && sandbox == other.sandbox
                 && name.equals(other.name)
                 && logoUrl.equals(other.logoUrl)
+                && faviconUrl.equals(other.faviconUrl)
                 && websiteUrl.equals(other.websiteUrl)
                 && supportEmail.equals(other.supportEmail)
                 && paymentMethods.equals(other.paymentMethods)
@@ -220,6 +230,7 @@ public final class OrganizationResponse {
                 this.sandbox,
                 this.name,
                 this.logoUrl,
+                this.faviconUrl,
                 this.websiteUrl,
                 this.supportEmail,
                 this.paymentMethods,
@@ -264,6 +275,10 @@ public final class OrganizationResponse {
         _FinalStage logoUrl(Optional<String> logoUrl);
 
         _FinalStage logoUrl(String logoUrl);
+
+        _FinalStage faviconUrl(Optional<String> faviconUrl);
+
+        _FinalStage faviconUrl(String faviconUrl);
 
         _FinalStage websiteUrl(Optional<String> websiteUrl);
 
@@ -354,6 +369,8 @@ public final class OrganizationResponse {
 
         private Optional<String> websiteUrl = Optional.empty();
 
+        private Optional<String> faviconUrl = Optional.empty();
+
         private Optional<String> logoUrl = Optional.empty();
 
         @JsonAnySetter
@@ -367,6 +384,7 @@ public final class OrganizationResponse {
             sandbox(other.getSandbox());
             name(other.getName());
             logoUrl(other.getLogoUrl());
+            faviconUrl(other.getFaviconUrl());
             websiteUrl(other.getWebsiteUrl());
             supportEmail(other.getSupportEmail());
             paymentMethods(other.getPaymentMethods());
@@ -577,6 +595,19 @@ public final class OrganizationResponse {
         }
 
         @java.lang.Override
+        public _FinalStage faviconUrl(String faviconUrl) {
+            this.faviconUrl = Optional.ofNullable(faviconUrl);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "faviconUrl", nulls = Nulls.SKIP)
+        public _FinalStage faviconUrl(Optional<String> faviconUrl) {
+            this.faviconUrl = faviconUrl;
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage logoUrl(String logoUrl) {
             this.logoUrl = Optional.ofNullable(logoUrl);
             return this;
@@ -596,6 +627,7 @@ public final class OrganizationResponse {
                     sandbox,
                     name,
                     logoUrl,
+                    faviconUrl,
                     websiteUrl,
                     supportEmail,
                     paymentMethods,

@@ -25,6 +25,8 @@ public final class OrganizationRequest {
 
     private final Optional<String> logo;
 
+    private final Optional<String> favicon;
+
     private final Optional<String> websiteUrl;
 
     private final Optional<String> supportEmail;
@@ -54,6 +56,7 @@ public final class OrganizationRequest {
     private OrganizationRequest(
             Optional<String> name,
             Optional<String> logo,
+            Optional<String> favicon,
             Optional<String> websiteUrl,
             Optional<String> supportEmail,
             Optional<PaymentMethodsRequest> paymentMethods,
@@ -69,6 +72,7 @@ public final class OrganizationRequest {
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.logo = logo;
+        this.favicon = favicon;
         this.websiteUrl = websiteUrl;
         this.supportEmail = supportEmail;
         this.paymentMethods = paymentMethods;
@@ -89,9 +93,20 @@ public final class OrganizationRequest {
         return name;
     }
 
+    /**
+     * @return Base64 encoded logo image.
+     */
     @JsonProperty("logo")
     public Optional<String> getLogo() {
         return logo;
+    }
+
+    /**
+     * @return Base64 encoded favicon image.
+     */
+    @JsonProperty("favicon")
+    public Optional<String> getFavicon() {
+        return favicon;
     }
 
     @JsonProperty("websiteUrl")
@@ -168,6 +183,7 @@ public final class OrganizationRequest {
     private boolean equalTo(OrganizationRequest other) {
         return name.equals(other.name)
                 && logo.equals(other.logo)
+                && favicon.equals(other.favicon)
                 && websiteUrl.equals(other.websiteUrl)
                 && supportEmail.equals(other.supportEmail)
                 && paymentMethods.equals(other.paymentMethods)
@@ -187,6 +203,7 @@ public final class OrganizationRequest {
         return Objects.hash(
                 this.name,
                 this.logo,
+                this.favicon,
                 this.websiteUrl,
                 this.supportEmail,
                 this.paymentMethods,
@@ -215,6 +232,8 @@ public final class OrganizationRequest {
         private Optional<String> name = Optional.empty();
 
         private Optional<String> logo = Optional.empty();
+
+        private Optional<String> favicon = Optional.empty();
 
         private Optional<String> websiteUrl = Optional.empty();
 
@@ -248,6 +267,7 @@ public final class OrganizationRequest {
         public Builder from(OrganizationRequest other) {
             name(other.getName());
             logo(other.getLogo());
+            favicon(other.getFavicon());
             websiteUrl(other.getWebsiteUrl());
             supportEmail(other.getSupportEmail());
             paymentMethods(other.getPaymentMethods());
@@ -282,6 +302,17 @@ public final class OrganizationRequest {
 
         public Builder logo(String logo) {
             this.logo = Optional.ofNullable(logo);
+            return this;
+        }
+
+        @JsonSetter(value = "favicon", nulls = Nulls.SKIP)
+        public Builder favicon(Optional<String> favicon) {
+            this.favicon = favicon;
+            return this;
+        }
+
+        public Builder favicon(String favicon) {
+            this.favicon = Optional.ofNullable(favicon);
             return this;
         }
 
@@ -423,6 +454,7 @@ public final class OrganizationRequest {
             return new OrganizationRequest(
                     name,
                     logo,
+                    favicon,
                     websiteUrl,
                     supportEmail,
                     paymentMethods,

@@ -7,7 +7,6 @@ import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.banklookup.BankLookupClient;
 import com.mercoa.api.resources.calculate.CalculateClient;
-import com.mercoa.api.resources.contract.ContractClient;
 import com.mercoa.api.resources.custompaymentmethodschema.CustomPaymentMethodSchemaClient;
 import com.mercoa.api.resources.entity.EntityClient;
 import com.mercoa.api.resources.entitygroup.EntityGroupClient;
@@ -15,14 +14,13 @@ import com.mercoa.api.resources.invoice.InvoiceClient;
 import com.mercoa.api.resources.invoicetemplate.InvoiceTemplateClient;
 import com.mercoa.api.resources.ocr.OcrClient;
 import com.mercoa.api.resources.organization.OrganizationClient;
+import com.mercoa.api.resources.paymentgateway.PaymentGatewayClient;
 import com.mercoa.api.resources.paymentmethods.PaymentMethodsClient;
 import com.mercoa.api.resources.transaction.TransactionClient;
 import java.util.function.Supplier;
 
 public class Mercoa {
     protected final ClientOptions clientOptions;
-
-    protected final Supplier<ContractClient> contractClient;
 
     protected final Supplier<EntityGroupClient> entityGroupClient;
 
@@ -33,6 +31,8 @@ public class Mercoa {
     protected final Supplier<InvoiceClient> invoiceClient;
 
     protected final Supplier<OrganizationClient> organizationClient;
+
+    protected final Supplier<PaymentGatewayClient> paymentGatewayClient;
 
     protected final Supplier<BankLookupClient> bankLookupClient;
 
@@ -48,12 +48,12 @@ public class Mercoa {
 
     public Mercoa(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
-        this.contractClient = Suppliers.memoize(() -> new ContractClient(clientOptions));
         this.entityGroupClient = Suppliers.memoize(() -> new EntityGroupClient(clientOptions));
         this.entityClient = Suppliers.memoize(() -> new EntityClient(clientOptions));
         this.invoiceTemplateClient = Suppliers.memoize(() -> new InvoiceTemplateClient(clientOptions));
         this.invoiceClient = Suppliers.memoize(() -> new InvoiceClient(clientOptions));
         this.organizationClient = Suppliers.memoize(() -> new OrganizationClient(clientOptions));
+        this.paymentGatewayClient = Suppliers.memoize(() -> new PaymentGatewayClient(clientOptions));
         this.bankLookupClient = Suppliers.memoize(() -> new BankLookupClient(clientOptions));
         this.calculateClient = Suppliers.memoize(() -> new CalculateClient(clientOptions));
         this.customPaymentMethodSchemaClient =
@@ -61,10 +61,6 @@ public class Mercoa {
         this.ocrClient = Suppliers.memoize(() -> new OcrClient(clientOptions));
         this.paymentMethodsClient = Suppliers.memoize(() -> new PaymentMethodsClient(clientOptions));
         this.transactionClient = Suppliers.memoize(() -> new TransactionClient(clientOptions));
-    }
-
-    public ContractClient contract() {
-        return this.contractClient.get();
     }
 
     public EntityGroupClient entityGroup() {
@@ -85,6 +81,10 @@ public class Mercoa {
 
     public OrganizationClient organization() {
         return this.organizationClient.get();
+    }
+
+    public PaymentGatewayClient paymentGateway() {
+        return this.paymentGatewayClient.get();
     }
 
     public BankLookupClient bankLookup() {

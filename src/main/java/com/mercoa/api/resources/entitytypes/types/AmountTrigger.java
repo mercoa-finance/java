@@ -9,12 +9,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
@@ -24,11 +26,18 @@ public final class AmountTrigger {
 
     private final CurrencyCode currency;
 
+    private final Optional<Comparison> comparison;
+
     private final Map<String, Object> additionalProperties;
 
-    private AmountTrigger(double amount, CurrencyCode currency, Map<String, Object> additionalProperties) {
+    private AmountTrigger(
+            double amount,
+            CurrencyCode currency,
+            Optional<Comparison> comparison,
+            Map<String, Object> additionalProperties) {
         this.amount = amount;
         this.currency = currency;
+        this.comparison = comparison;
         this.additionalProperties = additionalProperties;
     }
 
@@ -40,6 +49,14 @@ public final class AmountTrigger {
     @JsonProperty("currency")
     public CurrencyCode getCurrency() {
         return currency;
+    }
+
+    /**
+     * @return The comparison operator to use when comparing the amount to the trigger amount. Defaults to gte.
+     */
+    @JsonProperty("comparison")
+    public Optional<Comparison> getComparison() {
+        return comparison;
     }
 
     @java.lang.Override
@@ -54,12 +71,12 @@ public final class AmountTrigger {
     }
 
     private boolean equalTo(AmountTrigger other) {
-        return amount == other.amount && currency.equals(other.currency);
+        return amount == other.amount && currency.equals(other.currency) && comparison.equals(other.comparison);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.amount, this.currency);
+        return Objects.hash(this.amount, this.currency, this.comparison);
     }
 
     @java.lang.Override
@@ -83,6 +100,10 @@ public final class AmountTrigger {
 
     public interface _FinalStage {
         AmountTrigger build();
+
+        _FinalStage comparison(Optional<Comparison> comparison);
+
+        _FinalStage comparison(Comparison comparison);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -90,6 +111,8 @@ public final class AmountTrigger {
         private double amount;
 
         private CurrencyCode currency;
+
+        private Optional<Comparison> comparison = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -100,6 +123,7 @@ public final class AmountTrigger {
         public Builder from(AmountTrigger other) {
             amount(other.getAmount());
             currency(other.getCurrency());
+            comparison(other.getComparison());
             return this;
         }
 
@@ -117,9 +141,26 @@ public final class AmountTrigger {
             return this;
         }
 
+        /**
+         * <p>The comparison operator to use when comparing the amount to the trigger amount. Defaults to gte.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage comparison(Comparison comparison) {
+            this.comparison = Optional.ofNullable(comparison);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "comparison", nulls = Nulls.SKIP)
+        public _FinalStage comparison(Optional<Comparison> comparison) {
+            this.comparison = comparison;
+            return this;
+        }
+
         @java.lang.Override
         public AmountTrigger build() {
-            return new AmountTrigger(amount, currency, additionalProperties);
+            return new AmountTrigger(amount, currency, comparison, additionalProperties);
         }
     }
 }
