@@ -77,12 +77,18 @@ public final class MetadataCustomizationRequest {
     }
 
     public interface KeyStage {
+        /**
+         * <p>The key of the metadata field. This must be defined at the organization level, otherwise an error will be returned.</p>
+         */
         DisabledStage key(@NotNull String key);
 
         Builder from(MetadataCustomizationRequest other);
     }
 
     public interface DisabledStage {
+        /**
+         * <p>If true, this field will not be available to the entity.</p>
+         */
         _FinalStage disabled(boolean disabled);
     }
 
@@ -110,6 +116,7 @@ public final class MetadataCustomizationRequest {
 
         /**
          * <p>The key of the metadata field. This must be defined at the organization level, otherwise an error will be returned.</p>
+         * <p>The key of the metadata field. This must be defined at the organization level, otherwise an error will be returned.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -120,6 +127,7 @@ public final class MetadataCustomizationRequest {
         }
 
         /**
+         * <p>If true, this field will not be available to the entity.</p>
          * <p>If true, this field will not be available to the entity.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

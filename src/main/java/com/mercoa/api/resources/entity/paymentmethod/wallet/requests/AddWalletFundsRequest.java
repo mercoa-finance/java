@@ -97,18 +97,27 @@ public final class AddWalletFundsRequest {
     }
 
     public interface AmountStage {
+        /**
+         * <p>The amount of the funds to add. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
+         */
         SourcePaymentMethodIdStage amount(double amount);
 
         Builder from(AddWalletFundsRequest other);
     }
 
     public interface SourcePaymentMethodIdStage {
+        /**
+         * <p>The ID of the bank account to add funds from. The source payment method ID must refer to a bank account.</p>
+         */
         _FinalStage sourcePaymentMethodId(@NotNull String sourcePaymentMethodId);
     }
 
     public interface _FinalStage {
         AddWalletFundsRequest build();
 
+        /**
+         * <p>The currency of the funds to add. (Defaults to USD, currently only USD is supported.)</p>
+         */
         _FinalStage currency(Optional<CurrencyCode> currency);
 
         _FinalStage currency(CurrencyCode currency);
@@ -137,6 +146,7 @@ public final class AddWalletFundsRequest {
 
         /**
          * <p>The amount of the funds to add. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
+         * <p>The amount of the funds to add. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -147,6 +157,7 @@ public final class AddWalletFundsRequest {
         }
 
         /**
+         * <p>The ID of the bank account to add funds from. The source payment method ID must refer to a bank account.</p>
          * <p>The ID of the bank account to add funds from. The source payment method ID must refer to a bank account.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -168,6 +179,9 @@ public final class AddWalletFundsRequest {
             return this;
         }
 
+        /**
+         * <p>The currency of the funds to add. (Defaults to USD, currently only USD is supported.)</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "currency", nulls = Nulls.SKIP)
         public _FinalStage currency(Optional<CurrencyCode> currency) {

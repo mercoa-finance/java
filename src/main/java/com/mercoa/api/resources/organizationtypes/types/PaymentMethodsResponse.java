@@ -115,6 +115,9 @@ public final class PaymentMethodsResponse {
             return this;
         }
 
+        /**
+         * <p>List of payment methods that can be used to pay invoices.</p>
+         */
         @JsonSetter(value = "payerPayments", nulls = Nulls.SKIP)
         public Builder payerPayments(List<PaymentRailResponse> payerPayments) {
             this.payerPayments.clear();
@@ -132,6 +135,9 @@ public final class PaymentMethodsResponse {
             return this;
         }
 
+        /**
+         * <p>List of payment methods that can be created by a payor to send disbursements.</p>
+         */
         @JsonSetter(value = "backupDisbursements", nulls = Nulls.SKIP)
         public Builder backupDisbursements(List<PaymentRailResponse> backupDisbursements) {
             this.backupDisbursements.clear();
@@ -149,6 +155,9 @@ public final class PaymentMethodsResponse {
             return this;
         }
 
+        /**
+         * <p>List of payment methods that can be created by a payee to receive disbursements.</p>
+         */
         @JsonSetter(value = "vendorDisbursements", nulls = Nulls.SKIP)
         public Builder vendorDisbursements(List<PaymentRailResponse> vendorDisbursements) {
             this.vendorDisbursements.clear();

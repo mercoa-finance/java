@@ -113,6 +113,9 @@ public final class BankAccountPaymentMethodCustomizationRequest implements IGene
     }
 
     public interface DisabledStage {
+        /**
+         * <p>If true, this method will will not be available to the entity.</p>
+         */
         _FinalStage disabled(boolean disabled);
 
         Builder from(BankAccountPaymentMethodCustomizationRequest other);
@@ -121,14 +124,23 @@ public final class BankAccountPaymentMethodCustomizationRequest implements IGene
     public interface _FinalStage {
         BankAccountPaymentMethodCustomizationRequest build();
 
+        /**
+         * <p>The default delivery method for this payment method.</p>
+         */
         _FinalStage defaultDeliveryMethod(Optional<BankDeliveryMethod> defaultDeliveryMethod);
 
         _FinalStage defaultDeliveryMethod(BankDeliveryMethod defaultDeliveryMethod);
 
+        /**
+         * <p>The delivery methods that are available for this payment method.</p>
+         */
         _FinalStage availableDeliveryMethods(Optional<List<BankDeliveryMethod>> availableDeliveryMethods);
 
         _FinalStage availableDeliveryMethods(List<BankDeliveryMethod> availableDeliveryMethods);
 
+        /**
+         * <p>The originating company name for this payment method. If not set, the entity name will be used.</p>
+         */
         _FinalStage originatingCompanyName(Optional<OriginatingCompanyNameOptions> originatingCompanyName);
 
         _FinalStage originatingCompanyName(OriginatingCompanyNameOptions originatingCompanyName);
@@ -160,6 +172,7 @@ public final class BankAccountPaymentMethodCustomizationRequest implements IGene
 
         /**
          * <p>If true, this method will will not be available to the entity.</p>
+         * <p>If true, this method will will not be available to the entity.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -179,6 +192,9 @@ public final class BankAccountPaymentMethodCustomizationRequest implements IGene
             return this;
         }
 
+        /**
+         * <p>The originating company name for this payment method. If not set, the entity name will be used.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "originatingCompanyName", nulls = Nulls.SKIP)
         public _FinalStage originatingCompanyName(Optional<OriginatingCompanyNameOptions> originatingCompanyName) {
@@ -196,6 +212,9 @@ public final class BankAccountPaymentMethodCustomizationRequest implements IGene
             return this;
         }
 
+        /**
+         * <p>The delivery methods that are available for this payment method.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "availableDeliveryMethods", nulls = Nulls.SKIP)
         public _FinalStage availableDeliveryMethods(Optional<List<BankDeliveryMethod>> availableDeliveryMethods) {
@@ -213,6 +232,9 @@ public final class BankAccountPaymentMethodCustomizationRequest implements IGene
             return this;
         }
 
+        /**
+         * <p>The default delivery method for this payment method.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "defaultDeliveryMethod", nulls = Nulls.SKIP)
         public _FinalStage defaultDeliveryMethod(Optional<BankDeliveryMethod> defaultDeliveryMethod) {

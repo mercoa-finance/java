@@ -94,16 +94,25 @@ public final class BulkConnectedEntity {
     }
 
     public interface IdStage {
+        /**
+         * <p>The ID of the entity to connect to.</p>
+         */
         LinkCreatedAsPayorStage id(@NotNull String id);
 
         Builder from(BulkConnectedEntity other);
     }
 
     public interface LinkCreatedAsPayorStage {
+        /**
+         * <p>If true, the created entities will be linked to the connected entity as a payor (customer).</p>
+         */
         LinkCreatedAsPayeeStage linkCreatedAsPayor(boolean linkCreatedAsPayor);
     }
 
     public interface LinkCreatedAsPayeeStage {
+        /**
+         * <p>If true, the created entities will be linked to the connected entity as a payee (vendor).</p>
+         */
         _FinalStage linkCreatedAsPayee(boolean linkCreatedAsPayee);
     }
 
@@ -135,6 +144,7 @@ public final class BulkConnectedEntity {
 
         /**
          * <p>The ID of the entity to connect to.</p>
+         * <p>The ID of the entity to connect to.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -146,6 +156,7 @@ public final class BulkConnectedEntity {
 
         /**
          * <p>If true, the created entities will be linked to the connected entity as a payor (customer).</p>
+         * <p>If true, the created entities will be linked to the connected entity as a payor (customer).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -156,6 +167,7 @@ public final class BulkConnectedEntity {
         }
 
         /**
+         * <p>If true, the created entities will be linked to the connected entity as a payee (vendor).</p>
          * <p>If true, the created entities will be linked to the connected entity as a payee (vendor).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

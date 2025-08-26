@@ -18,6 +18,7 @@ dependencies {
     api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
 }
 
 
@@ -42,21 +43,21 @@ java {
 }
 
 
-group = 'com.mercoa'
+group = 'com.fern'
 
-version = '0.6.24'
+version = '0.0.1'
 
 jar {
     dependsOn(":generatePomFileForMavenPublication")
-    archiveBaseName = "mercoa"
+    archiveBaseName = "custom"
 }
 
 sourcesJar {
-    archiveBaseName = "mercoa"
+    archiveBaseName = "custom"
 }
 
 javadocJar {
-    archiveBaseName = "mercoa"
+    archiveBaseName = "custom"
 }
 
 test {
@@ -69,9 +70,9 @@ test {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'com.mercoa'
-            artifactId = 'mercoa'
-            version = '0.6.24'
+            groupId = 'com.fern'
+            artifactId = 'custom'
+            version = '0.0.1'
             from components.java
             pom {
                 licenses {
@@ -81,9 +82,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git://github.com/mercoa-finance/java.git'
-                    developerConnection = 'scm:git:git://github.com/mercoa-finance/java.git'
-                    url = 'https://github.com/mercoa-finance/java'
+                    connection = 'scm:git:git://github.com/custom/fern.git'
+                    developerConnection = 'scm:git:git://github.com/custom/fern.git'
+                    url = 'https://github.com/custom/fern'
                 }
             }
         }

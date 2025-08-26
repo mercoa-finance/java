@@ -14,7 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.EntityStatus;
 import com.mercoa.api.resources.invoicetypes.types.MetadataFilter;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,13 +24,15 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = FindEntities.Builder.class)
 public final class FindEntities {
+    private final Optional<List<String>> foreignId;
+
+    private final Optional<List<EntityStatus>> status;
+
+    private final Optional<List<String>> returnMetadata;
+
     private final Optional<Boolean> paymentMethods;
 
     private final Optional<Boolean> isCustomer;
-
-    private final Optional<String> foreignId;
-
-    private final Optional<EntityStatus> status;
 
     private final Optional<Boolean> isPayee;
 
@@ -40,8 +44,6 @@ public final class FindEntities {
 
     private final Optional<MetadataFilter> metadata;
 
-    private final Optional<String> returnMetadata;
-
     private final Optional<Integer> limit;
 
     private final Optional<String> startingAfter;
@@ -49,32 +51,53 @@ public final class FindEntities {
     private final Map<String, Object> additionalProperties;
 
     private FindEntities(
+            Optional<List<String>> foreignId,
+            Optional<List<EntityStatus>> status,
+            Optional<List<String>> returnMetadata,
             Optional<Boolean> paymentMethods,
             Optional<Boolean> isCustomer,
-            Optional<String> foreignId,
-            Optional<EntityStatus> status,
             Optional<Boolean> isPayee,
             Optional<Boolean> isPayor,
             Optional<String> name,
             Optional<String> search,
             Optional<MetadataFilter> metadata,
-            Optional<String> returnMetadata,
             Optional<Integer> limit,
             Optional<String> startingAfter,
             Map<String, Object> additionalProperties) {
-        this.paymentMethods = paymentMethods;
-        this.isCustomer = isCustomer;
         this.foreignId = foreignId;
         this.status = status;
+        this.returnMetadata = returnMetadata;
+        this.paymentMethods = paymentMethods;
+        this.isCustomer = isCustomer;
         this.isPayee = isPayee;
         this.isPayor = isPayor;
         this.name = name;
         this.search = search;
         this.metadata = metadata;
-        this.returnMetadata = returnMetadata;
         this.limit = limit;
         this.startingAfter = startingAfter;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return ID used to identify this entity in your system
+     */
+    @JsonProperty("foreignId")
+    public Optional<List<String>> getForeignId() {
+        return foreignId;
+    }
+
+    @JsonProperty("status")
+    public Optional<List<EntityStatus>> getStatus() {
+        return status;
+    }
+
+    /**
+     * @return Return simple key/value metadata for the specified keys for the entities. For more complex metadata, use the Metadata API.
+     */
+    @JsonProperty("returnMetadata")
+    public Optional<List<String>> getReturnMetadata() {
+        return returnMetadata;
     }
 
     /**
@@ -91,19 +114,6 @@ public final class FindEntities {
     @JsonProperty("isCustomer")
     public Optional<Boolean> getIsCustomer() {
         return isCustomer;
-    }
-
-    /**
-     * @return ID used to identify this entity in your system
-     */
-    @JsonProperty("foreignId")
-    public Optional<String> getForeignId() {
-        return foreignId;
-    }
-
-    @JsonProperty("status")
-    public Optional<EntityStatus> getStatus() {
-        return status;
     }
 
     /**
@@ -149,14 +159,6 @@ public final class FindEntities {
     }
 
     /**
-     * @return Return simple key/value metadata for the specified keys for the entities. For more complex metadata, use the Metadata API.
-     */
-    @JsonProperty("returnMetadata")
-    public Optional<String> getReturnMetadata() {
-        return returnMetadata;
-    }
-
-    /**
      * @return Number of entities to return. Limit can range between 1 and 100, and the default is 10.
      */
     @JsonProperty("limit")
@@ -184,16 +186,16 @@ public final class FindEntities {
     }
 
     private boolean equalTo(FindEntities other) {
-        return paymentMethods.equals(other.paymentMethods)
-                && isCustomer.equals(other.isCustomer)
-                && foreignId.equals(other.foreignId)
+        return foreignId.equals(other.foreignId)
                 && status.equals(other.status)
+                && returnMetadata.equals(other.returnMetadata)
+                && paymentMethods.equals(other.paymentMethods)
+                && isCustomer.equals(other.isCustomer)
                 && isPayee.equals(other.isPayee)
                 && isPayor.equals(other.isPayor)
                 && name.equals(other.name)
                 && search.equals(other.search)
                 && metadata.equals(other.metadata)
-                && returnMetadata.equals(other.returnMetadata)
                 && limit.equals(other.limit)
                 && startingAfter.equals(other.startingAfter);
     }
@@ -201,16 +203,16 @@ public final class FindEntities {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.paymentMethods,
-                this.isCustomer,
                 this.foreignId,
                 this.status,
+                this.returnMetadata,
+                this.paymentMethods,
+                this.isCustomer,
                 this.isPayee,
                 this.isPayor,
                 this.name,
                 this.search,
                 this.metadata,
-                this.returnMetadata,
                 this.limit,
                 this.startingAfter);
     }
@@ -226,13 +228,15 @@ public final class FindEntities {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<List<String>> foreignId = Optional.empty();
+
+        private Optional<List<EntityStatus>> status = Optional.empty();
+
+        private Optional<List<String>> returnMetadata = Optional.empty();
+
         private Optional<Boolean> paymentMethods = Optional.empty();
 
         private Optional<Boolean> isCustomer = Optional.empty();
-
-        private Optional<String> foreignId = Optional.empty();
-
-        private Optional<EntityStatus> status = Optional.empty();
 
         private Optional<Boolean> isPayee = Optional.empty();
 
@@ -244,8 +248,6 @@ public final class FindEntities {
 
         private Optional<MetadataFilter> metadata = Optional.empty();
 
-        private Optional<String> returnMetadata = Optional.empty();
-
         private Optional<Integer> limit = Optional.empty();
 
         private Optional<String> startingAfter = Optional.empty();
@@ -256,21 +258,78 @@ public final class FindEntities {
         private Builder() {}
 
         public Builder from(FindEntities other) {
-            paymentMethods(other.getPaymentMethods());
-            isCustomer(other.getIsCustomer());
             foreignId(other.getForeignId());
             status(other.getStatus());
+            returnMetadata(other.getReturnMetadata());
+            paymentMethods(other.getPaymentMethods());
+            isCustomer(other.getIsCustomer());
             isPayee(other.getIsPayee());
             isPayor(other.getIsPayor());
             name(other.getName());
             search(other.getSearch());
             metadata(other.getMetadata());
-            returnMetadata(other.getReturnMetadata());
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
             return this;
         }
 
+        /**
+         * <p>ID used to identify this entity in your system</p>
+         */
+        @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
+        public Builder foreignId(Optional<List<String>> foreignId) {
+            this.foreignId = foreignId;
+            return this;
+        }
+
+        public Builder foreignId(List<String> foreignId) {
+            this.foreignId = Optional.ofNullable(foreignId);
+            return this;
+        }
+
+        public Builder foreignId(String foreignId) {
+            this.foreignId = Optional.of(Collections.singletonList(foreignId));
+            return this;
+        }
+
+        @JsonSetter(value = "status", nulls = Nulls.SKIP)
+        public Builder status(Optional<List<EntityStatus>> status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder status(List<EntityStatus> status) {
+            this.status = Optional.ofNullable(status);
+            return this;
+        }
+
+        public Builder status(EntityStatus status) {
+            this.status = Optional.of(Collections.singletonList(status));
+            return this;
+        }
+
+        /**
+         * <p>Return simple key/value metadata for the specified keys for the entities. For more complex metadata, use the Metadata API.</p>
+         */
+        @JsonSetter(value = "returnMetadata", nulls = Nulls.SKIP)
+        public Builder returnMetadata(Optional<List<String>> returnMetadata) {
+            this.returnMetadata = returnMetadata;
+            return this;
+        }
+
+        public Builder returnMetadata(List<String> returnMetadata) {
+            this.returnMetadata = Optional.ofNullable(returnMetadata);
+            return this;
+        }
+
+        public Builder returnMetadata(String returnMetadata) {
+            this.returnMetadata = Optional.of(Collections.singletonList(returnMetadata));
+            return this;
+        }
+
+        /**
+         * <p>If true, will include entity payment methods as part of the response</p>
+         */
         @JsonSetter(value = "paymentMethods", nulls = Nulls.SKIP)
         public Builder paymentMethods(Optional<Boolean> paymentMethods) {
             this.paymentMethods = paymentMethods;
@@ -282,6 +341,9 @@ public final class FindEntities {
             return this;
         }
 
+        /**
+         * <p>If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.</p>
+         */
         @JsonSetter(value = "isCustomer", nulls = Nulls.SKIP)
         public Builder isCustomer(Optional<Boolean> isCustomer) {
             this.isCustomer = isCustomer;
@@ -293,28 +355,10 @@ public final class FindEntities {
             return this;
         }
 
-        @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
-        public Builder foreignId(Optional<String> foreignId) {
-            this.foreignId = foreignId;
-            return this;
-        }
-
-        public Builder foreignId(String foreignId) {
-            this.foreignId = Optional.ofNullable(foreignId);
-            return this;
-        }
-
-        @JsonSetter(value = "status", nulls = Nulls.SKIP)
-        public Builder status(Optional<EntityStatus> status) {
-            this.status = status;
-            return this;
-        }
-
-        public Builder status(EntityStatus status) {
-            this.status = Optional.ofNullable(status);
-            return this;
-        }
-
+        /**
+         * <p>If true, entities that are marked as payees will be returned.
+         * If false or not provided, entities that are marked as payees will not be returned.</p>
+         */
         @JsonSetter(value = "isPayee", nulls = Nulls.SKIP)
         public Builder isPayee(Optional<Boolean> isPayee) {
             this.isPayee = isPayee;
@@ -326,6 +370,10 @@ public final class FindEntities {
             return this;
         }
 
+        /**
+         * <p>If true or not provided, entities that are marked as payors will be returned.
+         * If false, entities that are marked as payors will not be returned.</p>
+         */
         @JsonSetter(value = "isPayor", nulls = Nulls.SKIP)
         public Builder isPayor(Optional<Boolean> isPayor) {
             this.isPayor = isPayor;
@@ -337,6 +385,9 @@ public final class FindEntities {
             return this;
         }
 
+        /**
+         * <p>Use search instead. Deprecated. Filter entities by name. Partial matches are supported.</p>
+         */
         @JsonSetter(value = "name", nulls = Nulls.SKIP)
         public Builder name(Optional<String> name) {
             this.name = name;
@@ -348,6 +399,9 @@ public final class FindEntities {
             return this;
         }
 
+        /**
+         * <p>Find entities by name, email, or emailTo. Partial matches are supported.</p>
+         */
         @JsonSetter(value = "search", nulls = Nulls.SKIP)
         public Builder search(Optional<String> search) {
             this.search = search;
@@ -359,6 +413,9 @@ public final class FindEntities {
             return this;
         }
 
+        /**
+         * <p>Filter entities by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.</p>
+         */
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public Builder metadata(Optional<MetadataFilter> metadata) {
             this.metadata = metadata;
@@ -370,17 +427,9 @@ public final class FindEntities {
             return this;
         }
 
-        @JsonSetter(value = "returnMetadata", nulls = Nulls.SKIP)
-        public Builder returnMetadata(Optional<String> returnMetadata) {
-            this.returnMetadata = returnMetadata;
-            return this;
-        }
-
-        public Builder returnMetadata(String returnMetadata) {
-            this.returnMetadata = Optional.ofNullable(returnMetadata);
-            return this;
-        }
-
+        /**
+         * <p>Number of entities to return. Limit can range between 1 and 100, and the default is 10.</p>
+         */
         @JsonSetter(value = "limit", nulls = Nulls.SKIP)
         public Builder limit(Optional<Integer> limit) {
             this.limit = limit;
@@ -392,6 +441,9 @@ public final class FindEntities {
             return this;
         }
 
+        /**
+         * <p>The ID of the entity to start after. If not provided, the first page of entities will be returned.</p>
+         */
         @JsonSetter(value = "startingAfter", nulls = Nulls.SKIP)
         public Builder startingAfter(Optional<String> startingAfter) {
             this.startingAfter = startingAfter;
@@ -405,16 +457,16 @@ public final class FindEntities {
 
         public FindEntities build() {
             return new FindEntities(
-                    paymentMethods,
-                    isCustomer,
                     foreignId,
                     status,
+                    returnMetadata,
+                    paymentMethods,
+                    isCustomer,
                     isPayee,
                     isPayor,
                     name,
                     search,
                     metadata,
-                    returnMetadata,
                     limit,
                     startingAfter,
                     additionalProperties);

@@ -500,6 +500,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>Total amount of invoice in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
+         */
         @JsonSetter(value = "amount", nulls = Nulls.SKIP)
         public Builder amount(Optional<Double> amount) {
             this.amount = amount;
@@ -511,6 +514,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         */
         @JsonSetter(value = "currency", nulls = Nulls.SKIP)
         public Builder currency(Optional<CurrencyCode> currency) {
             this.currency = currency;
@@ -522,6 +528,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>Date the invoice was issued.</p>
+         */
         @JsonSetter(value = "invoiceDate", nulls = Nulls.SKIP)
         public Builder invoiceDate(Optional<OffsetDateTime> invoiceDate) {
             this.invoiceDate = invoiceDate;
@@ -533,6 +542,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>Initial date when funds are scheduled to be deducted from payer's account.</p>
+         */
         @JsonSetter(value = "deductionDate", nulls = Nulls.SKIP)
         public Builder deductionDate(Optional<OffsetDateTime> deductionDate) {
             this.deductionDate = deductionDate;
@@ -544,6 +556,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>Due date of invoice.</p>
+         */
         @JsonSetter(value = "dueDate", nulls = Nulls.SKIP)
         public Builder dueDate(Optional<OffsetDateTime> dueDate) {
             this.dueDate = dueDate;
@@ -566,6 +581,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>Note to self or memo on invoice.</p>
+         */
         @JsonSetter(value = "noteToSelf", nulls = Nulls.SKIP)
         public Builder noteToSelf(Optional<String> noteToSelf) {
             this.noteToSelf = noteToSelf;
@@ -599,6 +617,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>ID or foreign ID of the payer of this invoice.</p>
+         */
         @JsonSetter(value = "payerId", nulls = Nulls.SKIP)
         public Builder payerId(Optional<String> payerId) {
             this.payerId = payerId;
@@ -610,6 +631,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>ID of payment source for this invoice. If not provided, will attempt to use the default payment source for the payer when creating an invoice if a default payment source exists for the payer.</p>
+         */
         @JsonSetter(value = "paymentSourceId", nulls = Nulls.SKIP)
         public Builder paymentSourceId(Optional<String> paymentSourceId) {
             this.paymentSourceId = paymentSourceId;
@@ -621,6 +645,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>ID or foreign ID of the vendor of this invoice.</p>
+         */
         @JsonSetter(value = "vendorId", nulls = Nulls.SKIP)
         public Builder vendorId(Optional<String> vendorId) {
             this.vendorId = vendorId;
@@ -632,6 +659,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>ID of payment destination for this invoice. If not provided, will attempt to use the default payment destination for the vendor when creating an invoice if a default payment destination exists for the vendor.</p>
+         */
         @JsonSetter(value = "paymentDestinationId", nulls = Nulls.SKIP)
         public Builder paymentDestinationId(Optional<String> paymentDestinationId) {
             this.paymentDestinationId = paymentDestinationId;
@@ -643,6 +673,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.</p>
+         */
         @JsonSetter(value = "paymentDestinationOptions", nulls = Nulls.SKIP)
         public Builder paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions) {
             this.paymentDestinationOptions = paymentDestinationOptions;
@@ -654,6 +687,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>Set approvers for this invoice.</p>
+         */
         @JsonSetter(value = "approvers", nulls = Nulls.SKIP)
         public Builder approvers(Optional<List<ApprovalSlotAssignment>> approvers) {
             this.approvers = approvers;
@@ -665,6 +701,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>Metadata associated with this invoice.</p>
+         */
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public Builder metadata(Optional<Map<String, String>> metadata) {
             this.metadata = metadata;
@@ -676,6 +715,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>Base64-encoded string. Supported file types include PNG, JPG, WEBP, PDF, and all Microsoft Office formats (automatically converted to PDF). Max file size 10MB.</p>
+         */
         @JsonSetter(value = "document", nulls = Nulls.SKIP)
         public Builder document(Optional<String> document) {
             this.document = document;
@@ -687,6 +729,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>User ID or Foreign ID of entity user who created this invoice.</p>
+         */
         @JsonSetter(value = "creatorUserId", nulls = Nulls.SKIP)
         public Builder creatorUserId(Optional<String> creatorUserId) {
             this.creatorUserId = creatorUserId;
@@ -698,6 +743,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>If using a custom payment method, you can override the default fees for this invoice. If not provided, the default fees for the custom payment method will be used.</p>
+         */
         @JsonSetter(value = "fees", nulls = Nulls.SKIP)
         public Builder fees(Optional<InvoiceFeesRequest> fees) {
             this.fees = fees;
@@ -709,6 +757,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>If true, this invoice will be paid as a batch payment. Batches are automatically determined by Mercoa based on the payment source, destination, and scheduled payment date.</p>
+         */
         @JsonSetter(value = "batchPayment", nulls = Nulls.SKIP)
         public Builder batchPayment(Optional<Boolean> batchPayment) {
             this.batchPayment = batchPayment;
@@ -720,6 +771,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.</p>
+         */
         @JsonSetter(value = "paymentSchedule", nulls = Nulls.SKIP)
         public Builder paymentSchedule(Optional<PaymentSchedule> paymentSchedule) {
             this.paymentSchedule = paymentSchedule;
@@ -731,6 +785,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>Tax amount for this invoice.</p>
+         */
         @JsonSetter(value = "taxAmount", nulls = Nulls.SKIP)
         public Builder taxAmount(Optional<Double> taxAmount) {
             this.taxAmount = taxAmount;
@@ -742,6 +799,9 @@ public final class InvoiceTemplateRequestBase implements IInvoiceTemplateRequest
             return this;
         }
 
+        /**
+         * <p>Shipping amount for this invoice.</p>
+         */
         @JsonSetter(value = "shippingAmount", nulls = Nulls.SKIP)
         public Builder shippingAmount(Optional<Double> shippingAmount) {
             this.shippingAmount = shippingAmount;

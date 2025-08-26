@@ -279,6 +279,9 @@ public final class BusinessProfileResponse {
 
         _FinalStage address(Address address);
 
+        /**
+         * <p>True if all representatives have been provided for this business.</p>
+         */
         _FinalStage ownersProvided(Optional<Boolean> ownersProvided);
 
         _FinalStage ownersProvided(Boolean ownersProvided);
@@ -470,6 +473,9 @@ public final class BusinessProfileResponse {
             return this;
         }
 
+        /**
+         * <p>True if all representatives have been provided for this business.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "ownersProvided", nulls = Nulls.SKIP)
         public _FinalStage ownersProvided(Optional<Boolean> ownersProvided) {

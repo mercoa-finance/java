@@ -141,30 +141,50 @@ public final class PaymentMethodWebhook {
     }
 
     public interface EventTypeStage {
+        /**
+         * <p>The type of the event.</p>
+         */
         EntityIdStage eventType(@NotNull String eventType);
 
         Builder from(PaymentMethodWebhook other);
     }
 
     public interface EntityIdStage {
+        /**
+         * <p>ID of the entity that the payment method belongs to.</p>
+         */
         UpdatedByEntityIdStage entityId(@NotNull String entityId);
     }
 
     public interface UpdatedByEntityIdStage {
+        /**
+         * <p>ID of the entity that created or updated the payment method.
+         * This will be different from the entityId if the payment method was added by a different entity (e.g. a C2 creating a payment method for a C3).
+         * If the payment method was created or updated by an admin, this will be 'admin'.</p>
+         */
         PaymentMethodStage updatedByEntityId(@NotNull String updatedByEntityId);
     }
 
     public interface PaymentMethodStage {
+        /**
+         * <p>The payment method details.</p>
+         */
         EntityStage paymentMethod(@NotNull PaymentMethodResponse paymentMethod);
     }
 
     public interface EntityStage {
+        /**
+         * <p>Entity that the payment method belongs to.</p>
+         */
         _FinalStage entity(@NotNull EntityResponse entity);
     }
 
     public interface _FinalStage {
         PaymentMethodWebhook build();
 
+        /**
+         * <p>User who initiated the change.</p>
+         */
         _FinalStage user(Optional<EntityUserResponse> user);
 
         _FinalStage user(EntityUserResponse user);
@@ -208,6 +228,7 @@ public final class PaymentMethodWebhook {
 
         /**
          * <p>The type of the event.</p>
+         * <p>The type of the event.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -218,6 +239,7 @@ public final class PaymentMethodWebhook {
         }
 
         /**
+         * <p>ID of the entity that the payment method belongs to.</p>
          * <p>ID of the entity that the payment method belongs to.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -232,6 +254,9 @@ public final class PaymentMethodWebhook {
          * <p>ID of the entity that created or updated the payment method.
          * This will be different from the entityId if the payment method was added by a different entity (e.g. a C2 creating a payment method for a C3).
          * If the payment method was created or updated by an admin, this will be 'admin'.</p>
+         * <p>ID of the entity that created or updated the payment method.
+         * This will be different from the entityId if the payment method was added by a different entity (e.g. a C2 creating a payment method for a C3).
+         * If the payment method was created or updated by an admin, this will be 'admin'.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -243,6 +268,7 @@ public final class PaymentMethodWebhook {
 
         /**
          * <p>The payment method details.</p>
+         * <p>The payment method details.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -253,6 +279,7 @@ public final class PaymentMethodWebhook {
         }
 
         /**
+         * <p>Entity that the payment method belongs to.</p>
          * <p>Entity that the payment method belongs to.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -273,6 +300,9 @@ public final class PaymentMethodWebhook {
             return this;
         }
 
+        /**
+         * <p>User who initiated the change.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "user", nulls = Nulls.SKIP)
         public _FinalStage user(Optional<EntityUserResponse> user) {

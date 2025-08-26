@@ -215,6 +215,9 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
             return this;
         }
 
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         */
         @JsonSetter(value = "currency", nulls = Nulls.SKIP)
         public Builder currency(Optional<CurrencyCode> currency) {
             this.currency = currency;
@@ -248,6 +251,9 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
             return this;
         }
 
+        /**
+         * <p>Unit price of the line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
+         */
         @JsonSetter(value = "unitPrice", nulls = Nulls.SKIP)
         public Builder unitPrice(Optional<Double> unitPrice) {
             this.unitPrice = unitPrice;
@@ -259,6 +265,9 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
             return this;
         }
 
+        /**
+         * <p>Category of the line item.</p>
+         */
         @JsonSetter(value = "category", nulls = Nulls.SKIP)
         public Builder category(Optional<String> category) {
             this.category = category;
@@ -303,6 +312,9 @@ public final class InvoiceLineItemRequestBase implements IInvoiceLineItemRequest
             return this;
         }
 
+        /**
+         * <p>ID of general ledger account associated with this line item.</p>
+         */
         @JsonSetter(value = "glAccountId", nulls = Nulls.SKIP)
         public Builder glAccountId(Optional<String> glAccountId) {
             this.glAccountId = glAccountId;

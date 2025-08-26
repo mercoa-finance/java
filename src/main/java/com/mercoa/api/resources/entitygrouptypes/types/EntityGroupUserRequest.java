@@ -118,6 +118,9 @@ public final class EntityGroupUserRequest {
     }
 
     public interface ForeignIdStage {
+        /**
+         * <p>The ID used to identify this user in your system. This is a required field and needs to be unique for all users in the group.</p>
+         */
         _FinalStage foreignId(@NotNull String foreignId);
 
         Builder from(EntityGroupUserRequest other);
@@ -134,10 +137,17 @@ public final class EntityGroupUserRequest {
 
         _FinalStage name(String name);
 
+        /**
+         * <p>List of roles to assign to the user. A role can be any string. For example: &quot;payer&quot;, &quot;approver&quot;, &quot;viewer&quot;
+         * If not provided, the user will have no roles. Per entity roles will override these global roles.</p>
+         */
         _FinalStage roles(Optional<List<String>> roles);
 
         _FinalStage roles(List<String> roles);
 
+        /**
+         * <p>List of roles per entity. Useful for assigning roles to specific entities.</p>
+         */
         _FinalStage entities(Optional<List<EntityGroupUserEntityRequest>> entities);
 
         _FinalStage entities(List<EntityGroupUserEntityRequest> entities);
@@ -172,6 +182,7 @@ public final class EntityGroupUserRequest {
 
         /**
          * <p>The ID used to identify this user in your system. This is a required field and needs to be unique for all users in the group.</p>
+         * <p>The ID used to identify this user in your system. This is a required field and needs to be unique for all users in the group.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -191,6 +202,9 @@ public final class EntityGroupUserRequest {
             return this;
         }
 
+        /**
+         * <p>List of roles per entity. Useful for assigning roles to specific entities.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "entities", nulls = Nulls.SKIP)
         public _FinalStage entities(Optional<List<EntityGroupUserEntityRequest>> entities) {
@@ -209,6 +223,10 @@ public final class EntityGroupUserRequest {
             return this;
         }
 
+        /**
+         * <p>List of roles to assign to the user. A role can be any string. For example: &quot;payer&quot;, &quot;approver&quot;, &quot;viewer&quot;
+         * If not provided, the user will have no roles. Per entity roles will override these global roles.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "roles", nulls = Nulls.SKIP)
         public _FinalStage roles(Optional<List<String>> roles) {

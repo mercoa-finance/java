@@ -99,6 +99,9 @@ public final class EntityAddPayorsRequest {
             return this;
         }
 
+        /**
+         * <p>List of payor entity IDs or foreign IDs to associate with the entity</p>
+         */
         @JsonSetter(value = "payors", nulls = Nulls.SKIP)
         public Builder payors(List<String> payors) {
             this.payors.clear();
@@ -116,6 +119,9 @@ public final class EntityAddPayorsRequest {
             return this;
         }
 
+        /**
+         * <p>List of customizations to apply to the payors. If the payor is not currently a counterparty of the entity, the counterparty will be created with the provided customizations.</p>
+         */
         @JsonSetter(value = "customizations", nulls = Nulls.SKIP)
         public Builder customizations(Optional<List<CounterpartyCustomizationRequest>> customizations) {
             this.customizations = customizations;

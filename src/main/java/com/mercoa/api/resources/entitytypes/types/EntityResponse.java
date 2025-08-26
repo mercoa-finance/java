@@ -45,6 +45,10 @@ public final class EntityResponse implements IEntityResponse {
 
     private final EntityStatus status;
 
+    private final Optional<String> oatfiStatus;
+
+    private final Optional<Map<String, String>> oatfiUnderwritingResponse;
+
     private final boolean acceptedTos;
 
     private final boolean isPayor;
@@ -75,6 +79,8 @@ public final class EntityResponse implements IEntityResponse {
             ProfileResponse profile,
             Optional<String> logo,
             EntityStatus status,
+            Optional<String> oatfiStatus,
+            Optional<Map<String, String>> oatfiUnderwritingResponse,
             boolean acceptedTos,
             boolean isPayor,
             boolean isPayee,
@@ -95,6 +101,8 @@ public final class EntityResponse implements IEntityResponse {
         this.profile = profile;
         this.logo = logo;
         this.status = status;
+        this.oatfiStatus = oatfiStatus;
+        this.oatfiUnderwritingResponse = oatfiUnderwritingResponse;
         this.acceptedTos = acceptedTos;
         this.isPayor = isPayor;
         this.isPayee = isPayee;
@@ -188,6 +196,24 @@ public final class EntityResponse implements IEntityResponse {
     }
 
     /**
+     * @return The OatFi status of this entity
+     */
+    @JsonProperty("oatfiStatus")
+    @java.lang.Override
+    public Optional<String> getOatfiStatus() {
+        return oatfiStatus;
+    }
+
+    /**
+     * @return The OatFi underwriting response of this entity
+     */
+    @JsonProperty("oatfiUnderwritingResponse")
+    @java.lang.Override
+    public Optional<Map<String, String>> getOatfiUnderwritingResponse() {
+        return oatfiUnderwritingResponse;
+    }
+
+    /**
      * @return True if this entity has accepted the terms of service.
      */
     @JsonProperty("acceptedTos")
@@ -276,6 +302,8 @@ public final class EntityResponse implements IEntityResponse {
                 && profile.equals(other.profile)
                 && logo.equals(other.logo)
                 && status.equals(other.status)
+                && oatfiStatus.equals(other.oatfiStatus)
+                && oatfiUnderwritingResponse.equals(other.oatfiUnderwritingResponse)
                 && acceptedTos == other.acceptedTos
                 && isPayor == other.isPayor
                 && isPayee == other.isPayee
@@ -300,6 +328,8 @@ public final class EntityResponse implements IEntityResponse {
                 this.profile,
                 this.logo,
                 this.status,
+                this.oatfiStatus,
+                this.oatfiUnderwritingResponse,
                 this.acceptedTos,
                 this.isPayor,
                 this.isPayee,
@@ -334,6 +364,9 @@ public final class EntityResponse implements IEntityResponse {
     }
 
     public interface IsCustomerStage {
+        /**
+         * <p>True if this entity has a direct relationship with your organization.</p>
+         */
         AccountTypeStage isCustomer(boolean isCustomer);
     }
 
@@ -350,22 +383,37 @@ public final class EntityResponse implements IEntityResponse {
     }
 
     public interface AcceptedTosStage {
+        /**
+         * <p>True if this entity has accepted the terms of service.</p>
+         */
         IsPayorStage acceptedTos(boolean acceptedTos);
     }
 
     public interface IsPayorStage {
+        /**
+         * <p>True if this entity can pay invoices.</p>
+         */
         IsPayeeStage isPayor(boolean isPayor);
     }
 
     public interface IsPayeeStage {
+        /**
+         * <p>True if this entity can receive payments.</p>
+         */
         IsNetworkPayorStage isPayee(boolean isPayee);
     }
 
     public interface IsNetworkPayorStage {
+        /**
+         * <p>True if this entity is available as a payor to any entity on your platform. Otherwise this entity will only be available as a payor to entities that have a direct relationship with this entity.</p>
+         */
         IsNetworkPayeeStage isNetworkPayor(boolean isNetworkPayor);
     }
 
     public interface IsNetworkPayeeStage {
+        /**
+         * <p>True if this entity is available as a payee to any entity on your platform. Otherwise this entity will only be available as a payee to entities that have a direct relationship with this entity.</p>
+         */
         CreatedAtStage isNetworkPayee(boolean isNetworkPayee);
     }
 
@@ -380,22 +428,51 @@ public final class EntityResponse implements IEntityResponse {
     public interface _FinalStage {
         EntityResponse build();
 
+        /**
+         * <p>The ID used to identify this entity in your system</p>
+         */
         _FinalStage foreignId(Optional<String> foreignId);
 
         _FinalStage foreignId(String foreignId);
 
+        /**
+         * <p>Local-part/username of the email address to which to send invoices to be added to the Invoice Inbox.</p>
+         */
         _FinalStage emailTo(Optional<String> emailTo);
 
         _FinalStage emailTo(String emailTo);
 
+        /**
+         * <p>Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias.</p>
+         */
         _FinalStage emailToAlias(Optional<List<String>> emailToAlias);
 
         _FinalStage emailToAlias(List<String> emailToAlias);
 
+        /**
+         * <p>URL for the entity logo</p>
+         */
         _FinalStage logo(Optional<String> logo);
 
         _FinalStage logo(String logo);
 
+        /**
+         * <p>The OatFi status of this entity</p>
+         */
+        _FinalStage oatfiStatus(Optional<String> oatfiStatus);
+
+        _FinalStage oatfiStatus(String oatfiStatus);
+
+        /**
+         * <p>The OatFi underwriting response of this entity</p>
+         */
+        _FinalStage oatfiUnderwritingResponse(Optional<Map<String, String>> oatfiUnderwritingResponse);
+
+        _FinalStage oatfiUnderwritingResponse(Map<String, String> oatfiUnderwritingResponse);
+
+        /**
+         * <p>Simple key/value metadata associated with this entity. For more complex metadata, use the Metadata API.</p>
+         */
         _FinalStage metadata(Optional<Map<String, String>> metadata);
 
         _FinalStage metadata(Map<String, String> metadata);
@@ -448,6 +525,10 @@ public final class EntityResponse implements IEntityResponse {
 
         private Optional<Map<String, String>> metadata = Optional.empty();
 
+        private Optional<Map<String, String>> oatfiUnderwritingResponse = Optional.empty();
+
+        private Optional<String> oatfiStatus = Optional.empty();
+
         private Optional<String> logo = Optional.empty();
 
         private Optional<List<String>> emailToAlias = Optional.empty();
@@ -474,6 +555,8 @@ public final class EntityResponse implements IEntityResponse {
             profile(other.getProfile());
             logo(other.getLogo());
             status(other.getStatus());
+            oatfiStatus(other.getOatfiStatus());
+            oatfiUnderwritingResponse(other.getOatfiUnderwritingResponse());
             acceptedTos(other.getAcceptedTos());
             isPayor(other.getIsPayor());
             isPayee(other.getIsPayee());
@@ -508,6 +591,7 @@ public final class EntityResponse implements IEntityResponse {
 
         /**
          * <p>True if this entity has a direct relationship with your organization.</p>
+         * <p>True if this entity has a direct relationship with your organization.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -540,6 +624,7 @@ public final class EntityResponse implements IEntityResponse {
 
         /**
          * <p>True if this entity has accepted the terms of service.</p>
+         * <p>True if this entity has accepted the terms of service.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -550,6 +635,7 @@ public final class EntityResponse implements IEntityResponse {
         }
 
         /**
+         * <p>True if this entity can pay invoices.</p>
          * <p>True if this entity can pay invoices.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -562,6 +648,7 @@ public final class EntityResponse implements IEntityResponse {
 
         /**
          * <p>True if this entity can receive payments.</p>
+         * <p>True if this entity can receive payments.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -573,6 +660,7 @@ public final class EntityResponse implements IEntityResponse {
 
         /**
          * <p>True if this entity is available as a payor to any entity on your platform. Otherwise this entity will only be available as a payor to entities that have a direct relationship with this entity.</p>
+         * <p>True if this entity is available as a payor to any entity on your platform. Otherwise this entity will only be available as a payor to entities that have a direct relationship with this entity.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -583,6 +671,7 @@ public final class EntityResponse implements IEntityResponse {
         }
 
         /**
+         * <p>True if this entity is available as a payee to any entity on your platform. Otherwise this entity will only be available as a payee to entities that have a direct relationship with this entity.</p>
          * <p>True if this entity is available as a payee to any entity on your platform. Otherwise this entity will only be available as a payee to entities that have a direct relationship with this entity.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -617,10 +706,53 @@ public final class EntityResponse implements IEntityResponse {
             return this;
         }
 
+        /**
+         * <p>Simple key/value metadata associated with this entity. For more complex metadata, use the Metadata API.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public _FinalStage metadata(Optional<Map<String, String>> metadata) {
             this.metadata = metadata;
+            return this;
+        }
+
+        /**
+         * <p>The OatFi underwriting response of this entity</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage oatfiUnderwritingResponse(Map<String, String> oatfiUnderwritingResponse) {
+            this.oatfiUnderwritingResponse = Optional.ofNullable(oatfiUnderwritingResponse);
+            return this;
+        }
+
+        /**
+         * <p>The OatFi underwriting response of this entity</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "oatfiUnderwritingResponse", nulls = Nulls.SKIP)
+        public _FinalStage oatfiUnderwritingResponse(Optional<Map<String, String>> oatfiUnderwritingResponse) {
+            this.oatfiUnderwritingResponse = oatfiUnderwritingResponse;
+            return this;
+        }
+
+        /**
+         * <p>The OatFi status of this entity</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage oatfiStatus(String oatfiStatus) {
+            this.oatfiStatus = Optional.ofNullable(oatfiStatus);
+            return this;
+        }
+
+        /**
+         * <p>The OatFi status of this entity</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "oatfiStatus", nulls = Nulls.SKIP)
+        public _FinalStage oatfiStatus(Optional<String> oatfiStatus) {
+            this.oatfiStatus = oatfiStatus;
             return this;
         }
 
@@ -634,6 +766,9 @@ public final class EntityResponse implements IEntityResponse {
             return this;
         }
 
+        /**
+         * <p>URL for the entity logo</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "logo", nulls = Nulls.SKIP)
         public _FinalStage logo(Optional<String> logo) {
@@ -651,6 +786,9 @@ public final class EntityResponse implements IEntityResponse {
             return this;
         }
 
+        /**
+         * <p>Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "emailToAlias", nulls = Nulls.SKIP)
         public _FinalStage emailToAlias(Optional<List<String>> emailToAlias) {
@@ -668,6 +806,9 @@ public final class EntityResponse implements IEntityResponse {
             return this;
         }
 
+        /**
+         * <p>Local-part/username of the email address to which to send invoices to be added to the Invoice Inbox.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "emailTo", nulls = Nulls.SKIP)
         public _FinalStage emailTo(Optional<String> emailTo) {
@@ -685,6 +826,9 @@ public final class EntityResponse implements IEntityResponse {
             return this;
         }
 
+        /**
+         * <p>The ID used to identify this entity in your system</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
         public _FinalStage foreignId(Optional<String> foreignId) {
@@ -706,6 +850,8 @@ public final class EntityResponse implements IEntityResponse {
                     profile,
                     logo,
                     status,
+                    oatfiStatus,
+                    oatfiUnderwritingResponse,
                     acceptedTos,
                     isPayor,
                     isPayee,

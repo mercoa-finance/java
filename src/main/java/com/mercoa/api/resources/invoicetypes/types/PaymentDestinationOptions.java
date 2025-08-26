@@ -38,6 +38,10 @@ public final class PaymentDestinationOptions {
         return new PaymentDestinationOptions(new UtilityValue(value));
     }
 
+    public static PaymentDestinationOptions custom(CustomPaymentDestinationOptions value) {
+        return new PaymentDestinationOptions(new CustomValue(value));
+    }
+
     public boolean isCheck() {
         return value instanceof CheckValue;
     }
@@ -48,6 +52,10 @@ public final class PaymentDestinationOptions {
 
     public boolean isUtility() {
         return value instanceof UtilityValue;
+    }
+
+    public boolean isCustom() {
+        return value instanceof CustomValue;
     }
 
     public boolean _isUnknown() {
@@ -75,6 +83,13 @@ public final class PaymentDestinationOptions {
         return Optional.empty();
     }
 
+    public Optional<CustomPaymentDestinationOptions> getCustom() {
+        if (isCustom()) {
+            return Optional.of(((CustomValue) value).value);
+        }
+        return Optional.empty();
+    }
+
     public Optional<Object> _getUnknown() {
         if (_isUnknown()) {
             return Optional.of(((_UnknownValue) value).value);
@@ -94,6 +109,8 @@ public final class PaymentDestinationOptions {
 
         T visitUtility(UtilityPaymentDestinationOptions utility);
 
+        T visitCustom(CustomPaymentDestinationOptions custom);
+
         T _visitUnknown(Object unknownType);
     }
 
@@ -101,7 +118,8 @@ public final class PaymentDestinationOptions {
     @JsonSubTypes({
         @JsonSubTypes.Type(CheckValue.class),
         @JsonSubTypes.Type(BankAccountValue.class),
-        @JsonSubTypes.Type(UtilityValue.class)
+        @JsonSubTypes.Type(UtilityValue.class),
+        @JsonSubTypes.Type(CustomValue.class)
     })
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
@@ -211,6 +229,45 @@ public final class PaymentDestinationOptions {
         }
 
         private boolean equalTo(UtilityValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "PaymentDestinationOptions{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("custom")
+    @JsonIgnoreProperties("type")
+    private static final class CustomValue implements Value {
+        @JsonUnwrapped
+        private CustomPaymentDestinationOptions value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private CustomValue() {}
+
+        private CustomValue(CustomPaymentDestinationOptions value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitCustom(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof CustomValue && equalTo((CustomValue) other);
+        }
+
+        private boolean equalTo(CustomValue other) {
             return value.equals(other.value);
         }
 

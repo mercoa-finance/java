@@ -88,12 +88,18 @@ public final class FindEntityGroupUserResponse {
     }
 
     public interface CountStage {
+        /**
+         * <p>Total number of users for the given filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.</p>
+         */
         HasMoreStage count(int count);
 
         Builder from(FindEntityGroupUserResponse other);
     }
 
     public interface HasMoreStage {
+        /**
+         * <p>True if there are more users available for the given filters.</p>
+         */
         _FinalStage hasMore(boolean hasMore);
     }
 
@@ -130,6 +136,7 @@ public final class FindEntityGroupUserResponse {
 
         /**
          * <p>Total number of users for the given filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.</p>
+         * <p>Total number of users for the given filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -140,6 +147,7 @@ public final class FindEntityGroupUserResponse {
         }
 
         /**
+         * <p>True if there are more users available for the given filters.</p>
          * <p>True if there are more users available for the given filters.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

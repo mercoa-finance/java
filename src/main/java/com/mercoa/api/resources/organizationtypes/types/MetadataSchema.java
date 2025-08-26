@@ -191,22 +191,37 @@ public final class MetadataSchema {
 
         _FinalStage description(String description);
 
+        /**
+         * <p>Whether or not this field should be shown on line items. If true, this field will be shown on each line item. If false, the field will be shown on the invoice level. Defaults to false.</p>
+         */
         _FinalStage lineItem(Optional<Boolean> lineItem);
 
         _FinalStage lineItem(Boolean lineItem);
 
+        /**
+         * <p>Whether or not multiple values are allowed for this field. Defaults to false. If true, the value will be a list of the specified type.</p>
+         */
         _FinalStage allowMultiple(Optional<Boolean> allowMultiple);
 
         _FinalStage allowMultiple(Boolean allowMultiple);
 
+        /**
+         * <p>Validation rules are currently only supported for STRING types.</p>
+         */
         _FinalStage validationRules(Optional<MetadataValidationRule> validationRules);
 
         _FinalStage validationRules(MetadataValidationRule validationRules);
 
+        /**
+         * <p>A list of conditional rules that determine whether or not this field should be shown. The field will only be shown if all of the conditions are met. If no conditions are specified, the field will always be shown.</p>
+         */
         _FinalStage showConditions(Optional<MetadataShowConditions> showConditions);
 
         _FinalStage showConditions(MetadataShowConditions showConditions);
 
+        /**
+         * <p>A collection of rules that determine how this field is populated during OCR.</p>
+         */
         _FinalStage ocrRules(Optional<MetadataOcrRules> ocrRules);
 
         _FinalStage ocrRules(MetadataOcrRules ocrRules);
@@ -282,6 +297,9 @@ public final class MetadataSchema {
             return this;
         }
 
+        /**
+         * <p>A collection of rules that determine how this field is populated during OCR.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "ocrRules", nulls = Nulls.SKIP)
         public _FinalStage ocrRules(Optional<MetadataOcrRules> ocrRules) {
@@ -299,6 +317,9 @@ public final class MetadataSchema {
             return this;
         }
 
+        /**
+         * <p>A list of conditional rules that determine whether or not this field should be shown. The field will only be shown if all of the conditions are met. If no conditions are specified, the field will always be shown.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "showConditions", nulls = Nulls.SKIP)
         public _FinalStage showConditions(Optional<MetadataShowConditions> showConditions) {
@@ -316,6 +337,9 @@ public final class MetadataSchema {
             return this;
         }
 
+        /**
+         * <p>Validation rules are currently only supported for STRING types.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "validationRules", nulls = Nulls.SKIP)
         public _FinalStage validationRules(Optional<MetadataValidationRule> validationRules) {
@@ -333,6 +357,9 @@ public final class MetadataSchema {
             return this;
         }
 
+        /**
+         * <p>Whether or not multiple values are allowed for this field. Defaults to false. If true, the value will be a list of the specified type.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "allowMultiple", nulls = Nulls.SKIP)
         public _FinalStage allowMultiple(Optional<Boolean> allowMultiple) {
@@ -350,6 +377,9 @@ public final class MetadataSchema {
             return this;
         }
 
+        /**
+         * <p>Whether or not this field should be shown on line items. If true, this field will be shown on each line item. If false, the field will be shown on the invoice level. Defaults to false.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "lineItem", nulls = Nulls.SKIP)
         public _FinalStage lineItem(Optional<Boolean> lineItem) {

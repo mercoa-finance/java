@@ -3,75 +3,41 @@
  */
 package com.mercoa.api.resources.entity.externalaccountingsystem;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.entity.externalaccountingsystem.requests.SyncExternalSystemRequest;
 import com.mercoa.api.resources.entity.externalaccountingsystem.types.ExternalAccountingSystemCompanyCreationRequest;
 import com.mercoa.api.resources.entity.externalaccountingsystem.types.ExternalAccountingSystemCompanyResponse;
-import java.io.IOException;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class ExternalAccountingSystemClient {
     protected final ClientOptions clientOptions;
 
+    private final RawExternalAccountingSystemClient rawClient;
+
     public ExternalAccountingSystemClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new RawExternalAccountingSystemClient(clientOptions);
+    }
+
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public RawExternalAccountingSystemClient withRawResponse() {
+        return this.rawClient;
     }
 
     /**
      * Get the external accounting system connected to an entity
      */
     public ExternalAccountingSystemCompanyResponse get(String entityId) {
-        return get(entityId, null);
+        return this.rawClient.get(entityId).body();
     }
 
     /**
      * Get the external accounting system connected to an entity
      */
     public ExternalAccountingSystemCompanyResponse get(String entityId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("external-accounting-system")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(
-                        responseBody.string(), ExternalAccountingSystemCompanyResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.get(entityId, requestOptions).body();
     }
 
     /**
@@ -79,7 +45,7 @@ public class ExternalAccountingSystemClient {
      */
     public ExternalAccountingSystemCompanyResponse create(
             String entityId, ExternalAccountingSystemCompanyCreationRequest request) {
-        return create(entityId, request, null);
+        return this.rawClient.create(entityId, request).body();
     }
 
     /**
@@ -87,146 +53,41 @@ public class ExternalAccountingSystemClient {
      */
     public ExternalAccountingSystemCompanyResponse create(
             String entityId, ExternalAccountingSystemCompanyCreationRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("external-accounting-system/create")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(
-                        responseBody.string(), ExternalAccountingSystemCompanyResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.create(entityId, request, requestOptions).body();
     }
 
     /**
      * Get a link to connect an entity to an external accounting system like Quickbooks or Xero
      */
     public String connect(String entityId) {
-        return connect(entityId, null);
+        return this.rawClient.connect(entityId).body();
     }
 
     /**
      * Get a link to connect an entity to an external accounting system like Quickbooks or Xero
      */
     public String connect(String entityId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("external-accounting-system/connect")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.connect(entityId, requestOptions).body();
     }
 
     /**
      * Sync an entity with an external accounting system. Will sync customers/vendors and invoices.
      */
     public void sync(String entityId) {
-        sync(entityId, SyncExternalSystemRequest.builder().build());
+        this.rawClient.sync(entityId).body();
     }
 
     /**
      * Sync an entity with an external accounting system. Will sync customers/vendors and invoices.
      */
     public void sync(String entityId, SyncExternalSystemRequest request) {
-        sync(entityId, request, null);
+        this.rawClient.sync(entityId, request).body();
     }
 
     /**
      * Sync an entity with an external accounting system. Will sync customers/vendors and invoices.
      */
     public void sync(String entityId, SyncExternalSystemRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("external-accounting-system/sync");
-        if (request.getVendors().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "vendors", request.getVendors().get().toString(), false);
-        }
-        if (request.getBills().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "bills", request.getBills().get().toString(), false);
-        }
-        if (request.getGlAccounts().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "glAccounts", request.getGlAccounts().get().toString(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return;
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        this.rawClient.sync(entityId, request, requestOptions).body();
     }
 }

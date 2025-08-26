@@ -148,6 +148,9 @@ public final class InvoiceMetricsPerDateResponse {
     public interface _FinalStage {
         InvoiceMetricsPerDateResponse build();
 
+        /**
+         * <p>If groupBy is provided, this will be the group by value.</p>
+         */
         _FinalStage group(Optional<List<Map<String, String>>> group);
 
         _FinalStage group(List<Map<String, String>> group);
@@ -229,6 +232,9 @@ public final class InvoiceMetricsPerDateResponse {
             return this;
         }
 
+        /**
+         * <p>If groupBy is provided, this will be the group by value.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "group", nulls = Nulls.SKIP)
         public _FinalStage group(Optional<List<Map<String, String>>> group) {

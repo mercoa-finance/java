@@ -3,46 +3,40 @@
  */
 package com.mercoa.api.resources.invoice.lineitem;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceLineItemIndividualUpdateRequest;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
-import java.io.IOException;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class LineItemClient {
     protected final ClientOptions clientOptions;
 
+    private final RawLineItemClient rawClient;
+
     public LineItemClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new RawLineItemClient(clientOptions);
+    }
+
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public RawLineItemClient withRawResponse() {
+        return this.rawClient;
     }
 
     /**
      * Update invoice line item
      */
     public InvoiceResponse update(String invoiceId, String lineItemId) {
-        return update(
-                invoiceId,
-                lineItemId,
-                InvoiceLineItemIndividualUpdateRequest.builder().build());
+        return this.rawClient.update(invoiceId, lineItemId).body();
     }
 
     /**
      * Update invoice line item
      */
     public InvoiceResponse update(String invoiceId, String lineItemId, InvoiceLineItemIndividualUpdateRequest request) {
-        return update(invoiceId, lineItemId, request, null);
+        return this.rawClient.update(invoiceId, lineItemId, request).body();
     }
 
     /**
@@ -53,43 +47,8 @@ public class LineItemClient {
             String lineItemId,
             InvoiceLineItemIndividualUpdateRequest request,
             RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("invoice")
-                .addPathSegment(invoiceId)
-                .addPathSegments("line-item")
-                .addPathSegment(lineItemId)
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("PUT", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), InvoiceResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient
+                .update(invoiceId, lineItemId, request, requestOptions)
+                .body();
     }
 }

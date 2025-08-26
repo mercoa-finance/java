@@ -155,6 +155,9 @@ public final class BankAccountCheckOptions {
     }
 
     public interface SignatoryNameStage {
+        /**
+         * <p>Name of the person who's signature will be printed on the check.</p>
+         */
         _FinalStage signatoryName(@NotNull String signatoryName);
 
         Builder from(BankAccountCheckOptions other);
@@ -163,26 +166,44 @@ public final class BankAccountCheckOptions {
     public interface _FinalStage {
         BankAccountCheckOptions build();
 
+        /**
+         * <p>If true, will allow the user to print checks from this bank account</p>
+         */
         _FinalStage enabled(Optional<Boolean> enabled);
 
         _FinalStage enabled(Boolean enabled);
 
+        /**
+         * <p>If provided, will start the check number sequence at the provided number. If not provided, will start at 5000.</p>
+         */
         _FinalStage initialCheckNumber(Optional<Integer> initialCheckNumber);
 
         _FinalStage initialCheckNumber(Integer initialCheckNumber);
 
+        /**
+         * <p>If provided, will print a check with the provided routing number instead of the one from the bank account</p>
+         */
         _FinalStage routingNumberOverride(Optional<String> routingNumberOverride);
 
         _FinalStage routingNumberOverride(String routingNumberOverride);
 
+        /**
+         * <p>If provided, will print a check with the provided account number instead of the one from the bank account</p>
+         */
         _FinalStage accountNumberOverride(Optional<String> accountNumberOverride);
 
         _FinalStage accountNumberOverride(String accountNumberOverride);
 
+        /**
+         * <p>Base64 encoded image of the signature. If not provided, will use the signatoryName to generate a signature. Mercoa will automatically grayscale, resize, and convert the image to a PNG the image to fit on the check.</p>
+         */
         _FinalStage signatureImage(Optional<String> signatureImage);
 
         _FinalStage signatureImage(String signatureImage);
 
+        /**
+         * <p>If true, will print checks with the provided signatureImage. If false, will print checks with a generated signature from the signatoryName. If this parameter is not set the default behavior is to use the signatureImage if provided.</p>
+         */
         _FinalStage useSignatureImage(Optional<Boolean> useSignatureImage);
 
         _FinalStage useSignatureImage(Boolean useSignatureImage);
@@ -223,6 +244,7 @@ public final class BankAccountCheckOptions {
 
         /**
          * <p>Name of the person who's signature will be printed on the check.</p>
+         * <p>Name of the person who's signature will be printed on the check.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -242,6 +264,9 @@ public final class BankAccountCheckOptions {
             return this;
         }
 
+        /**
+         * <p>If true, will print checks with the provided signatureImage. If false, will print checks with a generated signature from the signatoryName. If this parameter is not set the default behavior is to use the signatureImage if provided.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "useSignatureImage", nulls = Nulls.SKIP)
         public _FinalStage useSignatureImage(Optional<Boolean> useSignatureImage) {
@@ -259,6 +284,9 @@ public final class BankAccountCheckOptions {
             return this;
         }
 
+        /**
+         * <p>Base64 encoded image of the signature. If not provided, will use the signatoryName to generate a signature. Mercoa will automatically grayscale, resize, and convert the image to a PNG the image to fit on the check.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "signatureImage", nulls = Nulls.SKIP)
         public _FinalStage signatureImage(Optional<String> signatureImage) {
@@ -276,6 +304,9 @@ public final class BankAccountCheckOptions {
             return this;
         }
 
+        /**
+         * <p>If provided, will print a check with the provided account number instead of the one from the bank account</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "accountNumberOverride", nulls = Nulls.SKIP)
         public _FinalStage accountNumberOverride(Optional<String> accountNumberOverride) {
@@ -293,6 +324,9 @@ public final class BankAccountCheckOptions {
             return this;
         }
 
+        /**
+         * <p>If provided, will print a check with the provided routing number instead of the one from the bank account</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "routingNumberOverride", nulls = Nulls.SKIP)
         public _FinalStage routingNumberOverride(Optional<String> routingNumberOverride) {
@@ -310,6 +344,9 @@ public final class BankAccountCheckOptions {
             return this;
         }
 
+        /**
+         * <p>If provided, will start the check number sequence at the provided number. If not provided, will start at 5000.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "initialCheckNumber", nulls = Nulls.SKIP)
         public _FinalStage initialCheckNumber(Optional<Integer> initialCheckNumber) {
@@ -327,6 +364,9 @@ public final class BankAccountCheckOptions {
             return this;
         }
 
+        /**
+         * <p>If true, will allow the user to print checks from this bank account</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "enabled", nulls = Nulls.SKIP)
         public _FinalStage enabled(Optional<Boolean> enabled) {

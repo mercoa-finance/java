@@ -3,38 +3,24 @@
  */
 package com.mercoa.api.resources.entity.user;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.entity.user.notificationpolicy.AsyncNotificationPolicyClient;
 import com.mercoa.api.resources.entity.user.notifications.AsyncNotificationsClient;
 import com.mercoa.api.resources.entity.user.requests.EntityFindEntityRequest;
+import com.mercoa.api.resources.entity.user.requests.EntityFindOldEntityRequest;
 import com.mercoa.api.resources.entitytypes.types.EntityUserRequest;
 import com.mercoa.api.resources.entitytypes.types.EntityUserResponse;
 import com.mercoa.api.resources.entitytypes.types.FindEntityUserResponse;
 import com.mercoa.api.resources.entitytypes.types.TokenGenerationOptions;
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import org.jetbrains.annotations.NotNull;
 
 public class AsyncUserClient {
     protected final ClientOptions clientOptions;
+
+    private final AsyncRawUserClient rawClient;
 
     protected final Supplier<AsyncNotificationPolicyClient> notificationPolicyClient;
 
@@ -42,22 +28,30 @@ public class AsyncUserClient {
 
     public AsyncUserClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new AsyncRawUserClient(clientOptions);
         this.notificationPolicyClient = Suppliers.memoize(() -> new AsyncNotificationPolicyClient(clientOptions));
         this.notificationsClient = Suppliers.memoize(() -> new AsyncNotificationsClient(clientOptions));
+    }
+
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public AsyncRawUserClient withRawResponse() {
+        return this.rawClient;
     }
 
     /**
      * Search entity users
      */
     public CompletableFuture<FindEntityUserResponse> find(String entityId) {
-        return find(entityId, EntityFindEntityRequest.builder().build());
+        return this.rawClient.find(entityId).thenApply(response -> response.body());
     }
 
     /**
      * Search entity users
      */
     public CompletableFuture<FindEntityUserResponse> find(String entityId, EntityFindEntityRequest request) {
-        return find(entityId, request, null);
+        return this.rawClient.find(entityId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -65,208 +59,70 @@ public class AsyncUserClient {
      */
     public CompletableFuture<FindEntityUserResponse> find(
             String entityId, EntityFindEntityRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("users");
-        if (request.getForeignId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "foreignId", request.getForeignId().get(), false);
-        }
-        if (request.getRole().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "role", request.getRole().get(), false);
-        }
-        if (request.getName().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "name", request.getName().get(), false);
-        }
-        if (request.getEmail().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "email", request.getEmail().get(), false);
-        }
-        if (request.getLimit().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "limit", request.getLimit().get().toString(), false);
-        }
-        if (request.getStartingAfter().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<FindEntityUserResponse> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(ObjectMappers.JSON_MAPPER.readValue(
-                                responseBody.string(), FindEntityUserResponse.class));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
+        return this.rawClient.find(entityId, request, requestOptions).thenApply(response -> response.body());
+    }
 
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+    /**
+     * Search entity users
+     */
+    public CompletableFuture<FindEntityUserResponse> findOld(String entityId) {
+        return this.rawClient.findOld(entityId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Search entity users
+     */
+    public CompletableFuture<FindEntityUserResponse> findOld(String entityId, EntityFindOldEntityRequest request) {
+        return this.rawClient.findOld(entityId, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Search entity users
+     */
+    public CompletableFuture<FindEntityUserResponse> findOld(
+            String entityId, EntityFindOldEntityRequest request, RequestOptions requestOptions) {
+        return this.rawClient.findOld(entityId, request, requestOptions).thenApply(response -> response.body());
     }
 
     public CompletableFuture<EntityUserResponse> create(String entityId) {
-        return create(entityId, EntityUserRequest.builder().build());
+        return this.rawClient.create(entityId).thenApply(response -> response.body());
     }
 
     public CompletableFuture<EntityUserResponse> create(String entityId, EntityUserRequest request) {
-        return create(entityId, request, null);
+        return this.rawClient.create(entityId, request).thenApply(response -> response.body());
     }
 
     public CompletableFuture<EntityUserResponse> create(
             String entityId, EntityUserRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("user")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<EntityUserResponse> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityUserResponse.class));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.create(entityId, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Get entity user
      */
     public CompletableFuture<EntityUserResponse> get(String entityId, String userId) {
-        return get(entityId, userId, null);
+        return this.rawClient.get(entityId, userId).thenApply(response -> response.body());
     }
 
     /**
      * Get entity user
      */
     public CompletableFuture<EntityUserResponse> get(String entityId, String userId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("user")
-                .addPathSegment(userId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<EntityUserResponse> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityUserResponse.class));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.get(entityId, userId, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Update entity user
      */
     public CompletableFuture<EntityUserResponse> update(String entityId, String userId) {
-        return update(entityId, userId, EntityUserRequest.builder().build());
+        return this.rawClient.update(entityId, userId).thenApply(response -> response.body());
     }
 
     /**
      * Update entity user
      */
     public CompletableFuture<EntityUserResponse> update(String entityId, String userId, EntityUserRequest request) {
-        return update(entityId, userId, request, null);
+        return this.rawClient.update(entityId, userId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -274,128 +130,49 @@ public class AsyncUserClient {
      */
     public CompletableFuture<EntityUserResponse> update(
             String entityId, String userId, EntityUserRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("user")
-                .addPathSegment(userId)
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<EntityUserResponse> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityUserResponse.class));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.update(entityId, userId, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Delete entity user. This will also remove the user from all approval policies. If an approval policy will break as a result of this operation, this request will fail.
      */
     public CompletableFuture<Void> delete(String entityId, String userId) {
-        return delete(entityId, userId, null);
+        return this.rawClient.delete(entityId, userId).thenApply(response -> response.body());
     }
 
     /**
      * Delete entity user. This will also remove the user from all approval policies. If an approval policy will break as a result of this operation, this request will fail.
      */
     public CompletableFuture<Void> delete(String entityId, String userId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("user")
-                .addPathSegment(userId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("DELETE", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(null);
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
+        return this.rawClient.delete(entityId, userId, requestOptions).thenApply(response -> response.body());
+    }
 
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+    /**
+     * Get JWT token for entity user
+     */
+    public CompletableFuture<String> getNoOptionToken(String entityId, String userId) {
+        return this.rawClient.getNoOptionToken(entityId, userId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Get JWT token for entity user
+     */
+    public CompletableFuture<String> getNoOptionToken(String entityId, String userId, RequestOptions requestOptions) {
+        return this.rawClient.getNoOptionToken(entityId, userId, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Generate a JWT token for an entity user with the given options. This token can be used to authenticate the entity and entity user in the Mercoa API and iFrame.
      */
     public CompletableFuture<String> getToken(String entityId, String userId) {
-        return getToken(entityId, userId, TokenGenerationOptions.builder().build());
+        return this.rawClient.getToken(entityId, userId).thenApply(response -> response.body());
     }
 
     /**
      * Generate a JWT token for an entity user with the given options. This token can be used to authenticate the entity and entity user in the Mercoa API and iFrame.
      */
     public CompletableFuture<String> getToken(String entityId, String userId, TokenGenerationOptions request) {
-        return getToken(entityId, userId, request, null);
+        return this.rawClient.getToken(entityId, userId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -403,58 +180,9 @@ public class AsyncUserClient {
      */
     public CompletableFuture<String> getToken(
             String entityId, String userId, TokenGenerationOptions request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("user")
-                .addPathSegment(userId)
-                .addPathSegments("token")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<String> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient
+                .getToken(entityId, userId, request, requestOptions)
+                .thenApply(response -> response.body());
     }
 
     public AsyncNotificationPolicyClient notificationPolicy() {

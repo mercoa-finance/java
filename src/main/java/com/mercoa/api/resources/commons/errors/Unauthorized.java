@@ -4,6 +4,7 @@
 package com.mercoa.api.resources.commons.errors;
 
 import com.mercoa.api.core.MercoaApiException;
+import okhttp3.Response;
 
 public final class Unauthorized extends MercoaApiException {
     /**
@@ -13,6 +14,11 @@ public final class Unauthorized extends MercoaApiException {
 
     public Unauthorized(String body) {
         super("Unauthorized", 401, body);
+        this.body = body;
+    }
+
+    public Unauthorized(String body, Response rawResponse) {
+        super("Unauthorized", 401, body, rawResponse);
         this.body = body;
     }
 

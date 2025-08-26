@@ -80,6 +80,9 @@ public final class PlaidLinkTokenRequest {
             return this;
         }
 
+        /**
+         * <p>ID of Bank Account to update</p>
+         */
         @JsonSetter(value = "paymentMethodId", nulls = Nulls.SKIP)
         public Builder paymentMethodId(Optional<String> paymentMethodId) {
             this.paymentMethodId = paymentMethodId;

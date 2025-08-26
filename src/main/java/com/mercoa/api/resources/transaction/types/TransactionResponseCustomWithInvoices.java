@@ -340,6 +340,9 @@ public final class TransactionResponseCustomWithInvoices implements ITransaction
 
         _FinalStage fees(InvoiceFeesResponse fees);
 
+        /**
+         * <p>Invoices associated with this transaction</p>
+         */
         _FinalStage invoices(List<InvoiceResponse> invoices);
 
         _FinalStage addInvoices(InvoiceResponse invoices);
@@ -544,6 +547,9 @@ public final class TransactionResponseCustomWithInvoices implements ITransaction
             return this;
         }
 
+        /**
+         * <p>Invoices associated with this transaction</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "invoices", nulls = Nulls.SKIP)
         public _FinalStage invoices(List<InvoiceResponse> invoices) {

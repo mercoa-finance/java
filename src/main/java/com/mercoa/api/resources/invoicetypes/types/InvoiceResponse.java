@@ -31,7 +31,21 @@ import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InvoiceResponse.Builder.class)
-public final class InvoiceResponse implements IInvoiceResponseBase {
+public final class InvoiceResponse implements IInvoiceResponse, IInvoiceResponseBase {
+    private final String id;
+
+    private final Optional<OffsetDateTime> processedAt;
+
+    private final Optional<OffsetDateTime> settlementDate;
+
+    private final Optional<String> foreignId;
+
+    private final Optional<InvoiceFailureType> failureType;
+
+    private final Optional<List<TransactionResponseWithoutInvoices>> transactions;
+
+    private final Optional<List<String>> vendorCreditIds;
+
     private final InvoiceStatus status;
 
     private final Optional<Double> amount;
@@ -63,6 +77,8 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
     private final Optional<PaymentMethodResponse> paymentSource;
 
     private final Optional<String> paymentSourceId;
+
+    private final Optional<PaymentSourceOptions> paymentSourceOptions;
 
     private final Optional<String> vendorId;
 
@@ -112,23 +128,18 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
     private final Optional<String> ocrJobId;
 
-    private final String id;
-
-    private final Optional<OffsetDateTime> processedAt;
-
-    private final Optional<OffsetDateTime> settlementDate;
-
-    private final Optional<String> foreignId;
-
-    private final Optional<InvoiceFailureType> failureType;
-
-    private final Optional<List<TransactionResponseWithoutInvoices>> transactions;
-
-    private final Optional<List<String>> vendorCreditIds;
+    private final Optional<String> recurringTemplateId;
 
     private final Map<String, Object> additionalProperties;
 
     private InvoiceResponse(
+            String id,
+            Optional<OffsetDateTime> processedAt,
+            Optional<OffsetDateTime> settlementDate,
+            Optional<String> foreignId,
+            Optional<InvoiceFailureType> failureType,
+            Optional<List<TransactionResponseWithoutInvoices>> transactions,
+            Optional<List<String>> vendorCreditIds,
             InvoiceStatus status,
             Optional<Double> amount,
             Optional<CurrencyCode> currency,
@@ -145,6 +156,7 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             Optional<CounterpartyResponse> payer,
             Optional<PaymentMethodResponse> paymentSource,
             Optional<String> paymentSourceId,
+            Optional<PaymentSourceOptions> paymentSourceOptions,
             Optional<String> vendorId,
             Optional<CounterpartyResponse> vendor,
             Optional<PaymentMethodResponse> paymentDestination,
@@ -169,14 +181,15 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             Optional<InvoiceFeesResponse> fees,
             Optional<PaymentSchedule> paymentSchedule,
             Optional<String> ocrJobId,
-            String id,
-            Optional<OffsetDateTime> processedAt,
-            Optional<OffsetDateTime> settlementDate,
-            Optional<String> foreignId,
-            Optional<InvoiceFailureType> failureType,
-            Optional<List<TransactionResponseWithoutInvoices>> transactions,
-            Optional<List<String>> vendorCreditIds,
+            Optional<String> recurringTemplateId,
             Map<String, Object> additionalProperties) {
+        this.id = id;
+        this.processedAt = processedAt;
+        this.settlementDate = settlementDate;
+        this.foreignId = foreignId;
+        this.failureType = failureType;
+        this.transactions = transactions;
+        this.vendorCreditIds = vendorCreditIds;
         this.status = status;
         this.amount = amount;
         this.currency = currency;
@@ -193,6 +206,7 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
         this.payer = payer;
         this.paymentSource = paymentSource;
         this.paymentSourceId = paymentSourceId;
+        this.paymentSourceOptions = paymentSourceOptions;
         this.vendorId = vendorId;
         this.vendor = vendor;
         this.paymentDestination = paymentDestination;
@@ -217,14 +231,68 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
         this.fees = fees;
         this.paymentSchedule = paymentSchedule;
         this.ocrJobId = ocrJobId;
-        this.id = id;
-        this.processedAt = processedAt;
-        this.settlementDate = settlementDate;
-        this.foreignId = foreignId;
-        this.failureType = failureType;
-        this.transactions = transactions;
-        this.vendorCreditIds = vendorCreditIds;
+        this.recurringTemplateId = recurringTemplateId;
         this.additionalProperties = additionalProperties;
+    }
+
+    @JsonProperty("id")
+    @java.lang.Override
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @return Date when the invoice payment was processed.
+     */
+    @JsonProperty("processedAt")
+    @java.lang.Override
+    public Optional<OffsetDateTime> getProcessedAt() {
+        return processedAt;
+    }
+
+    /**
+     * @return Date of funds settlement.
+     */
+    @JsonProperty("settlementDate")
+    @java.lang.Override
+    public Optional<OffsetDateTime> getSettlementDate() {
+        return settlementDate;
+    }
+
+    /**
+     * @return The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.
+     */
+    @JsonProperty("foreignId")
+    @java.lang.Override
+    public Optional<String> getForeignId() {
+        return foreignId;
+    }
+
+    /**
+     * @return If the invoice failed to be paid, this field will be populated with the type of failure.
+     */
+    @JsonProperty("failureType")
+    @java.lang.Override
+    public Optional<InvoiceFailureType> getFailureType() {
+        return failureType;
+    }
+
+    /**
+     * @return Transactions associated with this invoice.
+     */
+    @JsonProperty("transactions")
+    @java.lang.Override
+    public Optional<List<TransactionResponseWithoutInvoices>> getTransactions() {
+        return transactions;
+    }
+
+    /**
+     * @return The IDs of the vendor credits that are currently applied to this invoice.
+     */
+    @JsonProperty("vendorCreditIds")
+    @java.lang.Override
+    public Optional<List<String>> getVendorCreditIds() {
+        return vendorCreditIds;
     }
 
     @JsonProperty("status")
@@ -342,6 +410,12 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
     @java.lang.Override
     public Optional<String> getPaymentSourceId() {
         return paymentSourceId;
+    }
+
+    @JsonProperty("paymentSourceOptions")
+    @java.lang.Override
+    public Optional<PaymentSourceOptions> getPaymentSourceOptions() {
+        return paymentSourceOptions;
     }
 
     @JsonProperty("vendorId")
@@ -524,57 +598,13 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
         return ocrJobId;
     }
 
-    @JsonProperty("id")
-    public String getId() {
-        return id;
-    }
-
     /**
-     * @return Date when the invoice payment was processed.
+     * @return ID of the invoice template that created this recurring invoice. Only present if the invoice was created from a recurring template.
      */
-    @JsonProperty("processedAt")
-    public Optional<OffsetDateTime> getProcessedAt() {
-        return processedAt;
-    }
-
-    /**
-     * @return Date of funds settlement.
-     */
-    @JsonProperty("settlementDate")
-    public Optional<OffsetDateTime> getSettlementDate() {
-        return settlementDate;
-    }
-
-    /**
-     * @return The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.
-     */
-    @JsonProperty("foreignId")
-    public Optional<String> getForeignId() {
-        return foreignId;
-    }
-
-    /**
-     * @return If the invoice failed to be paid, this field will be populated with the type of failure.
-     */
-    @JsonProperty("failureType")
-    public Optional<InvoiceFailureType> getFailureType() {
-        return failureType;
-    }
-
-    /**
-     * @return Transactions associated with this invoice.
-     */
-    @JsonProperty("transactions")
-    public Optional<List<TransactionResponseWithoutInvoices>> getTransactions() {
-        return transactions;
-    }
-
-    /**
-     * @return The IDs of the vendor credits that are currently applied to this invoice.
-     */
-    @JsonProperty("vendorCreditIds")
-    public Optional<List<String>> getVendorCreditIds() {
-        return vendorCreditIds;
+    @JsonProperty("recurringTemplateId")
+    @java.lang.Override
+    public Optional<String> getRecurringTemplateId() {
+        return recurringTemplateId;
     }
 
     @java.lang.Override
@@ -589,7 +619,14 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
     }
 
     private boolean equalTo(InvoiceResponse other) {
-        return status.equals(other.status)
+        return id.equals(other.id)
+                && processedAt.equals(other.processedAt)
+                && settlementDate.equals(other.settlementDate)
+                && foreignId.equals(other.foreignId)
+                && failureType.equals(other.failureType)
+                && transactions.equals(other.transactions)
+                && vendorCreditIds.equals(other.vendorCreditIds)
+                && status.equals(other.status)
                 && amount.equals(other.amount)
                 && currency.equals(other.currency)
                 && invoiceDate.equals(other.invoiceDate)
@@ -605,6 +642,7 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
                 && payer.equals(other.payer)
                 && paymentSource.equals(other.paymentSource)
                 && paymentSourceId.equals(other.paymentSourceId)
+                && paymentSourceOptions.equals(other.paymentSourceOptions)
                 && vendorId.equals(other.vendorId)
                 && vendor.equals(other.vendor)
                 && paymentDestination.equals(other.paymentDestination)
@@ -629,18 +667,19 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
                 && fees.equals(other.fees)
                 && paymentSchedule.equals(other.paymentSchedule)
                 && ocrJobId.equals(other.ocrJobId)
-                && id.equals(other.id)
-                && processedAt.equals(other.processedAt)
-                && settlementDate.equals(other.settlementDate)
-                && foreignId.equals(other.foreignId)
-                && failureType.equals(other.failureType)
-                && transactions.equals(other.transactions)
-                && vendorCreditIds.equals(other.vendorCreditIds);
+                && recurringTemplateId.equals(other.recurringTemplateId);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.id,
+                this.processedAt,
+                this.settlementDate,
+                this.foreignId,
+                this.failureType,
+                this.transactions,
+                this.vendorCreditIds,
                 this.status,
                 this.amount,
                 this.currency,
@@ -657,6 +696,7 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
                 this.payer,
                 this.paymentSource,
                 this.paymentSourceId,
+                this.paymentSourceOptions,
                 this.vendorId,
                 this.vendor,
                 this.paymentDestination,
@@ -681,13 +721,7 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
                 this.fees,
                 this.paymentSchedule,
                 this.ocrJobId,
-                this.id,
-                this.processedAt,
-                this.settlementDate,
-                this.foreignId,
-                this.failureType,
-                this.transactions,
-                this.vendorCreditIds);
+                this.recurringTemplateId);
     }
 
     @java.lang.Override
@@ -695,25 +729,38 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
         return ObjectMappers.stringify(this);
     }
 
-    public static StatusStage builder() {
+    public static IdStage builder() {
         return new Builder();
     }
 
-    public interface StatusStage {
-        PaymentDestinationConfirmedStage status(@NotNull InvoiceStatus status);
+    public interface IdStage {
+        StatusStage id(@NotNull String id);
 
         Builder from(InvoiceResponse other);
     }
 
+    public interface StatusStage {
+        PaymentDestinationConfirmedStage status(@NotNull InvoiceStatus status);
+    }
+
     public interface PaymentDestinationConfirmedStage {
+        /**
+         * <p>True if the payment destination has been confirmed by the vendor. False if the payment destination has been set (for example, a check to an address) but has not been confirmed by the vendor.</p>
+         */
         HasDocumentsStage paymentDestinationConfirmed(boolean paymentDestinationConfirmed);
     }
 
     public interface HasDocumentsStage {
+        /**
+         * <p>True if the invoice has documents attached.</p>
+         */
         HasSourceEmailStage hasDocuments(boolean hasDocuments);
     }
 
     public interface HasSourceEmailStage {
+        /**
+         * <p>True if the invoice was created by an incoming email.</p>
+         */
         CreatedAtStage hasSourceEmail(boolean hasSourceEmail);
     }
 
@@ -722,36 +769,92 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
     }
 
     public interface UpdatedAtStage {
-        IdStage updatedAt(@NotNull OffsetDateTime updatedAt);
-    }
-
-    public interface IdStage {
-        _FinalStage id(@NotNull String id);
+        _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
     public interface _FinalStage {
         InvoiceResponse build();
 
+        /**
+         * <p>Date when the invoice payment was processed.</p>
+         */
+        _FinalStage processedAt(Optional<OffsetDateTime> processedAt);
+
+        _FinalStage processedAt(OffsetDateTime processedAt);
+
+        /**
+         * <p>Date of funds settlement.</p>
+         */
+        _FinalStage settlementDate(Optional<OffsetDateTime> settlementDate);
+
+        _FinalStage settlementDate(OffsetDateTime settlementDate);
+
+        /**
+         * <p>The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.</p>
+         */
+        _FinalStage foreignId(Optional<String> foreignId);
+
+        _FinalStage foreignId(String foreignId);
+
+        /**
+         * <p>If the invoice failed to be paid, this field will be populated with the type of failure.</p>
+         */
+        _FinalStage failureType(Optional<InvoiceFailureType> failureType);
+
+        _FinalStage failureType(InvoiceFailureType failureType);
+
+        /**
+         * <p>Transactions associated with this invoice.</p>
+         */
+        _FinalStage transactions(Optional<List<TransactionResponseWithoutInvoices>> transactions);
+
+        _FinalStage transactions(List<TransactionResponseWithoutInvoices> transactions);
+
+        /**
+         * <p>The IDs of the vendor credits that are currently applied to this invoice.</p>
+         */
+        _FinalStage vendorCreditIds(Optional<List<String>> vendorCreditIds);
+
+        _FinalStage vendorCreditIds(List<String> vendorCreditIds);
+
+        /**
+         * <p>Total amount of invoice in major units</p>
+         */
         _FinalStage amount(Optional<Double> amount);
 
         _FinalStage amount(Double amount);
 
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         */
         _FinalStage currency(Optional<CurrencyCode> currency);
 
         _FinalStage currency(CurrencyCode currency);
 
+        /**
+         * <p>Date the invoice was issued.</p>
+         */
         _FinalStage invoiceDate(Optional<OffsetDateTime> invoiceDate);
 
         _FinalStage invoiceDate(OffsetDateTime invoiceDate);
 
+        /**
+         * <p>Initial date when funds are scheduled to be deducted from payer's account. The actual deduction date may differ from this date, and will be reflected in the processedAt field.</p>
+         */
         _FinalStage deductionDate(Optional<OffsetDateTime> deductionDate);
 
         _FinalStage deductionDate(OffsetDateTime deductionDate);
 
+        /**
+         * <p>For invoice templates, this is the date when the next recurring payment will be scheduled.</p>
+         */
         _FinalStage nextDeductionDate(Optional<OffsetDateTime> nextDeductionDate);
 
         _FinalStage nextDeductionDate(OffsetDateTime nextDeductionDate);
 
+        /**
+         * <p>Due date of invoice.</p>
+         */
         _FinalStage dueDate(Optional<OffsetDateTime> dueDate);
 
         _FinalStage dueDate(OffsetDateTime dueDate);
@@ -772,6 +875,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         _FinalStage serviceEndDate(OffsetDateTime serviceEndDate);
 
+        /**
+         * <p>Net terms in days. Must be a positive number.</p>
+         */
         _FinalStage netTerms(Optional<Integer> netTerms);
 
         _FinalStage netTerms(Integer netTerms);
@@ -791,6 +897,10 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
         _FinalStage paymentSourceId(Optional<String> paymentSourceId);
 
         _FinalStage paymentSourceId(String paymentSourceId);
+
+        _FinalStage paymentSourceOptions(Optional<PaymentSourceOptions> paymentSourceOptions);
+
+        _FinalStage paymentSourceOptions(PaymentSourceOptions paymentSourceOptions);
 
         _FinalStage vendorId(Optional<String> vendorId);
 
@@ -816,6 +926,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         _FinalStage paymentTiming(CalculatePaymentTimingResponse paymentTiming);
 
+        /**
+         * <p>If true, this invoice will be paid as a batch payment. Batches are automatically determined by Mercoa based on the payment source, destination, and scheduled payment date.</p>
+         */
         _FinalStage batchPayment(Optional<Boolean> batchPayment);
 
         _FinalStage batchPayment(Boolean batchPayment);
@@ -824,10 +937,16 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         _FinalStage lineItems(List<InvoiceLineItemResponse> lineItems);
 
+        /**
+         * <p>Tax amount for this invoice.</p>
+         */
         _FinalStage taxAmount(Optional<Double> taxAmount);
 
         _FinalStage taxAmount(Double taxAmount);
 
+        /**
+         * <p>Shipping amount for this invoice.</p>
+         */
         _FinalStage shippingAmount(Optional<Double> shippingAmount);
 
         _FinalStage shippingAmount(Double shippingAmount);
@@ -844,16 +963,25 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         _FinalStage addAllApprovalPolicy(List<ApprovalPolicyResponse> approvalPolicy);
 
+        /**
+         * <p>Metadata associated with this invoice.</p>
+         */
         _FinalStage metadata(Map<String, String> metadata);
 
         _FinalStage putAllMetadata(Map<String, String> metadata);
 
         _FinalStage metadata(String key, String value);
 
+        /**
+         * <p>The ID of the entity who created this invoice.</p>
+         */
         _FinalStage creatorEntityId(Optional<String> creatorEntityId);
 
         _FinalStage creatorEntityId(String creatorEntityId);
 
+        /**
+         * <p>Entity user who created this invoice.</p>
+         */
         _FinalStage creatorUser(Optional<EntityUserResponse> creatorUser);
 
         _FinalStage creatorUser(EntityUserResponse creatorUser);
@@ -862,53 +990,47 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         _FinalStage comments(List<CommentResponse> comments);
 
+        /**
+         * <p>Fees associated with this invoice.</p>
+         */
         _FinalStage fees(Optional<InvoiceFeesResponse> fees);
 
         _FinalStage fees(InvoiceFeesResponse fees);
 
+        /**
+         * <p>If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.</p>
+         */
         _FinalStage paymentSchedule(Optional<PaymentSchedule> paymentSchedule);
 
         _FinalStage paymentSchedule(PaymentSchedule paymentSchedule);
 
+        /**
+         * <p>ID of the OCR job that processed this invoice.</p>
+         */
         _FinalStage ocrJobId(Optional<String> ocrJobId);
 
         _FinalStage ocrJobId(String ocrJobId);
 
-        _FinalStage processedAt(Optional<OffsetDateTime> processedAt);
+        /**
+         * <p>ID of the invoice template that created this recurring invoice. Only present if the invoice was created from a recurring template.</p>
+         */
+        _FinalStage recurringTemplateId(Optional<String> recurringTemplateId);
 
-        _FinalStage processedAt(OffsetDateTime processedAt);
-
-        _FinalStage settlementDate(Optional<OffsetDateTime> settlementDate);
-
-        _FinalStage settlementDate(OffsetDateTime settlementDate);
-
-        _FinalStage foreignId(Optional<String> foreignId);
-
-        _FinalStage foreignId(String foreignId);
-
-        _FinalStage failureType(Optional<InvoiceFailureType> failureType);
-
-        _FinalStage failureType(InvoiceFailureType failureType);
-
-        _FinalStage transactions(Optional<List<TransactionResponseWithoutInvoices>> transactions);
-
-        _FinalStage transactions(List<TransactionResponseWithoutInvoices> transactions);
-
-        _FinalStage vendorCreditIds(Optional<List<String>> vendorCreditIds);
-
-        _FinalStage vendorCreditIds(List<String> vendorCreditIds);
+        _FinalStage recurringTemplateId(String recurringTemplateId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements StatusStage,
+            implements IdStage,
+                    StatusStage,
                     PaymentDestinationConfirmedStage,
                     HasDocumentsStage,
                     HasSourceEmailStage,
                     CreatedAtStage,
                     UpdatedAtStage,
-                    IdStage,
                     _FinalStage {
+        private String id;
+
         private InvoiceStatus status;
 
         private boolean paymentDestinationConfirmed;
@@ -921,19 +1043,7 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         private OffsetDateTime updatedAt;
 
-        private String id;
-
-        private Optional<List<String>> vendorCreditIds = Optional.empty();
-
-        private Optional<List<TransactionResponseWithoutInvoices>> transactions = Optional.empty();
-
-        private Optional<InvoiceFailureType> failureType = Optional.empty();
-
-        private Optional<String> foreignId = Optional.empty();
-
-        private Optional<OffsetDateTime> settlementDate = Optional.empty();
-
-        private Optional<OffsetDateTime> processedAt = Optional.empty();
+        private Optional<String> recurringTemplateId = Optional.empty();
 
         private Optional<String> ocrJobId = Optional.empty();
 
@@ -973,6 +1083,8 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         private Optional<String> vendorId = Optional.empty();
 
+        private Optional<PaymentSourceOptions> paymentSourceOptions = Optional.empty();
+
         private Optional<String> paymentSourceId = Optional.empty();
 
         private Optional<PaymentMethodResponse> paymentSource = Optional.empty();
@@ -1003,6 +1115,18 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         private Optional<Double> amount = Optional.empty();
 
+        private Optional<List<String>> vendorCreditIds = Optional.empty();
+
+        private Optional<List<TransactionResponseWithoutInvoices>> transactions = Optional.empty();
+
+        private Optional<InvoiceFailureType> failureType = Optional.empty();
+
+        private Optional<String> foreignId = Optional.empty();
+
+        private Optional<OffsetDateTime> settlementDate = Optional.empty();
+
+        private Optional<OffsetDateTime> processedAt = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -1010,6 +1134,13 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         @java.lang.Override
         public Builder from(InvoiceResponse other) {
+            id(other.getId());
+            processedAt(other.getProcessedAt());
+            settlementDate(other.getSettlementDate());
+            foreignId(other.getForeignId());
+            failureType(other.getFailureType());
+            transactions(other.getTransactions());
+            vendorCreditIds(other.getVendorCreditIds());
             status(other.getStatus());
             amount(other.getAmount());
             currency(other.getCurrency());
@@ -1026,6 +1157,7 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             payer(other.getPayer());
             paymentSource(other.getPaymentSource());
             paymentSourceId(other.getPaymentSourceId());
+            paymentSourceOptions(other.getPaymentSourceOptions());
             vendorId(other.getVendorId());
             vendor(other.getVendor());
             paymentDestination(other.getPaymentDestination());
@@ -1050,13 +1182,14 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             fees(other.getFees());
             paymentSchedule(other.getPaymentSchedule());
             ocrJobId(other.getOcrJobId());
-            id(other.getId());
-            processedAt(other.getProcessedAt());
-            settlementDate(other.getSettlementDate());
-            foreignId(other.getForeignId());
-            failureType(other.getFailureType());
-            transactions(other.getTransactions());
-            vendorCreditIds(other.getVendorCreditIds());
+            recurringTemplateId(other.getRecurringTemplateId());
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("id")
+        public StatusStage id(@NotNull String id) {
+            this.id = Objects.requireNonNull(id, "id must not be null");
             return this;
         }
 
@@ -1069,6 +1202,7 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         /**
          * <p>True if the payment destination has been confirmed by the vendor. False if the payment destination has been set (for example, a check to an address) but has not been confirmed by the vendor.</p>
+         * <p>True if the payment destination has been confirmed by the vendor. False if the payment destination has been set (for example, a check to an address) but has not been confirmed by the vendor.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1080,6 +1214,7 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         /**
          * <p>True if the invoice has documents attached.</p>
+         * <p>True if the invoice has documents attached.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -1090,6 +1225,7 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
         }
 
         /**
+         * <p>True if the invoice was created by an incoming email.</p>
          * <p>True if the invoice was created by an incoming email.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -1109,117 +1245,28 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
 
         @java.lang.Override
         @JsonSetter("updatedAt")
-        public IdStage updatedAt(@NotNull OffsetDateTime updatedAt) {
+        public _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt) {
             this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
             return this;
         }
 
+        /**
+         * <p>ID of the invoice template that created this recurring invoice. Only present if the invoice was created from a recurring template.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
-        @JsonSetter("id")
-        public _FinalStage id(@NotNull String id) {
-            this.id = Objects.requireNonNull(id, "id must not be null");
+        public _FinalStage recurringTemplateId(String recurringTemplateId) {
+            this.recurringTemplateId = Optional.ofNullable(recurringTemplateId);
             return this;
         }
 
         /**
-         * <p>The IDs of the vendor credits that are currently applied to this invoice.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
+         * <p>ID of the invoice template that created this recurring invoice. Only present if the invoice was created from a recurring template.</p>
          */
         @java.lang.Override
-        public _FinalStage vendorCreditIds(List<String> vendorCreditIds) {
-            this.vendorCreditIds = Optional.ofNullable(vendorCreditIds);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "vendorCreditIds", nulls = Nulls.SKIP)
-        public _FinalStage vendorCreditIds(Optional<List<String>> vendorCreditIds) {
-            this.vendorCreditIds = vendorCreditIds;
-            return this;
-        }
-
-        /**
-         * <p>Transactions associated with this invoice.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage transactions(List<TransactionResponseWithoutInvoices> transactions) {
-            this.transactions = Optional.ofNullable(transactions);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "transactions", nulls = Nulls.SKIP)
-        public _FinalStage transactions(Optional<List<TransactionResponseWithoutInvoices>> transactions) {
-            this.transactions = transactions;
-            return this;
-        }
-
-        /**
-         * <p>If the invoice failed to be paid, this field will be populated with the type of failure.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage failureType(InvoiceFailureType failureType) {
-            this.failureType = Optional.ofNullable(failureType);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "failureType", nulls = Nulls.SKIP)
-        public _FinalStage failureType(Optional<InvoiceFailureType> failureType) {
-            this.failureType = failureType;
-            return this;
-        }
-
-        /**
-         * <p>The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage foreignId(String foreignId) {
-            this.foreignId = Optional.ofNullable(foreignId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
-        public _FinalStage foreignId(Optional<String> foreignId) {
-            this.foreignId = foreignId;
-            return this;
-        }
-
-        /**
-         * <p>Date of funds settlement.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage settlementDate(OffsetDateTime settlementDate) {
-            this.settlementDate = Optional.ofNullable(settlementDate);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "settlementDate", nulls = Nulls.SKIP)
-        public _FinalStage settlementDate(Optional<OffsetDateTime> settlementDate) {
-            this.settlementDate = settlementDate;
-            return this;
-        }
-
-        /**
-         * <p>Date when the invoice payment was processed.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage processedAt(OffsetDateTime processedAt) {
-            this.processedAt = Optional.ofNullable(processedAt);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "processedAt", nulls = Nulls.SKIP)
-        public _FinalStage processedAt(Optional<OffsetDateTime> processedAt) {
-            this.processedAt = processedAt;
+        @JsonSetter(value = "recurringTemplateId", nulls = Nulls.SKIP)
+        public _FinalStage recurringTemplateId(Optional<String> recurringTemplateId) {
+            this.recurringTemplateId = recurringTemplateId;
             return this;
         }
 
@@ -1233,6 +1280,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>ID of the OCR job that processed this invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "ocrJobId", nulls = Nulls.SKIP)
         public _FinalStage ocrJobId(Optional<String> ocrJobId) {
@@ -1250,6 +1300,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "paymentSchedule", nulls = Nulls.SKIP)
         public _FinalStage paymentSchedule(Optional<PaymentSchedule> paymentSchedule) {
@@ -1267,6 +1320,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>Fees associated with this invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "fees", nulls = Nulls.SKIP)
         public _FinalStage fees(Optional<InvoiceFeesResponse> fees) {
@@ -1297,6 +1353,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>Entity user who created this invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "creatorUser", nulls = Nulls.SKIP)
         public _FinalStage creatorUser(Optional<EntityUserResponse> creatorUser) {
@@ -1314,6 +1373,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>The ID of the entity who created this invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "creatorEntityId", nulls = Nulls.SKIP)
         public _FinalStage creatorEntityId(Optional<String> creatorEntityId) {
@@ -1341,6 +1403,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>Metadata associated with this invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public _FinalStage metadata(Map<String, String> metadata) {
@@ -1399,6 +1464,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>Shipping amount for this invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "shippingAmount", nulls = Nulls.SKIP)
         public _FinalStage shippingAmount(Optional<Double> shippingAmount) {
@@ -1416,6 +1484,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>Tax amount for this invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "taxAmount", nulls = Nulls.SKIP)
         public _FinalStage taxAmount(Optional<Double> taxAmount) {
@@ -1446,6 +1517,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>If true, this invoice will be paid as a batch payment. Batches are automatically determined by Mercoa based on the payment source, destination, and scheduled payment date.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "batchPayment", nulls = Nulls.SKIP)
         public _FinalStage batchPayment(Optional<Boolean> batchPayment) {
@@ -1532,6 +1606,19 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
         }
 
         @java.lang.Override
+        public _FinalStage paymentSourceOptions(PaymentSourceOptions paymentSourceOptions) {
+            this.paymentSourceOptions = Optional.ofNullable(paymentSourceOptions);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "paymentSourceOptions", nulls = Nulls.SKIP)
+        public _FinalStage paymentSourceOptions(Optional<PaymentSourceOptions> paymentSourceOptions) {
+            this.paymentSourceOptions = paymentSourceOptions;
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage paymentSourceId(String paymentSourceId) {
             this.paymentSourceId = Optional.ofNullable(paymentSourceId);
             return this;
@@ -1593,6 +1680,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>Net terms in days. Must be a positive number.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "netTerms", nulls = Nulls.SKIP)
         public _FinalStage netTerms(Optional<Integer> netTerms) {
@@ -1662,6 +1752,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>Due date of invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "dueDate", nulls = Nulls.SKIP)
         public _FinalStage dueDate(Optional<OffsetDateTime> dueDate) {
@@ -1679,6 +1772,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>For invoice templates, this is the date when the next recurring payment will be scheduled.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "nextDeductionDate", nulls = Nulls.SKIP)
         public _FinalStage nextDeductionDate(Optional<OffsetDateTime> nextDeductionDate) {
@@ -1696,6 +1792,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>Initial date when funds are scheduled to be deducted from payer's account. The actual deduction date may differ from this date, and will be reflected in the processedAt field.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "deductionDate", nulls = Nulls.SKIP)
         public _FinalStage deductionDate(Optional<OffsetDateTime> deductionDate) {
@@ -1713,6 +1812,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>Date the invoice was issued.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "invoiceDate", nulls = Nulls.SKIP)
         public _FinalStage invoiceDate(Optional<OffsetDateTime> invoiceDate) {
@@ -1730,6 +1832,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "currency", nulls = Nulls.SKIP)
         public _FinalStage currency(Optional<CurrencyCode> currency) {
@@ -1747,6 +1852,9 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>Total amount of invoice in major units</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "amount", nulls = Nulls.SKIP)
         public _FinalStage amount(Optional<Double> amount) {
@@ -1754,9 +1862,136 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
             return this;
         }
 
+        /**
+         * <p>The IDs of the vendor credits that are currently applied to this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage vendorCreditIds(List<String> vendorCreditIds) {
+            this.vendorCreditIds = Optional.ofNullable(vendorCreditIds);
+            return this;
+        }
+
+        /**
+         * <p>The IDs of the vendor credits that are currently applied to this invoice.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "vendorCreditIds", nulls = Nulls.SKIP)
+        public _FinalStage vendorCreditIds(Optional<List<String>> vendorCreditIds) {
+            this.vendorCreditIds = vendorCreditIds;
+            return this;
+        }
+
+        /**
+         * <p>Transactions associated with this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage transactions(List<TransactionResponseWithoutInvoices> transactions) {
+            this.transactions = Optional.ofNullable(transactions);
+            return this;
+        }
+
+        /**
+         * <p>Transactions associated with this invoice.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "transactions", nulls = Nulls.SKIP)
+        public _FinalStage transactions(Optional<List<TransactionResponseWithoutInvoices>> transactions) {
+            this.transactions = transactions;
+            return this;
+        }
+
+        /**
+         * <p>If the invoice failed to be paid, this field will be populated with the type of failure.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage failureType(InvoiceFailureType failureType) {
+            this.failureType = Optional.ofNullable(failureType);
+            return this;
+        }
+
+        /**
+         * <p>If the invoice failed to be paid, this field will be populated with the type of failure.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "failureType", nulls = Nulls.SKIP)
+        public _FinalStage failureType(Optional<InvoiceFailureType> failureType) {
+            this.failureType = failureType;
+            return this;
+        }
+
+        /**
+         * <p>The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage foreignId(String foreignId) {
+            this.foreignId = Optional.ofNullable(foreignId);
+            return this;
+        }
+
+        /**
+         * <p>The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
+        public _FinalStage foreignId(Optional<String> foreignId) {
+            this.foreignId = foreignId;
+            return this;
+        }
+
+        /**
+         * <p>Date of funds settlement.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage settlementDate(OffsetDateTime settlementDate) {
+            this.settlementDate = Optional.ofNullable(settlementDate);
+            return this;
+        }
+
+        /**
+         * <p>Date of funds settlement.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "settlementDate", nulls = Nulls.SKIP)
+        public _FinalStage settlementDate(Optional<OffsetDateTime> settlementDate) {
+            this.settlementDate = settlementDate;
+            return this;
+        }
+
+        /**
+         * <p>Date when the invoice payment was processed.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage processedAt(OffsetDateTime processedAt) {
+            this.processedAt = Optional.ofNullable(processedAt);
+            return this;
+        }
+
+        /**
+         * <p>Date when the invoice payment was processed.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "processedAt", nulls = Nulls.SKIP)
+        public _FinalStage processedAt(Optional<OffsetDateTime> processedAt) {
+            this.processedAt = processedAt;
+            return this;
+        }
+
         @java.lang.Override
         public InvoiceResponse build() {
             return new InvoiceResponse(
+                    id,
+                    processedAt,
+                    settlementDate,
+                    foreignId,
+                    failureType,
+                    transactions,
+                    vendorCreditIds,
                     status,
                     amount,
                     currency,
@@ -1773,6 +2008,7 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
                     payer,
                     paymentSource,
                     paymentSourceId,
+                    paymentSourceOptions,
                     vendorId,
                     vendor,
                     paymentDestination,
@@ -1797,13 +2033,7 @@ public final class InvoiceResponse implements IInvoiceResponseBase {
                     fees,
                     paymentSchedule,
                     ocrJobId,
-                    id,
-                    processedAt,
-                    settlementDate,
-                    foreignId,
-                    failureType,
-                    transactions,
-                    vendorCreditIds,
+                    recurringTemplateId,
                     additionalProperties);
         }
     }

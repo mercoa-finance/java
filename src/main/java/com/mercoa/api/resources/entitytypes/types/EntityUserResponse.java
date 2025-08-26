@@ -149,6 +149,9 @@ public final class EntityUserResponse {
     public interface _FinalStage {
         EntityUserResponse build();
 
+        /**
+         * <p>The ID used to identify this user in your system.</p>
+         */
         _FinalStage foreignId(Optional<String> foreignId);
 
         _FinalStage foreignId(String foreignId);
@@ -278,6 +281,9 @@ public final class EntityUserResponse {
             return this;
         }
 
+        /**
+         * <p>The ID used to identify this user in your system.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
         public _FinalStage foreignId(Optional<String> foreignId) {

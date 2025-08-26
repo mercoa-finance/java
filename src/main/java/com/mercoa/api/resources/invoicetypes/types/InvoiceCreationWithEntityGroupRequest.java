@@ -52,6 +52,8 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
 
     private final Optional<String> paymentSourceId;
 
+    private final Optional<PaymentSourceOptions> paymentSourceOptions;
+
     private final Optional<String> vendorId;
 
     private final Optional<String> paymentDestinationId;
@@ -86,6 +88,8 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
 
     private final Optional<String> ocrJobId;
 
+    private final Optional<Boolean> paymentDestinationConfirmed;
+
     private final Optional<List<InvoiceLineItemCreationRequest>> lineItems;
 
     private final String creatorEntityGroupId;
@@ -107,6 +111,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             Optional<Integer> netTerms,
             Optional<String> payerId,
             Optional<String> paymentSourceId,
+            Optional<PaymentSourceOptions> paymentSourceOptions,
             Optional<String> vendorId,
             Optional<String> paymentDestinationId,
             Optional<PaymentDestinationOptions> paymentDestinationOptions,
@@ -124,6 +129,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             Optional<Double> taxAmount,
             Optional<Double> shippingAmount,
             Optional<String> ocrJobId,
+            Optional<Boolean> paymentDestinationConfirmed,
             Optional<List<InvoiceLineItemCreationRequest>> lineItems,
             String creatorEntityGroupId,
             Map<String, Object> additionalProperties) {
@@ -141,6 +147,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
         this.netTerms = netTerms;
         this.payerId = payerId;
         this.paymentSourceId = paymentSourceId;
+        this.paymentSourceOptions = paymentSourceOptions;
         this.vendorId = vendorId;
         this.paymentDestinationId = paymentDestinationId;
         this.paymentDestinationOptions = paymentDestinationOptions;
@@ -158,6 +165,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
         this.taxAmount = taxAmount;
         this.shippingAmount = shippingAmount;
         this.ocrJobId = ocrJobId;
+        this.paymentDestinationConfirmed = paymentDestinationConfirmed;
         this.lineItems = lineItems;
         this.creatorEntityGroupId = creatorEntityGroupId;
         this.additionalProperties = additionalProperties;
@@ -275,6 +283,15 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
     @java.lang.Override
     public Optional<String> getPaymentSourceId() {
         return paymentSourceId;
+    }
+
+    /**
+     * @return Options for the payment source. Depending on the payment source, this may include things such as BNPL configuration.
+     */
+    @JsonProperty("paymentSourceOptions")
+    @java.lang.Override
+    public Optional<PaymentSourceOptions> getPaymentSourceOptions() {
+        return paymentSourceOptions;
     }
 
     /**
@@ -430,6 +447,15 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
         return ocrJobId;
     }
 
+    /**
+     * @return Set to true if the payment destination has been confirmed by the vendor or if the payment destination should default to the selected payment destination on the vendor portal.
+     */
+    @JsonProperty("paymentDestinationConfirmed")
+    @java.lang.Override
+    public Optional<Boolean> getPaymentDestinationConfirmed() {
+        return paymentDestinationConfirmed;
+    }
+
     @JsonProperty("lineItems")
     public Optional<List<InvoiceLineItemCreationRequest>> getLineItems() {
         return lineItems;
@@ -470,6 +496,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
                 && netTerms.equals(other.netTerms)
                 && payerId.equals(other.payerId)
                 && paymentSourceId.equals(other.paymentSourceId)
+                && paymentSourceOptions.equals(other.paymentSourceOptions)
                 && vendorId.equals(other.vendorId)
                 && paymentDestinationId.equals(other.paymentDestinationId)
                 && paymentDestinationOptions.equals(other.paymentDestinationOptions)
@@ -487,6 +514,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
                 && taxAmount.equals(other.taxAmount)
                 && shippingAmount.equals(other.shippingAmount)
                 && ocrJobId.equals(other.ocrJobId)
+                && paymentDestinationConfirmed.equals(other.paymentDestinationConfirmed)
                 && lineItems.equals(other.lineItems)
                 && creatorEntityGroupId.equals(other.creatorEntityGroupId);
     }
@@ -508,6 +536,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
                 this.netTerms,
                 this.payerId,
                 this.paymentSourceId,
+                this.paymentSourceOptions,
                 this.vendorId,
                 this.paymentDestinationId,
                 this.paymentDestinationOptions,
@@ -525,6 +554,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
                 this.taxAmount,
                 this.shippingAmount,
                 this.ocrJobId,
+                this.paymentDestinationConfirmed,
                 this.lineItems,
                 this.creatorEntityGroupId);
     }
@@ -539,6 +569,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
     }
 
     public interface CreatorEntityGroupIdStage {
+        /**
+         * <p>ID of the entity group who created this invoice.</p>
+         */
         _FinalStage creatorEntityGroupId(@NotNull String creatorEntityGroupId);
 
         Builder from(InvoiceCreationWithEntityGroupRequest other);
@@ -551,26 +584,44 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
 
         _FinalStage status(InvoiceStatus status);
 
+        /**
+         * <p>Total amount of invoice in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
+         */
         _FinalStage amount(Optional<Double> amount);
 
         _FinalStage amount(Double amount);
 
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         */
         _FinalStage currency(Optional<CurrencyCode> currency);
 
         _FinalStage currency(CurrencyCode currency);
 
+        /**
+         * <p>Date the invoice was issued.</p>
+         */
         _FinalStage invoiceDate(Optional<OffsetDateTime> invoiceDate);
 
         _FinalStage invoiceDate(OffsetDateTime invoiceDate);
 
+        /**
+         * <p>Initial date when funds are scheduled to be deducted from payer's account.</p>
+         */
         _FinalStage deductionDate(Optional<OffsetDateTime> deductionDate);
 
         _FinalStage deductionDate(OffsetDateTime deductionDate);
 
+        /**
+         * <p>Date of funds settlement.</p>
+         */
         _FinalStage settlementDate(Optional<OffsetDateTime> settlementDate);
 
         _FinalStage settlementDate(OffsetDateTime settlementDate);
 
+        /**
+         * <p>Due date of invoice.</p>
+         */
         _FinalStage dueDate(Optional<OffsetDateTime> dueDate);
 
         _FinalStage dueDate(OffsetDateTime dueDate);
@@ -579,6 +630,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
 
         _FinalStage invoiceNumber(String invoiceNumber);
 
+        /**
+         * <p>Note to self or memo on invoice.</p>
+         */
         _FinalStage noteToSelf(Optional<String> noteToSelf);
 
         _FinalStage noteToSelf(String noteToSelf);
@@ -591,85 +645,159 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
 
         _FinalStage serviceEndDate(OffsetDateTime serviceEndDate);
 
+        /**
+         * <p>Net terms in days. Must be a positive number.</p>
+         */
         _FinalStage netTerms(Optional<Integer> netTerms);
 
         _FinalStage netTerms(Integer netTerms);
 
+        /**
+         * <p>ID or foreign ID of the payer of this invoice.</p>
+         */
         _FinalStage payerId(Optional<String> payerId);
 
         _FinalStage payerId(String payerId);
 
+        /**
+         * <p>ID of payment source for this invoice. If not provided, will attempt to use the default payment source for the payer when creating an invoice if a default payment source exists for the payer.</p>
+         */
         _FinalStage paymentSourceId(Optional<String> paymentSourceId);
 
         _FinalStage paymentSourceId(String paymentSourceId);
 
+        /**
+         * <p>Options for the payment source. Depending on the payment source, this may include things such as BNPL configuration.</p>
+         */
+        _FinalStage paymentSourceOptions(Optional<PaymentSourceOptions> paymentSourceOptions);
+
+        _FinalStage paymentSourceOptions(PaymentSourceOptions paymentSourceOptions);
+
+        /**
+         * <p>ID or foreign ID of the vendor of this invoice.</p>
+         */
         _FinalStage vendorId(Optional<String> vendorId);
 
         _FinalStage vendorId(String vendorId);
 
+        /**
+         * <p>ID of payment destination for this invoice. If not provided, will attempt to use the default payment destination for the vendor when creating an invoice if a default payment destination exists for the vendor.</p>
+         */
         _FinalStage paymentDestinationId(Optional<String> paymentDestinationId);
 
         _FinalStage paymentDestinationId(String paymentDestinationId);
 
+        /**
+         * <p>Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.</p>
+         */
         _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions);
 
         _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions);
 
+        /**
+         * <p>Set approvers for this invoice.</p>
+         */
         _FinalStage approvers(Optional<List<ApprovalSlotAssignment>> approvers);
 
         _FinalStage approvers(List<ApprovalSlotAssignment> approvers);
 
+        /**
+         * <p>Metadata associated with this invoice.</p>
+         */
         _FinalStage metadata(Optional<Map<String, String>> metadata);
 
         _FinalStage metadata(Map<String, String> metadata);
 
+        /**
+         * <p>The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.</p>
+         */
         _FinalStage foreignId(Optional<String> foreignId);
 
         _FinalStage foreignId(String foreignId);
 
+        /**
+         * <p>Base64-encoded string. Supported file types include PNG, JPG, WEBP, PDF, and all Microsoft Office formats (automatically converted to PDF). Max file size 10MB. If the invoice already has a document, this will add a new document to the invoice.</p>
+         */
         _FinalStage document(Optional<String> document);
 
         _FinalStage document(String document);
 
+        /**
+         * <p>DEPRECATED. Use document field instead.</p>
+         */
         _FinalStage uploadedImage(Optional<String> uploadedImage);
 
         _FinalStage uploadedImage(String uploadedImage);
 
+        /**
+         * <p>User ID or Foreign ID of entity user who created this invoice.</p>
+         */
         _FinalStage creatorUserId(Optional<String> creatorUserId);
 
         _FinalStage creatorUserId(String creatorUserId);
 
+        /**
+         * <p>If the invoice failed to be paid, indicate the failure reason. Only applicable for invoices with custom payment methods.</p>
+         */
         _FinalStage failureType(Optional<InvoiceFailureType> failureType);
 
         _FinalStage failureType(InvoiceFailureType failureType);
 
+        /**
+         * <p>If using a custom payment method, you can override the default fees for this invoice. If not provided, the default fees for the custom payment method will be used.</p>
+         */
         _FinalStage fees(Optional<InvoiceFeesRequest> fees);
 
         _FinalStage fees(InvoiceFeesRequest fees);
 
+        /**
+         * <p>If true, this invoice will be paid as a batch payment. Batches are automatically determined by Mercoa based on the payment source, destination, and scheduled payment date.</p>
+         */
         _FinalStage batchPayment(Optional<Boolean> batchPayment);
 
         _FinalStage batchPayment(Boolean batchPayment);
 
+        /**
+         * <p>If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.</p>
+         */
         _FinalStage paymentSchedule(Optional<PaymentSchedule> paymentSchedule);
 
         _FinalStage paymentSchedule(PaymentSchedule paymentSchedule);
 
+        /**
+         * <p>The IDs of the vendor credits to be applied to this invoice. Passing this field will un-apply any previously applied vendor credits.</p>
+         */
         _FinalStage vendorCreditIds(Optional<List<String>> vendorCreditIds);
 
         _FinalStage vendorCreditIds(List<String> vendorCreditIds);
 
+        /**
+         * <p>Tax amount for this invoice.</p>
+         */
         _FinalStage taxAmount(Optional<Double> taxAmount);
 
         _FinalStage taxAmount(Double taxAmount);
 
+        /**
+         * <p>Shipping amount for this invoice.</p>
+         */
         _FinalStage shippingAmount(Optional<Double> shippingAmount);
 
         _FinalStage shippingAmount(Double shippingAmount);
 
+        /**
+         * <p>ID of the OCR job that processed this invoice.</p>
+         */
         _FinalStage ocrJobId(Optional<String> ocrJobId);
 
         _FinalStage ocrJobId(String ocrJobId);
+
+        /**
+         * <p>Set to true if the payment destination has been confirmed by the vendor or if the payment destination should default to the selected payment destination on the vendor portal.</p>
+         */
+        _FinalStage paymentDestinationConfirmed(Optional<Boolean> paymentDestinationConfirmed);
+
+        _FinalStage paymentDestinationConfirmed(Boolean paymentDestinationConfirmed);
 
         _FinalStage lineItems(Optional<List<InvoiceLineItemCreationRequest>> lineItems);
 
@@ -681,6 +809,8 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
         private String creatorEntityGroupId;
 
         private Optional<List<InvoiceLineItemCreationRequest>> lineItems = Optional.empty();
+
+        private Optional<Boolean> paymentDestinationConfirmed = Optional.empty();
 
         private Optional<String> ocrJobId = Optional.empty();
 
@@ -715,6 +845,8 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
         private Optional<String> paymentDestinationId = Optional.empty();
 
         private Optional<String> vendorId = Optional.empty();
+
+        private Optional<PaymentSourceOptions> paymentSourceOptions = Optional.empty();
 
         private Optional<String> paymentSourceId = Optional.empty();
 
@@ -765,6 +897,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             netTerms(other.getNetTerms());
             payerId(other.getPayerId());
             paymentSourceId(other.getPaymentSourceId());
+            paymentSourceOptions(other.getPaymentSourceOptions());
             vendorId(other.getVendorId());
             paymentDestinationId(other.getPaymentDestinationId());
             paymentDestinationOptions(other.getPaymentDestinationOptions());
@@ -782,12 +915,14 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             taxAmount(other.getTaxAmount());
             shippingAmount(other.getShippingAmount());
             ocrJobId(other.getOcrJobId());
+            paymentDestinationConfirmed(other.getPaymentDestinationConfirmed());
             lineItems(other.getLineItems());
             creatorEntityGroupId(other.getCreatorEntityGroupId());
             return this;
         }
 
         /**
+         * <p>ID of the entity group who created this invoice.</p>
          * <p>ID of the entity group who created this invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -813,6 +948,26 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
         }
 
         /**
+         * <p>Set to true if the payment destination has been confirmed by the vendor or if the payment destination should default to the selected payment destination on the vendor portal.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paymentDestinationConfirmed(Boolean paymentDestinationConfirmed) {
+            this.paymentDestinationConfirmed = Optional.ofNullable(paymentDestinationConfirmed);
+            return this;
+        }
+
+        /**
+         * <p>Set to true if the payment destination has been confirmed by the vendor or if the payment destination should default to the selected payment destination on the vendor portal.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paymentDestinationConfirmed", nulls = Nulls.SKIP)
+        public _FinalStage paymentDestinationConfirmed(Optional<Boolean> paymentDestinationConfirmed) {
+            this.paymentDestinationConfirmed = paymentDestinationConfirmed;
+            return this;
+        }
+
+        /**
          * <p>ID of the OCR job that processed this invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -822,6 +977,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>ID of the OCR job that processed this invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "ocrJobId", nulls = Nulls.SKIP)
         public _FinalStage ocrJobId(Optional<String> ocrJobId) {
@@ -839,6 +997,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>Shipping amount for this invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "shippingAmount", nulls = Nulls.SKIP)
         public _FinalStage shippingAmount(Optional<Double> shippingAmount) {
@@ -856,6 +1017,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>Tax amount for this invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "taxAmount", nulls = Nulls.SKIP)
         public _FinalStage taxAmount(Optional<Double> taxAmount) {
@@ -873,6 +1037,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>The IDs of the vendor credits to be applied to this invoice. Passing this field will un-apply any previously applied vendor credits.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "vendorCreditIds", nulls = Nulls.SKIP)
         public _FinalStage vendorCreditIds(Optional<List<String>> vendorCreditIds) {
@@ -890,6 +1057,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "paymentSchedule", nulls = Nulls.SKIP)
         public _FinalStage paymentSchedule(Optional<PaymentSchedule> paymentSchedule) {
@@ -907,6 +1077,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>If true, this invoice will be paid as a batch payment. Batches are automatically determined by Mercoa based on the payment source, destination, and scheduled payment date.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "batchPayment", nulls = Nulls.SKIP)
         public _FinalStage batchPayment(Optional<Boolean> batchPayment) {
@@ -924,6 +1097,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>If using a custom payment method, you can override the default fees for this invoice. If not provided, the default fees for the custom payment method will be used.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "fees", nulls = Nulls.SKIP)
         public _FinalStage fees(Optional<InvoiceFeesRequest> fees) {
@@ -941,6 +1117,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>If the invoice failed to be paid, indicate the failure reason. Only applicable for invoices with custom payment methods.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "failureType", nulls = Nulls.SKIP)
         public _FinalStage failureType(Optional<InvoiceFailureType> failureType) {
@@ -958,6 +1137,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>User ID or Foreign ID of entity user who created this invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "creatorUserId", nulls = Nulls.SKIP)
         public _FinalStage creatorUserId(Optional<String> creatorUserId) {
@@ -975,6 +1157,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>DEPRECATED. Use document field instead.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "uploadedImage", nulls = Nulls.SKIP)
         public _FinalStage uploadedImage(Optional<String> uploadedImage) {
@@ -992,6 +1177,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>Base64-encoded string. Supported file types include PNG, JPG, WEBP, PDF, and all Microsoft Office formats (automatically converted to PDF). Max file size 10MB. If the invoice already has a document, this will add a new document to the invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "document", nulls = Nulls.SKIP)
         public _FinalStage document(Optional<String> document) {
@@ -1009,6 +1197,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
         public _FinalStage foreignId(Optional<String> foreignId) {
@@ -1026,6 +1217,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>Metadata associated with this invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public _FinalStage metadata(Optional<Map<String, String>> metadata) {
@@ -1043,6 +1237,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>Set approvers for this invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "approvers", nulls = Nulls.SKIP)
         public _FinalStage approvers(Optional<List<ApprovalSlotAssignment>> approvers) {
@@ -1060,6 +1257,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "paymentDestinationOptions", nulls = Nulls.SKIP)
         public _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions) {
@@ -1077,6 +1277,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>ID of payment destination for this invoice. If not provided, will attempt to use the default payment destination for the vendor when creating an invoice if a default payment destination exists for the vendor.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "paymentDestinationId", nulls = Nulls.SKIP)
         public _FinalStage paymentDestinationId(Optional<String> paymentDestinationId) {
@@ -1094,10 +1297,33 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>ID or foreign ID of the vendor of this invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "vendorId", nulls = Nulls.SKIP)
         public _FinalStage vendorId(Optional<String> vendorId) {
             this.vendorId = vendorId;
+            return this;
+        }
+
+        /**
+         * <p>Options for the payment source. Depending on the payment source, this may include things such as BNPL configuration.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage paymentSourceOptions(PaymentSourceOptions paymentSourceOptions) {
+            this.paymentSourceOptions = Optional.ofNullable(paymentSourceOptions);
+            return this;
+        }
+
+        /**
+         * <p>Options for the payment source. Depending on the payment source, this may include things such as BNPL configuration.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "paymentSourceOptions", nulls = Nulls.SKIP)
+        public _FinalStage paymentSourceOptions(Optional<PaymentSourceOptions> paymentSourceOptions) {
+            this.paymentSourceOptions = paymentSourceOptions;
             return this;
         }
 
@@ -1111,6 +1337,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>ID of payment source for this invoice. If not provided, will attempt to use the default payment source for the payer when creating an invoice if a default payment source exists for the payer.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "paymentSourceId", nulls = Nulls.SKIP)
         public _FinalStage paymentSourceId(Optional<String> paymentSourceId) {
@@ -1128,6 +1357,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>ID or foreign ID of the payer of this invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "payerId", nulls = Nulls.SKIP)
         public _FinalStage payerId(Optional<String> payerId) {
@@ -1145,6 +1377,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>Net terms in days. Must be a positive number.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "netTerms", nulls = Nulls.SKIP)
         public _FinalStage netTerms(Optional<Integer> netTerms) {
@@ -1188,6 +1423,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>Note to self or memo on invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "noteToSelf", nulls = Nulls.SKIP)
         public _FinalStage noteToSelf(Optional<String> noteToSelf) {
@@ -1218,6 +1456,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>Due date of invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "dueDate", nulls = Nulls.SKIP)
         public _FinalStage dueDate(Optional<OffsetDateTime> dueDate) {
@@ -1235,6 +1476,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>Date of funds settlement.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "settlementDate", nulls = Nulls.SKIP)
         public _FinalStage settlementDate(Optional<OffsetDateTime> settlementDate) {
@@ -1252,6 +1496,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>Initial date when funds are scheduled to be deducted from payer's account.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "deductionDate", nulls = Nulls.SKIP)
         public _FinalStage deductionDate(Optional<OffsetDateTime> deductionDate) {
@@ -1269,6 +1516,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>Date the invoice was issued.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "invoiceDate", nulls = Nulls.SKIP)
         public _FinalStage invoiceDate(Optional<OffsetDateTime> invoiceDate) {
@@ -1286,6 +1536,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "currency", nulls = Nulls.SKIP)
         public _FinalStage currency(Optional<CurrencyCode> currency) {
@@ -1303,6 +1556,9 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
             return this;
         }
 
+        /**
+         * <p>Total amount of invoice in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "amount", nulls = Nulls.SKIP)
         public _FinalStage amount(Optional<Double> amount) {
@@ -1340,6 +1596,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
                     netTerms,
                     payerId,
                     paymentSourceId,
+                    paymentSourceOptions,
                     vendorId,
                     paymentDestinationId,
                     paymentDestinationOptions,
@@ -1357,6 +1614,7 @@ public final class InvoiceCreationWithEntityGroupRequest implements IInvoiceRequ
                     taxAmount,
                     shippingAmount,
                     ocrJobId,
+                    paymentDestinationConfirmed,
                     lineItems,
                     creatorEntityGroupId,
                     additionalProperties);

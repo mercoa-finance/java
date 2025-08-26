@@ -204,6 +204,9 @@ public final class MetadataShowConditions {
             return this;
         }
 
+        /**
+         * <p>Always hide this field. Useful for getting data from OCR and AI predictions that you don't want to show in the UI.</p>
+         */
         @JsonSetter(value = "alwaysHide", nulls = Nulls.SKIP)
         public Builder alwaysHide(Optional<Boolean> alwaysHide) {
             this.alwaysHide = alwaysHide;
@@ -215,6 +218,9 @@ public final class MetadataShowConditions {
             return this;
         }
 
+        /**
+         * <p>Show this field only if the entity has values set for the metadata key.</p>
+         */
         @JsonSetter(value = "hasOptions", nulls = Nulls.SKIP)
         public Builder hasOptions(Optional<Boolean> hasOptions) {
             this.hasOptions = hasOptions;
@@ -226,6 +232,9 @@ public final class MetadataShowConditions {
             return this;
         }
 
+        /**
+         * <p>Show this field only if a document has been attached.</p>
+         */
         @JsonSetter(value = "hasDocument", nulls = Nulls.SKIP)
         public Builder hasDocument(Optional<Boolean> hasDocument) {
             this.hasDocument = hasDocument;
@@ -237,6 +246,9 @@ public final class MetadataShowConditions {
             return this;
         }
 
+        /**
+         * <p>Show this field only if the invoice has no line items. Useful for showing a field that applies to the entire invoice but overridden by line items if present.</p>
+         */
         @JsonSetter(value = "hasNoLineItems", nulls = Nulls.SKIP)
         public Builder hasNoLineItems(Optional<Boolean> hasNoLineItems) {
             this.hasNoLineItems = hasNoLineItems;
@@ -248,6 +260,9 @@ public final class MetadataShowConditions {
             return this;
         }
 
+        /**
+         * <p>Show this field only if the payment source type is in this list.</p>
+         */
         @JsonSetter(value = "paymentSourceTypes", nulls = Nulls.SKIP)
         public Builder paymentSourceTypes(Optional<List<PaymentMethodType>> paymentSourceTypes) {
             this.paymentSourceTypes = paymentSourceTypes;
@@ -259,6 +274,9 @@ public final class MetadataShowConditions {
             return this;
         }
 
+        /**
+         * <p>Show this field only if the payment source schema ID is in this list of payment source schema IDs. This is only applicable if paymentSourceTypes contains CUSTOM.</p>
+         */
         @JsonSetter(value = "paymentSourceCustomSchemaIds", nulls = Nulls.SKIP)
         public Builder paymentSourceCustomSchemaIds(Optional<List<String>> paymentSourceCustomSchemaIds) {
             this.paymentSourceCustomSchemaIds = paymentSourceCustomSchemaIds;
@@ -270,6 +288,9 @@ public final class MetadataShowConditions {
             return this;
         }
 
+        /**
+         * <p>Show this field only if the payment destination type is in this list.</p>
+         */
         @JsonSetter(value = "paymentDestinationTypes", nulls = Nulls.SKIP)
         public Builder paymentDestinationTypes(Optional<List<PaymentMethodType>> paymentDestinationTypes) {
             this.paymentDestinationTypes = paymentDestinationTypes;
@@ -281,6 +302,9 @@ public final class MetadataShowConditions {
             return this;
         }
 
+        /**
+         * <p>Show this field only if the payment destination schema ID is in this list of payment destination schema IDs. This is only applicable if paymentDestinationTypes contains CUSTOM.</p>
+         */
         @JsonSetter(value = "paymentDestinationCustomSchemaIds", nulls = Nulls.SKIP)
         public Builder paymentDestinationCustomSchemaIds(Optional<List<String>> paymentDestinationCustomSchemaIds) {
             this.paymentDestinationCustomSchemaIds = paymentDestinationCustomSchemaIds;

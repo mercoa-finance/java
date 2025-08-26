@@ -84,6 +84,9 @@ public final class CommentRequest {
     public interface _FinalStage {
         CommentRequest build();
 
+        /**
+         * <p>The ID or the Foreign ID of the user who created the comment.</p>
+         */
         _FinalStage userId(Optional<String> userId);
 
         _FinalStage userId(String userId);
@@ -124,6 +127,9 @@ public final class CommentRequest {
             return this;
         }
 
+        /**
+         * <p>The ID or the Foreign ID of the user who created the comment.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "userId", nulls = Nulls.SKIP)
         public _FinalStage userId(Optional<String> userId) {

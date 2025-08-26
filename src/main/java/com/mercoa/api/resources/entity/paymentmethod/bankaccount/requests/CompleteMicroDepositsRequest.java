@@ -81,6 +81,9 @@ public final class CompleteMicroDepositsRequest {
             return this;
         }
 
+        /**
+         * <p>The amounts of the micro deposits in cents</p>
+         */
         @JsonSetter(value = "amounts", nulls = Nulls.SKIP)
         public Builder amounts(List<Integer> amounts) {
             this.amounts.clear();

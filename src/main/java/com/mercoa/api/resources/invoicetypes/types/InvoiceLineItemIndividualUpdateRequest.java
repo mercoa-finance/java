@@ -194,6 +194,9 @@ public final class InvoiceLineItemIndividualUpdateRequest {
             return this;
         }
 
+        /**
+         * <p>Category of the line item.</p>
+         */
         @JsonSetter(value = "category", nulls = Nulls.SKIP)
         public Builder category(Optional<String> category) {
             this.category = category;
@@ -238,6 +241,9 @@ public final class InvoiceLineItemIndividualUpdateRequest {
             return this;
         }
 
+        /**
+         * <p>ID of general ledger account associated with this line item.</p>
+         */
         @JsonSetter(value = "glAccountId", nulls = Nulls.SKIP)
         public Builder glAccountId(Optional<String> glAccountId) {
             this.glAccountId = glAccountId;

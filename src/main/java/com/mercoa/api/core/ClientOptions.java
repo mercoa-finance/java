@@ -27,30 +27,7 @@ public final class ClientOptions {
     private final ApiVersion version;
 
     /**
-     * @param version Defaults to "{\n"
-     *     + "  \"name\" : {\n"
-     *     + "    \"wireValue\" : \"2024-08-01\",\n"
-     *     + "    \"name\" : {\n"
-     *     + "      \"originalName\" : \"2024-08-01\",\n"
-     *     + "      \"camelCase\" : {\n"
-     *     + "        \"unsafeName\" : \"20240801\",\n"
-     *     + "        \"safeName\" : \"_20240801\"\n"
-     *     + "      },\n"
-     *     + "      \"pascalCase\" : {\n"
-     *     + "        \"unsafeName\" : \"20240801\",\n"
-     *     + "        \"safeName\" : \"_20240801\"\n"
-     *     + "      },\n"
-     *     + "      \"snakeCase\" : {\n"
-     *     + "        \"unsafeName\" : \"2024_08_01\",\n"
-     *     + "        \"safeName\" : \"_2024_08_01\"\n"
-     *     + "      },\n"
-     *     + "      \"screamingSnakeCase\" : {\n"
-     *     + "        \"unsafeName\" : \"2024_08_01\",\n"
-     *     + "        \"safeName\" : \"_2024_08_01\"\n"
-     *     + "      }\n"
-     *     + "    }\n"
-     *     + "  }\n"
-     *     + "}" if empty
+     * @param version Defaults to "2024-08-01" if empty
      */
     private ClientOptions(
             Environment environment,
@@ -64,16 +41,14 @@ public final class ClientOptions {
         this.headers.putAll(headers);
         this.headers.putAll(new HashMap<String, String>() {
             {
-                put("User-Agent", "com.mercoa:mercoa/0.6.24");
+                put("User-Agent", "com.fern:custom/0.0.1");
                 put("X-Fern-Language", "JAVA");
-                put("X-Fern-SDK-Name", "com.mercoa.fern:api-sdk");
-                put("X-Fern-SDK-Version", "0.6.24");
             }
         });
         this.headerSuppliers = headerSuppliers;
         this.httpClient = httpClient;
         this.timeout = timeout;
-        this.version = version.orElse(ApiVersion.CURRENT);
+        this.version = version.orElse(ApiVersion._2024_08_01);
         this.headers.put("X-API-Version", this.version.toString());
     }
 
@@ -127,7 +102,7 @@ public final class ClientOptions {
         return new Builder();
     }
 
-    public static final class Builder {
+    public static class Builder {
         private Environment environment;
 
         private final Map<String, String> headers = new HashMap<>();
@@ -217,6 +192,18 @@ public final class ClientOptions {
             this.timeout = Optional.of(httpClient.callTimeoutMillis() / 1000);
 
             return new ClientOptions(environment, headers, headerSuppliers, httpClient, this.timeout.get(), version);
+        }
+
+        /**
+         * Create a new Builder initialized with values from an existing ClientOptions
+         */
+        public static Builder from(ClientOptions clientOptions) {
+            Builder builder = new Builder();
+            builder.environment = clientOptions.environment();
+            builder.timeout = Optional.of(clientOptions.timeout(null));
+            builder.httpClient = clientOptions.httpClient();
+            if (clientOptions.version != null) builder.version = clientOptions.version;
+            return builder;
         }
     }
 }

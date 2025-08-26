@@ -97,6 +97,9 @@ public final class CheckPaymentDestinationOptions {
             return this;
         }
 
+        /**
+         * <p>Delivery method for check disbursements. Defaults to MAIL.</p>
+         */
         @JsonSetter(value = "delivery", nulls = Nulls.SKIP)
         public Builder delivery(Optional<CheckDeliveryMethod> delivery) {
             this.delivery = delivery;
@@ -108,6 +111,9 @@ public final class CheckPaymentDestinationOptions {
             return this;
         }
 
+        /**
+         * <p>If true, prints the invoice description (noteToSelf) on the check note. Defaults to false.</p>
+         */
         @JsonSetter(value = "printDescription", nulls = Nulls.SKIP)
         public Builder printDescription(Optional<Boolean> printDescription) {
             this.printDescription = printDescription;

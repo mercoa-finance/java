@@ -3,49 +3,46 @@
  */
 package com.mercoa.api.resources.entitygroup.invoice;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
+import com.mercoa.api.resources.commons.types.BulkDownloadResponse;
 import com.mercoa.api.resources.entitygroup.invoice.requests.EntityGetInvoicesRequest;
+import com.mercoa.api.resources.entitygroup.invoice.requests.GroupInvoiceDownloadRequest;
 import com.mercoa.api.resources.entitygroup.invoice.requests.GroupInvoiceMetricsRequest;
 import com.mercoa.api.resources.invoicetypes.types.FindInvoiceResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceMetricsResponse;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import org.jetbrains.annotations.NotNull;
 
 public class AsyncInvoiceClient {
     protected final ClientOptions clientOptions;
 
+    private final AsyncRawInvoiceClient rawClient;
+
     public AsyncInvoiceClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new AsyncRawInvoiceClient(clientOptions);
+    }
+
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public AsyncRawInvoiceClient withRawResponse() {
+        return this.rawClient;
     }
 
     /**
      * Get invoices for an entity group with the given filters.
      */
     public CompletableFuture<FindInvoiceResponse> find(String entityGroupId) {
-        return find(entityGroupId, EntityGetInvoicesRequest.builder().build());
+        return this.rawClient.find(entityGroupId).thenApply(response -> response.body());
     }
 
     /**
      * Get invoices for an entity group with the given filters.
      */
     public CompletableFuture<FindInvoiceResponse> find(String entityGroupId, EntityGetInvoicesRequest request) {
-        return find(entityGroupId, request, null);
+        return this.rawClient.find(entityGroupId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -53,159 +50,36 @@ public class AsyncInvoiceClient {
      */
     public CompletableFuture<FindInvoiceResponse> find(
             String entityGroupId, EntityGetInvoicesRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroup")
-                .addPathSegment(entityGroupId)
-                .addPathSegments("invoices");
-        if (request.getExcludePayables().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "excludePayables",
-                    request.getExcludePayables().get().toString(),
-                    false);
-        }
-        if (request.getExcludeReceivables().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "excludeReceivables",
-                    request.getExcludeReceivables().get().toString(),
-                    false);
-        }
-        if (request.getStartDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startDate", request.getStartDate().get().toString(), false);
-        }
-        if (request.getEndDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "endDate", request.getEndDate().get().toString(), false);
-        }
-        if (request.getDateType().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "dateType", request.getDateType().get().toString(), false);
-        }
-        if (request.getOrderBy().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "orderBy", request.getOrderBy().get().toString(), false);
-        }
-        if (request.getOrderDirection().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "orderDirection", request.getOrderDirection().get().toString(), false);
-        }
-        if (request.getLimit().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "limit", request.getLimit().get().toString(), false);
-        }
-        if (request.getStartingAfter().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
-        }
-        if (request.getMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "metadata", request.getMetadata().get().toString(), false);
-        }
-        if (request.getSearch().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "search", request.getSearch().get(), false);
-        }
-        if (request.getPayerId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "payerId", request.getPayerId().get(), false);
-        }
-        if (request.getVendorId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "vendorId", request.getVendorId().get(), false);
-        }
-        if (request.getCreatorUserId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "creatorUserId", request.getCreatorUserId().get(), false);
-        }
-        if (request.getApproverId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "approverId", request.getApproverId().get(), false);
-        }
-        if (request.getApproverAction().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "approverAction", request.getApproverAction().get().toString(), false);
-        }
-        if (request.getInvoiceId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "invoiceId", request.getInvoiceId().get(), false);
-        }
-        if (request.getStatus().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "status", request.getStatus().get().toString(), false);
-        }
-        if (request.getPaymentType().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "paymentType", request.getPaymentType().get().toString(), false);
-        }
-        if (request.getReturnPayerMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "returnPayerMetadata",
-                    request.getReturnPayerMetadata().get().toString(),
-                    false);
-        }
-        if (request.getReturnVendorMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "returnVendorMetadata",
-                    request.getReturnVendorMetadata().get().toString(),
-                    false);
-        }
-        if (request.getReturnPaymentTiming().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "returnPaymentTiming",
-                    request.getReturnPaymentTiming().get().toString(),
-                    false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<FindInvoiceResponse> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), FindInvoiceResponse.class));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
+        return this.rawClient.find(entityGroupId, request, requestOptions).thenApply(response -> response.body());
+    }
 
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+    /**
+     * Get a URL to download invoices for an entity group as a CSV/JSON file.
+     */
+    public CompletableFuture<BulkDownloadResponse> download(String entityGroupId) {
+        return this.rawClient.download(entityGroupId).thenApply(response -> response.body());
+    }
+
+    /**
+     * Get a URL to download invoices for an entity group as a CSV/JSON file.
+     */
+    public CompletableFuture<BulkDownloadResponse> download(String entityGroupId, GroupInvoiceDownloadRequest request) {
+        return this.rawClient.download(entityGroupId, request).thenApply(response -> response.body());
+    }
+
+    /**
+     * Get a URL to download invoices for an entity group as a CSV/JSON file.
+     */
+    public CompletableFuture<BulkDownloadResponse> download(
+            String entityGroupId, GroupInvoiceDownloadRequest request, RequestOptions requestOptions) {
+        return this.rawClient.download(entityGroupId, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Get invoice metrics for an entity group with the given filters. Invoices will be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
      */
     public CompletableFuture<List<InvoiceMetricsResponse>> metrics(String entityGroupId) {
-        return metrics(entityGroupId, GroupInvoiceMetricsRequest.builder().build());
+        return this.rawClient.metrics(entityGroupId).thenApply(response -> response.body());
     }
 
     /**
@@ -213,7 +87,7 @@ public class AsyncInvoiceClient {
      */
     public CompletableFuture<List<InvoiceMetricsResponse>> metrics(
             String entityGroupId, GroupInvoiceMetricsRequest request) {
-        return metrics(entityGroupId, request, null);
+        return this.rawClient.metrics(entityGroupId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -221,117 +95,6 @@ public class AsyncInvoiceClient {
      */
     public CompletableFuture<List<InvoiceMetricsResponse>> metrics(
             String entityGroupId, GroupInvoiceMetricsRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroup")
-                .addPathSegment(entityGroupId)
-                .addPathSegments("invoice-metrics");
-        if (request.getSearch().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "search", request.getSearch().get(), false);
-        }
-        if (request.getExcludePayables().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "excludePayables",
-                    request.getExcludePayables().get().toString(),
-                    false);
-        }
-        if (request.getExcludeReceivables().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "excludeReceivables",
-                    request.getExcludeReceivables().get().toString(),
-                    false);
-        }
-        if (request.getReturnByDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "returnByDate", request.getReturnByDate().get().toString(), false);
-        }
-        if (request.getReturnByDateFrequency().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "returnByDateFrequency",
-                    request.getReturnByDateFrequency().get().toString(),
-                    false);
-        }
-        if (request.getGroupBy().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "groupBy", request.getGroupBy().get().toString(), false);
-        }
-        if (request.getPayerId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "payerId", request.getPayerId().get(), false);
-        }
-        if (request.getVendorId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "vendorId", request.getVendorId().get(), false);
-        }
-        if (request.getApproverId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "approverId", request.getApproverId().get(), false);
-        }
-        if (request.getInvoiceId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "invoiceId", request.getInvoiceId().get(), false);
-        }
-        if (request.getStatus().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "status", request.getStatus().get().toString(), false);
-        }
-        if (request.getStartDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startDate", request.getStartDate().get().toString(), false);
-        }
-        if (request.getEndDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "endDate", request.getEndDate().get().toString(), false);
-        }
-        if (request.getDateType().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "dateType", request.getDateType().get().toString(), false);
-        }
-        if (request.getCurrency().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "currency", request.getCurrency().get().toString(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<List<InvoiceMetricsResponse>> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(ObjectMappers.JSON_MAPPER.readValue(
-                                responseBody.string(), new TypeReference<List<InvoiceMetricsResponse>>() {}));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.metrics(entityGroupId, request, requestOptions).thenApply(response -> response.body());
     }
 }

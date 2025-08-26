@@ -47,6 +47,8 @@ public interface IInvoiceResponseBase {
 
     Optional<String> getPaymentSourceId();
 
+    Optional<PaymentSourceOptions> getPaymentSourceOptions();
+
     Optional<String> getVendorId();
 
     Optional<CounterpartyResponse> getVendor();
@@ -94,4 +96,6 @@ public interface IInvoiceResponseBase {
     Optional<PaymentSchedule> getPaymentSchedule();
 
     Optional<String> getOcrJobId();
+
+    Optional<String> getRecurringTemplateId();
 }

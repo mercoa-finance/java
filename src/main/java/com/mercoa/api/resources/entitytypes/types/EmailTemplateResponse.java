@@ -147,6 +147,9 @@ public final class EmailTemplateResponse {
     }
 
     public interface EntityIdStage {
+        /**
+         * <p>The ID of the entity that this email template is associated with.</p>
+         */
         TemplateTypeStage entityId(@NotNull String entityId);
     }
 
@@ -155,18 +158,30 @@ public final class EmailTemplateResponse {
     }
 
     public interface NameStage {
+        /**
+         * <p>The name of the email template.</p>
+         */
         SubjectStage name(@NotNull String name);
     }
 
     public interface SubjectStage {
+        /**
+         * <p>The subject of the email template.</p>
+         */
         ContentStage subject(@NotNull String subject);
     }
 
     public interface ContentStage {
+        /**
+         * <p>The HTML content of the email template.</p>
+         */
         IsDefaultStage content(@NotNull String content);
     }
 
     public interface IsDefaultStage {
+        /**
+         * <p>True if this email template is the default template for new invoices.</p>
+         */
         _FinalStage isDefault(boolean isDefault);
     }
 
@@ -224,6 +239,7 @@ public final class EmailTemplateResponse {
 
         /**
          * <p>The ID of the entity that this email template is associated with.</p>
+         * <p>The ID of the entity that this email template is associated with.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -242,6 +258,7 @@ public final class EmailTemplateResponse {
 
         /**
          * <p>The name of the email template.</p>
+         * <p>The name of the email template.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -252,6 +269,7 @@ public final class EmailTemplateResponse {
         }
 
         /**
+         * <p>The subject of the email template.</p>
          * <p>The subject of the email template.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -264,6 +282,7 @@ public final class EmailTemplateResponse {
 
         /**
          * <p>The HTML content of the email template.</p>
+         * <p>The HTML content of the email template.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -274,6 +293,7 @@ public final class EmailTemplateResponse {
         }
 
         /**
+         * <p>True if this email template is the default template for new invoices.</p>
          * <p>True if this email template is the default template for new invoices.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

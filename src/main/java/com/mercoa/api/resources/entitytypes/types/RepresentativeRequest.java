@@ -169,10 +169,16 @@ public final class RepresentativeRequest {
     public interface _FinalStage {
         RepresentativeRequest build();
 
+        /**
+         * <p>Either phone or email is required.</p>
+         */
         _FinalStage phone(Optional<PhoneNumber> phone);
 
         _FinalStage phone(PhoneNumber phone);
 
+        /**
+         * <p>Either phone or email is required.</p>
+         */
         _FinalStage email(Optional<String> email);
 
         _FinalStage email(String email);
@@ -257,6 +263,9 @@ public final class RepresentativeRequest {
             return this;
         }
 
+        /**
+         * <p>Either phone or email is required.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "email", nulls = Nulls.SKIP)
         public _FinalStage email(Optional<String> email) {
@@ -274,6 +283,9 @@ public final class RepresentativeRequest {
             return this;
         }
 
+        /**
+         * <p>Either phone or email is required.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "phone", nulls = Nulls.SKIP)
         public _FinalStage phone(Optional<PhoneNumber> phone) {

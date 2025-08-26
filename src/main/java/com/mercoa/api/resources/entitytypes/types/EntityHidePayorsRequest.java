@@ -81,6 +81,9 @@ public final class EntityHidePayorsRequest {
             return this;
         }
 
+        /**
+         * <p>List of payor entity IDs or foreign IDs to hide</p>
+         */
         @JsonSetter(value = "payors", nulls = Nulls.SKIP)
         public Builder payors(List<String> payors) {
             this.payors.clear();

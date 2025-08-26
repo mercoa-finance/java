@@ -3,13 +3,7 @@
  */
 package com.mercoa.api.resources.organization;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.emaillogtypes.types.EmailLogResponse;
@@ -19,366 +13,112 @@ import com.mercoa.api.resources.organization.requests.GetOrganizationRequest;
 import com.mercoa.api.resources.organization.requests.InvalidateTokensRequest;
 import com.mercoa.api.resources.organizationtypes.types.OrganizationRequest;
 import com.mercoa.api.resources.organizationtypes.types.OrganizationResponse;
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import org.jetbrains.annotations.NotNull;
 
 public class AsyncOrganizationClient {
     protected final ClientOptions clientOptions;
+
+    private final AsyncRawOrganizationClient rawClient;
 
     protected final Supplier<AsyncNotificationConfigurationClient> notificationConfigurationClient;
 
     public AsyncOrganizationClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new AsyncRawOrganizationClient(clientOptions);
         this.notificationConfigurationClient =
                 Suppliers.memoize(() -> new AsyncNotificationConfigurationClient(clientOptions));
+    }
+
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public AsyncRawOrganizationClient withRawResponse() {
+        return this.rawClient;
     }
 
     /**
      * Get current organization information
      */
     public CompletableFuture<OrganizationResponse> get() {
-        return get(GetOrganizationRequest.builder().build());
+        return this.rawClient.get().thenApply(response -> response.body());
     }
 
     /**
      * Get current organization information
      */
     public CompletableFuture<OrganizationResponse> get(GetOrganizationRequest request) {
-        return get(request, null);
+        return this.rawClient.get(request).thenApply(response -> response.body());
     }
 
     /**
      * Get current organization information
      */
     public CompletableFuture<OrganizationResponse> get(GetOrganizationRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("organization");
-        if (request.getPaymentMethods().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "paymentMethods", request.getPaymentMethods().get().toString(), false);
-        }
-        if (request.getEmailProvider().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "emailProvider", request.getEmailProvider().get().toString(), false);
-        }
-        if (request.getExternalAccountingSystemProvider().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "externalAccountingSystemProvider",
-                    request.getExternalAccountingSystemProvider().get().toString(),
-                    false);
-        }
-        if (request.getColorScheme().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "colorScheme", request.getColorScheme().get().toString(), false);
-        }
-        if (request.getPayeeOnboardingOptions().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "payeeOnboardingOptions",
-                    request.getPayeeOnboardingOptions().get().toString(),
-                    false);
-        }
-        if (request.getPayorOnboardingOptions().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "payorOnboardingOptions",
-                    request.getPayorOnboardingOptions().get().toString(),
-                    false);
-        }
-        if (request.getMetadataSchema().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "metadataSchema", request.getMetadataSchema().get().toString(), false);
-        }
-        if (request.getNotificationEmailTemplate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "notificationEmailTemplate",
-                    request.getNotificationEmailTemplate().get().toString(),
-                    false);
-        }
-        if (request.getRolePermissions().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "rolePermissions",
-                    request.getRolePermissions().get().toString(),
-                    false);
-        }
-        if (request.getCustomDomains().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "customDomains", request.getCustomDomains().get().toString(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<OrganizationResponse> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), OrganizationResponse.class));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.get(request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Update current organization
      */
     public CompletableFuture<OrganizationResponse> update() {
-        return update(OrganizationRequest.builder().build());
+        return this.rawClient.update().thenApply(response -> response.body());
     }
 
     /**
      * Update current organization
      */
     public CompletableFuture<OrganizationResponse> update(OrganizationRequest request) {
-        return update(request, null);
+        return this.rawClient.update(request).thenApply(response -> response.body());
     }
 
     /**
      * Update current organization
      */
     public CompletableFuture<OrganizationResponse> update(OrganizationRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("organization")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<OrganizationResponse> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), OrganizationResponse.class));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.update(request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Get log of all emails sent to this organization. Content format subject to change.
      */
     public CompletableFuture<EmailLogResponse> emailLog() {
-        return emailLog(GetEmailLogRequest.builder().build());
+        return this.rawClient.emailLog().thenApply(response -> response.body());
     }
 
     /**
      * Get log of all emails sent to this organization. Content format subject to change.
      */
     public CompletableFuture<EmailLogResponse> emailLog(GetEmailLogRequest request) {
-        return emailLog(request, null);
+        return this.rawClient.emailLog(request).thenApply(response -> response.body());
     }
 
     /**
      * Get log of all emails sent to this organization. Content format subject to change.
      */
     public CompletableFuture<EmailLogResponse> emailLog(GetEmailLogRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("organization/emailLog");
-        if (request.getStartDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startDate", request.getStartDate().get().toString(), false);
-        }
-        if (request.getEndDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "endDate", request.getEndDate().get().toString(), false);
-        }
-        if (request.getFrom().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "from", request.getFrom().get(), false);
-        }
-        if (request.getTo().isPresent()) {
-            QueryStringMapper.addQueryParameter(httpUrl, "to", request.getTo().get(), false);
-        }
-        if (request.getLimit().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "limit", request.getLimit().get().toString(), false);
-        }
-        if (request.getStartingAfter().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<EmailLogResponse> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EmailLogResponse.class));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.emailLog(request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Invalidate all JWT tokens for the current organization. This is considered a break-glass action and should be used only if tokens have been compromised. All tokens will be invalidated, including tokens on links, emails, and currently logged in sessions. API keys are not affected by this action. This action may take 60 seconds to propagate.
      */
     public CompletableFuture<Void> invalidateTokens() {
-        return invalidateTokens(InvalidateTokensRequest.builder().build());
+        return this.rawClient.invalidateTokens().thenApply(response -> response.body());
     }
 
     /**
      * Invalidate all JWT tokens for the current organization. This is considered a break-glass action and should be used only if tokens have been compromised. All tokens will be invalidated, including tokens on links, emails, and currently logged in sessions. API keys are not affected by this action. This action may take 60 seconds to propagate.
      */
     public CompletableFuture<Void> invalidateTokens(InvalidateTokensRequest request) {
-        return invalidateTokens(request, null);
+        return this.rawClient.invalidateTokens(request).thenApply(response -> response.body());
     }
 
     /**
      * Invalidate all JWT tokens for the current organization. This is considered a break-glass action and should be used only if tokens have been compromised. All tokens will be invalidated, including tokens on links, emails, and currently logged in sessions. API keys are not affected by this action. This action may take 60 seconds to propagate.
      */
     public CompletableFuture<Void> invalidateTokens(InvalidateTokensRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("organization/invalidateTokens")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(null);
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.invalidateTokens(request, requestOptions).thenApply(response -> response.body());
     }
 
     public AsyncNotificationConfigurationClient notificationConfiguration() {

@@ -168,6 +168,9 @@ public final class FeeCustomizationRailRequest {
             return this;
         }
 
+        /**
+         * <p>The fee for the ACH standard rail.</p>
+         */
         @JsonSetter(value = "ACH_STANDARD", nulls = Nulls.SKIP)
         public Builder achStandard(Optional<PaymentMethodFee> achStandard) {
             this.achStandard = achStandard;
@@ -179,6 +182,9 @@ public final class FeeCustomizationRailRequest {
             return this;
         }
 
+        /**
+         * <p>The fee for the ACH same day rail.</p>
+         */
         @JsonSetter(value = "ACH_SAME_DAY", nulls = Nulls.SKIP)
         public Builder achSameDay(Optional<PaymentMethodFee> achSameDay) {
             this.achSameDay = achSameDay;
@@ -190,6 +196,9 @@ public final class FeeCustomizationRailRequest {
             return this;
         }
 
+        /**
+         * <p>The fee for the check print rail.</p>
+         */
         @JsonSetter(value = "CHECK_PRINT", nulls = Nulls.SKIP)
         public Builder checkPrint(Optional<PaymentMethodFee> checkPrint) {
             this.checkPrint = checkPrint;
@@ -201,6 +210,9 @@ public final class FeeCustomizationRailRequest {
             return this;
         }
 
+        /**
+         * <p>The fee for the check mail rail.</p>
+         */
         @JsonSetter(value = "CHECK_MAIL", nulls = Nulls.SKIP)
         public Builder checkMail(Optional<PaymentMethodFee> checkMail) {
             this.checkMail = checkMail;
@@ -212,6 +224,9 @@ public final class FeeCustomizationRailRequest {
             return this;
         }
 
+        /**
+         * <p>The fee for the check mail priority rail.</p>
+         */
         @JsonSetter(value = "CHECK_MAIL_PRIORITY", nulls = Nulls.SKIP)
         public Builder checkMailPriority(Optional<PaymentMethodFee> checkMailPriority) {
             this.checkMailPriority = checkMailPriority;
@@ -223,6 +238,9 @@ public final class FeeCustomizationRailRequest {
             return this;
         }
 
+        /**
+         * <p>The fee for the check mail UPS next day rail.</p>
+         */
         @JsonSetter(value = "CHECK_MAIL_UPS_NEXT_DAY", nulls = Nulls.SKIP)
         public Builder checkMailUpsNextDay(Optional<PaymentMethodFee> checkMailUpsNextDay) {
             this.checkMailUpsNextDay = checkMailUpsNextDay;

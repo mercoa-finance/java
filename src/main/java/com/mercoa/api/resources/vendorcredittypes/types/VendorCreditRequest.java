@@ -22,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = VendorCreditRequest.Builder.class)
 public final class VendorCreditRequest {
+    private final Optional<String> memoNumber;
+
     private final double totalAmount;
 
     private final CurrencyCode currency;
@@ -31,14 +33,24 @@ public final class VendorCreditRequest {
     private final Map<String, Object> additionalProperties;
 
     private VendorCreditRequest(
+            Optional<String> memoNumber,
             double totalAmount,
             CurrencyCode currency,
             Optional<String> note,
             Map<String, Object> additionalProperties) {
+        this.memoNumber = memoNumber;
         this.totalAmount = totalAmount;
         this.currency = currency;
         this.note = note;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Memo number for the vendor credit
+     */
+    @JsonProperty("memoNumber")
+    public Optional<String> getMemoNumber() {
+        return memoNumber;
     }
 
     /**
@@ -77,12 +89,15 @@ public final class VendorCreditRequest {
     }
 
     private boolean equalTo(VendorCreditRequest other) {
-        return totalAmount == other.totalAmount && currency.equals(other.currency) && note.equals(other.note);
+        return memoNumber.equals(other.memoNumber)
+                && totalAmount == other.totalAmount
+                && currency.equals(other.currency)
+                && note.equals(other.note);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.totalAmount, this.currency, this.note);
+        return Objects.hash(this.memoNumber, this.totalAmount, this.currency, this.note);
     }
 
     @java.lang.Override
@@ -95,18 +110,34 @@ public final class VendorCreditRequest {
     }
 
     public interface TotalAmountStage {
+        /**
+         * <p>Total amount of the vendor credit in major units</p>
+         */
         CurrencyStage totalAmount(double totalAmount);
 
         Builder from(VendorCreditRequest other);
     }
 
     public interface CurrencyStage {
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         */
         _FinalStage currency(@NotNull CurrencyCode currency);
     }
 
     public interface _FinalStage {
         VendorCreditRequest build();
 
+        /**
+         * <p>Memo number for the vendor credit</p>
+         */
+        _FinalStage memoNumber(Optional<String> memoNumber);
+
+        _FinalStage memoNumber(String memoNumber);
+
+        /**
+         * <p>An optional note to attach to the vendor credit</p>
+         */
         _FinalStage note(Optional<String> note);
 
         _FinalStage note(String note);
@@ -120,6 +151,8 @@ public final class VendorCreditRequest {
 
         private Optional<String> note = Optional.empty();
 
+        private Optional<String> memoNumber = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -127,6 +160,7 @@ public final class VendorCreditRequest {
 
         @java.lang.Override
         public Builder from(VendorCreditRequest other) {
+            memoNumber(other.getMemoNumber());
             totalAmount(other.getTotalAmount());
             currency(other.getCurrency());
             note(other.getNote());
@@ -134,6 +168,7 @@ public final class VendorCreditRequest {
         }
 
         /**
+         * <p>Total amount of the vendor credit in major units</p>
          * <p>Total amount of the vendor credit in major units</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -145,6 +180,7 @@ public final class VendorCreditRequest {
         }
 
         /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
          * <p>Currency code for the amount. Defaults to USD.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -165,6 +201,9 @@ public final class VendorCreditRequest {
             return this;
         }
 
+        /**
+         * <p>An optional note to attach to the vendor credit</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "note", nulls = Nulls.SKIP)
         public _FinalStage note(Optional<String> note) {
@@ -172,9 +211,29 @@ public final class VendorCreditRequest {
             return this;
         }
 
+        /**
+         * <p>Memo number for the vendor credit</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage memoNumber(String memoNumber) {
+            this.memoNumber = Optional.ofNullable(memoNumber);
+            return this;
+        }
+
+        /**
+         * <p>Memo number for the vendor credit</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "memoNumber", nulls = Nulls.SKIP)
+        public _FinalStage memoNumber(Optional<String> memoNumber) {
+            this.memoNumber = memoNumber;
+            return this;
+        }
+
         @java.lang.Override
         public VendorCreditRequest build() {
-            return new VendorCreditRequest(totalAmount, currency, note, additionalProperties);
+            return new VendorCreditRequest(memoNumber, totalAmount, currency, note, additionalProperties);
         }
     }
 }

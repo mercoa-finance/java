@@ -125,6 +125,9 @@ public final class EntityUserRequest {
             return this;
         }
 
+        /**
+         * <p>The ID used to identify this user in your system.</p>
+         */
         @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
         public Builder foreignId(Optional<String> foreignId) {
             this.foreignId = foreignId;
@@ -158,6 +161,9 @@ public final class EntityUserRequest {
             return this;
         }
 
+        /**
+         * <p>List of roles. A role can be any string. For example: &quot;payer&quot;, &quot;approver&quot;, &quot;viewer&quot;</p>
+         */
         @JsonSetter(value = "roles", nulls = Nulls.SKIP)
         public Builder roles(Optional<List<String>> roles) {
             this.roles = roles;

@@ -158,6 +158,9 @@ public final class EntityGroupUpdateRequest implements IEntityGroupUpdateRequest
             return this;
         }
 
+        /**
+         * <p>Metadata key/value pairs to associate with this group. Will overwrite existing metadata.</p>
+         */
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public Builder metadata(Optional<Map<String, String>> metadata) {
             this.metadata = metadata;

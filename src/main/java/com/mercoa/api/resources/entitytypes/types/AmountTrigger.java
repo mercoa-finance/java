@@ -101,6 +101,9 @@ public final class AmountTrigger {
     public interface _FinalStage {
         AmountTrigger build();
 
+        /**
+         * <p>The comparison operator to use when comparing the amount to the trigger amount. Defaults to gte.</p>
+         */
         _FinalStage comparison(Optional<Comparison> comparison);
 
         _FinalStage comparison(Comparison comparison);
@@ -151,6 +154,9 @@ public final class AmountTrigger {
             return this;
         }
 
+        /**
+         * <p>The comparison operator to use when comparing the amount to the trigger amount. Defaults to gte.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "comparison", nulls = Nulls.SKIP)
         public _FinalStage comparison(Optional<Comparison> comparison) {

@@ -3,14 +3,7 @@
  */
 package com.mercoa.api.resources.entity.paymentmethod;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.entity.paymentmethod.bankaccount.BankAccountClient;
@@ -23,19 +16,13 @@ import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodEventsResp
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodRequest;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodResponse;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodUpdateRequest;
-import java.io.IOException;
 import java.util.List;
 import java.util.function.Supplier;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class PaymentMethodClient {
     protected final ClientOptions clientOptions;
+
+    private final RawPaymentMethodClient rawClient;
 
     protected final Supplier<BankAccountClient> bankAccountClient;
 
@@ -43,143 +30,52 @@ public class PaymentMethodClient {
 
     public PaymentMethodClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new RawPaymentMethodClient(clientOptions);
         this.bankAccountClient = Suppliers.memoize(() -> new BankAccountClient(clientOptions));
         this.walletClient = Suppliers.memoize(() -> new WalletClient(clientOptions));
     }
 
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public RawPaymentMethodClient withRawResponse() {
+        return this.rawClient;
+    }
+
     public List<PaymentMethodResponse> getAll(String entityId) {
-        return getAll(entityId, GetAllPaymentMethodsRequest.builder().build());
+        return this.rawClient.getAll(entityId).body();
     }
 
     public List<PaymentMethodResponse> getAll(String entityId, GetAllPaymentMethodsRequest request) {
-        return getAll(entityId, request, null);
+        return this.rawClient.getAll(entityId, request).body();
     }
 
     public List<PaymentMethodResponse> getAll(
             String entityId, GetAllPaymentMethodsRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("paymentMethods");
-        if (request.getType().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "type", request.getType().get().toString(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(
-                        responseBody.string(), new TypeReference<List<PaymentMethodResponse>>() {});
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.getAll(entityId, request, requestOptions).body();
     }
 
     public PaymentMethodResponse create(String entityId, PaymentMethodRequest request) {
-        return create(entityId, request, null);
+        return this.rawClient.create(entityId, request).body();
     }
 
     public PaymentMethodResponse create(String entityId, PaymentMethodRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("paymentMethod")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), PaymentMethodResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.create(entityId, request, requestOptions).body();
     }
 
     public PaymentMethodResponse get(String entityId, String paymentMethodId) {
-        return get(entityId, paymentMethodId, null);
+        return this.rawClient.get(entityId, paymentMethodId).body();
     }
 
     public PaymentMethodResponse get(String entityId, String paymentMethodId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("paymentMethod")
-                .addPathSegment(paymentMethodId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), PaymentMethodResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.get(entityId, paymentMethodId, requestOptions).body();
     }
 
     /**
      * Only custom payment methods can be updated.
      */
     public PaymentMethodResponse update(String entityId, String paymentMethodId, PaymentMethodUpdateRequest request) {
-        return update(entityId, paymentMethodId, request, null);
+        return this.rawClient.update(entityId, paymentMethodId, request).body();
     }
 
     /**
@@ -190,193 +86,67 @@ public class PaymentMethodClient {
             String paymentMethodId,
             PaymentMethodUpdateRequest request,
             RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("paymentMethod")
-                .addPathSegment(paymentMethodId)
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("PUT", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), PaymentMethodResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient
+                .update(entityId, paymentMethodId, request, requestOptions)
+                .body();
     }
 
     /**
      * Mark a payment method as inactive. This will not remove the payment method from the system, but will prevent it from being used in the future.
      */
     public void delete(String entityId, String paymentMethodId) {
-        delete(entityId, paymentMethodId, null);
+        this.rawClient.delete(entityId, paymentMethodId).body();
     }
 
     /**
      * Mark a payment method as inactive. This will not remove the payment method from the system, but will prevent it from being used in the future.
      */
     public void delete(String entityId, String paymentMethodId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("paymentMethod")
-                .addPathSegment(paymentMethodId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("DELETE", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return;
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        this.rawClient.delete(entityId, paymentMethodId, requestOptions).body();
     }
 
     /**
      * Get a Plaid link token for an entity. This token can be used to add or update a bank account to the entity using Plaid Link.
      */
     public String plaidLinkToken(String entityId) {
-        return plaidLinkToken(entityId, PlaidLinkTokenRequest.builder().build());
+        return this.rawClient.plaidLinkToken(entityId).body();
     }
 
     /**
      * Get a Plaid link token for an entity. This token can be used to add or update a bank account to the entity using Plaid Link.
      */
     public String plaidLinkToken(String entityId, PlaidLinkTokenRequest request) {
-        return plaidLinkToken(entityId, request, null);
+        return this.rawClient.plaidLinkToken(entityId, request).body();
     }
 
     /**
      * Get a Plaid link token for an entity. This token can be used to add or update a bank account to the entity using Plaid Link.
      */
     public String plaidLinkToken(String entityId, PlaidLinkTokenRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("plaidLinkToken");
-        if (request.getPaymentMethodId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "paymentMethodId", request.getPaymentMethodId().get(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.plaidLinkToken(entityId, request, requestOptions).body();
     }
 
     /**
      * Get a card link token for an entity. This token is used by the frontend components to generate a PCI compliant form to add a card to the entity.
      */
     public CardLinkTokenResponse cardLinkToken(String entityId) {
-        return cardLinkToken(entityId, null);
+        return this.rawClient.cardLinkToken(entityId).body();
     }
 
     /**
      * Get a card link token for an entity. This token is used by the frontend components to generate a PCI compliant form to add a card to the entity.
      */
     public CardLinkTokenResponse cardLinkToken(String entityId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("cardLinkToken")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), CardLinkTokenResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.cardLinkToken(entityId, requestOptions).body();
     }
 
     public PaymentMethodEventsResponse events(String entityId, String paymentMethodId) {
-        return events(
-                entityId, paymentMethodId, PaymentMethodEventsRequest.builder().build());
+        return this.rawClient.events(entityId, paymentMethodId).body();
     }
 
     public PaymentMethodEventsResponse events(
             String entityId, String paymentMethodId, PaymentMethodEventsRequest request) {
-        return events(entityId, paymentMethodId, request, null);
+        return this.rawClient.events(entityId, paymentMethodId, request).body();
     }
 
     public PaymentMethodEventsResponse events(
@@ -384,53 +154,9 @@ public class PaymentMethodClient {
             String paymentMethodId,
             PaymentMethodEventsRequest request,
             RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("paymentMethod")
-                .addPathSegment(paymentMethodId)
-                .addPathSegments("events");
-        if (request.getStartDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startDate", request.getStartDate().get().toString(), false);
-        }
-        if (request.getEndDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "endDate", request.getEndDate().get().toString(), false);
-        }
-        if (request.getLimit().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "limit", request.getLimit().get().toString(), false);
-        }
-        if (request.getStartingAfter().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), PaymentMethodEventsResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient
+                .events(entityId, paymentMethodId, request, requestOptions)
+                .body();
     }
 
     public BankAccountClient bankAccount() {

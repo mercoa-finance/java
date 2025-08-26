@@ -80,6 +80,9 @@ public final class RutterCompanyCreationRequest {
             return this;
         }
 
+        /**
+         * <p>The access token for the existing Rutter connection. If the connection does not exist, leave this field blank and Rutter will create a new connection.</p>
+         */
         @JsonSetter(value = "accessToken", nulls = Nulls.SKIP)
         public Builder accessToken(Optional<String> accessToken) {
             this.accessToken = accessToken;

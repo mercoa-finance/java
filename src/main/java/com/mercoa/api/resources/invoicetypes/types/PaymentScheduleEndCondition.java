@@ -30,6 +30,7 @@ public final class PaymentScheduleEndCondition {
         return this.value;
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T visit(Visitor<T> visitor) {
         if (this.type == 0) {
             return visitor.visit((int) this.value);
@@ -87,7 +88,7 @@ public final class PaymentScheduleEndCondition {
             }
             try {
                 return of(ObjectMappers.JSON_MAPPER.convertValue(value, OffsetDateTime.class));
-            } catch (IllegalArgumentException e) {
+            } catch (RuntimeException e) {
             }
             throw new JsonParseException(p, "Failed to deserialize");
         }

@@ -152,6 +152,9 @@ public final class NotificationPolicyRequest {
             return this;
         }
 
+        /**
+         * <p>Set to true if the selected notification type should be disabled for this entity</p>
+         */
         @JsonSetter(value = "disabled", nulls = Nulls.SKIP)
         public Builder disabled(Optional<Boolean> disabled) {
             this.disabled = disabled;
@@ -163,6 +166,9 @@ public final class NotificationPolicyRequest {
             return this;
         }
 
+        /**
+         * <p>List of user roles that should receive notifications in addition to the default users for this notification type</p>
+         */
         @JsonSetter(value = "additionalRoles", nulls = Nulls.SKIP)
         public Builder additionalRoles(Optional<List<String>> additionalRoles) {
             this.additionalRoles = additionalRoles;
@@ -174,6 +180,9 @@ public final class NotificationPolicyRequest {
             return this;
         }
 
+        /**
+         * <p>List of user IDs that should receive notifications in addition to the default users for this notification type</p>
+         */
         @JsonSetter(value = "additionalUsers", nulls = Nulls.SKIP)
         public Builder additionalUsers(Optional<List<String>> additionalUsers) {
             this.additionalUsers = additionalUsers;
@@ -185,6 +194,9 @@ public final class NotificationPolicyRequest {
             return this;
         }
 
+        /**
+         * <p>Set to true if the selected notification type should be sent to the counterparty if this is a payable invoice.</p>
+         */
         @JsonSetter(value = "notifyPayeeCounterparty", nulls = Nulls.SKIP)
         public Builder notifyPayeeCounterparty(Optional<Boolean> notifyPayeeCounterparty) {
             this.notifyPayeeCounterparty = notifyPayeeCounterparty;
@@ -196,6 +208,9 @@ public final class NotificationPolicyRequest {
             return this;
         }
 
+        /**
+         * <p>Set to true if the selected notification type should be sent to the counterparty if this is a receivable invoice.</p>
+         */
         @JsonSetter(value = "notifyPayorCounterparty", nulls = Nulls.SKIP)
         public Builder notifyPayorCounterparty(Optional<Boolean> notifyPayorCounterparty) {
             this.notifyPayorCounterparty = notifyPayorCounterparty;

@@ -7,20 +7,27 @@ import com.mercoa.api.core.ClientOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.banklookup.AsyncBankLookupClient;
 import com.mercoa.api.resources.calculate.AsyncCalculateClient;
+import com.mercoa.api.resources.contract.AsyncContractClient;
 import com.mercoa.api.resources.custompaymentmethodschema.AsyncCustomPaymentMethodSchemaClient;
 import com.mercoa.api.resources.entity.AsyncEntityClient;
 import com.mercoa.api.resources.entitygroup.AsyncEntityGroupClient;
 import com.mercoa.api.resources.invoice.AsyncInvoiceClient;
 import com.mercoa.api.resources.invoicetemplate.AsyncInvoiceTemplateClient;
+import com.mercoa.api.resources.moov.AsyncMoovClient;
+import com.mercoa.api.resources.oatfi.AsyncOatfiClient;
 import com.mercoa.api.resources.ocr.AsyncOcrClient;
 import com.mercoa.api.resources.organization.AsyncOrganizationClient;
 import com.mercoa.api.resources.paymentgateway.AsyncPaymentGatewayClient;
 import com.mercoa.api.resources.paymentmethods.AsyncPaymentMethodsClient;
+import com.mercoa.api.resources.processinvoice.AsyncProcessInvoiceClient;
+import com.mercoa.api.resources.surgery.AsyncSurgeryClient;
 import com.mercoa.api.resources.transaction.AsyncTransactionClient;
 import java.util.function.Supplier;
 
 public class AsyncMercoa {
     protected final ClientOptions clientOptions;
+
+    protected final Supplier<AsyncContractClient> contractClient;
 
     protected final Supplier<AsyncEntityGroupClient> entityGroupClient;
 
@@ -32,7 +39,7 @@ public class AsyncMercoa {
 
     protected final Supplier<AsyncOrganizationClient> organizationClient;
 
-    protected final Supplier<AsyncPaymentGatewayClient> paymentGatewayClient;
+    protected final Supplier<AsyncSurgeryClient> surgeryClient;
 
     protected final Supplier<AsyncBankLookupClient> bankLookupClient;
 
@@ -40,27 +47,44 @@ public class AsyncMercoa {
 
     protected final Supplier<AsyncCustomPaymentMethodSchemaClient> customPaymentMethodSchemaClient;
 
+    protected final Supplier<AsyncMoovClient> moovClient;
+
+    protected final Supplier<AsyncOatfiClient> oatfiClient;
+
     protected final Supplier<AsyncOcrClient> ocrClient;
 
+    protected final Supplier<AsyncPaymentGatewayClient> paymentGatewayClient;
+
     protected final Supplier<AsyncPaymentMethodsClient> paymentMethodsClient;
+
+    protected final Supplier<AsyncProcessInvoiceClient> processInvoiceClient;
 
     protected final Supplier<AsyncTransactionClient> transactionClient;
 
     public AsyncMercoa(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.contractClient = Suppliers.memoize(() -> new AsyncContractClient(clientOptions));
         this.entityGroupClient = Suppliers.memoize(() -> new AsyncEntityGroupClient(clientOptions));
         this.entityClient = Suppliers.memoize(() -> new AsyncEntityClient(clientOptions));
         this.invoiceTemplateClient = Suppliers.memoize(() -> new AsyncInvoiceTemplateClient(clientOptions));
         this.invoiceClient = Suppliers.memoize(() -> new AsyncInvoiceClient(clientOptions));
         this.organizationClient = Suppliers.memoize(() -> new AsyncOrganizationClient(clientOptions));
-        this.paymentGatewayClient = Suppliers.memoize(() -> new AsyncPaymentGatewayClient(clientOptions));
+        this.surgeryClient = Suppliers.memoize(() -> new AsyncSurgeryClient(clientOptions));
         this.bankLookupClient = Suppliers.memoize(() -> new AsyncBankLookupClient(clientOptions));
         this.calculateClient = Suppliers.memoize(() -> new AsyncCalculateClient(clientOptions));
         this.customPaymentMethodSchemaClient =
                 Suppliers.memoize(() -> new AsyncCustomPaymentMethodSchemaClient(clientOptions));
+        this.moovClient = Suppliers.memoize(() -> new AsyncMoovClient(clientOptions));
+        this.oatfiClient = Suppliers.memoize(() -> new AsyncOatfiClient(clientOptions));
         this.ocrClient = Suppliers.memoize(() -> new AsyncOcrClient(clientOptions));
+        this.paymentGatewayClient = Suppliers.memoize(() -> new AsyncPaymentGatewayClient(clientOptions));
         this.paymentMethodsClient = Suppliers.memoize(() -> new AsyncPaymentMethodsClient(clientOptions));
+        this.processInvoiceClient = Suppliers.memoize(() -> new AsyncProcessInvoiceClient(clientOptions));
         this.transactionClient = Suppliers.memoize(() -> new AsyncTransactionClient(clientOptions));
+    }
+
+    public AsyncContractClient contract() {
+        return this.contractClient.get();
     }
 
     public AsyncEntityGroupClient entityGroup() {
@@ -83,8 +107,8 @@ public class AsyncMercoa {
         return this.organizationClient.get();
     }
 
-    public AsyncPaymentGatewayClient paymentGateway() {
-        return this.paymentGatewayClient.get();
+    public AsyncSurgeryClient surgery() {
+        return this.surgeryClient.get();
     }
 
     public AsyncBankLookupClient bankLookup() {
@@ -99,12 +123,28 @@ public class AsyncMercoa {
         return this.customPaymentMethodSchemaClient.get();
     }
 
+    public AsyncMoovClient moov() {
+        return this.moovClient.get();
+    }
+
+    public AsyncOatfiClient oatfi() {
+        return this.oatfiClient.get();
+    }
+
     public AsyncOcrClient ocr() {
         return this.ocrClient.get();
     }
 
+    public AsyncPaymentGatewayClient paymentGateway() {
+        return this.paymentGatewayClient.get();
+    }
+
     public AsyncPaymentMethodsClient paymentMethods() {
         return this.paymentMethodsClient.get();
+    }
+
+    public AsyncProcessInvoiceClient processInvoice() {
+        return this.processInvoiceClient.get();
     }
 
     public AsyncTransactionClient transaction() {

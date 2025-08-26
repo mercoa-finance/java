@@ -80,6 +80,9 @@ public final class VendorLinkRequest {
             return this;
         }
 
+        /**
+         * <p>Expressed in seconds or a string describing a time span. The default is 30d.</p>
+         */
         @JsonSetter(value = "expiresIn", nulls = Nulls.SKIP)
         public Builder expiresIn(Optional<String> expiresIn) {
             this.expiresIn = expiresIn;

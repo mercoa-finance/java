@@ -81,6 +81,9 @@ public final class WorkflowCustomizationRequest {
             return this;
         }
 
+        /**
+         * <p>If true, the invoice will be automatically advanced to the furthest stage in the payment workflow. For example, if the invoice is APPROVED, but has all necessary data to move to SCHEDULED, it will be advanced to SCHEDULED.</p>
+         */
         @JsonSetter(value = "autoAdvanceInvoiceStatus", nulls = Nulls.SKIP)
         public Builder autoAdvanceInvoiceStatus(Optional<Boolean> autoAdvanceInvoiceStatus) {
             this.autoAdvanceInvoiceStatus = autoAdvanceInvoiceStatus;

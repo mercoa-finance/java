@@ -20,6 +20,10 @@ public enum CustomPaymentMethodSchemaFieldType {
 
     URL("url"),
 
+    DYNAMIC_URL("dynamicUrl"),
+
+    EMBEDDED_URL("embeddedUrl"),
+
     ADDRESS("address"),
 
     US_BANK_ROUTING_NUMBER("usBankRoutingNumber"),

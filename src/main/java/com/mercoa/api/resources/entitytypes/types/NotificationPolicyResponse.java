@@ -139,16 +139,25 @@ public final class NotificationPolicyResponse {
     }
 
     public interface DisabledStage {
+        /**
+         * <p>True if the selected notification type is disabled for this entity</p>
+         */
         NotifyPayeeCounterpartyStage disabled(boolean disabled);
 
         Builder from(NotificationPolicyResponse other);
     }
 
     public interface NotifyPayeeCounterpartyStage {
+        /**
+         * <p>True if the selected notification type should be sent to the counterparty if this is a payable invoice.</p>
+         */
         NotifyPayorCounterpartyStage notifyPayeeCounterparty(boolean notifyPayeeCounterparty);
     }
 
     public interface NotifyPayorCounterpartyStage {
+        /**
+         * <p>True if the selected notification type should be sent to the counterparty if this is a receivable invoice.</p>
+         */
         TypeStage notifyPayorCounterparty(boolean notifyPayorCounterparty);
     }
 
@@ -159,12 +168,18 @@ public final class NotificationPolicyResponse {
     public interface _FinalStage {
         NotificationPolicyResponse build();
 
+        /**
+         * <p>List of user roles that should receive notifications in addition to the default users for this notification type</p>
+         */
         _FinalStage additionalRoles(List<String> additionalRoles);
 
         _FinalStage addAdditionalRoles(String additionalRoles);
 
         _FinalStage addAllAdditionalRoles(List<String> additionalRoles);
 
+        /**
+         * <p>List of user IDs that should receive notifications in addition to the default users for this notification type</p>
+         */
         _FinalStage additionalUsers(List<String> additionalUsers);
 
         _FinalStage addAdditionalUsers(String additionalUsers);
@@ -209,6 +224,7 @@ public final class NotificationPolicyResponse {
 
         /**
          * <p>True if the selected notification type is disabled for this entity</p>
+         * <p>True if the selected notification type is disabled for this entity</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -220,6 +236,7 @@ public final class NotificationPolicyResponse {
 
         /**
          * <p>True if the selected notification type should be sent to the counterparty if this is a payable invoice.</p>
+         * <p>True if the selected notification type should be sent to the counterparty if this is a payable invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -230,6 +247,7 @@ public final class NotificationPolicyResponse {
         }
 
         /**
+         * <p>True if the selected notification type should be sent to the counterparty if this is a receivable invoice.</p>
          * <p>True if the selected notification type should be sent to the counterparty if this is a receivable invoice.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -267,6 +285,9 @@ public final class NotificationPolicyResponse {
             return this;
         }
 
+        /**
+         * <p>List of user IDs that should receive notifications in addition to the default users for this notification type</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "additionalUsers", nulls = Nulls.SKIP)
         public _FinalStage additionalUsers(List<String> additionalUsers) {
@@ -295,6 +316,9 @@ public final class NotificationPolicyResponse {
             return this;
         }
 
+        /**
+         * <p>List of user roles that should receive notifications in addition to the default users for this notification type</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "additionalRoles", nulls = Nulls.SKIP)
         public _FinalStage additionalRoles(List<String> additionalRoles) {

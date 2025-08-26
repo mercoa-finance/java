@@ -80,6 +80,9 @@ public final class NotificationCustomizationRequest {
             return this;
         }
 
+        /**
+         * <p>If set, notifications to this role will be sent to the email address of the entity. Set as empty string to disable.</p>
+         */
         @JsonSetter(value = "assumeRole", nulls = Nulls.SKIP)
         public Builder assumeRole(Optional<String> assumeRole) {
             this.assumeRole = assumeRole;

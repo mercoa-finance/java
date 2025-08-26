@@ -4,6 +4,7 @@
 package com.mercoa.api.resources.commons.errors;
 
 import com.mercoa.api.core.MercoaApiException;
+import okhttp3.Response;
 
 public final class Forbidden extends MercoaApiException {
     /**
@@ -13,6 +14,11 @@ public final class Forbidden extends MercoaApiException {
 
     public Forbidden(String body) {
         super("Forbidden", 403, body);
+        this.body = body;
+    }
+
+    public Forbidden(String body, Response rawResponse) {
+        super("Forbidden", 403, body, rawResponse);
         this.body = body;
     }
 

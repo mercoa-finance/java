@@ -270,6 +270,9 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             return this;
         }
 
+        /**
+         * <p>If true, this payment method will be set as the default source. Only one payment method can be set as the default source. If another payment method is already set as the default source, it will be unset.</p>
+         */
         @JsonSetter(value = "defaultSource", nulls = Nulls.SKIP)
         public Builder defaultSource(Optional<Boolean> defaultSource) {
             this.defaultSource = defaultSource;
@@ -281,6 +284,9 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             return this;
         }
 
+        /**
+         * <p>If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.</p>
+         */
         @JsonSetter(value = "defaultDestination", nulls = Nulls.SKIP)
         public Builder defaultDestination(Optional<Boolean> defaultDestination) {
             this.defaultDestination = defaultDestination;
@@ -292,6 +298,9 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             return this;
         }
 
+        /**
+         * <p>ID for this payment method in the external accounting system (e.g Rutter or Codat)</p>
+         */
         @JsonSetter(value = "externalAccountingSystemId", nulls = Nulls.SKIP)
         public Builder externalAccountingSystemId(Optional<String> externalAccountingSystemId) {
             this.externalAccountingSystemId = externalAccountingSystemId;
@@ -303,6 +312,9 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             return this;
         }
 
+        /**
+         * <p>If true, this payment method will be frozen. Frozen payment methods cannot be used for payments, but will still be returned in API responses.</p>
+         */
         @JsonSetter(value = "frozen", nulls = Nulls.SKIP)
         public Builder frozen(Optional<Boolean> frozen) {
             this.frozen = frozen;
@@ -314,6 +326,9 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             return this;
         }
 
+        /**
+         * <p>Metadata associated with this payment method.</p>
+         */
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public Builder metadata(Optional<Map<String, String>> metadata) {
             this.metadata = metadata;
@@ -325,6 +340,9 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             return this;
         }
 
+        /**
+         * <p>(ALPHA, MAY BE REMOVED) Indicate whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.</p>
+         */
         @JsonSetter(value = "confirmedByEntity", nulls = Nulls.SKIP)
         public Builder confirmedByEntity(Optional<Boolean> confirmedByEntity) {
             this.confirmedByEntity = confirmedByEntity;
@@ -336,6 +354,9 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             return this;
         }
 
+        /**
+         * <p>ID for this payment method in your system</p>
+         */
         @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
         public Builder foreignId(Optional<String> foreignId) {
             this.foreignId = foreignId;
@@ -369,6 +390,9 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             return this;
         }
 
+        /**
+         * <p>The available balance for this payment method.</p>
+         */
         @JsonSetter(value = "availableBalance", nulls = Nulls.SKIP)
         public Builder availableBalance(Optional<Double> availableBalance) {
             this.availableBalance = availableBalance;
@@ -380,6 +404,9 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             return this;
         }
 
+        /**
+         * <p>Payment method schema used for this payment method. Defines the fields that this payment method contains.</p>
+         */
         @JsonSetter(value = "schemaId", nulls = Nulls.SKIP)
         public Builder schemaId(Optional<String> schemaId) {
             this.schemaId = schemaId;
@@ -391,6 +418,9 @@ public final class CustomPaymentMethodUpdateRequest implements IPaymentMethodBas
             return this;
         }
 
+        /**
+         * <p>Object of key/value pairs that matches the keys in the linked payment method schema.</p>
+         */
         @JsonSetter(value = "data", nulls = Nulls.SKIP)
         public Builder data(Optional<Map<String, String>> data) {
             this.data = data;

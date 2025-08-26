@@ -85,6 +85,9 @@ public final class TokenGenerationVendorOptions {
     public interface _FinalStage {
         TokenGenerationVendorOptions build();
 
+        /**
+         * <p>If true, the user will not be able to create new vendors.</p>
+         */
         _FinalStage disableCreation(Optional<Boolean> disableCreation);
 
         _FinalStage disableCreation(Boolean disableCreation);
@@ -125,6 +128,9 @@ public final class TokenGenerationVendorOptions {
             return this;
         }
 
+        /**
+         * <p>If true, the user will not be able to create new vendors.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "disableCreation", nulls = Nulls.SKIP)
         public _FinalStage disableCreation(Optional<Boolean> disableCreation) {

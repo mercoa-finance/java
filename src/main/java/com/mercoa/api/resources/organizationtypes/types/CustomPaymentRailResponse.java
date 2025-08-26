@@ -85,6 +85,9 @@ public final class CustomPaymentRailResponse implements IGenericPaymentRailRespo
     }
 
     public interface NameStage {
+        /**
+         * <p>unused</p>
+         */
         ActiveStage name(@NotNull String name);
 
         Builder from(CustomPaymentRailResponse other);
@@ -124,6 +127,7 @@ public final class CustomPaymentRailResponse implements IGenericPaymentRailRespo
         }
 
         /**
+         * <p>unused</p>
          * <p>unused</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

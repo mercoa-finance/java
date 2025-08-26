@@ -81,12 +81,18 @@ public final class ValidatePaymentGatewayCardResponse {
     }
 
     public interface EligibilityStage {
+        /**
+         * <p>Whether the payment gateway accepts card payments</p>
+         */
         FeeStage eligibility(@NotNull ValidatePaymentGatewayCardAcceptance eligibility);
 
         Builder from(ValidatePaymentGatewayCardResponse other);
     }
 
     public interface FeeStage {
+        /**
+         * <p>The fee that was extracted from the gateway</p>
+         */
         _FinalStage fee(@NotNull ValidatePaymentGatewayCardFee fee);
     }
 
@@ -114,6 +120,7 @@ public final class ValidatePaymentGatewayCardResponse {
 
         /**
          * <p>Whether the payment gateway accepts card payments</p>
+         * <p>Whether the payment gateway accepts card payments</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -124,6 +131,7 @@ public final class ValidatePaymentGatewayCardResponse {
         }
 
         /**
+         * <p>The fee that was extracted from the gateway</p>
          * <p>The fee that was extracted from the gateway</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

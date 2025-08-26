@@ -129,26 +129,41 @@ public final class EstimatedTiming {
     }
 
     public interface PaymentSourceIdStage {
+        /**
+         * <p>ID of payment source.</p>
+         */
         PaymentDestinationIdStage paymentSourceId(@NotNull String paymentSourceId);
 
         Builder from(EstimatedTiming other);
     }
 
     public interface PaymentDestinationIdStage {
+        /**
+         * <p>ID of payment destination.</p>
+         */
         _FinalStage paymentDestinationId(@NotNull String paymentDestinationId);
     }
 
     public interface _FinalStage {
         EstimatedTiming build();
 
+        /**
+         * <p>Date the payment is scheduled to be deducted from the payer's account. Use this field if the payment has not yet been deducted.</p>
+         */
         _FinalStage estimatedDeductionDate(Optional<OffsetDateTime> estimatedDeductionDate);
 
         _FinalStage estimatedDeductionDate(OffsetDateTime estimatedDeductionDate);
 
+        /**
+         * <p>Date the payment was processed. Use this field if the payment has already been deducted.</p>
+         */
         _FinalStage processedAt(Optional<OffsetDateTime> processedAt);
 
         _FinalStage processedAt(OffsetDateTime processedAt);
 
+        /**
+         * <p>Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.</p>
+         */
         _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions);
 
         _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions);
@@ -183,6 +198,7 @@ public final class EstimatedTiming {
 
         /**
          * <p>ID of payment source.</p>
+         * <p>ID of payment source.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -193,6 +209,7 @@ public final class EstimatedTiming {
         }
 
         /**
+         * <p>ID of payment destination.</p>
          * <p>ID of payment destination.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -214,6 +231,9 @@ public final class EstimatedTiming {
             return this;
         }
 
+        /**
+         * <p>Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "paymentDestinationOptions", nulls = Nulls.SKIP)
         public _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions) {
@@ -231,6 +251,9 @@ public final class EstimatedTiming {
             return this;
         }
 
+        /**
+         * <p>Date the payment was processed. Use this field if the payment has already been deducted.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "processedAt", nulls = Nulls.SKIP)
         public _FinalStage processedAt(Optional<OffsetDateTime> processedAt) {
@@ -248,6 +271,9 @@ public final class EstimatedTiming {
             return this;
         }
 
+        /**
+         * <p>Date the payment is scheduled to be deducted from the payer's account. Use this field if the payment has not yet been deducted.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "estimatedDeductionDate", nulls = Nulls.SKIP)
         public _FinalStage estimatedDeductionDate(Optional<OffsetDateTime> estimatedDeductionDate) {

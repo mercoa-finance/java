@@ -81,6 +81,9 @@ public final class InvalidateTokensRequest {
             return this;
         }
 
+        /**
+         * <p>Optional list of session IDs to invalidate. If not provided, all sessions will be invalidated.</p>
+         */
         @JsonSetter(value = "sessionId", nulls = Nulls.SKIP)
         public Builder sessionId(Optional<List<String>> sessionId) {
             this.sessionId = sessionId;

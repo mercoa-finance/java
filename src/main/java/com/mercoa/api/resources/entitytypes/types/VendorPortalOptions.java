@@ -115,6 +115,9 @@ public final class VendorPortalOptions {
             return this;
         }
 
+        /**
+         * <p>The tabs to display in the vendor portal. If not provided, all tabs will be displayed.</p>
+         */
         @JsonSetter(value = "tabs", nulls = Nulls.SKIP)
         public Builder tabs(Optional<List<VendorPortalTab>> tabs) {
             this.tabs = tabs;
@@ -126,6 +129,9 @@ public final class VendorPortalOptions {
             return this;
         }
 
+        /**
+         * <p>The default tab to display in the vendor portal. If not provided, the HOME tab will be displayed.</p>
+         */
         @JsonSetter(value = "defaultTab", nulls = Nulls.SKIP)
         public Builder defaultTab(Optional<VendorPortalTab> defaultTab) {
             this.defaultTab = defaultTab;
@@ -137,6 +143,9 @@ public final class VendorPortalOptions {
             return this;
         }
 
+        /**
+         * <p>The welcome message to display in the vendor portal. If not provided, no welcome message will be displayed.</p>
+         */
         @JsonSetter(value = "welcomeMessage", nulls = Nulls.SKIP)
         public Builder welcomeMessage(Optional<String> welcomeMessage) {
             this.welcomeMessage = welcomeMessage;

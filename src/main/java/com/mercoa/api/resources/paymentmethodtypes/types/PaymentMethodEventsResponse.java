@@ -91,18 +91,27 @@ public final class PaymentMethodEventsResponse {
     }
 
     public interface CountStage {
+        /**
+         * <p>The total number of events</p>
+         */
         HasMoreStage count(int count);
 
         Builder from(PaymentMethodEventsResponse other);
     }
 
     public interface HasMoreStage {
+        /**
+         * <p>Whether there are more events to fetch</p>
+         */
         _FinalStage hasMore(boolean hasMore);
     }
 
     public interface _FinalStage {
         PaymentMethodEventsResponse build();
 
+        /**
+         * <p>The list of events</p>
+         */
         _FinalStage data(List<PaymentMethodEvent> data);
 
         _FinalStage addData(PaymentMethodEvent data);
@@ -133,6 +142,7 @@ public final class PaymentMethodEventsResponse {
 
         /**
          * <p>The total number of events</p>
+         * <p>The total number of events</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -143,6 +153,7 @@ public final class PaymentMethodEventsResponse {
         }
 
         /**
+         * <p>Whether there are more events to fetch</p>
          * <p>Whether there are more events to fetch</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -173,6 +184,9 @@ public final class PaymentMethodEventsResponse {
             return this;
         }
 
+        /**
+         * <p>The list of events</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "data", nulls = Nulls.SKIP)
         public _FinalStage data(List<PaymentMethodEvent> data) {

@@ -81,6 +81,9 @@ public final class EntityGroupRemoveEntitiesRequest {
             return this;
         }
 
+        /**
+         * <p>List of entity IDs or foreign IDs to remove from the group</p>
+         */
         @JsonSetter(value = "entityIds", nulls = Nulls.SKIP)
         public Builder entityIds(List<String> entityIds) {
             this.entityIds.clear();

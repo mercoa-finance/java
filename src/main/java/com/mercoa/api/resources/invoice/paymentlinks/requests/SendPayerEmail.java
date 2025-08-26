@@ -80,6 +80,9 @@ public final class SendPayerEmail {
             return this;
         }
 
+        /**
+         * <p>Whether to attach the invoice to the email</p>
+         */
         @JsonSetter(value = "attachInvoice", nulls = Nulls.SKIP)
         public Builder attachInvoice(Optional<Boolean> attachInvoice) {
             this.attachInvoice = attachInvoice;

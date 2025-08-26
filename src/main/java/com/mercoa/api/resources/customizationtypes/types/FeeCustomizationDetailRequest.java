@@ -97,6 +97,9 @@ public final class FeeCustomizationDetailRequest {
             return this;
         }
 
+        /**
+         * <p>Fees to be applied to the source of the transaction.</p>
+         */
         @JsonSetter(value = "source", nulls = Nulls.SKIP)
         public Builder source(Optional<FeeCustomizationRailRequest> source) {
             this.source = source;
@@ -108,6 +111,9 @@ public final class FeeCustomizationDetailRequest {
             return this;
         }
 
+        /**
+         * <p>Fees to be applied to the destination of the transaction.</p>
+         */
         @JsonSetter(value = "destination", nulls = Nulls.SKIP)
         public Builder destination(Optional<FeeCustomizationRailRequest> destination) {
             this.destination = destination;

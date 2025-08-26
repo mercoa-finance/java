@@ -80,12 +80,18 @@ public final class CustomPaymentMethodCustomizationRequest implements IGenericPa
     }
 
     public interface DisabledStage {
+        /**
+         * <p>If true, this method will will not be available to the entity.</p>
+         */
         SchemaIdStage disabled(boolean disabled);
 
         Builder from(CustomPaymentMethodCustomizationRequest other);
     }
 
     public interface SchemaIdStage {
+        /**
+         * <p>The ID of the schema to use for this payment method.</p>
+         */
         _FinalStage schemaId(@NotNull String schemaId);
     }
 
@@ -113,6 +119,7 @@ public final class CustomPaymentMethodCustomizationRequest implements IGenericPa
 
         /**
          * <p>If true, this method will will not be available to the entity.</p>
+         * <p>If true, this method will will not be available to the entity.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -123,6 +130,7 @@ public final class CustomPaymentMethodCustomizationRequest implements IGenericPa
         }
 
         /**
+         * <p>The ID of the schema to use for this payment method.</p>
          * <p>The ID of the schema to use for this payment method.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

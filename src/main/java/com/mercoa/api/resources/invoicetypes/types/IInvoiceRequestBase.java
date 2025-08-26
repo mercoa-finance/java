@@ -38,6 +38,8 @@ public interface IInvoiceRequestBase {
 
     Optional<String> getPaymentSourceId();
 
+    Optional<PaymentSourceOptions> getPaymentSourceOptions();
+
     Optional<String> getVendorId();
 
     Optional<String> getPaymentDestinationId();
@@ -71,4 +73,6 @@ public interface IInvoiceRequestBase {
     Optional<Double> getShippingAmount();
 
     Optional<String> getOcrJobId();
+
+    Optional<Boolean> getPaymentDestinationConfirmed();
 }

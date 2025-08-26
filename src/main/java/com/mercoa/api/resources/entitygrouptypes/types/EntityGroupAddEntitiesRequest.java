@@ -120,6 +120,9 @@ public final class EntityGroupAddEntitiesRequest {
             return this;
         }
 
+        /**
+         * <p>List of entity IDs or foreign IDs to add to the group</p>
+         */
         @JsonSetter(value = "entityIds", nulls = Nulls.SKIP)
         public Builder entityIds(List<String> entityIds) {
             this.entityIds.clear();
@@ -137,6 +140,13 @@ public final class EntityGroupAddEntitiesRequest {
             return this;
         }
 
+        /**
+         * <p>Entity ID / foreign ID of an entity currently in the group to copy users and roles from OR a boolean defining if users should be copied to the new entities.</p>
+         * <p>If not provided or false, users and roles will not be copied.
+         * If true, users and roles will be copied from the entity with the most users that has been updated most recently.
+         * If a valid ID is provided, users and roles will be copied from the corresponding provided entity in the group.</p>
+         * <p>Note: If users copied, any preexisting users will be left alone, and users with the same foreign ID will not be copied.</p>
+         */
         @JsonSetter(value = "copyUsersFrom", nulls = Nulls.SKIP)
         public Builder copyUsersFrom(Optional<EntityIdOrBoolean> copyUsersFrom) {
             this.copyUsersFrom = copyUsersFrom;
@@ -148,6 +158,9 @@ public final class EntityGroupAddEntitiesRequest {
             return this;
         }
 
+        /**
+         * <p>List of roles to filter users by. If not provided, all users will be copied. If provided, only users with the provided roles will be copied.</p>
+         */
         @JsonSetter(value = "filterRoles", nulls = Nulls.SKIP)
         public Builder filterRoles(Optional<List<String>> filterRoles) {
             this.filterRoles = filterRoles;

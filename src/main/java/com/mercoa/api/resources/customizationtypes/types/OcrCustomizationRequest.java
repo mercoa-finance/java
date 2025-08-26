@@ -202,6 +202,9 @@ public final class OcrCustomizationRequest {
             return this;
         }
 
+        /**
+         * <p>Extract line items from the invoice. Defaults to true.</p>
+         */
         @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
         public Builder lineItems(Optional<Boolean> lineItems) {
             this.lineItems = lineItems;
@@ -213,6 +216,9 @@ public final class OcrCustomizationRequest {
             return this;
         }
 
+        /**
+         * <p>If true, the line items will be collapsed into a single line item. Defaults to false.</p>
+         */
         @JsonSetter(value = "collapseLineItems", nulls = Nulls.SKIP)
         public Builder collapseLineItems(Optional<Boolean> collapseLineItems) {
             this.collapseLineItems = collapseLineItems;
@@ -224,6 +230,9 @@ public final class OcrCustomizationRequest {
             return this;
         }
 
+        /**
+         * <p>Pull custom metadata at the invoice level. Defaults to true.</p>
+         */
         @JsonSetter(value = "invoiceMetadata", nulls = Nulls.SKIP)
         public Builder invoiceMetadata(Optional<Boolean> invoiceMetadata) {
             this.invoiceMetadata = invoiceMetadata;
@@ -235,6 +244,9 @@ public final class OcrCustomizationRequest {
             return this;
         }
 
+        /**
+         * <p>Pull custom metadata at the line item level. Defaults to true.</p>
+         */
         @JsonSetter(value = "lineItemMetadata", nulls = Nulls.SKIP)
         public Builder lineItemMetadata(Optional<Boolean> lineItemMetadata) {
             this.lineItemMetadata = lineItemMetadata;
@@ -246,6 +258,9 @@ public final class OcrCustomizationRequest {
             return this;
         }
 
+        /**
+         * <p>Pull GL Account ID at the line item level. Defaults to true.</p>
+         */
         @JsonSetter(value = "lineItemGlAccountId", nulls = Nulls.SKIP)
         public Builder lineItemGlAccountId(Optional<Boolean> lineItemGlAccountId) {
             this.lineItemGlAccountId = lineItemGlAccountId;
@@ -257,6 +272,9 @@ public final class OcrCustomizationRequest {
             return this;
         }
 
+        /**
+         * <p>Use AI to predict metadata from historical data. Defaults to true.</p>
+         */
         @JsonSetter(value = "predictMetadata", nulls = Nulls.SKIP)
         public Builder predictMetadata(Optional<Boolean> predictMetadata) {
             this.predictMetadata = predictMetadata;
@@ -268,6 +286,9 @@ public final class OcrCustomizationRequest {
             return this;
         }
 
+        /**
+         * <p>Pull tax and shipping information as line items. Defaults to true. If false, tax and shipping will extracted as invoice level fields.</p>
+         */
         @JsonSetter(value = "taxAndShippingAsLineItems", nulls = Nulls.SKIP)
         public Builder taxAndShippingAsLineItems(Optional<Boolean> taxAndShippingAsLineItems) {
             this.taxAndShippingAsLineItems = taxAndShippingAsLineItems;
@@ -279,6 +300,9 @@ public final class OcrCustomizationRequest {
             return this;
         }
 
+        /**
+         * <p>Use AI to intelligently split documents into multiple subdocuments. Defaults to false.</p>
+         */
         @JsonSetter(value = "splitDocuments", nulls = Nulls.SKIP)
         public Builder splitDocuments(Optional<Boolean> splitDocuments) {
             this.splitDocuments = splitDocuments;

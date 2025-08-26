@@ -84,6 +84,9 @@ public final class BulkInvoiceUpdateWebhook {
     }
 
     public interface EventTypeStage {
+        /**
+         * <p>The type of the event.</p>
+         */
         _FinalStage eventType(@NotNull String eventType);
 
         Builder from(BulkInvoiceUpdateWebhook other);
@@ -92,6 +95,9 @@ public final class BulkInvoiceUpdateWebhook {
     public interface _FinalStage {
         BulkInvoiceUpdateWebhook build();
 
+        /**
+         * <p>A list of bulk invoice update responses.</p>
+         */
         _FinalStage data(List<BulkInvoiceUpdateFromObjectResponse> data);
 
         _FinalStage addData(BulkInvoiceUpdateFromObjectResponse data);
@@ -118,6 +124,7 @@ public final class BulkInvoiceUpdateWebhook {
         }
 
         /**
+         * <p>The type of the event.</p>
          * <p>The type of the event.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -148,6 +155,9 @@ public final class BulkInvoiceUpdateWebhook {
             return this;
         }
 
+        /**
+         * <p>A list of bulk invoice update responses.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "data", nulls = Nulls.SKIP)
         public _FinalStage data(List<BulkInvoiceUpdateFromObjectResponse> data) {

@@ -14,7 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.entitytypes.types.CounterpartyNetworkType;
 import com.mercoa.api.resources.invoicetypes.types.MetadataFilter;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,21 +24,21 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = FindPayeeCounterpartiesRequest.Builder.class)
 public final class FindPayeeCounterpartiesRequest {
+    private final Optional<List<CounterpartyNetworkType>> networkType;
+
+    private final Optional<List<String>> counterpartyId;
+
+    private final Optional<List<MetadataFilter>> metadata;
+
+    private final Optional<List<String>> returnMetadata;
+
     private final Optional<String> name;
 
     private final Optional<String> search;
 
-    private final Optional<CounterpartyNetworkType> networkType;
-
     private final Optional<Boolean> paymentMethods;
 
     private final Optional<Boolean> invoiceMetrics;
-
-    private final Optional<String> counterpartyId;
-
-    private final Optional<MetadataFilter> metadata;
-
-    private final Optional<String> returnMetadata;
 
     private final Optional<Integer> limit;
 
@@ -45,28 +47,60 @@ public final class FindPayeeCounterpartiesRequest {
     private final Map<String, Object> additionalProperties;
 
     private FindPayeeCounterpartiesRequest(
+            Optional<List<CounterpartyNetworkType>> networkType,
+            Optional<List<String>> counterpartyId,
+            Optional<List<MetadataFilter>> metadata,
+            Optional<List<String>> returnMetadata,
             Optional<String> name,
             Optional<String> search,
-            Optional<CounterpartyNetworkType> networkType,
             Optional<Boolean> paymentMethods,
             Optional<Boolean> invoiceMetrics,
-            Optional<String> counterpartyId,
-            Optional<MetadataFilter> metadata,
-            Optional<String> returnMetadata,
             Optional<Integer> limit,
             Optional<String> startingAfter,
             Map<String, Object> additionalProperties) {
-        this.name = name;
-        this.search = search;
         this.networkType = networkType;
-        this.paymentMethods = paymentMethods;
-        this.invoiceMetrics = invoiceMetrics;
         this.counterpartyId = counterpartyId;
         this.metadata = metadata;
         this.returnMetadata = returnMetadata;
+        this.name = name;
+        this.search = search;
+        this.paymentMethods = paymentMethods;
+        this.invoiceMetrics = invoiceMetrics;
         this.limit = limit;
         this.startingAfter = startingAfter;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Filter by network type. By default, only ENTITY counterparties are returned.
+     */
+    @JsonProperty("networkType")
+    public Optional<List<CounterpartyNetworkType>> getNetworkType() {
+        return networkType;
+    }
+
+    /**
+     * @return Filter by counterparty ids (Foreign ID is supported)
+     */
+    @JsonProperty("counterpartyId")
+    public Optional<List<String>> getCounterpartyId() {
+        return counterpartyId;
+    }
+
+    /**
+     * @return Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+     */
+    @JsonProperty("metadata")
+    public Optional<List<MetadataFilter>> getMetadata() {
+        return metadata;
+    }
+
+    /**
+     * @return If true, will return simple key/value metadata for the counterparties. For more complex metadata, use the Metadata API.
+     */
+    @JsonProperty("returnMetadata")
+    public Optional<List<String>> getReturnMetadata() {
+        return returnMetadata;
     }
 
     /**
@@ -86,14 +120,6 @@ public final class FindPayeeCounterpartiesRequest {
     }
 
     /**
-     * @return Filter by network type. By default, only ENTITY counterparties are returned.
-     */
-    @JsonProperty("networkType")
-    public Optional<CounterpartyNetworkType> getNetworkType() {
-        return networkType;
-    }
-
-    /**
      * @return If true, will include counterparty payment methods as part of the response
      */
     @JsonProperty("paymentMethods")
@@ -107,30 +133,6 @@ public final class FindPayeeCounterpartiesRequest {
     @JsonProperty("invoiceMetrics")
     public Optional<Boolean> getInvoiceMetrics() {
         return invoiceMetrics;
-    }
-
-    /**
-     * @return Filter by counterparty ids (Foreign ID is supported)
-     */
-    @JsonProperty("counterpartyId")
-    public Optional<String> getCounterpartyId() {
-        return counterpartyId;
-    }
-
-    /**
-     * @return Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
-     */
-    @JsonProperty("metadata")
-    public Optional<MetadataFilter> getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * @return If true, will return simple key/value metadata for the counterparties. For more complex metadata, use the Metadata API.
-     */
-    @JsonProperty("returnMetadata")
-    public Optional<String> getReturnMetadata() {
-        return returnMetadata;
     }
 
     /**
@@ -161,14 +163,14 @@ public final class FindPayeeCounterpartiesRequest {
     }
 
     private boolean equalTo(FindPayeeCounterpartiesRequest other) {
-        return name.equals(other.name)
-                && search.equals(other.search)
-                && networkType.equals(other.networkType)
-                && paymentMethods.equals(other.paymentMethods)
-                && invoiceMetrics.equals(other.invoiceMetrics)
+        return networkType.equals(other.networkType)
                 && counterpartyId.equals(other.counterpartyId)
                 && metadata.equals(other.metadata)
                 && returnMetadata.equals(other.returnMetadata)
+                && name.equals(other.name)
+                && search.equals(other.search)
+                && paymentMethods.equals(other.paymentMethods)
+                && invoiceMetrics.equals(other.invoiceMetrics)
                 && limit.equals(other.limit)
                 && startingAfter.equals(other.startingAfter);
     }
@@ -176,14 +178,14 @@ public final class FindPayeeCounterpartiesRequest {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.name,
-                this.search,
                 this.networkType,
-                this.paymentMethods,
-                this.invoiceMetrics,
                 this.counterpartyId,
                 this.metadata,
                 this.returnMetadata,
+                this.name,
+                this.search,
+                this.paymentMethods,
+                this.invoiceMetrics,
                 this.limit,
                 this.startingAfter);
     }
@@ -199,21 +201,21 @@ public final class FindPayeeCounterpartiesRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<List<CounterpartyNetworkType>> networkType = Optional.empty();
+
+        private Optional<List<String>> counterpartyId = Optional.empty();
+
+        private Optional<List<MetadataFilter>> metadata = Optional.empty();
+
+        private Optional<List<String>> returnMetadata = Optional.empty();
+
         private Optional<String> name = Optional.empty();
 
         private Optional<String> search = Optional.empty();
 
-        private Optional<CounterpartyNetworkType> networkType = Optional.empty();
-
         private Optional<Boolean> paymentMethods = Optional.empty();
 
         private Optional<Boolean> invoiceMetrics = Optional.empty();
-
-        private Optional<String> counterpartyId = Optional.empty();
-
-        private Optional<MetadataFilter> metadata = Optional.empty();
-
-        private Optional<String> returnMetadata = Optional.empty();
 
         private Optional<Integer> limit = Optional.empty();
 
@@ -225,19 +227,98 @@ public final class FindPayeeCounterpartiesRequest {
         private Builder() {}
 
         public Builder from(FindPayeeCounterpartiesRequest other) {
-            name(other.getName());
-            search(other.getSearch());
             networkType(other.getNetworkType());
-            paymentMethods(other.getPaymentMethods());
-            invoiceMetrics(other.getInvoiceMetrics());
             counterpartyId(other.getCounterpartyId());
             metadata(other.getMetadata());
             returnMetadata(other.getReturnMetadata());
+            name(other.getName());
+            search(other.getSearch());
+            paymentMethods(other.getPaymentMethods());
+            invoiceMetrics(other.getInvoiceMetrics());
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
             return this;
         }
 
+        /**
+         * <p>Filter by network type. By default, only ENTITY counterparties are returned.</p>
+         */
+        @JsonSetter(value = "networkType", nulls = Nulls.SKIP)
+        public Builder networkType(Optional<List<CounterpartyNetworkType>> networkType) {
+            this.networkType = networkType;
+            return this;
+        }
+
+        public Builder networkType(List<CounterpartyNetworkType> networkType) {
+            this.networkType = Optional.ofNullable(networkType);
+            return this;
+        }
+
+        public Builder networkType(CounterpartyNetworkType networkType) {
+            this.networkType = Optional.of(Collections.singletonList(networkType));
+            return this;
+        }
+
+        /**
+         * <p>Filter by counterparty ids (Foreign ID is supported)</p>
+         */
+        @JsonSetter(value = "counterpartyId", nulls = Nulls.SKIP)
+        public Builder counterpartyId(Optional<List<String>> counterpartyId) {
+            this.counterpartyId = counterpartyId;
+            return this;
+        }
+
+        public Builder counterpartyId(List<String> counterpartyId) {
+            this.counterpartyId = Optional.ofNullable(counterpartyId);
+            return this;
+        }
+
+        public Builder counterpartyId(String counterpartyId) {
+            this.counterpartyId = Optional.of(Collections.singletonList(counterpartyId));
+            return this;
+        }
+
+        /**
+         * <p>Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.</p>
+         */
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public Builder metadata(Optional<List<MetadataFilter>> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        public Builder metadata(List<MetadataFilter> metadata) {
+            this.metadata = Optional.ofNullable(metadata);
+            return this;
+        }
+
+        public Builder metadata(MetadataFilter metadata) {
+            this.metadata = Optional.of(Collections.singletonList(metadata));
+            return this;
+        }
+
+        /**
+         * <p>If true, will return simple key/value metadata for the counterparties. For more complex metadata, use the Metadata API.</p>
+         */
+        @JsonSetter(value = "returnMetadata", nulls = Nulls.SKIP)
+        public Builder returnMetadata(Optional<List<String>> returnMetadata) {
+            this.returnMetadata = returnMetadata;
+            return this;
+        }
+
+        public Builder returnMetadata(List<String> returnMetadata) {
+            this.returnMetadata = Optional.ofNullable(returnMetadata);
+            return this;
+        }
+
+        public Builder returnMetadata(String returnMetadata) {
+            this.returnMetadata = Optional.of(Collections.singletonList(returnMetadata));
+            return this;
+        }
+
+        /**
+         * <p>Use search instead. Deprecated. Filter counterparties by name. Partial matches are supported.</p>
+         */
         @JsonSetter(value = "name", nulls = Nulls.SKIP)
         public Builder name(Optional<String> name) {
             this.name = name;
@@ -249,6 +330,9 @@ public final class FindPayeeCounterpartiesRequest {
             return this;
         }
 
+        /**
+         * <p>Filter counterparties by name or email. Partial matches are supported.</p>
+         */
         @JsonSetter(value = "search", nulls = Nulls.SKIP)
         public Builder search(Optional<String> search) {
             this.search = search;
@@ -260,17 +344,9 @@ public final class FindPayeeCounterpartiesRequest {
             return this;
         }
 
-        @JsonSetter(value = "networkType", nulls = Nulls.SKIP)
-        public Builder networkType(Optional<CounterpartyNetworkType> networkType) {
-            this.networkType = networkType;
-            return this;
-        }
-
-        public Builder networkType(CounterpartyNetworkType networkType) {
-            this.networkType = Optional.ofNullable(networkType);
-            return this;
-        }
-
+        /**
+         * <p>If true, will include counterparty payment methods as part of the response</p>
+         */
         @JsonSetter(value = "paymentMethods", nulls = Nulls.SKIP)
         public Builder paymentMethods(Optional<Boolean> paymentMethods) {
             this.paymentMethods = paymentMethods;
@@ -282,6 +358,9 @@ public final class FindPayeeCounterpartiesRequest {
             return this;
         }
 
+        /**
+         * <p>If true, will include counterparty invoice metrics as part of the response</p>
+         */
         @JsonSetter(value = "invoiceMetrics", nulls = Nulls.SKIP)
         public Builder invoiceMetrics(Optional<Boolean> invoiceMetrics) {
             this.invoiceMetrics = invoiceMetrics;
@@ -293,39 +372,9 @@ public final class FindPayeeCounterpartiesRequest {
             return this;
         }
 
-        @JsonSetter(value = "counterpartyId", nulls = Nulls.SKIP)
-        public Builder counterpartyId(Optional<String> counterpartyId) {
-            this.counterpartyId = counterpartyId;
-            return this;
-        }
-
-        public Builder counterpartyId(String counterpartyId) {
-            this.counterpartyId = Optional.ofNullable(counterpartyId);
-            return this;
-        }
-
-        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
-        public Builder metadata(Optional<MetadataFilter> metadata) {
-            this.metadata = metadata;
-            return this;
-        }
-
-        public Builder metadata(MetadataFilter metadata) {
-            this.metadata = Optional.ofNullable(metadata);
-            return this;
-        }
-
-        @JsonSetter(value = "returnMetadata", nulls = Nulls.SKIP)
-        public Builder returnMetadata(Optional<String> returnMetadata) {
-            this.returnMetadata = returnMetadata;
-            return this;
-        }
-
-        public Builder returnMetadata(String returnMetadata) {
-            this.returnMetadata = Optional.ofNullable(returnMetadata);
-            return this;
-        }
-
+        /**
+         * <p>Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.</p>
+         */
         @JsonSetter(value = "limit", nulls = Nulls.SKIP)
         public Builder limit(Optional<Integer> limit) {
             this.limit = limit;
@@ -337,6 +386,9 @@ public final class FindPayeeCounterpartiesRequest {
             return this;
         }
 
+        /**
+         * <p>The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.</p>
+         */
         @JsonSetter(value = "startingAfter", nulls = Nulls.SKIP)
         public Builder startingAfter(Optional<String> startingAfter) {
             this.startingAfter = startingAfter;
@@ -350,14 +402,14 @@ public final class FindPayeeCounterpartiesRequest {
 
         public FindPayeeCounterpartiesRequest build() {
             return new FindPayeeCounterpartiesRequest(
-                    name,
-                    search,
                     networkType,
-                    paymentMethods,
-                    invoiceMetrics,
                     counterpartyId,
                     metadata,
                     returnMetadata,
+                    name,
+                    search,
+                    paymentMethods,
+                    invoiceMetrics,
                     limit,
                     startingAfter,
                     additionalProperties);

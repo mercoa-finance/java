@@ -4,6 +4,7 @@
 package com.mercoa.api.resources.commons.errors;
 
 import com.mercoa.api.core.MercoaApiException;
+import okhttp3.Response;
 
 public final class NotFound extends MercoaApiException {
     /**
@@ -13,6 +14,11 @@ public final class NotFound extends MercoaApiException {
 
     public NotFound(String body) {
         super("NotFound", 404, body);
+        this.body = body;
+    }
+
+    public NotFound(String body, Response rawResponse) {
+        super("NotFound", 404, body, rawResponse);
         this.body = body;
     }
 

@@ -66,6 +66,9 @@ public final class UtilityPaymentDestinationOptions {
     }
 
     public interface AccountIdStage {
+        /**
+         * <p>The ID for the utility account to pay with. Links to accounts listed on payor/payee relationship.</p>
+         */
         _FinalStage accountId(@NotNull String accountId);
 
         Builder from(UtilityPaymentDestinationOptions other);
@@ -91,6 +94,7 @@ public final class UtilityPaymentDestinationOptions {
         }
 
         /**
+         * <p>The ID for the utility account to pay with. Links to accounts listed on payor/payee relationship.</p>
          * <p>The ID for the utility account to pay with. Links to accounts listed on payor/payee relationship.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

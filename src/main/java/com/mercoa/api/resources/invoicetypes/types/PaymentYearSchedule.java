@@ -110,22 +110,34 @@ public final class PaymentYearSchedule implements IPaymentScheduleBase {
     }
 
     public interface RepeatOnDayStage {
+        /**
+         * <p>Day of the month to repeat on. Positive values (1-31): Represent the day of the month counting from the start (e.g., 10 is the 10th day of the month). Negative values (-1 to -31): Represent the day of the month counting backward from the end (e.g., -1 is the last day of the month, -2 is the second-to-last day).</p>
+         */
         RepeatOnMonthStage repeatOnDay(int repeatOnDay);
 
         Builder from(PaymentYearSchedule other);
     }
 
     public interface RepeatOnMonthStage {
+        /**
+         * <p>Month to repeat on (1-12).</p>
+         */
         _FinalStage repeatOnMonth(int repeatOnMonth);
     }
 
     public interface _FinalStage {
         PaymentYearSchedule build();
 
+        /**
+         * <p>How often to repeat the payments. Defaults to 1. Must be greater than 0. For example, if repeatEvery is set to 2 and this is a daily payment, the payment will be made every other day. If repeatEvery is set to 3 and this is a weekly payment, the payment will be made every third week.</p>
+         */
         _FinalStage repeatEvery(Optional<Integer> repeatEvery);
 
         _FinalStage repeatEvery(Integer repeatEvery);
 
+        /**
+         * <p>When to end the payments, either a number of occurrences or a date. Defaults to never ending if not specified</p>
+         */
         _FinalStage ends(Optional<PaymentScheduleEndCondition> ends);
 
         _FinalStage ends(PaymentScheduleEndCondition ends);
@@ -157,6 +169,7 @@ public final class PaymentYearSchedule implements IPaymentScheduleBase {
 
         /**
          * <p>Day of the month to repeat on. Positive values (1-31): Represent the day of the month counting from the start (e.g., 10 is the 10th day of the month). Negative values (-1 to -31): Represent the day of the month counting backward from the end (e.g., -1 is the last day of the month, -2 is the second-to-last day).</p>
+         * <p>Day of the month to repeat on. Positive values (1-31): Represent the day of the month counting from the start (e.g., 10 is the 10th day of the month). Negative values (-1 to -31): Represent the day of the month counting backward from the end (e.g., -1 is the last day of the month, -2 is the second-to-last day).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -167,6 +180,7 @@ public final class PaymentYearSchedule implements IPaymentScheduleBase {
         }
 
         /**
+         * <p>Month to repeat on (1-12).</p>
          * <p>Month to repeat on (1-12).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -187,6 +201,9 @@ public final class PaymentYearSchedule implements IPaymentScheduleBase {
             return this;
         }
 
+        /**
+         * <p>When to end the payments, either a number of occurrences or a date. Defaults to never ending if not specified</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "ends", nulls = Nulls.SKIP)
         public _FinalStage ends(Optional<PaymentScheduleEndCondition> ends) {
@@ -204,6 +221,9 @@ public final class PaymentYearSchedule implements IPaymentScheduleBase {
             return this;
         }
 
+        /**
+         * <p>How often to repeat the payments. Defaults to 1. Must be greater than 0. For example, if repeatEvery is set to 2 and this is a daily payment, the payment will be made every other day. If repeatEvery is set to 3 and this is a weekly payment, the payment will be made every third week.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "repeatEvery", nulls = Nulls.SKIP)
         public _FinalStage repeatEvery(Optional<Integer> repeatEvery) {

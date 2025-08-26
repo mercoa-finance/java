@@ -97,6 +97,9 @@ public final class ProfileResponse {
             return this;
         }
 
+        /**
+         * <p>Will be set if the entity is a business</p>
+         */
         @JsonSetter(value = "business", nulls = Nulls.SKIP)
         public Builder business(Optional<BusinessProfileResponse> business) {
             this.business = business;
@@ -108,6 +111,9 @@ public final class ProfileResponse {
             return this;
         }
 
+        /**
+         * <p>Will be set if the entity is a individual</p>
+         */
         @JsonSetter(value = "individual", nulls = Nulls.SKIP)
         public Builder individual(Optional<IndividualProfileResponse> individual) {
             this.individual = individual;

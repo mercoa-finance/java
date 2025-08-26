@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ApprovalSlotAssignment.Builder.class)
-public final class ApprovalSlotAssignment {
+public final class ApprovalSlotAssignment implements IApprovalSlotAssignment {
     private final String approvalSlotId;
 
     private final String assignedUserId;
@@ -36,6 +36,7 @@ public final class ApprovalSlotAssignment {
      * @return The identifier for the approval slot this user is assigned to.
      */
     @JsonProperty("approvalSlotId")
+    @java.lang.Override
     public String getApprovalSlotId() {
         return approvalSlotId;
     }
@@ -44,6 +45,7 @@ public final class ApprovalSlotAssignment {
      * @return The ID of the user who is assigned to the approval slot. To assign all eligible users to an approval slot, use &quot;ANY&quot;.
      */
     @JsonProperty("assignedUserId")
+    @java.lang.Override
     public String getAssignedUserId() {
         return assignedUserId;
     }
@@ -78,12 +80,18 @@ public final class ApprovalSlotAssignment {
     }
 
     public interface ApprovalSlotIdStage {
+        /**
+         * <p>The identifier for the approval slot this user is assigned to.</p>
+         */
         AssignedUserIdStage approvalSlotId(@NotNull String approvalSlotId);
 
         Builder from(ApprovalSlotAssignment other);
     }
 
     public interface AssignedUserIdStage {
+        /**
+         * <p>The ID of the user who is assigned to the approval slot. To assign all eligible users to an approval slot, use &quot;ANY&quot;.</p>
+         */
         _FinalStage assignedUserId(@NotNull String assignedUserId);
     }
 
@@ -111,6 +119,7 @@ public final class ApprovalSlotAssignment {
 
         /**
          * <p>The identifier for the approval slot this user is assigned to.</p>
+         * <p>The identifier for the approval slot this user is assigned to.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -121,6 +130,7 @@ public final class ApprovalSlotAssignment {
         }
 
         /**
+         * <p>The ID of the user who is assigned to the approval slot. To assign all eligible users to an approval slot, use &quot;ANY&quot;.</p>
          * <p>The ID of the user who is assigned to the approval slot. To assign all eligible users to an approval slot, use &quot;ANY&quot;.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

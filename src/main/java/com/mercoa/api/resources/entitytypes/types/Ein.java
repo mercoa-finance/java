@@ -66,6 +66,9 @@ public final class Ein {
     }
 
     public interface NumberStage {
+        /**
+         * <p>Must be in the format XX-XXXXXXX.</p>
+         */
         _FinalStage number(@NotNull String number);
 
         Builder from(Ein other);
@@ -91,6 +94,7 @@ public final class Ein {
         }
 
         /**
+         * <p>Must be in the format XX-XXXXXXX.</p>
          * <p>Must be in the format XX-XXXXXXX.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

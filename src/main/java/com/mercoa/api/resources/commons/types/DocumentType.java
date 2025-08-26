@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum DocumentType {
     INVOICE("INVOICE"),
 
+    PAYMENT_CONFIRMATION("PAYMENT_CONFIRMATION"),
+
     TEN_NINETY_NINE("TEN_NINETY_NINE"),
 
     W_9("W9"),

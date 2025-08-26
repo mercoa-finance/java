@@ -112,6 +112,9 @@ public final class UserNotificationPolicyRequest {
             return this;
         }
 
+        /**
+         * <p>Set to true if the selected notification type should be disabled for this user</p>
+         */
         @JsonSetter(value = "disabled", nulls = Nulls.SKIP)
         public Builder disabled(Optional<Boolean> disabled) {
             this.disabled = disabled;
@@ -123,6 +126,9 @@ public final class UserNotificationPolicyRequest {
             return this;
         }
 
+        /**
+         * <p>Set to true if the selected notification type should be sent as a digest. Default is false.</p>
+         */
         @JsonSetter(value = "digest", nulls = Nulls.SKIP)
         public Builder digest(Optional<Boolean> digest) {
             this.digest = digest;
@@ -134,6 +140,9 @@ public final class UserNotificationPolicyRequest {
             return this;
         }
 
+        /**
+         * <p>Set to true if the selected notification type should be sent immediately. Default is true.</p>
+         */
         @JsonSetter(value = "immediate", nulls = Nulls.SKIP)
         public Builder immediate(Optional<Boolean> immediate) {
             this.immediate = immediate;

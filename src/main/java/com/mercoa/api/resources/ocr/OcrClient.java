@@ -3,168 +3,101 @@
  */
 package com.mercoa.api.resources.ocr;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
+import com.mercoa.api.resources.commons.types.PubSubRequest;
+import com.mercoa.api.resources.commons.types.PubSubResponse;
+import com.mercoa.api.resources.ocr.types.CloudMailinRequest;
 import com.mercoa.api.resources.ocr.types.OcrAsyncResponse;
 import com.mercoa.api.resources.ocr.types.OcrJobResponse;
 import com.mercoa.api.resources.ocr.types.OcrRequest;
 import com.mercoa.api.resources.ocr.types.OcrResponse;
-import java.io.IOException;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class OcrClient {
     protected final ClientOptions clientOptions;
 
+    private final RawOcrClient rawClient;
+
     public OcrClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new RawOcrClient(clientOptions);
+    }
+
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public RawOcrClient withRawResponse() {
+        return this.rawClient;
     }
 
     /**
      * Run OCR on an Base64 encoded image or PDF. This endpoint will block until the OCR is complete.
      */
     public OcrResponse ocr(OcrRequest request) {
-        return ocr(request, null);
+        return this.rawClient.ocr(request).body();
     }
 
     /**
      * Run OCR on an Base64 encoded image or PDF. This endpoint will block until the OCR is complete.
      */
     public OcrResponse ocr(OcrRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("ocr")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), OcrResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.ocr(request, requestOptions).body();
     }
 
     /**
      * Run OCR on an Base64 encoded image or PDF. This endpoint will return immediately and the OCR will be processed asynchronously.
      */
     public OcrAsyncResponse runAsyncOcr(OcrRequest request) {
-        return runAsyncOcr(request, null);
+        return this.rawClient.runAsyncOcr(request).body();
     }
 
     /**
      * Run OCR on an Base64 encoded image or PDF. This endpoint will return immediately and the OCR will be processed asynchronously.
      */
     public OcrAsyncResponse runAsyncOcr(OcrRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("ocr-async")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), OcrAsyncResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.runAsyncOcr(request, requestOptions).body();
     }
 
     /**
      * Get the status and results of an asynchronous OCR job.
      */
     public OcrJobResponse getAsyncOcr(String jobId) {
-        return getAsyncOcr(jobId, null);
+        return this.rawClient.getAsyncOcr(jobId).body();
     }
 
     /**
      * Get the status and results of an asynchronous OCR job.
      */
     public OcrJobResponse getAsyncOcr(String jobId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("ocr-async")
-                .addPathSegment(jobId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), OcrJobResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.getAsyncOcr(jobId, requestOptions).body();
+    }
+
+    public void cloudMailinWebhook(CloudMailinRequest request) {
+        this.rawClient.cloudMailinWebhook(request).body();
+    }
+
+    public void cloudMailinWebhook(CloudMailinRequest request, RequestOptions requestOptions) {
+        this.rawClient.cloudMailinWebhook(request, requestOptions).body();
+    }
+
+    /**
+     * Internal endpoint for processing async OCR jobs via Pub/Sub messages
+     */
+    public PubSubResponse processAsyncOcrInternal() {
+        return this.rawClient.processAsyncOcrInternal().body();
+    }
+
+    /**
+     * Internal endpoint for processing async OCR jobs via Pub/Sub messages
+     */
+    public PubSubResponse processAsyncOcrInternal(PubSubRequest request) {
+        return this.rawClient.processAsyncOcrInternal(request).body();
+    }
+
+    /**
+     * Internal endpoint for processing async OCR jobs via Pub/Sub messages
+     */
+    public PubSubResponse processAsyncOcrInternal(PubSubRequest request, RequestOptions requestOptions) {
+        return this.rawClient.processAsyncOcrInternal(request, requestOptions).body();
     }
 }

@@ -66,6 +66,9 @@ public final class IndividualGovernmentId {
     }
 
     public interface SsnStage {
+        /**
+         * <p>Full Social Security Number. Must be in the format 123-45-6789.</p>
+         */
         _FinalStage ssn(@NotNull String ssn);
 
         Builder from(IndividualGovernmentId other);
@@ -91,6 +94,7 @@ public final class IndividualGovernmentId {
         }
 
         /**
+         * <p>Full Social Security Number. Must be in the format 123-45-6789.</p>
          * <p>Full Social Security Number. Must be in the format 123-45-6789.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

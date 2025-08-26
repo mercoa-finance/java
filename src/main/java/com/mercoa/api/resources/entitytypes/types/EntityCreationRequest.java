@@ -220,6 +220,9 @@ public final class EntityCreationRequest {
     }
 
     public interface IsCustomerStage {
+        /**
+         * <p>If this entity has a direct relationship with your organization (e.g your direct customer or client), set this to true. Otherwise, set to false (e.g your customer's vendors).</p>
+         */
         AccountTypeStage isCustomer(boolean isCustomer);
 
         Builder from(EntityCreationRequest other);
@@ -234,40 +237,67 @@ public final class EntityCreationRequest {
     }
 
     public interface IsPayorStage {
+        /**
+         * <p>If this entity will be paying invoices, set this to true.</p>
+         */
         IsPayeeStage isPayor(boolean isPayor);
     }
 
     public interface IsPayeeStage {
+        /**
+         * <p>If this entity will be receiving payments, set this to true.</p>
+         */
         _FinalStage isPayee(boolean isPayee);
     }
 
     public interface _FinalStage {
         EntityCreationRequest build();
 
+        /**
+         * <p>The ID used to identify this entity in your system. This ID must be unique across all entities in your system.</p>
+         */
         _FinalStage foreignId(Optional<String> foreignId);
 
         _FinalStage foreignId(String foreignId);
 
+        /**
+         * <p>Sets the email address to which to send invoices to be added to the Invoice Inbox. Only provide the local-part/username of the email address, do not include the @domain.com</p>
+         */
         _FinalStage emailTo(Optional<String> emailTo);
 
         _FinalStage emailTo(String emailTo);
 
+        /**
+         * <p>Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias. Include the full email address.</p>
+         */
         _FinalStage emailToAlias(Optional<List<String>> emailToAlias);
 
         _FinalStage emailToAlias(List<String> emailToAlias);
 
+        /**
+         * <p>Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.</p>
+         */
         _FinalStage isNetworkPayor(Optional<Boolean> isNetworkPayor);
 
         _FinalStage isNetworkPayor(Boolean isNetworkPayor);
 
+        /**
+         * <p>Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.</p>
+         */
         _FinalStage isNetworkPayee(Optional<Boolean> isNetworkPayee);
 
         _FinalStage isNetworkPayee(Boolean isNetworkPayee);
 
+        /**
+         * <p>Base64 data URL of the entity logo. Must be in the <code>data:image/*;base64,XXXX</code> format. We recommend a PNG image under 100KB. Supported file types are <code>png</code>, <code>jpeg</code>, <code>gif</code>, <code>svg</code>.</p>
+         */
         _FinalStage logo(Optional<String> logo);
 
         _FinalStage logo(String logo);
 
+        /**
+         * <p>Simple key/value metadata associated with this entity. For more complex metadata, use the Metadata API.</p>
+         */
         _FinalStage metadata(Optional<Map<String, String>> metadata);
 
         _FinalStage metadata(Map<String, String> metadata);
@@ -324,6 +354,7 @@ public final class EntityCreationRequest {
 
         /**
          * <p>If this entity has a direct relationship with your organization (e.g your direct customer or client), set this to true. Otherwise, set to false (e.g your customer's vendors).</p>
+         * <p>If this entity has a direct relationship with your organization (e.g your direct customer or client), set this to true. Otherwise, set to false (e.g your customer's vendors).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -349,6 +380,7 @@ public final class EntityCreationRequest {
 
         /**
          * <p>If this entity will be paying invoices, set this to true.</p>
+         * <p>If this entity will be paying invoices, set this to true.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -359,6 +391,7 @@ public final class EntityCreationRequest {
         }
 
         /**
+         * <p>If this entity will be receiving payments, set this to true.</p>
          * <p>If this entity will be receiving payments, set this to true.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -379,6 +412,9 @@ public final class EntityCreationRequest {
             return this;
         }
 
+        /**
+         * <p>Simple key/value metadata associated with this entity. For more complex metadata, use the Metadata API.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public _FinalStage metadata(Optional<Map<String, String>> metadata) {
@@ -396,6 +432,9 @@ public final class EntityCreationRequest {
             return this;
         }
 
+        /**
+         * <p>Base64 data URL of the entity logo. Must be in the <code>data:image/*;base64,XXXX</code> format. We recommend a PNG image under 100KB. Supported file types are <code>png</code>, <code>jpeg</code>, <code>gif</code>, <code>svg</code>.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "logo", nulls = Nulls.SKIP)
         public _FinalStage logo(Optional<String> logo) {
@@ -413,6 +452,9 @@ public final class EntityCreationRequest {
             return this;
         }
 
+        /**
+         * <p>Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "isNetworkPayee", nulls = Nulls.SKIP)
         public _FinalStage isNetworkPayee(Optional<Boolean> isNetworkPayee) {
@@ -430,6 +472,9 @@ public final class EntityCreationRequest {
             return this;
         }
 
+        /**
+         * <p>Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "isNetworkPayor", nulls = Nulls.SKIP)
         public _FinalStage isNetworkPayor(Optional<Boolean> isNetworkPayor) {
@@ -447,6 +492,9 @@ public final class EntityCreationRequest {
             return this;
         }
 
+        /**
+         * <p>Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias. Include the full email address.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "emailToAlias", nulls = Nulls.SKIP)
         public _FinalStage emailToAlias(Optional<List<String>> emailToAlias) {
@@ -464,6 +512,9 @@ public final class EntityCreationRequest {
             return this;
         }
 
+        /**
+         * <p>Sets the email address to which to send invoices to be added to the Invoice Inbox. Only provide the local-part/username of the email address, do not include the @domain.com</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "emailTo", nulls = Nulls.SKIP)
         public _FinalStage emailTo(Optional<String> emailTo) {
@@ -481,6 +532,9 @@ public final class EntityCreationRequest {
             return this;
         }
 
+        /**
+         * <p>The ID used to identify this entity in your system. This ID must be unique across all entities in your system.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
         public _FinalStage foreignId(Optional<String> foreignId) {

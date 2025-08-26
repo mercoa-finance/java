@@ -99,18 +99,27 @@ public final class CalculateVendorCreditUsageResponse {
     }
 
     public interface RemainingAmountStage {
+        /**
+         * <p>Remaining amount on the invoice after vendor credits are applied in major units.</p>
+         */
         CurrencyStage remainingAmount(double remainingAmount);
 
         Builder from(CalculateVendorCreditUsageResponse other);
     }
 
     public interface CurrencyStage {
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         */
         _FinalStage currency(@NotNull CurrencyCode currency);
     }
 
     public interface _FinalStage {
         CalculateVendorCreditUsageResponse build();
 
+        /**
+         * <p>Vendor credits that will be applied to the invoice. The objects returned represent the states each vendor credit will be in AFTER they are applied to the invoice, not their current states.</p>
+         */
         _FinalStage vendorCredits(List<VendorCreditResponse> vendorCredits);
 
         _FinalStage addVendorCredits(VendorCreditResponse vendorCredits);
@@ -141,6 +150,7 @@ public final class CalculateVendorCreditUsageResponse {
 
         /**
          * <p>Remaining amount on the invoice after vendor credits are applied in major units.</p>
+         * <p>Remaining amount on the invoice after vendor credits are applied in major units.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -151,6 +161,7 @@ public final class CalculateVendorCreditUsageResponse {
         }
 
         /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
          * <p>Currency code for the amount. Defaults to USD.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -181,6 +192,9 @@ public final class CalculateVendorCreditUsageResponse {
             return this;
         }
 
+        /**
+         * <p>Vendor credits that will be applied to the invoice. The objects returned represent the states each vendor credit will be in AFTER they are applied to the invoice, not their current states.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "vendorCredits", nulls = Nulls.SKIP)
         public _FinalStage vendorCredits(List<VendorCreditResponse> vendorCredits) {

@@ -78,12 +78,18 @@ public final class ProcessPaymentGatewayRequestHtml {
     }
 
     public interface HtmlStage {
+        /**
+         * <p>The HTML from an email to extract the payment gateway from</p>
+         */
         CardDetailsStage html(@NotNull String html);
 
         Builder from(ProcessPaymentGatewayRequestHtml other);
     }
 
     public interface CardDetailsStage {
+        /**
+         * <p>The details of the card to use for the payment</p>
+         */
         _FinalStage cardDetails(@NotNull ProcessPaymentGatewayCardDetails cardDetails);
     }
 
@@ -111,6 +117,7 @@ public final class ProcessPaymentGatewayRequestHtml {
 
         /**
          * <p>The HTML from an email to extract the payment gateway from</p>
+         * <p>The HTML from an email to extract the payment gateway from</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -121,6 +128,7 @@ public final class ProcessPaymentGatewayRequestHtml {
         }
 
         /**
+         * <p>The details of the card to use for the payment</p>
          * <p>The details of the card to use for the payment</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

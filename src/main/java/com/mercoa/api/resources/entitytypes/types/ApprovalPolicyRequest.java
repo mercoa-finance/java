@@ -97,12 +97,18 @@ public final class ApprovalPolicyRequest {
     }
 
     public interface UpstreamPolicyIdStage {
+        /**
+         * <p>The policy ID of the previous approval policy in the chain of policies. Use 'root' if no upstreamPolicyId is intended to be set.</p>
+         */
         _FinalStage upstreamPolicyId(@NotNull String upstreamPolicyId);
     }
 
     public interface _FinalStage {
         ApprovalPolicyRequest build();
 
+        /**
+         * <p>List of triggers that will cause this policy to be evaluated. If no triggers are provided, the policy will be evaluated for all invoices.</p>
+         */
         _FinalStage trigger(List<Trigger> trigger);
 
         _FinalStage addTrigger(Trigger trigger);
@@ -140,6 +146,7 @@ public final class ApprovalPolicyRequest {
 
         /**
          * <p>The policy ID of the previous approval policy in the chain of policies. Use 'root' if no upstreamPolicyId is intended to be set.</p>
+         * <p>The policy ID of the previous approval policy in the chain of policies. Use 'root' if no upstreamPolicyId is intended to be set.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -169,6 +176,9 @@ public final class ApprovalPolicyRequest {
             return this;
         }
 
+        /**
+         * <p>List of triggers that will cause this policy to be evaluated. If no triggers are provided, the policy will be evaluated for all invoices.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "trigger", nulls = Nulls.SKIP)
         public _FinalStage trigger(List<Trigger> trigger) {

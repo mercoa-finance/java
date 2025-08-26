@@ -66,6 +66,9 @@ public final class UpdateNextActionRequest {
     }
 
     public interface FeedbackStage {
+        /**
+         * <p>Natural language feedback to update the collection agent's next action</p>
+         */
         _FinalStage feedback(@NotNull String feedback);
 
         Builder from(UpdateNextActionRequest other);
@@ -91,6 +94,7 @@ public final class UpdateNextActionRequest {
         }
 
         /**
+         * <p>Natural language feedback to update the collection agent's next action</p>
          * <p>Natural language feedback to update the collection agent's next action</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

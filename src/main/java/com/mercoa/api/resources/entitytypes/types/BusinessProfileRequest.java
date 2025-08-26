@@ -255,6 +255,9 @@ public final class BusinessProfileRequest {
     public interface _FinalStage {
         BusinessProfileRequest build();
 
+        /**
+         * <p>Email address for the business. Required for KYB.</p>
+         */
         _FinalStage email(Optional<String> email);
 
         _FinalStage email(String email);
@@ -263,6 +266,9 @@ public final class BusinessProfileRequest {
 
         _FinalStage businessType(BusinessType businessType);
 
+        /**
+         * <p>Phone number for the business. Required for KYB.</p>
+         */
         _FinalStage phone(Optional<PhoneNumber> phone);
 
         _FinalStage phone(PhoneNumber phone);
@@ -271,38 +277,65 @@ public final class BusinessProfileRequest {
 
         _FinalStage doingBusinessAs(String doingBusinessAs);
 
+        /**
+         * <p>Website URL for the business. Must be in the format http://www.example.com. Required for KYB if description is not provided.</p>
+         */
         _FinalStage website(Optional<String> website);
 
         _FinalStage website(String website);
 
+        /**
+         * <p>Description of the business. Required for KYB if website is not provided.</p>
+         */
         _FinalStage description(Optional<String> description);
 
         _FinalStage description(String description);
 
+        /**
+         * <p>Address for the business. Required for KYB.</p>
+         */
         _FinalStage address(Optional<Address> address);
 
         _FinalStage address(Address address);
 
+        /**
+         * <p>Tax ID for the business. Currently only EIN is supported. Required for KYB.</p>
+         */
         _FinalStage taxId(Optional<TaxId> taxId);
 
         _FinalStage taxId(TaxId taxId);
 
+        /**
+         * <p>Date of business formation</p>
+         */
         _FinalStage formationDate(Optional<OffsetDateTime> formationDate);
 
         _FinalStage formationDate(OffsetDateTime formationDate);
 
+        /**
+         * <p>Industry code for the business. Required to collect funds.</p>
+         */
         _FinalStage industryCodes(Optional<IndustryCodes> industryCodes);
 
         _FinalStage industryCodes(IndustryCodes industryCodes);
 
+        /**
+         * <p>Average monthly transaction volume for the business. Required to collect funds.</p>
+         */
         _FinalStage averageMonthlyTransactionVolume(Optional<Double> averageMonthlyTransactionVolume);
 
         _FinalStage averageMonthlyTransactionVolume(Double averageMonthlyTransactionVolume);
 
+        /**
+         * <p>Average transaction size for the business. Required to collect funds.</p>
+         */
         _FinalStage averageTransactionSize(Optional<Double> averageTransactionSize);
 
         _FinalStage averageTransactionSize(Double averageTransactionSize);
 
+        /**
+         * <p>Maximum transaction size for the business. Required to collect funds.</p>
+         */
         _FinalStage maxTransactionSize(Optional<Double> maxTransactionSize);
 
         _FinalStage maxTransactionSize(Double maxTransactionSize);
@@ -379,6 +412,9 @@ public final class BusinessProfileRequest {
             return this;
         }
 
+        /**
+         * <p>Maximum transaction size for the business. Required to collect funds.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "maxTransactionSize", nulls = Nulls.SKIP)
         public _FinalStage maxTransactionSize(Optional<Double> maxTransactionSize) {
@@ -396,6 +432,9 @@ public final class BusinessProfileRequest {
             return this;
         }
 
+        /**
+         * <p>Average transaction size for the business. Required to collect funds.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "averageTransactionSize", nulls = Nulls.SKIP)
         public _FinalStage averageTransactionSize(Optional<Double> averageTransactionSize) {
@@ -413,6 +452,9 @@ public final class BusinessProfileRequest {
             return this;
         }
 
+        /**
+         * <p>Average monthly transaction volume for the business. Required to collect funds.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "averageMonthlyTransactionVolume", nulls = Nulls.SKIP)
         public _FinalStage averageMonthlyTransactionVolume(Optional<Double> averageMonthlyTransactionVolume) {
@@ -430,6 +472,9 @@ public final class BusinessProfileRequest {
             return this;
         }
 
+        /**
+         * <p>Industry code for the business. Required to collect funds.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "industryCodes", nulls = Nulls.SKIP)
         public _FinalStage industryCodes(Optional<IndustryCodes> industryCodes) {
@@ -447,6 +492,9 @@ public final class BusinessProfileRequest {
             return this;
         }
 
+        /**
+         * <p>Date of business formation</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "formationDate", nulls = Nulls.SKIP)
         public _FinalStage formationDate(Optional<OffsetDateTime> formationDate) {
@@ -464,6 +512,9 @@ public final class BusinessProfileRequest {
             return this;
         }
 
+        /**
+         * <p>Tax ID for the business. Currently only EIN is supported. Required for KYB.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "taxId", nulls = Nulls.SKIP)
         public _FinalStage taxId(Optional<TaxId> taxId) {
@@ -481,6 +532,9 @@ public final class BusinessProfileRequest {
             return this;
         }
 
+        /**
+         * <p>Address for the business. Required for KYB.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "address", nulls = Nulls.SKIP)
         public _FinalStage address(Optional<Address> address) {
@@ -498,6 +552,9 @@ public final class BusinessProfileRequest {
             return this;
         }
 
+        /**
+         * <p>Description of the business. Required for KYB if website is not provided.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "description", nulls = Nulls.SKIP)
         public _FinalStage description(Optional<String> description) {
@@ -515,6 +572,9 @@ public final class BusinessProfileRequest {
             return this;
         }
 
+        /**
+         * <p>Website URL for the business. Must be in the format http://www.example.com. Required for KYB if description is not provided.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "website", nulls = Nulls.SKIP)
         public _FinalStage website(Optional<String> website) {
@@ -545,6 +605,9 @@ public final class BusinessProfileRequest {
             return this;
         }
 
+        /**
+         * <p>Phone number for the business. Required for KYB.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "phone", nulls = Nulls.SKIP)
         public _FinalStage phone(Optional<PhoneNumber> phone) {
@@ -575,6 +638,9 @@ public final class BusinessProfileRequest {
             return this;
         }
 
+        /**
+         * <p>Email address for the business. Required for KYB.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "email", nulls = Nulls.SKIP)
         public _FinalStage email(Optional<String> email) {

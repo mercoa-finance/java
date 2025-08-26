@@ -177,6 +177,9 @@ public final class EmailLog {
     }
 
     public interface StatusStage {
+        /**
+         * <p>The status of the email log. If the status is PENDING, the email has not been processed yet. If the status is PROCESSED, the email has been processed and the invoice has been created. If the status is FAILED, the email was not processed due to an error.</p>
+         */
         SubjectStage status(@NotNull IncomingEmailLogStatus status);
     }
 
@@ -275,6 +278,7 @@ public final class EmailLog {
         }
 
         /**
+         * <p>The status of the email log. If the status is PENDING, the email has not been processed yet. If the status is PROCESSED, the email has been processed and the invoice has been created. If the status is FAILED, the email was not processed due to an error.</p>
          * <p>The status of the email log. If the status is PENDING, the email has not been processed yet. If the status is PROCESSED, the email has been processed and the invoice has been created. If the status is FAILED, the email was not processed due to an error.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

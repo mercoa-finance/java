@@ -171,16 +171,25 @@ public final class CustomPaymentMethodSchemaRequest {
     }
 
     public interface IsSourceStage {
+        /**
+         * <p>This payment method can be used as a payment source for an invoice</p>
+         */
         IsDestinationStage isSource(boolean isSource);
     }
 
     public interface IsDestinationStage {
+        /**
+         * <p>This payment method can be used as a payment destination for an invoice</p>
+         */
         _FinalStage isDestination(boolean isDestination);
     }
 
     public interface _FinalStage {
         CustomPaymentMethodSchemaRequest build();
 
+        /**
+         * <p>List of currencies that this payment method supports. If not provided, the payment method will support only USD.</p>
+         */
         _FinalStage supportedCurrencies(Optional<List<CurrencyCode>> supportedCurrencies);
 
         _FinalStage supportedCurrencies(List<CurrencyCode> supportedCurrencies);
@@ -191,14 +200,23 @@ public final class CustomPaymentMethodSchemaRequest {
 
         _FinalStage addAllFields(List<CustomPaymentMethodSchemaField> fields);
 
+        /**
+         * <p>Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.</p>
+         */
         _FinalStage estimatedProcessingTime(Optional<Integer> estimatedProcessingTime);
 
         _FinalStage estimatedProcessingTime(Integer estimatedProcessingTime);
 
+        /**
+         * <p>The maximum amount that can be transferred from this payment method in a single transaction.</p>
+         */
         _FinalStage maxAmount(Optional<Double> maxAmount);
 
         _FinalStage maxAmount(Double maxAmount);
 
+        /**
+         * <p>The minimum amount that can be transferred from this payment method in a single transaction. Default is 1.</p>
+         */
         _FinalStage minAmount(Optional<Double> minAmount);
 
         _FinalStage minAmount(Double minAmount);
@@ -249,6 +267,7 @@ public final class CustomPaymentMethodSchemaRequest {
 
         /**
          * <p>This payment method can be used as a payment source for an invoice</p>
+         * <p>This payment method can be used as a payment source for an invoice</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -259,6 +278,7 @@ public final class CustomPaymentMethodSchemaRequest {
         }
 
         /**
+         * <p>This payment method can be used as a payment destination for an invoice</p>
          * <p>This payment method can be used as a payment destination for an invoice</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -279,6 +299,9 @@ public final class CustomPaymentMethodSchemaRequest {
             return this;
         }
 
+        /**
+         * <p>The minimum amount that can be transferred from this payment method in a single transaction. Default is 1.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "minAmount", nulls = Nulls.SKIP)
         public _FinalStage minAmount(Optional<Double> minAmount) {
@@ -296,6 +319,9 @@ public final class CustomPaymentMethodSchemaRequest {
             return this;
         }
 
+        /**
+         * <p>The maximum amount that can be transferred from this payment method in a single transaction.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "maxAmount", nulls = Nulls.SKIP)
         public _FinalStage maxAmount(Optional<Double> maxAmount) {
@@ -313,6 +339,9 @@ public final class CustomPaymentMethodSchemaRequest {
             return this;
         }
 
+        /**
+         * <p>Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "estimatedProcessingTime", nulls = Nulls.SKIP)
         public _FinalStage estimatedProcessingTime(Optional<Integer> estimatedProcessingTime) {
@@ -350,6 +379,9 @@ public final class CustomPaymentMethodSchemaRequest {
             return this;
         }
 
+        /**
+         * <p>List of currencies that this payment method supports. If not provided, the payment method will support only USD.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "supportedCurrencies", nulls = Nulls.SKIP)
         public _FinalStage supportedCurrencies(Optional<List<CurrencyCode>> supportedCurrencies) {

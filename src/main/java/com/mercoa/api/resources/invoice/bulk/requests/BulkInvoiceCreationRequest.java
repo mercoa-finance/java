@@ -87,6 +87,9 @@ public final class BulkInvoiceCreationRequest {
     public interface _FinalStage {
         BulkInvoiceCreationRequest build();
 
+        /**
+         * <p>If true, webhooks will be emitted for each invoice that is created. By default, webhooks are not emitted.</p>
+         */
         _FinalStage emitWebhooks(Optional<Boolean> emitWebhooks);
 
         _FinalStage emitWebhooks(Boolean emitWebhooks);
@@ -127,6 +130,9 @@ public final class BulkInvoiceCreationRequest {
             return this;
         }
 
+        /**
+         * <p>If true, webhooks will be emitted for each invoice that is created. By default, webhooks are not emitted.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "emitWebhooks", nulls = Nulls.SKIP)
         public _FinalStage emitWebhooks(Optional<Boolean> emitWebhooks) {

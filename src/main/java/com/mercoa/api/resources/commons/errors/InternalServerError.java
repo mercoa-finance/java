@@ -4,6 +4,7 @@
 package com.mercoa.api.resources.commons.errors;
 
 import com.mercoa.api.core.MercoaApiException;
+import okhttp3.Response;
 
 public final class InternalServerError extends MercoaApiException {
     /**
@@ -13,6 +14,11 @@ public final class InternalServerError extends MercoaApiException {
 
     public InternalServerError(String body) {
         super("InternalServerError", 500, body);
+        this.body = body;
+    }
+
+    public InternalServerError(String body, Response rawResponse) {
+        super("InternalServerError", 500, body, rawResponse);
         this.body = body;
     }
 

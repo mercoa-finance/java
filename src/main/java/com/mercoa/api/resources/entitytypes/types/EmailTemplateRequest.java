@@ -125,20 +125,32 @@ public final class EmailTemplateRequest {
     }
 
     public interface NameStage {
+        /**
+         * <p>The name of the email template.</p>
+         */
         SubjectStage name(@NotNull String name);
     }
 
     public interface SubjectStage {
+        /**
+         * <p>The subject of the email template.</p>
+         */
         ContentStage subject(@NotNull String subject);
     }
 
     public interface ContentStage {
+        /**
+         * <p>The HTML content of the email template.</p>
+         */
         _FinalStage content(@NotNull String content);
     }
 
     public interface _FinalStage {
         EmailTemplateRequest build();
 
+        /**
+         * <p>If true, this email template will be used as the default template for new invoices.</p>
+         */
         _FinalStage isDefault(Optional<Boolean> isDefault);
 
         _FinalStage isDefault(Boolean isDefault);
@@ -180,6 +192,7 @@ public final class EmailTemplateRequest {
 
         /**
          * <p>The name of the email template.</p>
+         * <p>The name of the email template.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -191,6 +204,7 @@ public final class EmailTemplateRequest {
 
         /**
          * <p>The subject of the email template.</p>
+         * <p>The subject of the email template.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -201,6 +215,7 @@ public final class EmailTemplateRequest {
         }
 
         /**
+         * <p>The HTML content of the email template.</p>
          * <p>The HTML content of the email template.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -221,6 +236,9 @@ public final class EmailTemplateRequest {
             return this;
         }
 
+        /**
+         * <p>If true, this email template will be used as the default template for new invoices.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "isDefault", nulls = Nulls.SKIP)
         public _FinalStage isDefault(Optional<Boolean> isDefault) {

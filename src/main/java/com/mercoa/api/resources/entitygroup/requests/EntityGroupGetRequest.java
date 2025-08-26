@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,11 +22,12 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGroupGetRequest.Builder.class)
 public final class EntityGroupGetRequest {
-    private final Optional<String> returnEntityMetadata;
+    private final Optional<List<String>> returnEntityMetadata;
 
     private final Map<String, Object> additionalProperties;
 
-    private EntityGroupGetRequest(Optional<String> returnEntityMetadata, Map<String, Object> additionalProperties) {
+    private EntityGroupGetRequest(
+            Optional<List<String>> returnEntityMetadata, Map<String, Object> additionalProperties) {
         this.returnEntityMetadata = returnEntityMetadata;
         this.additionalProperties = additionalProperties;
     }
@@ -33,7 +36,7 @@ public final class EntityGroupGetRequest {
      * @return Return simple key/value metadata for the specified keys for the entities in the group. For more complex metadata, use the Metadata API.
      */
     @JsonProperty("returnEntityMetadata")
-    public Optional<String> getReturnEntityMetadata() {
+    public Optional<List<String>> getReturnEntityMetadata() {
         return returnEntityMetadata;
     }
 
@@ -68,7 +71,7 @@ public final class EntityGroupGetRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> returnEntityMetadata = Optional.empty();
+        private Optional<List<String>> returnEntityMetadata = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -80,14 +83,22 @@ public final class EntityGroupGetRequest {
             return this;
         }
 
+        /**
+         * <p>Return simple key/value metadata for the specified keys for the entities in the group. For more complex metadata, use the Metadata API.</p>
+         */
         @JsonSetter(value = "returnEntityMetadata", nulls = Nulls.SKIP)
-        public Builder returnEntityMetadata(Optional<String> returnEntityMetadata) {
+        public Builder returnEntityMetadata(Optional<List<String>> returnEntityMetadata) {
             this.returnEntityMetadata = returnEntityMetadata;
             return this;
         }
 
-        public Builder returnEntityMetadata(String returnEntityMetadata) {
+        public Builder returnEntityMetadata(List<String> returnEntityMetadata) {
             this.returnEntityMetadata = Optional.ofNullable(returnEntityMetadata);
+            return this;
+        }
+
+        public Builder returnEntityMetadata(String returnEntityMetadata) {
+            this.returnEntityMetadata = Optional.of(Collections.singletonList(returnEntityMetadata));
             return this;
         }
 

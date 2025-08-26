@@ -20,19 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = BankAccountRequest.Builder.class)
-public final class BankAccountRequest implements IPaymentMethodBaseRequest {
-    private final Optional<Boolean> defaultSource;
-
-    private final Optional<Boolean> defaultDestination;
-
-    private final Optional<String> externalAccountingSystemId;
-
-    private final Optional<Boolean> frozen;
-
-    private final Optional<Map<String, String>> metadata;
-
-    private final Optional<Boolean> confirmedByEntity;
-
+public final class BankAccountRequest implements IBankAccountRequest, IPaymentMethodBaseRequest {
     private final Optional<String> accountName;
 
     private final Optional<String> bankName;
@@ -47,15 +35,21 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
 
     private final Optional<BankAccountCheckOptions> checkOptions;
 
+    private final Optional<Boolean> defaultSource;
+
+    private final Optional<Boolean> defaultDestination;
+
+    private final Optional<String> externalAccountingSystemId;
+
+    private final Optional<Boolean> frozen;
+
+    private final Optional<Map<String, String>> metadata;
+
+    private final Optional<Boolean> confirmedByEntity;
+
     private final Map<String, Object> additionalProperties;
 
     private BankAccountRequest(
-            Optional<Boolean> defaultSource,
-            Optional<Boolean> defaultDestination,
-            Optional<String> externalAccountingSystemId,
-            Optional<Boolean> frozen,
-            Optional<Map<String, String>> metadata,
-            Optional<Boolean> confirmedByEntity,
             Optional<String> accountName,
             Optional<String> bankName,
             String routingNumber,
@@ -63,13 +57,13 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             BankType accountType,
             Optional<PlaidLinkRequest> plaid,
             Optional<BankAccountCheckOptions> checkOptions,
+            Optional<Boolean> defaultSource,
+            Optional<Boolean> defaultDestination,
+            Optional<String> externalAccountingSystemId,
+            Optional<Boolean> frozen,
+            Optional<Map<String, String>> metadata,
+            Optional<Boolean> confirmedByEntity,
             Map<String, Object> additionalProperties) {
-        this.defaultSource = defaultSource;
-        this.defaultDestination = defaultDestination;
-        this.externalAccountingSystemId = externalAccountingSystemId;
-        this.frozen = frozen;
-        this.metadata = metadata;
-        this.confirmedByEntity = confirmedByEntity;
         this.accountName = accountName;
         this.bankName = bankName;
         this.routingNumber = routingNumber;
@@ -77,7 +71,67 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         this.accountType = accountType;
         this.plaid = plaid;
         this.checkOptions = checkOptions;
+        this.defaultSource = defaultSource;
+        this.defaultDestination = defaultDestination;
+        this.externalAccountingSystemId = externalAccountingSystemId;
+        this.frozen = frozen;
+        this.metadata = metadata;
+        this.confirmedByEntity = confirmedByEntity;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return The name of the account. For example &quot;My Checking Account&quot; or &quot;Property XYZ Checking&quot;
+     */
+    @JsonProperty("accountName")
+    @java.lang.Override
+    public Optional<String> getAccountName() {
+        return accountName;
+    }
+
+    /**
+     * @return The name of the bank. This is now automatically set when the bank account is linked.
+     */
+    @JsonProperty("bankName")
+    @java.lang.Override
+    public Optional<String> getBankName() {
+        return bankName;
+    }
+
+    @JsonProperty("routingNumber")
+    @java.lang.Override
+    public String getRoutingNumber() {
+        return routingNumber;
+    }
+
+    @JsonProperty("accountNumber")
+    @java.lang.Override
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    @JsonProperty("accountType")
+    @java.lang.Override
+    public BankType getAccountType() {
+        return accountType;
+    }
+
+    /**
+     * @return If provided, will link a bank account using Plaid Link
+     */
+    @JsonProperty("plaid")
+    @java.lang.Override
+    public Optional<PlaidLinkRequest> getPlaid() {
+        return plaid;
+    }
+
+    /**
+     * @return If this bank account supports check printing, use this to enable check printing and set the check options. Checks will be printed directly from the bank account.
+     */
+    @JsonProperty("checkOptions")
+    @java.lang.Override
+    public Optional<BankAccountCheckOptions> getCheckOptions() {
+        return checkOptions;
     }
 
     /**
@@ -134,53 +188,6 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         return confirmedByEntity;
     }
 
-    /**
-     * @return The name of the account. For example &quot;My Checking Account&quot; or &quot;Property XYZ Checking&quot;
-     */
-    @JsonProperty("accountName")
-    public Optional<String> getAccountName() {
-        return accountName;
-    }
-
-    /**
-     * @return The name of the bank. This is now automatically set when the bank account is linked.
-     */
-    @JsonProperty("bankName")
-    public Optional<String> getBankName() {
-        return bankName;
-    }
-
-    @JsonProperty("routingNumber")
-    public String getRoutingNumber() {
-        return routingNumber;
-    }
-
-    @JsonProperty("accountNumber")
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    @JsonProperty("accountType")
-    public BankType getAccountType() {
-        return accountType;
-    }
-
-    /**
-     * @return If provided, will link a bank account using Plaid Link
-     */
-    @JsonProperty("plaid")
-    public Optional<PlaidLinkRequest> getPlaid() {
-        return plaid;
-    }
-
-    /**
-     * @return If this bank account supports check printing, use this to enable check printing and set the check options. Checks will be printed directly from the bank account.
-     */
-    @JsonProperty("checkOptions")
-    public Optional<BankAccountCheckOptions> getCheckOptions() {
-        return checkOptions;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -193,37 +200,37 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
     }
 
     private boolean equalTo(BankAccountRequest other) {
-        return defaultSource.equals(other.defaultSource)
-                && defaultDestination.equals(other.defaultDestination)
-                && externalAccountingSystemId.equals(other.externalAccountingSystemId)
-                && frozen.equals(other.frozen)
-                && metadata.equals(other.metadata)
-                && confirmedByEntity.equals(other.confirmedByEntity)
-                && accountName.equals(other.accountName)
+        return accountName.equals(other.accountName)
                 && bankName.equals(other.bankName)
                 && routingNumber.equals(other.routingNumber)
                 && accountNumber.equals(other.accountNumber)
                 && accountType.equals(other.accountType)
                 && plaid.equals(other.plaid)
-                && checkOptions.equals(other.checkOptions);
+                && checkOptions.equals(other.checkOptions)
+                && defaultSource.equals(other.defaultSource)
+                && defaultDestination.equals(other.defaultDestination)
+                && externalAccountingSystemId.equals(other.externalAccountingSystemId)
+                && frozen.equals(other.frozen)
+                && metadata.equals(other.metadata)
+                && confirmedByEntity.equals(other.confirmedByEntity);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.defaultSource,
-                this.defaultDestination,
-                this.externalAccountingSystemId,
-                this.frozen,
-                this.metadata,
-                this.confirmedByEntity,
                 this.accountName,
                 this.bankName,
                 this.routingNumber,
                 this.accountNumber,
                 this.accountType,
                 this.plaid,
-                this.checkOptions);
+                this.checkOptions,
+                this.defaultSource,
+                this.defaultDestination,
+                this.externalAccountingSystemId,
+                this.frozen,
+                this.metadata,
+                this.confirmedByEntity);
     }
 
     @java.lang.Override
@@ -252,45 +259,75 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
     public interface _FinalStage {
         BankAccountRequest build();
 
-        _FinalStage defaultSource(Optional<Boolean> defaultSource);
-
-        _FinalStage defaultSource(Boolean defaultSource);
-
-        _FinalStage defaultDestination(Optional<Boolean> defaultDestination);
-
-        _FinalStage defaultDestination(Boolean defaultDestination);
-
-        _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId);
-
-        _FinalStage externalAccountingSystemId(String externalAccountingSystemId);
-
-        _FinalStage frozen(Optional<Boolean> frozen);
-
-        _FinalStage frozen(Boolean frozen);
-
-        _FinalStage metadata(Optional<Map<String, String>> metadata);
-
-        _FinalStage metadata(Map<String, String> metadata);
-
-        _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity);
-
-        _FinalStage confirmedByEntity(Boolean confirmedByEntity);
-
+        /**
+         * <p>The name of the account. For example &quot;My Checking Account&quot; or &quot;Property XYZ Checking&quot;</p>
+         */
         _FinalStage accountName(Optional<String> accountName);
 
         _FinalStage accountName(String accountName);
 
+        /**
+         * <p>The name of the bank. This is now automatically set when the bank account is linked.</p>
+         */
         _FinalStage bankName(Optional<String> bankName);
 
         _FinalStage bankName(String bankName);
 
+        /**
+         * <p>If provided, will link a bank account using Plaid Link</p>
+         */
         _FinalStage plaid(Optional<PlaidLinkRequest> plaid);
 
         _FinalStage plaid(PlaidLinkRequest plaid);
 
+        /**
+         * <p>If this bank account supports check printing, use this to enable check printing and set the check options. Checks will be printed directly from the bank account.</p>
+         */
         _FinalStage checkOptions(Optional<BankAccountCheckOptions> checkOptions);
 
         _FinalStage checkOptions(BankAccountCheckOptions checkOptions);
+
+        /**
+         * <p>If true, this payment method will be set as the default source. Only one payment method can be set as the default source. If another payment method is already set as the default source, it will be unset.</p>
+         */
+        _FinalStage defaultSource(Optional<Boolean> defaultSource);
+
+        _FinalStage defaultSource(Boolean defaultSource);
+
+        /**
+         * <p>If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.</p>
+         */
+        _FinalStage defaultDestination(Optional<Boolean> defaultDestination);
+
+        _FinalStage defaultDestination(Boolean defaultDestination);
+
+        /**
+         * <p>ID for this payment method in the external accounting system (e.g Rutter or Codat)</p>
+         */
+        _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId);
+
+        _FinalStage externalAccountingSystemId(String externalAccountingSystemId);
+
+        /**
+         * <p>If true, this payment method will be frozen. Frozen payment methods cannot be used for payments, but will still be returned in API responses.</p>
+         */
+        _FinalStage frozen(Optional<Boolean> frozen);
+
+        _FinalStage frozen(Boolean frozen);
+
+        /**
+         * <p>Metadata associated with this payment method.</p>
+         */
+        _FinalStage metadata(Optional<Map<String, String>> metadata);
+
+        _FinalStage metadata(Map<String, String> metadata);
+
+        /**
+         * <p>(ALPHA, MAY BE REMOVED) Indicate whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.</p>
+         */
+        _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity);
+
+        _FinalStage confirmedByEntity(Boolean confirmedByEntity);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -300,14 +337,6 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         private String accountNumber;
 
         private BankType accountType;
-
-        private Optional<BankAccountCheckOptions> checkOptions = Optional.empty();
-
-        private Optional<PlaidLinkRequest> plaid = Optional.empty();
-
-        private Optional<String> bankName = Optional.empty();
-
-        private Optional<String> accountName = Optional.empty();
 
         private Optional<Boolean> confirmedByEntity = Optional.empty();
 
@@ -321,6 +350,14 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
 
         private Optional<Boolean> defaultSource = Optional.empty();
 
+        private Optional<BankAccountCheckOptions> checkOptions = Optional.empty();
+
+        private Optional<PlaidLinkRequest> plaid = Optional.empty();
+
+        private Optional<String> bankName = Optional.empty();
+
+        private Optional<String> accountName = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -328,12 +365,6 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
 
         @java.lang.Override
         public Builder from(BankAccountRequest other) {
-            defaultSource(other.getDefaultSource());
-            defaultDestination(other.getDefaultDestination());
-            externalAccountingSystemId(other.getExternalAccountingSystemId());
-            frozen(other.getFrozen());
-            metadata(other.getMetadata());
-            confirmedByEntity(other.getConfirmedByEntity());
             accountName(other.getAccountName());
             bankName(other.getBankName());
             routingNumber(other.getRoutingNumber());
@@ -341,6 +372,12 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             accountType(other.getAccountType());
             plaid(other.getPlaid());
             checkOptions(other.getCheckOptions());
+            defaultSource(other.getDefaultSource());
+            defaultDestination(other.getDefaultDestination());
+            externalAccountingSystemId(other.getExternalAccountingSystemId());
+            frozen(other.getFrozen());
+            metadata(other.getMetadata());
+            confirmedByEntity(other.getConfirmedByEntity());
             return this;
         }
 
@@ -366,74 +403,6 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
         }
 
         /**
-         * <p>If this bank account supports check printing, use this to enable check printing and set the check options. Checks will be printed directly from the bank account.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage checkOptions(BankAccountCheckOptions checkOptions) {
-            this.checkOptions = Optional.ofNullable(checkOptions);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "checkOptions", nulls = Nulls.SKIP)
-        public _FinalStage checkOptions(Optional<BankAccountCheckOptions> checkOptions) {
-            this.checkOptions = checkOptions;
-            return this;
-        }
-
-        /**
-         * <p>If provided, will link a bank account using Plaid Link</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage plaid(PlaidLinkRequest plaid) {
-            this.plaid = Optional.ofNullable(plaid);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "plaid", nulls = Nulls.SKIP)
-        public _FinalStage plaid(Optional<PlaidLinkRequest> plaid) {
-            this.plaid = plaid;
-            return this;
-        }
-
-        /**
-         * <p>The name of the bank. This is now automatically set when the bank account is linked.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage bankName(String bankName) {
-            this.bankName = Optional.ofNullable(bankName);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "bankName", nulls = Nulls.SKIP)
-        public _FinalStage bankName(Optional<String> bankName) {
-            this.bankName = bankName;
-            return this;
-        }
-
-        /**
-         * <p>The name of the account. For example &quot;My Checking Account&quot; or &quot;Property XYZ Checking&quot;</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage accountName(String accountName) {
-            this.accountName = Optional.ofNullable(accountName);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "accountName", nulls = Nulls.SKIP)
-        public _FinalStage accountName(Optional<String> accountName) {
-            this.accountName = accountName;
-            return this;
-        }
-
-        /**
          * <p>(ALPHA, MAY BE REMOVED) Indicate whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -443,6 +412,9 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
+        /**
+         * <p>(ALPHA, MAY BE REMOVED) Indicate whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "confirmedByEntity", nulls = Nulls.SKIP)
         public _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity) {
@@ -460,6 +432,9 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
+        /**
+         * <p>Metadata associated with this payment method.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public _FinalStage metadata(Optional<Map<String, String>> metadata) {
@@ -477,6 +452,9 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
+        /**
+         * <p>If true, this payment method will be frozen. Frozen payment methods cannot be used for payments, but will still be returned in API responses.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "frozen", nulls = Nulls.SKIP)
         public _FinalStage frozen(Optional<Boolean> frozen) {
@@ -494,6 +472,9 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
+        /**
+         * <p>ID for this payment method in the external accounting system (e.g Rutter or Codat)</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "externalAccountingSystemId", nulls = Nulls.SKIP)
         public _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId) {
@@ -511,6 +492,9 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
+        /**
+         * <p>If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "defaultDestination", nulls = Nulls.SKIP)
         public _FinalStage defaultDestination(Optional<Boolean> defaultDestination) {
@@ -528,6 +512,9 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
+        /**
+         * <p>If true, this payment method will be set as the default source. Only one payment method can be set as the default source. If another payment method is already set as the default source, it will be unset.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "defaultSource", nulls = Nulls.SKIP)
         public _FinalStage defaultSource(Optional<Boolean> defaultSource) {
@@ -535,15 +522,89 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
+        /**
+         * <p>If this bank account supports check printing, use this to enable check printing and set the check options. Checks will be printed directly from the bank account.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage checkOptions(BankAccountCheckOptions checkOptions) {
+            this.checkOptions = Optional.ofNullable(checkOptions);
+            return this;
+        }
+
+        /**
+         * <p>If this bank account supports check printing, use this to enable check printing and set the check options. Checks will be printed directly from the bank account.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "checkOptions", nulls = Nulls.SKIP)
+        public _FinalStage checkOptions(Optional<BankAccountCheckOptions> checkOptions) {
+            this.checkOptions = checkOptions;
+            return this;
+        }
+
+        /**
+         * <p>If provided, will link a bank account using Plaid Link</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage plaid(PlaidLinkRequest plaid) {
+            this.plaid = Optional.ofNullable(plaid);
+            return this;
+        }
+
+        /**
+         * <p>If provided, will link a bank account using Plaid Link</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "plaid", nulls = Nulls.SKIP)
+        public _FinalStage plaid(Optional<PlaidLinkRequest> plaid) {
+            this.plaid = plaid;
+            return this;
+        }
+
+        /**
+         * <p>The name of the bank. This is now automatically set when the bank account is linked.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage bankName(String bankName) {
+            this.bankName = Optional.ofNullable(bankName);
+            return this;
+        }
+
+        /**
+         * <p>The name of the bank. This is now automatically set when the bank account is linked.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "bankName", nulls = Nulls.SKIP)
+        public _FinalStage bankName(Optional<String> bankName) {
+            this.bankName = bankName;
+            return this;
+        }
+
+        /**
+         * <p>The name of the account. For example &quot;My Checking Account&quot; or &quot;Property XYZ Checking&quot;</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage accountName(String accountName) {
+            this.accountName = Optional.ofNullable(accountName);
+            return this;
+        }
+
+        /**
+         * <p>The name of the account. For example &quot;My Checking Account&quot; or &quot;Property XYZ Checking&quot;</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "accountName", nulls = Nulls.SKIP)
+        public _FinalStage accountName(Optional<String> accountName) {
+            this.accountName = accountName;
+            return this;
+        }
+
         @java.lang.Override
         public BankAccountRequest build() {
             return new BankAccountRequest(
-                    defaultSource,
-                    defaultDestination,
-                    externalAccountingSystemId,
-                    frozen,
-                    metadata,
-                    confirmedByEntity,
                     accountName,
                     bankName,
                     routingNumber,
@@ -551,6 +612,12 @@ public final class BankAccountRequest implements IPaymentMethodBaseRequest {
                     accountType,
                     plaid,
                     checkOptions,
+                    defaultSource,
+                    defaultDestination,
+                    externalAccountingSystemId,
+                    frozen,
+                    metadata,
+                    confirmedByEntity,
                     additionalProperties);
         }
     }

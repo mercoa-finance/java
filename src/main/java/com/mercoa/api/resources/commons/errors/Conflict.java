@@ -4,6 +4,7 @@
 package com.mercoa.api.resources.commons.errors;
 
 import com.mercoa.api.core.MercoaApiException;
+import okhttp3.Response;
 
 public final class Conflict extends MercoaApiException {
     /**
@@ -13,6 +14,11 @@ public final class Conflict extends MercoaApiException {
 
     public Conflict(String body) {
         super("Conflict", 409, body);
+        this.body = body;
+    }
+
+    public Conflict(String body, Response rawResponse) {
+        super("Conflict", 409, body, rawResponse);
         this.body = body;
     }
 

@@ -138,6 +138,9 @@ public final class CheckPaymentRailRequest implements IGenericPaymentRailRequest
 
         _FinalStage defaultDeliveryMethod(CheckDeliveryMethod defaultDeliveryMethod);
 
+        /**
+         * <p>If true, invoices default to printing the invoice description (noteToSelf) on the check note.</p>
+         */
         _FinalStage printDescription(Optional<Boolean> printDescription);
 
         _FinalStage printDescription(Boolean printDescription);
@@ -187,6 +190,9 @@ public final class CheckPaymentRailRequest implements IGenericPaymentRailRequest
             return this;
         }
 
+        /**
+         * <p>If true, invoices default to printing the invoice description (noteToSelf) on the check note.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "printDescription", nulls = Nulls.SKIP)
         public _FinalStage printDescription(Optional<Boolean> printDescription) {

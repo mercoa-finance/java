@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodType;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,27 +23,43 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = FindPaymentMethodsRequest.Builder.class)
 public final class FindPaymentMethodsRequest {
+    private final Optional<List<PaymentMethodType>> type;
+
+    private final Optional<List<String>> entityId;
+
     private final Optional<Integer> limit;
 
     private final Optional<String> startingAfter;
 
-    private final Optional<PaymentMethodType> type;
-
-    private final Optional<String> entityId;
-
     private final Map<String, Object> additionalProperties;
 
     private FindPaymentMethodsRequest(
+            Optional<List<PaymentMethodType>> type,
+            Optional<List<String>> entityId,
             Optional<Integer> limit,
             Optional<String> startingAfter,
-            Optional<PaymentMethodType> type,
-            Optional<String> entityId,
             Map<String, Object> additionalProperties) {
-        this.limit = limit;
-        this.startingAfter = startingAfter;
         this.type = type;
         this.entityId = entityId;
+        this.limit = limit;
+        this.startingAfter = startingAfter;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Type of payment method to filter
+     */
+    @JsonProperty("type")
+    public Optional<List<PaymentMethodType>> getType() {
+        return type;
+    }
+
+    /**
+     * @return Entity ID to filter
+     */
+    @JsonProperty("entityId")
+    public Optional<List<String>> getEntityId() {
+        return entityId;
     }
 
     /**
@@ -60,22 +78,6 @@ public final class FindPaymentMethodsRequest {
         return startingAfter;
     }
 
-    /**
-     * @return Type of payment method to filter
-     */
-    @JsonProperty("type")
-    public Optional<PaymentMethodType> getType() {
-        return type;
-    }
-
-    /**
-     * @return Entity ID to filter
-     */
-    @JsonProperty("entityId")
-    public Optional<String> getEntityId() {
-        return entityId;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -88,15 +90,15 @@ public final class FindPaymentMethodsRequest {
     }
 
     private boolean equalTo(FindPaymentMethodsRequest other) {
-        return limit.equals(other.limit)
-                && startingAfter.equals(other.startingAfter)
-                && type.equals(other.type)
-                && entityId.equals(other.entityId);
+        return type.equals(other.type)
+                && entityId.equals(other.entityId)
+                && limit.equals(other.limit)
+                && startingAfter.equals(other.startingAfter);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.limit, this.startingAfter, this.type, this.entityId);
+        return Objects.hash(this.type, this.entityId, this.limit, this.startingAfter);
     }
 
     @java.lang.Override
@@ -110,13 +112,13 @@ public final class FindPaymentMethodsRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<List<PaymentMethodType>> type = Optional.empty();
+
+        private Optional<List<String>> entityId = Optional.empty();
+
         private Optional<Integer> limit = Optional.empty();
 
         private Optional<String> startingAfter = Optional.empty();
-
-        private Optional<PaymentMethodType> type = Optional.empty();
-
-        private Optional<String> entityId = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -124,13 +126,54 @@ public final class FindPaymentMethodsRequest {
         private Builder() {}
 
         public Builder from(FindPaymentMethodsRequest other) {
-            limit(other.getLimit());
-            startingAfter(other.getStartingAfter());
             type(other.getType());
             entityId(other.getEntityId());
+            limit(other.getLimit());
+            startingAfter(other.getStartingAfter());
             return this;
         }
 
+        /**
+         * <p>Type of payment method to filter</p>
+         */
+        @JsonSetter(value = "type", nulls = Nulls.SKIP)
+        public Builder type(Optional<List<PaymentMethodType>> type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder type(List<PaymentMethodType> type) {
+            this.type = Optional.ofNullable(type);
+            return this;
+        }
+
+        public Builder type(PaymentMethodType type) {
+            this.type = Optional.of(Collections.singletonList(type));
+            return this;
+        }
+
+        /**
+         * <p>Entity ID to filter</p>
+         */
+        @JsonSetter(value = "entityId", nulls = Nulls.SKIP)
+        public Builder entityId(Optional<List<String>> entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        public Builder entityId(List<String> entityId) {
+            this.entityId = Optional.ofNullable(entityId);
+            return this;
+        }
+
+        public Builder entityId(String entityId) {
+            this.entityId = Optional.of(Collections.singletonList(entityId));
+            return this;
+        }
+
+        /**
+         * <p>Number of payment methods to return. Limit can range between 1 and 100, and the default is 10.</p>
+         */
         @JsonSetter(value = "limit", nulls = Nulls.SKIP)
         public Builder limit(Optional<Integer> limit) {
             this.limit = limit;
@@ -142,6 +185,9 @@ public final class FindPaymentMethodsRequest {
             return this;
         }
 
+        /**
+         * <p>The ID of the payment method to start after. If not provided, the first page of payment methods will be returned.</p>
+         */
         @JsonSetter(value = "startingAfter", nulls = Nulls.SKIP)
         public Builder startingAfter(Optional<String> startingAfter) {
             this.startingAfter = startingAfter;
@@ -153,30 +199,8 @@ public final class FindPaymentMethodsRequest {
             return this;
         }
 
-        @JsonSetter(value = "type", nulls = Nulls.SKIP)
-        public Builder type(Optional<PaymentMethodType> type) {
-            this.type = type;
-            return this;
-        }
-
-        public Builder type(PaymentMethodType type) {
-            this.type = Optional.ofNullable(type);
-            return this;
-        }
-
-        @JsonSetter(value = "entityId", nulls = Nulls.SKIP)
-        public Builder entityId(Optional<String> entityId) {
-            this.entityId = entityId;
-            return this;
-        }
-
-        public Builder entityId(String entityId) {
-            this.entityId = Optional.ofNullable(entityId);
-            return this;
-        }
-
         public FindPaymentMethodsRequest build() {
-            return new FindPaymentMethodsRequest(limit, startingAfter, type, entityId, additionalProperties);
+            return new FindPaymentMethodsRequest(type, entityId, limit, startingAfter, additionalProperties);
         }
     }
 }

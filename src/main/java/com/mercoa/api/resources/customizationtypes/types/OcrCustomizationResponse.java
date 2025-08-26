@@ -166,36 +166,60 @@ public final class OcrCustomizationResponse {
     }
 
     public interface LineItemsStage {
+        /**
+         * <p>Extract line items from the invoice. Defaults to true.</p>
+         */
         CollapseLineItemsStage lineItems(boolean lineItems);
 
         Builder from(OcrCustomizationResponse other);
     }
 
     public interface CollapseLineItemsStage {
+        /**
+         * <p>If true, the line items will be collapsed into a single line item. Defaults to false.</p>
+         */
         InvoiceMetadataStage collapseLineItems(boolean collapseLineItems);
     }
 
     public interface InvoiceMetadataStage {
+        /**
+         * <p>Pull custom metadata at the invoice level. Defaults to true.</p>
+         */
         LineItemMetadataStage invoiceMetadata(boolean invoiceMetadata);
     }
 
     public interface LineItemMetadataStage {
+        /**
+         * <p>Pull custom metadata at the line item level. Defaults to true.</p>
+         */
         LineItemGlAccountIdStage lineItemMetadata(boolean lineItemMetadata);
     }
 
     public interface LineItemGlAccountIdStage {
+        /**
+         * <p>Pull GL Account ID at the line item level. Defaults to true.</p>
+         */
         PredictMetadataStage lineItemGlAccountId(boolean lineItemGlAccountId);
     }
 
     public interface PredictMetadataStage {
+        /**
+         * <p>Use AI to predict metadata from historical data. Defaults to true.</p>
+         */
         TaxAndShippingAsLineItemsStage predictMetadata(boolean predictMetadata);
     }
 
     public interface TaxAndShippingAsLineItemsStage {
+        /**
+         * <p>Pull tax and shipping information as line items. Defaults to true. If false, tax and shipping will extracted as invoice level fields.</p>
+         */
         SplitDocumentsStage taxAndShippingAsLineItems(boolean taxAndShippingAsLineItems);
     }
 
     public interface SplitDocumentsStage {
+        /**
+         * <p>Use AI to intelligently split documents into multiple subdocuments. Defaults to false.</p>
+         */
         _FinalStage splitDocuments(boolean splitDocuments);
     }
 
@@ -250,6 +274,7 @@ public final class OcrCustomizationResponse {
 
         /**
          * <p>Extract line items from the invoice. Defaults to true.</p>
+         * <p>Extract line items from the invoice. Defaults to true.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -260,6 +285,7 @@ public final class OcrCustomizationResponse {
         }
 
         /**
+         * <p>If true, the line items will be collapsed into a single line item. Defaults to false.</p>
          * <p>If true, the line items will be collapsed into a single line item. Defaults to false.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -272,6 +298,7 @@ public final class OcrCustomizationResponse {
 
         /**
          * <p>Pull custom metadata at the invoice level. Defaults to true.</p>
+         * <p>Pull custom metadata at the invoice level. Defaults to true.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -282,6 +309,7 @@ public final class OcrCustomizationResponse {
         }
 
         /**
+         * <p>Pull custom metadata at the line item level. Defaults to true.</p>
          * <p>Pull custom metadata at the line item level. Defaults to true.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -294,6 +322,7 @@ public final class OcrCustomizationResponse {
 
         /**
          * <p>Pull GL Account ID at the line item level. Defaults to true.</p>
+         * <p>Pull GL Account ID at the line item level. Defaults to true.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -304,6 +333,7 @@ public final class OcrCustomizationResponse {
         }
 
         /**
+         * <p>Use AI to predict metadata from historical data. Defaults to true.</p>
          * <p>Use AI to predict metadata from historical data. Defaults to true.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -316,6 +346,7 @@ public final class OcrCustomizationResponse {
 
         /**
          * <p>Pull tax and shipping information as line items. Defaults to true. If false, tax and shipping will extracted as invoice level fields.</p>
+         * <p>Pull tax and shipping information as line items. Defaults to true. If false, tax and shipping will extracted as invoice level fields.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -326,6 +357,7 @@ public final class OcrCustomizationResponse {
         }
 
         /**
+         * <p>Use AI to intelligently split documents into multiple subdocuments. Defaults to false.</p>
          * <p>Use AI to intelligently split documents into multiple subdocuments. Defaults to false.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

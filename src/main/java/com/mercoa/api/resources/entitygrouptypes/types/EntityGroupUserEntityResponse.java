@@ -91,6 +91,9 @@ public final class EntityGroupUserEntityResponse implements IEntityGroupUserEnti
     }
 
     public interface EntityIdStage {
+        /**
+         * <p>The IDs of the entities that these roles applies to.</p>
+         */
         IdStage entityId(@NotNull String entityId);
 
         Builder from(EntityGroupUserEntityResponse other);
@@ -103,6 +106,9 @@ public final class EntityGroupUserEntityResponse implements IEntityGroupUserEnti
     public interface _FinalStage {
         EntityGroupUserEntityResponse build();
 
+        /**
+         * <p>List of roles. A role can be any string. For example: &quot;payer&quot;, &quot;approver&quot;, &quot;viewer&quot;</p>
+         */
         _FinalStage roles(List<String> roles);
 
         _FinalStage addRoles(String roles);
@@ -132,6 +138,7 @@ public final class EntityGroupUserEntityResponse implements IEntityGroupUserEnti
         }
 
         /**
+         * <p>The IDs of the entities that these roles applies to.</p>
          * <p>The IDs of the entities that these roles applies to.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -169,6 +176,9 @@ public final class EntityGroupUserEntityResponse implements IEntityGroupUserEnti
             return this;
         }
 
+        /**
+         * <p>List of roles. A role can be any string. For example: &quot;payer&quot;, &quot;approver&quot;, &quot;viewer&quot;</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "roles", nulls = Nulls.SKIP)
         public _FinalStage roles(List<String> roles) {

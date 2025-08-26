@@ -81,6 +81,9 @@ public final class ApprovalRequest implements IApprovalRequest {
     }
 
     public interface UserIdStage {
+        /**
+         * <p>The ID or the Foreign ID of the user</p>
+         */
         _FinalStage userId(@NotNull String userId);
 
         Builder from(ApprovalRequest other);
@@ -89,6 +92,9 @@ public final class ApprovalRequest implements IApprovalRequest {
     public interface _FinalStage {
         ApprovalRequest build();
 
+        /**
+         * <p>Comment associated with this approval action.</p>
+         */
         _FinalStage text(Optional<String> text);
 
         _FinalStage text(String text);
@@ -114,6 +120,7 @@ public final class ApprovalRequest implements IApprovalRequest {
 
         /**
          * <p>The ID or the Foreign ID of the user</p>
+         * <p>The ID or the Foreign ID of the user</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -133,6 +140,9 @@ public final class ApprovalRequest implements IApprovalRequest {
             return this;
         }
 
+        /**
+         * <p>Comment associated with this approval action.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "text", nulls = Nulls.SKIP)
         public _FinalStage text(Optional<String> text) {

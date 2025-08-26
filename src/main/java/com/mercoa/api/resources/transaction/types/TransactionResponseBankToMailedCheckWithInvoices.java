@@ -27,9 +27,11 @@ import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-@JsonDeserialize(builder = TransactionResponseBankToCheckWithInvoices.Builder.class)
-public final class TransactionResponseBankToCheckWithInvoices
-        implements ITransactionResponseCheckBase, ITransactionResponseBase {
+@JsonDeserialize(builder = TransactionResponseBankToMailedCheckWithInvoices.Builder.class)
+public final class TransactionResponseBankToMailedCheckWithInvoices
+        implements ITransactionResponseCheckBaseMailed, ITransactionResponseCheckBase, ITransactionResponseBase {
+    private final Optional<OffsetDateTime> mailedOnDate;
+
     private final int checkNumber;
 
     private final String id;
@@ -68,7 +70,8 @@ public final class TransactionResponseBankToCheckWithInvoices
 
     private final Map<String, Object> additionalProperties;
 
-    private TransactionResponseBankToCheckWithInvoices(
+    private TransactionResponseBankToMailedCheckWithInvoices(
+            Optional<OffsetDateTime> mailedOnDate,
             int checkNumber,
             String id,
             TransactionStatus status,
@@ -88,6 +91,7 @@ public final class TransactionResponseBankToCheckWithInvoices
             OffsetDateTime updatedAt,
             List<InvoiceResponse> invoices,
             Map<String, Object> additionalProperties) {
+        this.mailedOnDate = mailedOnDate;
         this.checkNumber = checkNumber;
         this.id = id;
         this.status = status;
@@ -107,6 +111,15 @@ public final class TransactionResponseBankToCheckWithInvoices
         this.updatedAt = updatedAt;
         this.invoices = invoices;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return The date the check was mailed. If the check was not mailed, this field will be null.
+     */
+    @JsonProperty("mailedOnDate")
+    @java.lang.Override
+    public Optional<OffsetDateTime> getMailedOnDate() {
+        return mailedOnDate;
     }
 
     /**
@@ -225,8 +238,8 @@ public final class TransactionResponseBankToCheckWithInvoices
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof TransactionResponseBankToCheckWithInvoices
-                && equalTo((TransactionResponseBankToCheckWithInvoices) other);
+        return other instanceof TransactionResponseBankToMailedCheckWithInvoices
+                && equalTo((TransactionResponseBankToMailedCheckWithInvoices) other);
     }
 
     @JsonAnyGetter
@@ -234,8 +247,9 @@ public final class TransactionResponseBankToCheckWithInvoices
         return this.additionalProperties;
     }
 
-    private boolean equalTo(TransactionResponseBankToCheckWithInvoices other) {
-        return checkNumber == other.checkNumber
+    private boolean equalTo(TransactionResponseBankToMailedCheckWithInvoices other) {
+        return mailedOnDate.equals(other.mailedOnDate)
+                && checkNumber == other.checkNumber
                 && id.equals(other.id)
                 && status.equals(other.status)
                 && amount == other.amount
@@ -258,6 +272,7 @@ public final class TransactionResponseBankToCheckWithInvoices
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.mailedOnDate,
                 this.checkNumber,
                 this.id,
                 this.status,
@@ -288,9 +303,12 @@ public final class TransactionResponseBankToCheckWithInvoices
     }
 
     public interface CheckNumberStage {
+        /**
+         * <p>The number of the check</p>
+         */
         IdStage checkNumber(int checkNumber);
 
-        Builder from(TransactionResponseBankToCheckWithInvoices other);
+        Builder from(TransactionResponseBankToMailedCheckWithInvoices other);
     }
 
     public interface IdStage {
@@ -350,7 +368,14 @@ public final class TransactionResponseBankToCheckWithInvoices
     }
 
     public interface _FinalStage {
-        TransactionResponseBankToCheckWithInvoices build();
+        TransactionResponseBankToMailedCheckWithInvoices build();
+
+        /**
+         * <p>The date the check was mailed. If the check was not mailed, this field will be null.</p>
+         */
+        _FinalStage mailedOnDate(Optional<OffsetDateTime> mailedOnDate);
+
+        _FinalStage mailedOnDate(OffsetDateTime mailedOnDate);
 
         _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions);
 
@@ -360,6 +385,9 @@ public final class TransactionResponseBankToCheckWithInvoices
 
         _FinalStage fees(InvoiceFeesResponse fees);
 
+        /**
+         * <p>Invoices associated with this transaction</p>
+         */
         _FinalStage invoices(List<InvoiceResponse> invoices);
 
         _FinalStage addInvoices(InvoiceResponse invoices);
@@ -421,13 +449,16 @@ public final class TransactionResponseBankToCheckWithInvoices
 
         private Optional<PaymentDestinationOptions> paymentDestinationOptions = Optional.empty();
 
+        private Optional<OffsetDateTime> mailedOnDate = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
         @java.lang.Override
-        public Builder from(TransactionResponseBankToCheckWithInvoices other) {
+        public Builder from(TransactionResponseBankToMailedCheckWithInvoices other) {
+            mailedOnDate(other.getMailedOnDate());
             checkNumber(other.getCheckNumber());
             id(other.getId());
             status(other.getStatus());
@@ -450,6 +481,7 @@ public final class TransactionResponseBankToCheckWithInvoices
         }
 
         /**
+         * <p>The number of the check</p>
          * <p>The number of the check</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -579,6 +611,9 @@ public final class TransactionResponseBankToCheckWithInvoices
             return this;
         }
 
+        /**
+         * <p>Invoices associated with this transaction</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "invoices", nulls = Nulls.SKIP)
         public _FinalStage invoices(List<InvoiceResponse> invoices) {
@@ -613,9 +648,30 @@ public final class TransactionResponseBankToCheckWithInvoices
             return this;
         }
 
+        /**
+         * <p>The date the check was mailed. If the check was not mailed, this field will be null.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
-        public TransactionResponseBankToCheckWithInvoices build() {
-            return new TransactionResponseBankToCheckWithInvoices(
+        public _FinalStage mailedOnDate(OffsetDateTime mailedOnDate) {
+            this.mailedOnDate = Optional.ofNullable(mailedOnDate);
+            return this;
+        }
+
+        /**
+         * <p>The date the check was mailed. If the check was not mailed, this field will be null.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "mailedOnDate", nulls = Nulls.SKIP)
+        public _FinalStage mailedOnDate(Optional<OffsetDateTime> mailedOnDate) {
+            this.mailedOnDate = mailedOnDate;
+            return this;
+        }
+
+        @java.lang.Override
+        public TransactionResponseBankToMailedCheckWithInvoices build() {
+            return new TransactionResponseBankToMailedCheckWithInvoices(
+                    mailedOnDate,
                     checkNumber,
                     id,
                     status,

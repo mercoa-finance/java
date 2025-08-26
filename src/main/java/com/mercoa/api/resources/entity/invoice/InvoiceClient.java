@@ -3,211 +3,75 @@
  */
 package com.mercoa.api.resources.entity.invoice;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
+import com.mercoa.api.resources.commons.types.BulkDownloadResponse;
+import com.mercoa.api.resources.entity.invoice.requests.DownloadEntityInvoicesRequest;
 import com.mercoa.api.resources.entity.invoice.requests.EntityGetInvoicesRequest;
 import com.mercoa.api.resources.entity.invoice.requests.InvoiceMetricsRequest;
 import com.mercoa.api.resources.invoicetypes.types.FindInvoiceResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceMetricsResponse;
-import java.io.IOException;
+import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
 import java.util.List;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class InvoiceClient {
     protected final ClientOptions clientOptions;
 
+    private final RawInvoiceClient rawClient;
+
     public InvoiceClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new RawInvoiceClient(clientOptions);
+    }
+
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public RawInvoiceClient withRawResponse() {
+        return this.rawClient;
     }
 
     /**
      * Get invoices for an entity with the given filters.
      */
     public FindInvoiceResponse find(String entityId) {
-        return find(entityId, EntityGetInvoicesRequest.builder().build());
+        return this.rawClient.find(entityId).body();
     }
 
     /**
      * Get invoices for an entity with the given filters.
      */
     public FindInvoiceResponse find(String entityId, EntityGetInvoicesRequest request) {
-        return find(entityId, request, null);
+        return this.rawClient.find(entityId, request).body();
     }
 
     /**
      * Get invoices for an entity with the given filters.
      */
     public FindInvoiceResponse find(String entityId, EntityGetInvoicesRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("invoices");
-        if (request.getExcludePayables().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "excludePayables",
-                    request.getExcludePayables().get().toString(),
-                    false);
-        }
-        if (request.getExcludeReceivables().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "excludeReceivables",
-                    request.getExcludeReceivables().get().toString(),
-                    false);
-        }
-        if (request.getStartDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startDate", request.getStartDate().get().toString(), false);
-        }
-        if (request.getEndDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "endDate", request.getEndDate().get().toString(), false);
-        }
-        if (request.getDateType().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "dateType", request.getDateType().get().toString(), false);
-        }
-        if (request.getOrderBy().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "orderBy", request.getOrderBy().get().toString(), false);
-        }
-        if (request.getOrderDirection().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "orderDirection", request.getOrderDirection().get().toString(), false);
-        }
-        if (request.getLimit().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "limit", request.getLimit().get().toString(), false);
-        }
-        if (request.getStartingAfter().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
-        }
-        if (request.getMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "metadata", request.getMetadata().get().toString(), false);
-        }
-        if (request.getLineItemMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "lineItemMetadata",
-                    request.getLineItemMetadata().get().toString(),
-                    false);
-        }
-        if (request.getLineItemGlAccountId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "lineItemGlAccountId",
-                    request.getLineItemGlAccountId().get(),
-                    false);
-        }
-        if (request.getSearch().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "search", request.getSearch().get(), false);
-        }
-        if (request.getPayerId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "payerId", request.getPayerId().get(), false);
-        }
-        if (request.getVendorId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "vendorId", request.getVendorId().get(), false);
-        }
-        if (request.getCreatorUserId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "creatorUserId", request.getCreatorUserId().get(), false);
-        }
-        if (request.getApproverId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "approverId", request.getApproverId().get(), false);
-        }
-        if (request.getApproverAction().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "approverAction", request.getApproverAction().get().toString(), false);
-        }
-        if (request.getInvoiceId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "invoiceId", request.getInvoiceId().get(), false);
-        }
-        if (request.getStatus().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "status", request.getStatus().get().toString(), false);
-        }
-        if (request.getPaymentType().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "paymentType", request.getPaymentType().get().toString(), false);
-        }
-        if (request.getReturnPayerMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "returnPayerMetadata",
-                    request.getReturnPayerMetadata().get().toString(),
-                    false);
-        }
-        if (request.getReturnVendorMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "returnVendorMetadata",
-                    request.getReturnVendorMetadata().get().toString(),
-                    false);
-        }
-        if (request.getReturnPaymentTiming().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "returnPaymentTiming",
-                    request.getReturnPaymentTiming().get().toString(),
-                    false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), FindInvoiceResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.find(entityId, request, requestOptions).body();
+    }
+
+    public InvoiceResponse get(String entityId, String invoiceId) {
+        return this.rawClient.get(entityId, invoiceId).body();
+    }
+
+    public InvoiceResponse get(String entityId, String invoiceId, RequestOptions requestOptions) {
+        return this.rawClient.get(entityId, invoiceId, requestOptions).body();
     }
 
     /**
      * Get invoice metrics for an entity with the given filters. Invoices will always be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
      */
     public List<InvoiceMetricsResponse> metrics(String entityId) {
-        return metrics(entityId, InvoiceMetricsRequest.builder().build());
+        return this.rawClient.metrics(entityId).body();
     }
 
     /**
      * Get invoice metrics for an entity with the given filters. Invoices will always be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
      */
     public List<InvoiceMetricsResponse> metrics(String entityId, InvoiceMetricsRequest request) {
-        return metrics(entityId, request, null);
+        return this.rawClient.metrics(entityId, request).body();
     }
 
     /**
@@ -215,104 +79,28 @@ public class InvoiceClient {
      */
     public List<InvoiceMetricsResponse> metrics(
             String entityId, InvoiceMetricsRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("invoice-metrics");
-        if (request.getSearch().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "search", request.getSearch().get(), false);
-        }
-        if (request.getExcludePayables().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "excludePayables",
-                    request.getExcludePayables().get().toString(),
-                    false);
-        }
-        if (request.getExcludeReceivables().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "excludeReceivables",
-                    request.getExcludeReceivables().get().toString(),
-                    false);
-        }
-        if (request.getReturnByDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "returnByDate", request.getReturnByDate().get().toString(), false);
-        }
-        if (request.getReturnByDateFrequency().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "returnByDateFrequency",
-                    request.getReturnByDateFrequency().get().toString(),
-                    false);
-        }
-        if (request.getGroupBy().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "groupBy", request.getGroupBy().get().toString(), false);
-        }
-        if (request.getPayerId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "payerId", request.getPayerId().get(), false);
-        }
-        if (request.getVendorId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "vendorId", request.getVendorId().get(), false);
-        }
-        if (request.getApproverId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "approverId", request.getApproverId().get(), false);
-        }
-        if (request.getInvoiceId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "invoiceId", request.getInvoiceId().get(), false);
-        }
-        if (request.getStatus().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "status", request.getStatus().get().toString(), false);
-        }
-        if (request.getStartDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startDate", request.getStartDate().get().toString(), false);
-        }
-        if (request.getEndDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "endDate", request.getEndDate().get().toString(), false);
-        }
-        if (request.getDateType().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "dateType", request.getDateType().get().toString(), false);
-        }
-        if (request.getCurrency().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "currency", request.getCurrency().get().toString(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(
-                        responseBody.string(), new TypeReference<List<InvoiceMetricsResponse>>() {});
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.metrics(entityId, request, requestOptions).body();
+    }
+
+    /**
+     * Get a URL to download invoices for an entity as a CSV/JSON file.
+     */
+    public BulkDownloadResponse download(String entityId) {
+        return this.rawClient.download(entityId).body();
+    }
+
+    /**
+     * Get a URL to download invoices for an entity as a CSV/JSON file.
+     */
+    public BulkDownloadResponse download(String entityId, DownloadEntityInvoicesRequest request) {
+        return this.rawClient.download(entityId, request).body();
+    }
+
+    /**
+     * Get a URL to download invoices for an entity as a CSV/JSON file.
+     */
+    public BulkDownloadResponse download(
+            String entityId, DownloadEntityInvoicesRequest request, RequestOptions requestOptions) {
+        return this.rawClient.download(entityId, request, requestOptions).body();
     }
 }
