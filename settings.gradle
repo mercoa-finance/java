@@ -1,3 +1,3 @@
-rootProject.name = 'custom'
+rootProject.name = 'mercoa'
 
 include 'sample-app'
