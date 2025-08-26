@@ -41,7 +41,7 @@ public final class ClientOptions {
         this.headers.putAll(headers);
         this.headers.putAll(new HashMap<String, String>() {
             {
-                put("User-Agent", "com.fern:custom/0.0.1");
+                put("User-Agent", "com.mercoa:mercoa/0.6.24");
                 put("X-Fern-Language", "JAVA");
             }
         });
