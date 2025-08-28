@@ -269,6 +269,9 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
     }
 
     public interface CheckNumberStage {
+        /**
+         * <p>The number of the check</p>
+         */
         IdStage checkNumber(int checkNumber);
 
         Builder from(TransactionResponseCheckBase other);
@@ -422,6 +425,7 @@ public final class TransactionResponseCheckBase implements ITransactionResponseC
         }
 
         /**
+         * <p>The number of the check</p>
          * <p>The number of the check</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

@@ -126,6 +126,9 @@ public final class EntityGroupUserResponse {
     }
 
     public interface ForeignIdStage {
+        /**
+         * <p>The ID used to identify this user in your system.</p>
+         */
         CreatedAtStage foreignId(@NotNull String foreignId);
 
         Builder from(EntityGroupUserResponse other);
@@ -150,6 +153,9 @@ public final class EntityGroupUserResponse {
 
         _FinalStage name(String name);
 
+        /**
+         * <p>List of roles per entity.</p>
+         */
         _FinalStage entities(List<EntityGroupUserEntityResponse> entities);
 
         _FinalStage addEntities(EntityGroupUserEntityResponse entities);
@@ -189,6 +195,7 @@ public final class EntityGroupUserResponse {
 
         /**
          * <p>The ID used to identify this user in your system.</p>
+         * <p>The ID used to identify this user in your system.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -218,7 +225,9 @@ public final class EntityGroupUserResponse {
          */
         @java.lang.Override
         public _FinalStage addAllEntities(List<EntityGroupUserEntityResponse> entities) {
-            this.entities.addAll(entities);
+            if (entities != null) {
+                this.entities.addAll(entities);
+            }
             return this;
         }
 
@@ -232,6 +241,9 @@ public final class EntityGroupUserResponse {
             return this;
         }
 
+        /**
+         * <p>List of roles per entity.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "entities", nulls = Nulls.SKIP)
         public _FinalStage entities(List<EntityGroupUserEntityResponse> entities) {

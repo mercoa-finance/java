@@ -80,6 +80,9 @@ public final class CodatCompanyCreationRequest {
             return this;
         }
 
+        /**
+         * <p>If the company already exists in Codat, provide the company ID to link the company to the entity. If the company does not exist, leave this field blank and Codat will create a new company.</p>
+         */
         @JsonSetter(value = "companyId", nulls = Nulls.SKIP)
         public Builder companyId(Optional<String> companyId) {
             this.companyId = companyId;

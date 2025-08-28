@@ -99,18 +99,27 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
     }
 
     public interface EventTypeStage {
+        /**
+         * <p>The type of the event.</p>
+         */
         InvoiceStage eventType(@NotNull String eventType);
 
         Builder from(InvoiceWebhook other);
     }
 
     public interface InvoiceStage {
+        /**
+         * <p>The invoice involved in the event.</p>
+         */
         _FinalStage invoice(@NotNull InvoiceResponse invoice);
     }
 
     public interface _FinalStage {
         InvoiceWebhook build();
 
+        /**
+         * <p>User who initiated the change.</p>
+         */
         _FinalStage user(Optional<EntityUserResponse> user);
 
         _FinalStage user(EntityUserResponse user);
@@ -139,6 +148,7 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
 
         /**
          * <p>The type of the event.</p>
+         * <p>The type of the event.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -149,6 +159,7 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
         }
 
         /**
+         * <p>The invoice involved in the event.</p>
          * <p>The invoice involved in the event.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -169,6 +180,9 @@ public final class InvoiceWebhook implements IInvoiceWebhook {
             return this;
         }
 
+        /**
+         * <p>User who initiated the change.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "user", nulls = Nulls.SKIP)
         public _FinalStage user(Optional<EntityUserResponse> user) {

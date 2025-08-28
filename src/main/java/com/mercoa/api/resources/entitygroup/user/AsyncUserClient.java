@@ -3,13 +3,7 @@
  */
 package com.mercoa.api.resources.entitygroup.user;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.entitygroup.user.requests.EntityFindEntityRequest;
 import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupUserRequest;
@@ -17,38 +11,37 @@ import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupUserResponse;
 import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupUserSyncRequest;
 import com.mercoa.api.resources.entitygrouptypes.types.FindEntityGroupUserResponse;
 import com.mercoa.api.resources.entitytypes.types.TokenGenerationOptions;
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import org.jetbrains.annotations.NotNull;
 
 public class AsyncUserClient {
     protected final ClientOptions clientOptions;
 
+    private final AsyncRawUserClient rawClient;
+
     public AsyncUserClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new AsyncRawUserClient(clientOptions);
+    }
+
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public AsyncRawUserClient withRawResponse() {
+        return this.rawClient;
     }
 
     /**
      * Search entity group users
      */
     public CompletableFuture<FindEntityGroupUserResponse> find(String entityGroupId) {
-        return find(entityGroupId, EntityFindEntityRequest.builder().build());
+        return this.rawClient.find(entityGroupId).thenApply(response -> response.body());
     }
 
     /**
      * Search entity group users
      */
     public CompletableFuture<FindEntityGroupUserResponse> find(String entityGroupId, EntityFindEntityRequest request) {
-        return find(entityGroupId, request, null);
+        return this.rawClient.find(entityGroupId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -56,80 +49,14 @@ public class AsyncUserClient {
      */
     public CompletableFuture<FindEntityGroupUserResponse> find(
             String entityGroupId, EntityFindEntityRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroup")
-                .addPathSegment(entityGroupId)
-                .addPathSegments("users");
-        if (request.getForeignId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "foreignId", request.getForeignId().get(), false);
-        }
-        if (request.getRole().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "role", request.getRole().get(), false);
-        }
-        if (request.getName().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "name", request.getName().get(), false);
-        }
-        if (request.getEmail().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "email", request.getEmail().get(), false);
-        }
-        if (request.getLimit().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "limit", request.getLimit().get().toString(), false);
-        }
-        if (request.getStartingAfter().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<FindEntityGroupUserResponse> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(ObjectMappers.JSON_MAPPER.readValue(
-                                responseBody.string(), FindEntityGroupUserResponse.class));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.find(entityGroupId, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Create entity user that will be added to all entities in the group. If a user with the same foreignId already exists, the user will be updated with the new information.
      */
     public CompletableFuture<EntityGroupUserResponse> create(String entityGroupId, EntityGroupUserRequest request) {
-        return create(entityGroupId, request, null);
+        return this.rawClient.create(entityGroupId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -137,64 +64,14 @@ public class AsyncUserClient {
      */
     public CompletableFuture<EntityGroupUserResponse> create(
             String entityGroupId, EntityGroupUserRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroup")
-                .addPathSegment(entityGroupId)
-                .addPathSegments("user")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<EntityGroupUserResponse> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(ObjectMappers.JSON_MAPPER.readValue(
-                                responseBody.string(), EntityGroupUserResponse.class));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.create(entityGroupId, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Get entity user from a group
      */
     public CompletableFuture<EntityGroupUserResponse> get(String entityGroupId, String foreignId) {
-        return get(entityGroupId, foreignId, null);
+        return this.rawClient.get(entityGroupId, foreignId).thenApply(response -> response.body());
     }
 
     /**
@@ -202,51 +79,7 @@ public class AsyncUserClient {
      */
     public CompletableFuture<EntityGroupUserResponse> get(
             String entityGroupId, String foreignId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroup")
-                .addPathSegment(entityGroupId)
-                .addPathSegments("user")
-                .addPathSegment(foreignId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<EntityGroupUserResponse> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(ObjectMappers.JSON_MAPPER.readValue(
-                                responseBody.string(), EntityGroupUserResponse.class));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.get(entityGroupId, foreignId, requestOptions).thenApply(response -> response.body());
     }
 
     /**
@@ -254,7 +87,7 @@ public class AsyncUserClient {
      */
     public CompletableFuture<EntityGroupUserResponse> update(
             String entityGroupId, String foreignId, EntityGroupUserRequest request) {
-        return update(entityGroupId, foreignId, request, null);
+        return this.rawClient.update(entityGroupId, foreignId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -262,129 +95,37 @@ public class AsyncUserClient {
      */
     public CompletableFuture<EntityGroupUserResponse> update(
             String entityGroupId, String foreignId, EntityGroupUserRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroup")
-                .addPathSegment(entityGroupId)
-                .addPathSegments("user")
-                .addPathSegment(foreignId)
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<EntityGroupUserResponse> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(ObjectMappers.JSON_MAPPER.readValue(
-                                responseBody.string(), EntityGroupUserResponse.class));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient
+                .update(entityGroupId, foreignId, request, requestOptions)
+                .thenApply(response -> response.body());
     }
 
     /**
      * Delete entity user from all entities in the group. This will also remove the user from all approval policies. If an approval policy will break as a result of this operation, this request will fail.
      */
     public CompletableFuture<Void> delete(String entityGroupId, String foreignId) {
-        return delete(entityGroupId, foreignId, null);
+        return this.rawClient.delete(entityGroupId, foreignId).thenApply(response -> response.body());
     }
 
     /**
      * Delete entity user from all entities in the group. This will also remove the user from all approval policies. If an approval policy will break as a result of this operation, this request will fail.
      */
     public CompletableFuture<Void> delete(String entityGroupId, String foreignId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroup")
-                .addPathSegment(entityGroupId)
-                .addPathSegments("user")
-                .addPathSegment(foreignId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("DELETE", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(null);
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.delete(entityGroupId, foreignId, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Generate a JWT token for an entity group with the given options. This token can be used to authenticate to any entity in the entity group as the user in the Mercoa API and iFrame.
      */
     public CompletableFuture<String> getToken(String entityGroupId, String foreignId) {
-        return getToken(
-                entityGroupId, foreignId, TokenGenerationOptions.builder().build());
+        return this.rawClient.getToken(entityGroupId, foreignId).thenApply(response -> response.body());
     }
 
     /**
      * Generate a JWT token for an entity group with the given options. This token can be used to authenticate to any entity in the entity group as the user in the Mercoa API and iFrame.
      */
     public CompletableFuture<String> getToken(String entityGroupId, String foreignId, TokenGenerationOptions request) {
-        return getToken(entityGroupId, foreignId, request, null);
+        return this.rawClient.getToken(entityGroupId, foreignId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -392,72 +133,23 @@ public class AsyncUserClient {
      */
     public CompletableFuture<String> getToken(
             String entityGroupId, String foreignId, TokenGenerationOptions request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroup")
-                .addPathSegment(entityGroupId)
-                .addPathSegments("user")
-                .addPathSegment(foreignId)
-                .addPathSegments("token")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<String> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient
+                .getToken(entityGroupId, foreignId, request, requestOptions)
+                .thenApply(response -> response.body());
     }
 
     /**
      * Sync entity group users. This will add users to entities that do not have them and remove users from entities that have them.
      */
     public CompletableFuture<Void> sync(String entityGroupId) {
-        return sync(entityGroupId, EntityGroupUserSyncRequest.builder().build());
+        return this.rawClient.sync(entityGroupId).thenApply(response -> response.body());
     }
 
     /**
      * Sync entity group users. This will add users to entities that do not have them and remove users from entities that have them.
      */
     public CompletableFuture<Void> sync(String entityGroupId, EntityGroupUserSyncRequest request) {
-        return sync(entityGroupId, request, null);
+        return this.rawClient.sync(entityGroupId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -465,55 +157,6 @@ public class AsyncUserClient {
      */
     public CompletableFuture<Void> sync(
             String entityGroupId, EntityGroupUserSyncRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroup")
-                .addPathSegment(entityGroupId)
-                .addPathSegments("sync-users")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(null);
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.sync(entityGroupId, request, requestOptions).thenApply(response -> response.body());
     }
 }

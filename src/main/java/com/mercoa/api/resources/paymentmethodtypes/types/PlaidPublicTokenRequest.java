@@ -80,6 +80,9 @@ public final class PlaidPublicTokenRequest {
     }
 
     public interface PublicTokenStage {
+        /**
+         * <p>Public token received from Plaid Link. Use this if linking the account using the Plaid Link frontend component.</p>
+         */
         _FinalStage publicToken(@NotNull String publicToken);
 
         Builder from(PlaidPublicTokenRequest other);
@@ -88,6 +91,9 @@ public final class PlaidPublicTokenRequest {
     public interface _FinalStage {
         PlaidPublicTokenRequest build();
 
+        /**
+         * <p>Plaid account ID. If not provided, will try to match the provided routing number and account number.</p>
+         */
         _FinalStage accountId(Optional<String> accountId);
 
         _FinalStage accountId(String accountId);
@@ -113,6 +119,7 @@ public final class PlaidPublicTokenRequest {
 
         /**
          * <p>Public token received from Plaid Link. Use this if linking the account using the Plaid Link frontend component.</p>
+         * <p>Public token received from Plaid Link. Use this if linking the account using the Plaid Link frontend component.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -132,6 +139,9 @@ public final class PlaidPublicTokenRequest {
             return this;
         }
 
+        /**
+         * <p>Plaid account ID. If not provided, will try to match the provided routing number and account number.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
         public _FinalStage accountId(Optional<String> accountId) {

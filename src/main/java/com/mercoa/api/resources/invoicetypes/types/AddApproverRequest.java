@@ -80,6 +80,9 @@ public final class AddApproverRequest {
     }
 
     public interface UserIdStage {
+        /**
+         * <p>The ID or the Foreign ID of the user to add to the approval slot.</p>
+         */
         _FinalStage userId(@NotNull String userId);
 
         Builder from(AddApproverRequest other);
@@ -88,6 +91,9 @@ public final class AddApproverRequest {
     public interface _FinalStage {
         AddApproverRequest build();
 
+        /**
+         * <p>The identifier for the approval slot this user is assigned to.</p>
+         */
         _FinalStage approvalSlotId(Optional<String> approvalSlotId);
 
         _FinalStage approvalSlotId(String approvalSlotId);
@@ -113,6 +119,7 @@ public final class AddApproverRequest {
 
         /**
          * <p>The ID or the Foreign ID of the user to add to the approval slot.</p>
+         * <p>The ID or the Foreign ID of the user to add to the approval slot.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -132,6 +139,9 @@ public final class AddApproverRequest {
             return this;
         }
 
+        /**
+         * <p>The identifier for the approval slot this user is assigned to.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "approvalSlotId", nulls = Nulls.SKIP)
         public _FinalStage approvalSlotId(Optional<String> approvalSlotId) {

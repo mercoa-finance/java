@@ -96,18 +96,27 @@ public final class InvoiceCollectionEventWebhook {
     }
 
     public interface EventTypeStage {
+        /**
+         * <p>The type of the event.</p>
+         */
         InvoiceStage eventType(@NotNull String eventType);
 
         Builder from(InvoiceCollectionEventWebhook other);
     }
 
     public interface InvoiceStage {
+        /**
+         * <p>The invoice involved in the event.</p>
+         */
         _FinalStage invoice(@NotNull InvoiceResponse invoice);
     }
 
     public interface _FinalStage {
         InvoiceCollectionEventWebhook build();
 
+        /**
+         * <p>Email message related to the invoice collection.</p>
+         */
         _FinalStage email(Optional<EmailMessageResponse> email);
 
         _FinalStage email(EmailMessageResponse email);
@@ -136,6 +145,7 @@ public final class InvoiceCollectionEventWebhook {
 
         /**
          * <p>The type of the event.</p>
+         * <p>The type of the event.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -146,6 +156,7 @@ public final class InvoiceCollectionEventWebhook {
         }
 
         /**
+         * <p>The invoice involved in the event.</p>
          * <p>The invoice involved in the event.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -166,6 +177,9 @@ public final class InvoiceCollectionEventWebhook {
             return this;
         }
 
+        /**
+         * <p>Email message related to the invoice collection.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "email", nulls = Nulls.SKIP)
         public _FinalStage email(Optional<EmailMessageResponse> email) {

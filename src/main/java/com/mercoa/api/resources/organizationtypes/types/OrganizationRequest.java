@@ -51,6 +51,8 @@ public final class OrganizationRequest {
 
     private final Optional<Map<String, List<Permission>>> rolePermissions;
 
+    private final Optional<Boolean> notificationsDisabled;
+
     private final Map<String, Object> additionalProperties;
 
     private OrganizationRequest(
@@ -69,6 +71,7 @@ public final class OrganizationRequest {
             Optional<NotificationEmailTemplateRequest> notificationEmailTemplate,
             Optional<List<String>> customDomains,
             Optional<Map<String, List<Permission>>> rolePermissions,
+            Optional<Boolean> notificationsDisabled,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.logo = logo;
@@ -85,6 +88,7 @@ public final class OrganizationRequest {
         this.notificationEmailTemplate = notificationEmailTemplate;
         this.customDomains = customDomains;
         this.rolePermissions = rolePermissions;
+        this.notificationsDisabled = notificationsDisabled;
         this.additionalProperties = additionalProperties;
     }
 
@@ -169,6 +173,14 @@ public final class OrganizationRequest {
         return rolePermissions;
     }
 
+    /**
+     * @return If true, all notifications for this organization will be disabled.
+     */
+    @JsonProperty("notificationsDisabled")
+    public Optional<Boolean> getNotificationsDisabled() {
+        return notificationsDisabled;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -195,7 +207,8 @@ public final class OrganizationRequest {
                 && metadataSchema.equals(other.metadataSchema)
                 && notificationEmailTemplate.equals(other.notificationEmailTemplate)
                 && customDomains.equals(other.customDomains)
-                && rolePermissions.equals(other.rolePermissions);
+                && rolePermissions.equals(other.rolePermissions)
+                && notificationsDisabled.equals(other.notificationsDisabled);
     }
 
     @java.lang.Override
@@ -215,7 +228,8 @@ public final class OrganizationRequest {
                 this.metadataSchema,
                 this.notificationEmailTemplate,
                 this.customDomains,
-                this.rolePermissions);
+                this.rolePermissions,
+                this.notificationsDisabled);
     }
 
     @java.lang.Override
@@ -259,6 +273,8 @@ public final class OrganizationRequest {
 
         private Optional<Map<String, List<Permission>>> rolePermissions = Optional.empty();
 
+        private Optional<Boolean> notificationsDisabled = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -280,6 +296,7 @@ public final class OrganizationRequest {
             notificationEmailTemplate(other.getNotificationEmailTemplate());
             customDomains(other.getCustomDomains());
             rolePermissions(other.getRolePermissions());
+            notificationsDisabled(other.getNotificationsDisabled());
             return this;
         }
 
@@ -294,6 +311,9 @@ public final class OrganizationRequest {
             return this;
         }
 
+        /**
+         * <p>Base64 encoded logo image.</p>
+         */
         @JsonSetter(value = "logo", nulls = Nulls.SKIP)
         public Builder logo(Optional<String> logo) {
             this.logo = logo;
@@ -305,6 +325,9 @@ public final class OrganizationRequest {
             return this;
         }
 
+        /**
+         * <p>Base64 encoded favicon image.</p>
+         */
         @JsonSetter(value = "favicon", nulls = Nulls.SKIP)
         public Builder favicon(Optional<String> favicon) {
             this.favicon = favicon;
@@ -450,6 +473,20 @@ public final class OrganizationRequest {
             return this;
         }
 
+        /**
+         * <p>If true, all notifications for this organization will be disabled.</p>
+         */
+        @JsonSetter(value = "notificationsDisabled", nulls = Nulls.SKIP)
+        public Builder notificationsDisabled(Optional<Boolean> notificationsDisabled) {
+            this.notificationsDisabled = notificationsDisabled;
+            return this;
+        }
+
+        public Builder notificationsDisabled(Boolean notificationsDisabled) {
+            this.notificationsDisabled = Optional.ofNullable(notificationsDisabled);
+            return this;
+        }
+
         public OrganizationRequest build() {
             return new OrganizationRequest(
                     name,
@@ -467,6 +504,7 @@ public final class OrganizationRequest {
                     notificationEmailTemplate,
                     customDomains,
                     rolePermissions,
+                    notificationsDisabled,
                     additionalProperties);
         }
     }

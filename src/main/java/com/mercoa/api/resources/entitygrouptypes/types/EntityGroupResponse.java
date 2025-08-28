@@ -199,7 +199,9 @@ public final class EntityGroupResponse {
 
         @java.lang.Override
         public _FinalStage putAllMetadata(Map<String, String> metadata) {
-            this.metadata.putAll(metadata);
+            if (metadata != null) {
+                this.metadata.putAll(metadata);
+            }
             return this;
         }
 
@@ -213,7 +215,9 @@ public final class EntityGroupResponse {
 
         @java.lang.Override
         public _FinalStage addAllEntities(List<EntityResponse> entities) {
-            this.entities.addAll(entities);
+            if (entities != null) {
+                this.entities.addAll(entities);
+            }
             return this;
         }
 

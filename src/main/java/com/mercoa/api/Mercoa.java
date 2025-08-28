@@ -32,8 +32,6 @@ public class Mercoa {
 
     protected final Supplier<OrganizationClient> organizationClient;
 
-    protected final Supplier<PaymentGatewayClient> paymentGatewayClient;
-
     protected final Supplier<BankLookupClient> bankLookupClient;
 
     protected final Supplier<CalculateClient> calculateClient;
@@ -41,6 +39,8 @@ public class Mercoa {
     protected final Supplier<CustomPaymentMethodSchemaClient> customPaymentMethodSchemaClient;
 
     protected final Supplier<OcrClient> ocrClient;
+
+    protected final Supplier<PaymentGatewayClient> paymentGatewayClient;
 
     protected final Supplier<PaymentMethodsClient> paymentMethodsClient;
 
@@ -53,12 +53,12 @@ public class Mercoa {
         this.invoiceTemplateClient = Suppliers.memoize(() -> new InvoiceTemplateClient(clientOptions));
         this.invoiceClient = Suppliers.memoize(() -> new InvoiceClient(clientOptions));
         this.organizationClient = Suppliers.memoize(() -> new OrganizationClient(clientOptions));
-        this.paymentGatewayClient = Suppliers.memoize(() -> new PaymentGatewayClient(clientOptions));
         this.bankLookupClient = Suppliers.memoize(() -> new BankLookupClient(clientOptions));
         this.calculateClient = Suppliers.memoize(() -> new CalculateClient(clientOptions));
         this.customPaymentMethodSchemaClient =
                 Suppliers.memoize(() -> new CustomPaymentMethodSchemaClient(clientOptions));
         this.ocrClient = Suppliers.memoize(() -> new OcrClient(clientOptions));
+        this.paymentGatewayClient = Suppliers.memoize(() -> new PaymentGatewayClient(clientOptions));
         this.paymentMethodsClient = Suppliers.memoize(() -> new PaymentMethodsClient(clientOptions));
         this.transactionClient = Suppliers.memoize(() -> new TransactionClient(clientOptions));
     }
@@ -83,10 +83,6 @@ public class Mercoa {
         return this.organizationClient.get();
     }
 
-    public PaymentGatewayClient paymentGateway() {
-        return this.paymentGatewayClient.get();
-    }
-
     public BankLookupClient bankLookup() {
         return this.bankLookupClient.get();
     }
@@ -101,6 +97,10 @@ public class Mercoa {
 
     public OcrClient ocr() {
         return this.ocrClient.get();
+    }
+
+    public PaymentGatewayClient paymentGateway() {
+        return this.paymentGatewayClient.get();
     }
 
     public PaymentMethodsClient paymentMethods() {

@@ -142,7 +142,9 @@ public final class CounterpartyInvoiceMetricsResponse {
 
         @java.lang.Override
         public _FinalStage addAllStatuses(List<CounterpartyInvoiceMetricsStatusResponse> statuses) {
-            this.statuses.addAll(statuses);
+            if (statuses != null) {
+                this.statuses.addAll(statuses);
+            }
             return this;
         }
 

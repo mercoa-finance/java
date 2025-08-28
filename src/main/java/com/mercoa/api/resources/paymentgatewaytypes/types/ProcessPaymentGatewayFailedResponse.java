@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -27,16 +28,24 @@ public final class ProcessPaymentGatewayFailedResponse {
 
     private final Optional<String> errorMessage;
 
+    private final OffsetDateTime createdAt;
+
+    private final OffsetDateTime updatedAt;
+
     private final Map<String, Object> additionalProperties;
 
     private ProcessPaymentGatewayFailedResponse(
             String jobId,
             PaymentGatewayError errorType,
             Optional<String> errorMessage,
+            OffsetDateTime createdAt,
+            OffsetDateTime updatedAt,
             Map<String, Object> additionalProperties) {
         this.jobId = jobId;
         this.errorType = errorType;
         this.errorMessage = errorMessage;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
     }
 
@@ -64,6 +73,22 @@ public final class ProcessPaymentGatewayFailedResponse {
         return errorMessage;
     }
 
+    /**
+     * @return The timestamp when the job was created
+     */
+    @JsonProperty("createdAt")
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    /**
+     * @return The timestamp when the job was last updated
+     */
+    @JsonProperty("updatedAt")
+    public OffsetDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -79,12 +104,14 @@ public final class ProcessPaymentGatewayFailedResponse {
     private boolean equalTo(ProcessPaymentGatewayFailedResponse other) {
         return jobId.equals(other.jobId)
                 && errorType.equals(other.errorType)
-                && errorMessage.equals(other.errorMessage);
+                && errorMessage.equals(other.errorMessage)
+                && createdAt.equals(other.createdAt)
+                && updatedAt.equals(other.updatedAt);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.jobId, this.errorType, this.errorMessage);
+        return Objects.hash(this.jobId, this.errorType, this.errorMessage, this.createdAt, this.updatedAt);
     }
 
     @java.lang.Override
@@ -97,28 +124,56 @@ public final class ProcessPaymentGatewayFailedResponse {
     }
 
     public interface JobIdStage {
+        /**
+         * <p>The job ID of the payment gateway processing job</p>
+         */
         ErrorTypeStage jobId(@NotNull String jobId);
 
         Builder from(ProcessPaymentGatewayFailedResponse other);
     }
 
     public interface ErrorTypeStage {
-        _FinalStage errorType(@NotNull PaymentGatewayError errorType);
+        /**
+         * <p>The error that occurred during the payment gateway processing job</p>
+         */
+        CreatedAtStage errorType(@NotNull PaymentGatewayError errorType);
+    }
+
+    public interface CreatedAtStage {
+        /**
+         * <p>The timestamp when the job was created</p>
+         */
+        UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
+    }
+
+    public interface UpdatedAtStage {
+        /**
+         * <p>The timestamp when the job was last updated</p>
+         */
+        _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
     public interface _FinalStage {
         ProcessPaymentGatewayFailedResponse build();
 
+        /**
+         * <p>The error message that occurred during the payment gateway processing job</p>
+         */
         _FinalStage errorMessage(Optional<String> errorMessage);
 
         _FinalStage errorMessage(String errorMessage);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements JobIdStage, ErrorTypeStage, _FinalStage {
+    public static final class Builder
+            implements JobIdStage, ErrorTypeStage, CreatedAtStage, UpdatedAtStage, _FinalStage {
         private String jobId;
 
         private PaymentGatewayError errorType;
+
+        private OffsetDateTime createdAt;
+
+        private OffsetDateTime updatedAt;
 
         private Optional<String> errorMessage = Optional.empty();
 
@@ -132,10 +187,13 @@ public final class ProcessPaymentGatewayFailedResponse {
             jobId(other.getJobId());
             errorType(other.getErrorType());
             errorMessage(other.getErrorMessage());
+            createdAt(other.getCreatedAt());
+            updatedAt(other.getUpdatedAt());
             return this;
         }
 
         /**
+         * <p>The job ID of the payment gateway processing job</p>
          * <p>The job ID of the payment gateway processing job</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -148,12 +206,37 @@ public final class ProcessPaymentGatewayFailedResponse {
 
         /**
          * <p>The error that occurred during the payment gateway processing job</p>
+         * <p>The error that occurred during the payment gateway processing job</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
         @JsonSetter("errorType")
-        public _FinalStage errorType(@NotNull PaymentGatewayError errorType) {
+        public CreatedAtStage errorType(@NotNull PaymentGatewayError errorType) {
             this.errorType = Objects.requireNonNull(errorType, "errorType must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The timestamp when the job was created</p>
+         * <p>The timestamp when the job was created</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("createdAt")
+        public UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The timestamp when the job was last updated</p>
+         * <p>The timestamp when the job was last updated</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("updatedAt")
+        public _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt) {
+            this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
             return this;
         }
 
@@ -167,6 +250,9 @@ public final class ProcessPaymentGatewayFailedResponse {
             return this;
         }
 
+        /**
+         * <p>The error message that occurred during the payment gateway processing job</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "errorMessage", nulls = Nulls.SKIP)
         public _FinalStage errorMessage(Optional<String> errorMessage) {
@@ -176,7 +262,8 @@ public final class ProcessPaymentGatewayFailedResponse {
 
         @java.lang.Override
         public ProcessPaymentGatewayFailedResponse build() {
-            return new ProcessPaymentGatewayFailedResponse(jobId, errorType, errorMessage, additionalProperties);
+            return new ProcessPaymentGatewayFailedResponse(
+                    jobId, errorType, errorMessage, createdAt, updatedAt, additionalProperties);
         }
     }
 }

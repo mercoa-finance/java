@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,9 +22,9 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityFindEntityRequest.Builder.class)
 public final class EntityFindEntityRequest {
-    private final Optional<String> foreignId;
+    private final Optional<List<String>> foreignId;
 
-    private final Optional<String> role;
+    private final Optional<List<String>> role;
 
     private final Optional<String> name;
 
@@ -35,8 +37,8 @@ public final class EntityFindEntityRequest {
     private final Map<String, Object> additionalProperties;
 
     private EntityFindEntityRequest(
-            Optional<String> foreignId,
-            Optional<String> role,
+            Optional<List<String>> foreignId,
+            Optional<List<String>> role,
             Optional<String> name,
             Optional<String> email,
             Optional<Integer> limit,
@@ -55,7 +57,7 @@ public final class EntityFindEntityRequest {
      * @return ID used to identify user in your system
      */
     @JsonProperty("foreignId")
-    public Optional<String> getForeignId() {
+    public Optional<List<String>> getForeignId() {
         return foreignId;
     }
 
@@ -63,7 +65,7 @@ public final class EntityFindEntityRequest {
      * @return Filter users by role. If multiple roles are provided, users with any of the roles will be returned.
      */
     @JsonProperty("role")
-    public Optional<String> getRole() {
+    public Optional<List<String>> getRole() {
         return role;
     }
 
@@ -135,9 +137,9 @@ public final class EntityFindEntityRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> foreignId = Optional.empty();
+        private Optional<List<String>> foreignId = Optional.empty();
 
-        private Optional<String> role = Optional.empty();
+        private Optional<List<String>> role = Optional.empty();
 
         private Optional<String> name = Optional.empty();
 
@@ -162,28 +164,47 @@ public final class EntityFindEntityRequest {
             return this;
         }
 
+        /**
+         * <p>ID used to identify user in your system</p>
+         */
         @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
-        public Builder foreignId(Optional<String> foreignId) {
+        public Builder foreignId(Optional<List<String>> foreignId) {
             this.foreignId = foreignId;
             return this;
         }
 
-        public Builder foreignId(String foreignId) {
+        public Builder foreignId(List<String> foreignId) {
             this.foreignId = Optional.ofNullable(foreignId);
             return this;
         }
 
+        public Builder foreignId(String foreignId) {
+            this.foreignId = Optional.of(Collections.singletonList(foreignId));
+            return this;
+        }
+
+        /**
+         * <p>Filter users by role. If multiple roles are provided, users with any of the roles will be returned.</p>
+         */
         @JsonSetter(value = "role", nulls = Nulls.SKIP)
-        public Builder role(Optional<String> role) {
+        public Builder role(Optional<List<String>> role) {
             this.role = role;
             return this;
         }
 
-        public Builder role(String role) {
+        public Builder role(List<String> role) {
             this.role = Optional.ofNullable(role);
             return this;
         }
 
+        public Builder role(String role) {
+            this.role = Optional.of(Collections.singletonList(role));
+            return this;
+        }
+
+        /**
+         * <p>Filter users by name. Partial matches are supported.</p>
+         */
         @JsonSetter(value = "name", nulls = Nulls.SKIP)
         public Builder name(Optional<String> name) {
             this.name = name;
@@ -195,6 +216,9 @@ public final class EntityFindEntityRequest {
             return this;
         }
 
+        /**
+         * <p>Filter users by email. Partial matches are supported.</p>
+         */
         @JsonSetter(value = "email", nulls = Nulls.SKIP)
         public Builder email(Optional<String> email) {
             this.email = email;
@@ -206,6 +230,9 @@ public final class EntityFindEntityRequest {
             return this;
         }
 
+        /**
+         * <p>Number of entities to return. Limit can range between 1 and 100, and the default is 10.</p>
+         */
         @JsonSetter(value = "limit", nulls = Nulls.SKIP)
         public Builder limit(Optional<Integer> limit) {
             this.limit = limit;
@@ -217,6 +244,9 @@ public final class EntityFindEntityRequest {
             return this;
         }
 
+        /**
+         * <p>The ID of the user to start after. If not provided, the first page of entities will be returned.</p>
+         */
         @JsonSetter(value = "startingAfter", nulls = Nulls.SKIP)
         public Builder startingAfter(Optional<String> startingAfter) {
             this.startingAfter = startingAfter;

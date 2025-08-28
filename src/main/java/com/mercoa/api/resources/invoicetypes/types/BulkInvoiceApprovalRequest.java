@@ -91,7 +91,9 @@ public final class BulkInvoiceApprovalRequest {
         }
 
         public Builder addAllInvoices(List<ApprovalRequestWithId> invoices) {
-            this.invoices.addAll(invoices);
+            if (invoices != null) {
+                this.invoices.addAll(invoices);
+            }
             return this;
         }
 

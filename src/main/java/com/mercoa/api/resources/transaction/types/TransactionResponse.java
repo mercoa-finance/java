@@ -30,11 +30,12 @@ public final class TransactionResponse {
         return new TransactionResponse(new BankAccountToBankAccountValue(value));
     }
 
-    public static TransactionResponse bankAccountToMailedCheck(TransactionResponseBankToCheckWithInvoices value) {
+    public static TransactionResponse bankAccountToMailedCheck(TransactionResponseBankToMailedCheckWithInvoices value) {
         return new TransactionResponse(new BankAccountToMailedCheckValue(value));
     }
 
-    public static TransactionResponse bankAccountToPrintedCheck(TransactionResponseBankToCheckWithInvoices value) {
+    public static TransactionResponse bankAccountToPrintedCheck(
+            TransactionResponseBankToPrintedCheckWithInvoices value) {
         return new TransactionResponse(new BankAccountToPrintedCheckValue(value));
     }
 
@@ -117,14 +118,14 @@ public final class TransactionResponse {
         return Optional.empty();
     }
 
-    public Optional<TransactionResponseBankToCheckWithInvoices> getBankAccountToMailedCheck() {
+    public Optional<TransactionResponseBankToMailedCheckWithInvoices> getBankAccountToMailedCheck() {
         if (isBankAccountToMailedCheck()) {
             return Optional.of(((BankAccountToMailedCheckValue) value).value);
         }
         return Optional.empty();
     }
 
-    public Optional<TransactionResponseBankToCheckWithInvoices> getBankAccountToPrintedCheck() {
+    public Optional<TransactionResponseBankToPrintedCheckWithInvoices> getBankAccountToPrintedCheck() {
         if (isBankAccountToPrintedCheck()) {
             return Optional.of(((BankAccountToPrintedCheckValue) value).value);
         }
@@ -195,9 +196,9 @@ public final class TransactionResponse {
     public interface Visitor<T> {
         T visitBankAccountToBankAccount(TransactionResponseBankToBankWithInvoices bankAccountToBankAccount);
 
-        T visitBankAccountToMailedCheck(TransactionResponseBankToCheckWithInvoices bankAccountToMailedCheck);
+        T visitBankAccountToMailedCheck(TransactionResponseBankToMailedCheckWithInvoices bankAccountToMailedCheck);
 
-        T visitBankAccountToPrintedCheck(TransactionResponseBankToCheckWithInvoices bankAccountToPrintedCheck);
+        T visitBankAccountToPrintedCheck(TransactionResponseBankToPrintedCheckWithInvoices bankAccountToPrintedCheck);
 
         T visitBankAccountToWallet(TransactionResponseBankToWalletWithInvoices bankAccountToWallet);
 
@@ -277,12 +278,12 @@ public final class TransactionResponse {
     @JsonIgnoreProperties("type")
     private static final class BankAccountToMailedCheckValue implements Value {
         @JsonUnwrapped
-        private TransactionResponseBankToCheckWithInvoices value;
+        private TransactionResponseBankToMailedCheckWithInvoices value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private BankAccountToMailedCheckValue() {}
 
-        private BankAccountToMailedCheckValue(TransactionResponseBankToCheckWithInvoices value) {
+        private BankAccountToMailedCheckValue(TransactionResponseBankToMailedCheckWithInvoices value) {
             this.value = value;
         }
 
@@ -316,12 +317,12 @@ public final class TransactionResponse {
     @JsonIgnoreProperties("type")
     private static final class BankAccountToPrintedCheckValue implements Value {
         @JsonUnwrapped
-        private TransactionResponseBankToCheckWithInvoices value;
+        private TransactionResponseBankToPrintedCheckWithInvoices value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private BankAccountToPrintedCheckValue() {}
 
-        private BankAccountToPrintedCheckValue(TransactionResponseBankToCheckWithInvoices value) {
+        private BankAccountToPrintedCheckValue(TransactionResponseBankToPrintedCheckWithInvoices value) {
             this.value = value;
         }
 

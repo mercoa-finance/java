@@ -80,6 +80,9 @@ public final class MetadataTrigger {
     }
 
     public interface KeyStage {
+        /**
+         * <p>The metadata key to match</p>
+         */
         _FinalStage key(@NotNull String key);
 
         Builder from(MetadataTrigger other);
@@ -88,6 +91,9 @@ public final class MetadataTrigger {
     public interface _FinalStage {
         MetadataTrigger build();
 
+        /**
+         * <p>The metadata value the invoice must have to trigger this policy</p>
+         */
         _FinalStage value(List<String> value);
 
         _FinalStage addValue(String value);
@@ -115,6 +121,7 @@ public final class MetadataTrigger {
 
         /**
          * <p>The metadata key to match</p>
+         * <p>The metadata key to match</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -130,7 +137,9 @@ public final class MetadataTrigger {
          */
         @java.lang.Override
         public _FinalStage addAllValue(List<String> value) {
-            this.value.addAll(value);
+            if (value != null) {
+                this.value.addAll(value);
+            }
             return this;
         }
 
@@ -144,6 +153,9 @@ public final class MetadataTrigger {
             return this;
         }
 
+        /**
+         * <p>The metadata value the invoice must have to trigger this policy</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "value", nulls = Nulls.SKIP)
         public _FinalStage value(List<String> value) {

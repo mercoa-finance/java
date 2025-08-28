@@ -117,7 +117,9 @@ public final class BulkEntityCreationFromObject {
         }
 
         public Builder addAllEntities(List<EntityCreationRequest> entities) {
-            this.entities.addAll(entities);
+            if (entities != null) {
+                this.entities.addAll(entities);
+            }
             return this;
         }
 

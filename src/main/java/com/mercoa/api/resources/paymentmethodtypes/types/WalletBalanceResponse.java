@@ -107,20 +107,32 @@ public final class WalletBalanceResponse {
     }
 
     public interface PaymentMethodIdStage {
+        /**
+         * <p>The ID of the wallet payment method.</p>
+         */
         EntityIdStage paymentMethodId(@NotNull String paymentMethodId);
 
         Builder from(WalletBalanceResponse other);
     }
 
     public interface EntityIdStage {
+        /**
+         * <p>The ID of the entity that this wallet belongs to.</p>
+         */
         AvailableBalanceStage entityId(@NotNull String entityId);
     }
 
     public interface AvailableBalanceStage {
+        /**
+         * <p>The available balance in this wallet.</p>
+         */
         PendingBalanceStage availableBalance(@NotNull WalletBalance availableBalance);
     }
 
     public interface PendingBalanceStage {
+        /**
+         * <p>The pending balance in this wallet.</p>
+         */
         _FinalStage pendingBalance(@NotNull WalletBalance pendingBalance);
     }
 
@@ -155,6 +167,7 @@ public final class WalletBalanceResponse {
 
         /**
          * <p>The ID of the wallet payment method.</p>
+         * <p>The ID of the wallet payment method.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -165,6 +178,7 @@ public final class WalletBalanceResponse {
         }
 
         /**
+         * <p>The ID of the entity that this wallet belongs to.</p>
          * <p>The ID of the entity that this wallet belongs to.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -177,6 +191,7 @@ public final class WalletBalanceResponse {
 
         /**
          * <p>The available balance in this wallet.</p>
+         * <p>The available balance in this wallet.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -187,6 +202,7 @@ public final class WalletBalanceResponse {
         }
 
         /**
+         * <p>The pending balance in this wallet.</p>
          * <p>The pending balance in this wallet.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

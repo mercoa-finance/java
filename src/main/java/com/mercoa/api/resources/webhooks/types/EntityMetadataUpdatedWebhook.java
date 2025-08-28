@@ -124,26 +124,41 @@ public final class EntityMetadataUpdatedWebhook {
     }
 
     public interface EventTypeStage {
+        /**
+         * <p>The type of the event.</p>
+         */
         EntityIdStage eventType(@NotNull String eventType);
 
         Builder from(EntityMetadataUpdatedWebhook other);
     }
 
     public interface EntityIdStage {
+        /**
+         * <p>The ID of the entity that was updated.</p>
+         */
         KeyStage entityId(@NotNull String entityId);
     }
 
     public interface KeyStage {
+        /**
+         * <p>The key of the metadata that was updated.</p>
+         */
         _FinalStage key(@NotNull String key);
     }
 
     public interface _FinalStage {
         EntityMetadataUpdatedWebhook build();
 
+        /**
+         * <p>Foreign ID associated with the entity.</p>
+         */
         _FinalStage foreignId(Optional<String> foreignId);
 
         _FinalStage foreignId(String foreignId);
 
+        /**
+         * <p>A list of new values for the metadata.</p>
+         */
         _FinalStage value(List<String> value);
 
         _FinalStage addValue(String value);
@@ -180,6 +195,7 @@ public final class EntityMetadataUpdatedWebhook {
 
         /**
          * <p>The type of the event.</p>
+         * <p>The type of the event.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -191,6 +207,7 @@ public final class EntityMetadataUpdatedWebhook {
 
         /**
          * <p>The ID of the entity that was updated.</p>
+         * <p>The ID of the entity that was updated.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -201,6 +218,7 @@ public final class EntityMetadataUpdatedWebhook {
         }
 
         /**
+         * <p>The key of the metadata that was updated.</p>
          * <p>The key of the metadata that was updated.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -217,7 +235,9 @@ public final class EntityMetadataUpdatedWebhook {
          */
         @java.lang.Override
         public _FinalStage addAllValue(List<String> value) {
-            this.value.addAll(value);
+            if (value != null) {
+                this.value.addAll(value);
+            }
             return this;
         }
 
@@ -231,6 +251,9 @@ public final class EntityMetadataUpdatedWebhook {
             return this;
         }
 
+        /**
+         * <p>A list of new values for the metadata.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "value", nulls = Nulls.SKIP)
         public _FinalStage value(List<String> value) {
@@ -249,6 +272,9 @@ public final class EntityMetadataUpdatedWebhook {
             return this;
         }
 
+        /**
+         * <p>Foreign ID associated with the entity.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
         public _FinalStage foreignId(Optional<String> foreignId) {

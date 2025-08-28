@@ -131,6 +131,9 @@ public final class PaymentMethodEventsRequest {
             return this;
         }
 
+        /**
+         * <p>Start date filter. If not provided, events from the start of time will be returned.</p>
+         */
         @JsonSetter(value = "startDate", nulls = Nulls.SKIP)
         public Builder startDate(Optional<OffsetDateTime> startDate) {
             this.startDate = startDate;
@@ -142,6 +145,9 @@ public final class PaymentMethodEventsRequest {
             return this;
         }
 
+        /**
+         * <p>End date filter. If not provided, events to the end of time will be returned.</p>
+         */
         @JsonSetter(value = "endDate", nulls = Nulls.SKIP)
         public Builder endDate(Optional<OffsetDateTime> endDate) {
             this.endDate = endDate;
@@ -153,6 +159,9 @@ public final class PaymentMethodEventsRequest {
             return this;
         }
 
+        /**
+         * <p>Limit the number of events returned. Limit can range between 1 and 100, and the default is 50.</p>
+         */
         @JsonSetter(value = "limit", nulls = Nulls.SKIP)
         public Builder limit(Optional<Integer> limit) {
             this.limit = limit;
@@ -164,6 +173,9 @@ public final class PaymentMethodEventsRequest {
             return this;
         }
 
+        /**
+         * <p>The ID of the event to start after.</p>
+         */
         @JsonSetter(value = "startingAfter", nulls = Nulls.SKIP)
         public Builder startingAfter(Optional<String> startingAfter) {
             this.startingAfter = startingAfter;

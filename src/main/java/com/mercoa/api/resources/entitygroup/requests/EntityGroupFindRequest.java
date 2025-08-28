@@ -92,6 +92,9 @@ public final class EntityGroupFindRequest {
             return this;
         }
 
+        /**
+         * <p>The maximum number of results to return. Defaults to 1. Max is 10.</p>
+         */
         @JsonSetter(value = "limit", nulls = Nulls.SKIP)
         public Builder limit(Optional<Integer> limit) {
             this.limit = limit;

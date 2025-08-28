@@ -97,6 +97,9 @@ public final class FeeCustomizationRequest {
             return this;
         }
 
+        /**
+         * <p>When the entity creating the invoice is the payer, these fees will be applied to the transaction.</p>
+         */
         @JsonSetter(value = "payable", nulls = Nulls.SKIP)
         public Builder payable(Optional<FeeCustomizationDetailRequest> payable) {
             this.payable = payable;
@@ -108,6 +111,9 @@ public final class FeeCustomizationRequest {
             return this;
         }
 
+        /**
+         * <p>When the entity creating the invoice is the payee, these fees will be applied to the transaction.</p>
+         */
         @JsonSetter(value = "receivable", nulls = Nulls.SKIP)
         public Builder receivable(Optional<FeeCustomizationDetailRequest> receivable) {
             this.receivable = receivable;

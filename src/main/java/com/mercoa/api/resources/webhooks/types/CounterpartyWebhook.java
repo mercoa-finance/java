@@ -112,6 +112,9 @@ public final class CounterpartyWebhook {
     }
 
     public interface EventTypeStage {
+        /**
+         * <p>The type of the event.</p>
+         */
         _FinalStage eventType(@NotNull String eventType);
 
         Builder from(CounterpartyWebhook other);
@@ -120,18 +123,27 @@ public final class CounterpartyWebhook {
     public interface _FinalStage {
         CounterpartyWebhook build();
 
+        /**
+         * <p>A list of IDs for the payees involved.</p>
+         */
         _FinalStage payeeId(List<String> payeeId);
 
         _FinalStage addPayeeId(String payeeId);
 
         _FinalStage addAllPayeeId(List<String> payeeId);
 
+        /**
+         * <p>A list of IDs for the payors involved.</p>
+         */
         _FinalStage payorId(List<String> payorId);
 
         _FinalStage addPayorId(String payorId);
 
         _FinalStage addAllPayorId(List<String> payorId);
 
+        /**
+         * <p>User who initiated the change.</p>
+         */
         _FinalStage user(Optional<EntityUserResponse> user);
 
         _FinalStage user(EntityUserResponse user);
@@ -163,6 +175,7 @@ public final class CounterpartyWebhook {
 
         /**
          * <p>The type of the event.</p>
+         * <p>The type of the event.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -182,6 +195,9 @@ public final class CounterpartyWebhook {
             return this;
         }
 
+        /**
+         * <p>User who initiated the change.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "user", nulls = Nulls.SKIP)
         public _FinalStage user(Optional<EntityUserResponse> user) {
@@ -195,7 +211,9 @@ public final class CounterpartyWebhook {
          */
         @java.lang.Override
         public _FinalStage addAllPayorId(List<String> payorId) {
-            this.payorId.addAll(payorId);
+            if (payorId != null) {
+                this.payorId.addAll(payorId);
+            }
             return this;
         }
 
@@ -209,6 +227,9 @@ public final class CounterpartyWebhook {
             return this;
         }
 
+        /**
+         * <p>A list of IDs for the payors involved.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "payorId", nulls = Nulls.SKIP)
         public _FinalStage payorId(List<String> payorId) {
@@ -223,7 +244,9 @@ public final class CounterpartyWebhook {
          */
         @java.lang.Override
         public _FinalStage addAllPayeeId(List<String> payeeId) {
-            this.payeeId.addAll(payeeId);
+            if (payeeId != null) {
+                this.payeeId.addAll(payeeId);
+            }
             return this;
         }
 
@@ -237,6 +260,9 @@ public final class CounterpartyWebhook {
             return this;
         }
 
+        /**
+         * <p>A list of IDs for the payees involved.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "payeeId", nulls = Nulls.SKIP)
         public _FinalStage payeeId(List<String> payeeId) {

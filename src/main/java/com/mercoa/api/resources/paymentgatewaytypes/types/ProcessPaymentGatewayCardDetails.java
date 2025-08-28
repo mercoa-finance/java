@@ -34,12 +34,28 @@ public final class ProcessPaymentGatewayCardDetails {
         return new ProcessPaymentGatewayCardDetails(new IframeValue(value));
     }
 
+    public static ProcessPaymentGatewayCardDetails stripeIssuing(ProcessPaymentGatewayCardDetailsStripeIssuing value) {
+        return new ProcessPaymentGatewayCardDetails(new StripeIssuingValue(value));
+    }
+
+    public static ProcessPaymentGatewayCardDetails lithic(ProcessPaymentGatewayCardDetailsLithic value) {
+        return new ProcessPaymentGatewayCardDetails(new LithicValue(value));
+    }
+
     public boolean isDirect() {
         return value instanceof DirectValue;
     }
 
     public boolean isIframe() {
         return value instanceof IframeValue;
+    }
+
+    public boolean isStripeIssuing() {
+        return value instanceof StripeIssuingValue;
+    }
+
+    public boolean isLithic() {
+        return value instanceof LithicValue;
     }
 
     public boolean _isUnknown() {
@@ -56,6 +72,20 @@ public final class ProcessPaymentGatewayCardDetails {
     public Optional<ProcessPaymentGatewayCardDetailsIframe> getIframe() {
         if (isIframe()) {
             return Optional.of(((IframeValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<ProcessPaymentGatewayCardDetailsStripeIssuing> getStripeIssuing() {
+        if (isStripeIssuing()) {
+            return Optional.of(((StripeIssuingValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<ProcessPaymentGatewayCardDetailsLithic> getLithic() {
+        if (isLithic()) {
+            return Optional.of(((LithicValue) value).value);
         }
         return Optional.empty();
     }
@@ -77,11 +107,20 @@ public final class ProcessPaymentGatewayCardDetails {
 
         T visitIframe(ProcessPaymentGatewayCardDetailsIframe iframe);
 
+        T visitStripeIssuing(ProcessPaymentGatewayCardDetailsStripeIssuing stripeIssuing);
+
+        T visitLithic(ProcessPaymentGatewayCardDetailsLithic lithic);
+
         T _visitUnknown(Object unknownType);
     }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true, defaultImpl = _UnknownValue.class)
-    @JsonSubTypes({@JsonSubTypes.Type(DirectValue.class), @JsonSubTypes.Type(IframeValue.class)})
+    @JsonSubTypes({
+        @JsonSubTypes.Type(DirectValue.class),
+        @JsonSubTypes.Type(IframeValue.class),
+        @JsonSubTypes.Type(StripeIssuingValue.class),
+        @JsonSubTypes.Type(LithicValue.class)
+    })
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
         <T> T visit(Visitor<T> visitor);
@@ -151,6 +190,84 @@ public final class ProcessPaymentGatewayCardDetails {
         }
 
         private boolean equalTo(IframeValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "ProcessPaymentGatewayCardDetails{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("stripeIssuing")
+    @JsonIgnoreProperties("type")
+    private static final class StripeIssuingValue implements Value {
+        @JsonUnwrapped
+        private ProcessPaymentGatewayCardDetailsStripeIssuing value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private StripeIssuingValue() {}
+
+        private StripeIssuingValue(ProcessPaymentGatewayCardDetailsStripeIssuing value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitStripeIssuing(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof StripeIssuingValue && equalTo((StripeIssuingValue) other);
+        }
+
+        private boolean equalTo(StripeIssuingValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "ProcessPaymentGatewayCardDetails{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("lithic")
+    @JsonIgnoreProperties("type")
+    private static final class LithicValue implements Value {
+        @JsonUnwrapped
+        private ProcessPaymentGatewayCardDetailsLithic value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private LithicValue() {}
+
+        private LithicValue(ProcessPaymentGatewayCardDetailsLithic value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitLithic(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof LithicValue && equalTo((LithicValue) other);
+        }
+
+        private boolean equalTo(LithicValue other) {
             return value.equals(other.value);
         }
 

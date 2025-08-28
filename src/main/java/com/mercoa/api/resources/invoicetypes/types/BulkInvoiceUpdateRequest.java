@@ -92,7 +92,9 @@ public final class BulkInvoiceUpdateRequest {
         }
 
         public Builder addAllInvoices(List<InvoiceUpdateRequestWithId> invoices) {
-            this.invoices.addAll(invoices);
+            if (invoices != null) {
+                this.invoices.addAll(invoices);
+            }
             return this;
         }
 

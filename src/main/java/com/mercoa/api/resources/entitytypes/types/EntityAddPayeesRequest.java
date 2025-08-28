@@ -99,6 +99,9 @@ public final class EntityAddPayeesRequest {
             return this;
         }
 
+        /**
+         * <p>List of payee entity IDs or foreign IDs to associate with the entity</p>
+         */
         @JsonSetter(value = "payees", nulls = Nulls.SKIP)
         public Builder payees(List<String> payees) {
             this.payees.clear();
@@ -112,10 +115,15 @@ public final class EntityAddPayeesRequest {
         }
 
         public Builder addAllPayees(List<String> payees) {
-            this.payees.addAll(payees);
+            if (payees != null) {
+                this.payees.addAll(payees);
+            }
             return this;
         }
 
+        /**
+         * <p>List of customizations to apply to the payees. If the payee is not currently a counterparty of the entity, the counterparty will be created with the provided customizations.</p>
+         */
         @JsonSetter(value = "customizations", nulls = Nulls.SKIP)
         public Builder customizations(Optional<List<CounterpartyCustomizationRequest>> customizations) {
             this.customizations = customizations;

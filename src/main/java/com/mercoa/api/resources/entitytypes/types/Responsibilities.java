@@ -138,6 +138,9 @@ public final class Responsibilities {
             return this;
         }
 
+        /**
+         * <p>Indicates whether this individual has significant management responsibilities within the business</p>
+         */
         @JsonSetter(value = "isController", nulls = Nulls.SKIP)
         public Builder isController(Optional<Boolean> isController) {
             this.isController = isController;
@@ -149,6 +152,9 @@ public final class Responsibilities {
             return this;
         }
 
+        /**
+         * <p>Indicates whether this individual has an ownership stake of at least 25% in the business</p>
+         */
         @JsonSetter(value = "isOwner", nulls = Nulls.SKIP)
         public Builder isOwner(Optional<Boolean> isOwner) {
             this.isOwner = isOwner;
@@ -160,6 +166,9 @@ public final class Responsibilities {
             return this;
         }
 
+        /**
+         * <p>Percentage of ownership in the business. Must be between 0 and 100.</p>
+         */
         @JsonSetter(value = "ownershipPercentage", nulls = Nulls.SKIP)
         public Builder ownershipPercentage(Optional<Integer> ownershipPercentage) {
             this.ownershipPercentage = ownershipPercentage;

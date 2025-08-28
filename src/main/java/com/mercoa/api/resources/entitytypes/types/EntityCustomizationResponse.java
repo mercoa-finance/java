@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.customizationtypes.types.FeeCustomizationRequest;
+import com.mercoa.api.resources.customizationtypes.types.InvoiceCustomizationResponse;
 import com.mercoa.api.resources.customizationtypes.types.MetadataCustomizationRequest;
 import com.mercoa.api.resources.customizationtypes.types.NotificationCustomizationRequest;
 import com.mercoa.api.resources.customizationtypes.types.OcrCustomizationResponse;
@@ -44,6 +45,8 @@ public final class EntityCustomizationResponse {
 
     private final WorkflowCustomizationRequest workflow;
 
+    private final InvoiceCustomizationResponse invoice;
+
     private final FeeCustomizationRequest fees;
 
     private final Map<String, List<Permission>> rolePermissions;
@@ -58,6 +61,7 @@ public final class EntityCustomizationResponse {
             OcrCustomizationResponse ocr,
             NotificationCustomizationRequest notifications,
             WorkflowCustomizationRequest workflow,
+            InvoiceCustomizationResponse invoice,
             FeeCustomizationRequest fees,
             Map<String, List<Permission>> rolePermissions,
             Map<String, Object> additionalProperties) {
@@ -68,6 +72,7 @@ public final class EntityCustomizationResponse {
         this.ocr = ocr;
         this.notifications = notifications;
         this.workflow = workflow;
+        this.invoice = invoice;
         this.fees = fees;
         this.rolePermissions = rolePermissions;
         this.additionalProperties = additionalProperties;
@@ -108,6 +113,11 @@ public final class EntityCustomizationResponse {
         return workflow;
     }
 
+    @JsonProperty("invoice")
+    public InvoiceCustomizationResponse getInvoice() {
+        return invoice;
+    }
+
     @JsonProperty("fees")
     public FeeCustomizationRequest getFees() {
         return fees;
@@ -137,6 +147,7 @@ public final class EntityCustomizationResponse {
                 && ocr.equals(other.ocr)
                 && notifications.equals(other.notifications)
                 && workflow.equals(other.workflow)
+                && invoice.equals(other.invoice)
                 && fees.equals(other.fees)
                 && rolePermissions.equals(other.rolePermissions);
     }
@@ -151,6 +162,7 @@ public final class EntityCustomizationResponse {
                 this.ocr,
                 this.notifications,
                 this.workflow,
+                this.invoice,
                 this.fees,
                 this.rolePermissions);
     }
@@ -175,7 +187,11 @@ public final class EntityCustomizationResponse {
     }
 
     public interface WorkflowStage {
-        FeesStage workflow(@NotNull WorkflowCustomizationRequest workflow);
+        InvoiceStage workflow(@NotNull WorkflowCustomizationRequest workflow);
+    }
+
+    public interface InvoiceStage {
+        FeesStage invoice(@NotNull InvoiceCustomizationResponse invoice);
     }
 
     public interface FeesStage {
@@ -217,12 +233,15 @@ public final class EntityCustomizationResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements OcrStage, NotificationsStage, WorkflowStage, FeesStage, _FinalStage {
+    public static final class Builder
+            implements OcrStage, NotificationsStage, WorkflowStage, InvoiceStage, FeesStage, _FinalStage {
         private OcrCustomizationResponse ocr;
 
         private NotificationCustomizationRequest notifications;
 
         private WorkflowCustomizationRequest workflow;
+
+        private InvoiceCustomizationResponse invoice;
 
         private FeeCustomizationRequest fees;
 
@@ -250,6 +269,7 @@ public final class EntityCustomizationResponse {
             ocr(other.getOcr());
             notifications(other.getNotifications());
             workflow(other.getWorkflow());
+            invoice(other.getInvoice());
             fees(other.getFees());
             rolePermissions(other.getRolePermissions());
             return this;
@@ -271,8 +291,15 @@ public final class EntityCustomizationResponse {
 
         @java.lang.Override
         @JsonSetter("workflow")
-        public FeesStage workflow(@NotNull WorkflowCustomizationRequest workflow) {
+        public InvoiceStage workflow(@NotNull WorkflowCustomizationRequest workflow) {
             this.workflow = Objects.requireNonNull(workflow, "workflow must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter("invoice")
+        public FeesStage invoice(@NotNull InvoiceCustomizationResponse invoice) {
+            this.invoice = Objects.requireNonNull(invoice, "invoice must not be null");
             return this;
         }
 
@@ -291,7 +318,9 @@ public final class EntityCustomizationResponse {
 
         @java.lang.Override
         public _FinalStage putAllRolePermissions(Map<String, List<Permission>> rolePermissions) {
-            this.rolePermissions.putAll(rolePermissions);
+            if (rolePermissions != null) {
+                this.rolePermissions.putAll(rolePermissions);
+            }
             return this;
         }
 
@@ -305,7 +334,9 @@ public final class EntityCustomizationResponse {
 
         @java.lang.Override
         public _FinalStage addAllPaymentDestination(List<PaymentMethodCustomizationRequest> paymentDestination) {
-            this.paymentDestination.addAll(paymentDestination);
+            if (paymentDestination != null) {
+                this.paymentDestination.addAll(paymentDestination);
+            }
             return this;
         }
 
@@ -325,7 +356,9 @@ public final class EntityCustomizationResponse {
 
         @java.lang.Override
         public _FinalStage addAllBackupDisbursement(List<PaymentMethodCustomizationRequest> backupDisbursement) {
-            this.backupDisbursement.addAll(backupDisbursement);
+            if (backupDisbursement != null) {
+                this.backupDisbursement.addAll(backupDisbursement);
+            }
             return this;
         }
 
@@ -345,7 +378,9 @@ public final class EntityCustomizationResponse {
 
         @java.lang.Override
         public _FinalStage addAllPaymentSource(List<PaymentMethodCustomizationRequest> paymentSource) {
-            this.paymentSource.addAll(paymentSource);
+            if (paymentSource != null) {
+                this.paymentSource.addAll(paymentSource);
+            }
             return this;
         }
 
@@ -365,7 +400,9 @@ public final class EntityCustomizationResponse {
 
         @java.lang.Override
         public _FinalStage addAllMetadata(List<MetadataCustomizationRequest> metadata) {
-            this.metadata.addAll(metadata);
+            if (metadata != null) {
+                this.metadata.addAll(metadata);
+            }
             return this;
         }
 
@@ -393,6 +430,7 @@ public final class EntityCustomizationResponse {
                     ocr,
                     notifications,
                     workflow,
+                    invoice,
                     fees,
                     rolePermissions,
                     additionalProperties);

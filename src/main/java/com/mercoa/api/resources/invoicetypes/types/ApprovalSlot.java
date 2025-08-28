@@ -177,12 +177,18 @@ public final class ApprovalSlot {
     }
 
     public interface ApprovalPolicyIdStage {
+        /**
+         * <p>The identifier for the approval policy this slot is associated with.</p>
+         */
         ApprovalSlotIdStage approvalPolicyId(@NotNull String approvalPolicyId);
 
         Builder from(ApprovalSlot other);
     }
 
     public interface ApprovalSlotIdStage {
+        /**
+         * <p>The identifier for this approval slot</p>
+         */
         ActionStage approvalSlotId(@NotNull String approvalSlotId);
     }
 
@@ -191,20 +197,32 @@ public final class ApprovalSlot {
     }
 
     public interface DateStage {
+        /**
+         * <p>Either the date the invoice was created, date the approver was assigned, or date of last action by approver, whichever is latest.</p>
+         */
         _FinalStage date(@NotNull OffsetDateTime date);
     }
 
     public interface _FinalStage {
         ApprovalSlot build();
 
+        /**
+         * <p>The identifier for the upstream policy this slot is associated with.</p>
+         */
         _FinalStage upstreamPolicyId(Optional<String> upstreamPolicyId);
 
         _FinalStage upstreamPolicyId(String upstreamPolicyId);
 
+        /**
+         * <p>Whether all upstream policies are approved.</p>
+         */
         _FinalStage upstreamPoliciesApproved(Optional<Boolean> upstreamPoliciesApproved);
 
         _FinalStage upstreamPoliciesApproved(Boolean upstreamPoliciesApproved);
 
+        /**
+         * <p>The ID of the user who is assigned to the approval slot. If undefined, the approval slot is assigned to all eligible approvers.</p>
+         */
         _FinalStage assignedUserId(Optional<String> assignedUserId);
 
         _FinalStage assignedUserId(String assignedUserId);
@@ -264,6 +282,7 @@ public final class ApprovalSlot {
 
         /**
          * <p>The identifier for the approval policy this slot is associated with.</p>
+         * <p>The identifier for the approval policy this slot is associated with.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -274,6 +293,7 @@ public final class ApprovalSlot {
         }
 
         /**
+         * <p>The identifier for this approval slot</p>
          * <p>The identifier for this approval slot</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -293,6 +313,7 @@ public final class ApprovalSlot {
 
         /**
          * <p>Either the date the invoice was created, date the approver was assigned, or date of last action by approver, whichever is latest.</p>
+         * <p>Either the date the invoice was created, date the approver was assigned, or date of last action by approver, whichever is latest.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -304,7 +325,9 @@ public final class ApprovalSlot {
 
         @java.lang.Override
         public _FinalStage addAllEligibleUserIds(List<String> eligibleUserIds) {
-            this.eligibleUserIds.addAll(eligibleUserIds);
+            if (eligibleUserIds != null) {
+                this.eligibleUserIds.addAll(eligibleUserIds);
+            }
             return this;
         }
 
@@ -324,7 +347,9 @@ public final class ApprovalSlot {
 
         @java.lang.Override
         public _FinalStage addAllEligibleRoles(List<String> eligibleRoles) {
-            this.eligibleRoles.addAll(eligibleRoles);
+            if (eligibleRoles != null) {
+                this.eligibleRoles.addAll(eligibleRoles);
+            }
             return this;
         }
 
@@ -352,6 +377,9 @@ public final class ApprovalSlot {
             return this;
         }
 
+        /**
+         * <p>The ID of the user who is assigned to the approval slot. If undefined, the approval slot is assigned to all eligible approvers.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "assignedUserId", nulls = Nulls.SKIP)
         public _FinalStage assignedUserId(Optional<String> assignedUserId) {
@@ -369,6 +397,9 @@ public final class ApprovalSlot {
             return this;
         }
 
+        /**
+         * <p>Whether all upstream policies are approved.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "upstreamPoliciesApproved", nulls = Nulls.SKIP)
         public _FinalStage upstreamPoliciesApproved(Optional<Boolean> upstreamPoliciesApproved) {
@@ -386,6 +417,9 @@ public final class ApprovalSlot {
             return this;
         }
 
+        /**
+         * <p>The identifier for the upstream policy this slot is associated with.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "upstreamPolicyId", nulls = Nulls.SKIP)
         public _FinalStage upstreamPolicyId(Optional<String> upstreamPolicyId) {

@@ -134,10 +134,16 @@ public final class Address {
     }
 
     public interface StateOrProvinceStage {
+        /**
+         * <p>State or province code. Must be in the format XX.</p>
+         */
         PostalCodeStage stateOrProvince(@NotNull String stateOrProvince);
     }
 
     public interface PostalCodeStage {
+        /**
+         * <p>Postal code. Must be in the format XXXXX or XXXXX-XXXX.</p>
+         */
         _FinalStage postalCode(@NotNull String postalCode);
     }
 
@@ -200,6 +206,7 @@ public final class Address {
 
         /**
          * <p>State or province code. Must be in the format XX.</p>
+         * <p>State or province code. Must be in the format XX.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -210,6 +217,7 @@ public final class Address {
         }
 
         /**
+         * <p>Postal code. Must be in the format XXXXX or XXXXX-XXXX.</p>
          * <p>Postal code. Must be in the format XXXXX or XXXXX-XXXX.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

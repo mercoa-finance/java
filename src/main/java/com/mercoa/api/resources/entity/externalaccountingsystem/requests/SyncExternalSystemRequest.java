@@ -113,6 +113,9 @@ public final class SyncExternalSystemRequest {
             return this;
         }
 
+        /**
+         * <p>Sync vendors from external accounting system. Default is to pull vendors from external system.</p>
+         */
         @JsonSetter(value = "vendors", nulls = Nulls.SKIP)
         public Builder vendors(Optional<SyncType> vendors) {
             this.vendors = vendors;
@@ -124,6 +127,9 @@ public final class SyncExternalSystemRequest {
             return this;
         }
 
+        /**
+         * <p>Sync bills from external accounting system. Default is to not sync bills. Invoices that already exist in both systems will not be updated, only new invoices not present in the other system will be created.</p>
+         */
         @JsonSetter(value = "bills", nulls = Nulls.SKIP)
         public Builder bills(Optional<SyncType> bills) {
             this.bills = bills;
@@ -135,6 +141,9 @@ public final class SyncExternalSystemRequest {
             return this;
         }
 
+        /**
+         * <p>Sync GL accounts from external accounting system. Default is to pull GL accounts from external system. Pushing GL accounts is not supported.</p>
+         */
         @JsonSetter(value = "glAccounts", nulls = Nulls.SKIP)
         public Builder glAccounts(Optional<SyncType> glAccounts) {
             this.glAccounts = glAccounts;

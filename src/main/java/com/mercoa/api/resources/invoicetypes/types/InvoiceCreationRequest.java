@@ -29,6 +29,7 @@ public final class InvoiceCreationRequest {
         return this.value;
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T visit(Visitor<T> visitor) {
         if (this.type == 0) {
             return visitor.visit((InvoiceCreationWithEntityRequest) this.value);
@@ -82,11 +83,11 @@ public final class InvoiceCreationRequest {
             Object value = p.readValueAs(Object.class);
             try {
                 return of(ObjectMappers.JSON_MAPPER.convertValue(value, InvoiceCreationWithEntityRequest.class));
-            } catch (IllegalArgumentException e) {
+            } catch (RuntimeException e) {
             }
             try {
                 return of(ObjectMappers.JSON_MAPPER.convertValue(value, InvoiceCreationWithEntityGroupRequest.class));
-            } catch (IllegalArgumentException e) {
+            } catch (RuntimeException e) {
             }
             throw new JsonParseException(p, "Failed to deserialize");
         }

@@ -92,6 +92,9 @@ public final class InvoiceNotificationConfigurationResponse implements IInvoiceN
     }
 
     public interface UrlStage {
+        /**
+         * <p>The URL that the email will link to.</p>
+         */
         TypeStage url(@NotNull String url);
 
         Builder from(InvoiceNotificationConfigurationResponse other);
@@ -104,6 +107,9 @@ public final class InvoiceNotificationConfigurationResponse implements IInvoiceN
     public interface _FinalStage {
         InvoiceNotificationConfigurationResponse build();
 
+        /**
+         * <p>The subject of the email. If not provided, the default subject will be used.</p>
+         */
         _FinalStage subject(Optional<String> subject);
 
         _FinalStage subject(String subject);
@@ -132,6 +138,7 @@ public final class InvoiceNotificationConfigurationResponse implements IInvoiceN
 
         /**
          * <p>The URL that the email will link to.</p>
+         * <p>The URL that the email will link to.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -158,6 +165,9 @@ public final class InvoiceNotificationConfigurationResponse implements IInvoiceN
             return this;
         }
 
+        /**
+         * <p>The subject of the email. If not provided, the default subject will be used.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "subject", nulls = Nulls.SKIP)
         public _FinalStage subject(Optional<String> subject) {

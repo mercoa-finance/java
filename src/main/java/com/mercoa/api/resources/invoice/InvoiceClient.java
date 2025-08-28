@@ -3,16 +3,11 @@
  */
 package com.mercoa.api.resources.invoice;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.invoice.approval.ApprovalClient;
+import com.mercoa.api.resources.invoice.bnpl.BnplClient;
 import com.mercoa.api.resources.invoice.bulk.BulkClient;
 import com.mercoa.api.resources.invoice.collection.CollectionClient;
 import com.mercoa.api.resources.invoice.comment.CommentClient;
@@ -26,22 +21,18 @@ import com.mercoa.api.resources.invoicetypes.types.InvoiceCreationRequest;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceEventsResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceResponse;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceUpdateRequest;
-import java.io.IOException;
 import java.util.function.Supplier;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class InvoiceClient {
     protected final ClientOptions clientOptions;
 
+    private final RawInvoiceClient rawClient;
+
     protected final Supplier<LineItemClient> lineItemClient;
 
     protected final Supplier<ApprovalClient> approvalClient;
+
+    protected final Supplier<BnplClient> bnplClient;
 
     protected final Supplier<BulkClient> bulkClient;
 
@@ -55,8 +46,10 @@ public class InvoiceClient {
 
     public InvoiceClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new RawInvoiceClient(clientOptions);
         this.lineItemClient = Suppliers.memoize(() -> new LineItemClient(clientOptions));
         this.approvalClient = Suppliers.memoize(() -> new ApprovalClient(clientOptions));
+        this.bnplClient = Suppliers.memoize(() -> new BnplClient(clientOptions));
         this.bulkClient = Suppliers.memoize(() -> new BulkClient(clientOptions));
         this.collectionClient = Suppliers.memoize(() -> new CollectionClient(clientOptions));
         this.commentClient = Suppliers.memoize(() -> new CommentClient(clientOptions));
@@ -65,345 +58,87 @@ public class InvoiceClient {
     }
 
     /**
+     * Get responses with HTTP metadata like headers
+     */
+    public RawInvoiceClient withRawResponse() {
+        return this.rawClient;
+    }
+
+    /**
      * Search invoices for all entities in the organization
      */
     public FindInvoiceResponse find() {
-        return find(GetAllInvoicesRequest.builder().build());
+        return this.rawClient.find().body();
     }
 
     /**
      * Search invoices for all entities in the organization
      */
     public FindInvoiceResponse find(GetAllInvoicesRequest request) {
-        return find(request, null);
+        return this.rawClient.find(request).body();
     }
 
     /**
      * Search invoices for all entities in the organization
      */
     public FindInvoiceResponse find(GetAllInvoicesRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("invoices");
-        if (request.getEntityId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "entityId", request.getEntityId().get(), false);
-        }
-        if (request.getEntityGroupId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "entityGroupId", request.getEntityGroupId().get(), false);
-        }
-        if (request.getStartDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startDate", request.getStartDate().get().toString(), false);
-        }
-        if (request.getEndDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "endDate", request.getEndDate().get().toString(), false);
-        }
-        if (request.getDateType().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "dateType", request.getDateType().get().toString(), false);
-        }
-        if (request.getOrderBy().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "orderBy", request.getOrderBy().get().toString(), false);
-        }
-        if (request.getOrderDirection().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "orderDirection", request.getOrderDirection().get().toString(), false);
-        }
-        if (request.getLimit().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "limit", request.getLimit().get().toString(), false);
-        }
-        if (request.getStartingAfter().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
-        }
-        if (request.getSearch().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "search", request.getSearch().get(), false);
-        }
-        if (request.getMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "metadata", request.getMetadata().get().toString(), false);
-        }
-        if (request.getLineItemMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "lineItemMetadata",
-                    request.getLineItemMetadata().get().toString(),
-                    false);
-        }
-        if (request.getLineItemGlAccountId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "lineItemGlAccountId",
-                    request.getLineItemGlAccountId().get(),
-                    false);
-        }
-        if (request.getPayerId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "payerId", request.getPayerId().get(), false);
-        }
-        if (request.getVendorId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "vendorId", request.getVendorId().get(), false);
-        }
-        if (request.getCreatorUserId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "creatorUserId", request.getCreatorUserId().get(), false);
-        }
-        if (request.getApproverId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "approverId", request.getApproverId().get(), false);
-        }
-        if (request.getApproverAction().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "approverAction", request.getApproverAction().get().toString(), false);
-        }
-        if (request.getInvoiceId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "invoiceId", request.getInvoiceId().get(), false);
-        }
-        if (request.getStatus().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "status", request.getStatus().get().toString(), false);
-        }
-        if (request.getPaymentType().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "paymentType", request.getPaymentType().get().toString(), false);
-        }
-        if (request.getInvoiceTemplateId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "invoiceTemplateId", request.getInvoiceTemplateId().get(), false);
-        }
-        if (request.getReturnPayerMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "returnPayerMetadata",
-                    request.getReturnPayerMetadata().get().toString(),
-                    false);
-        }
-        if (request.getReturnVendorMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "returnVendorMetadata",
-                    request.getReturnVendorMetadata().get().toString(),
-                    false);
-        }
-        if (request.getReturnPaymentTiming().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "returnPaymentTiming",
-                    request.getReturnPaymentTiming().get().toString(),
-                    false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), FindInvoiceResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.find(request, requestOptions).body();
     }
 
     public InvoiceResponse create(InvoiceCreationRequest request) {
-        return create(request, null);
+        return this.rawClient.create(request).body();
     }
 
     public InvoiceResponse create(InvoiceCreationRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("invoice")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), InvoiceResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.create(request, requestOptions).body();
     }
 
     public InvoiceResponse get(String invoiceId) {
-        return get(invoiceId, null);
+        return this.rawClient.get(invoiceId).body();
     }
 
     public InvoiceResponse get(String invoiceId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("invoice")
-                .addPathSegment(invoiceId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), InvoiceResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.get(invoiceId, requestOptions).body();
     }
 
     public InvoiceResponse update(String invoiceId) {
-        return update(invoiceId, InvoiceUpdateRequest.builder().build());
+        return this.rawClient.update(invoiceId).body();
     }
 
     public InvoiceResponse update(String invoiceId, InvoiceUpdateRequest request) {
-        return update(invoiceId, request, null);
+        return this.rawClient.update(invoiceId, request).body();
     }
 
     public InvoiceResponse update(String invoiceId, InvoiceUpdateRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("invoice")
-                .addPathSegment(invoiceId)
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), InvoiceResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.update(invoiceId, request, requestOptions).body();
     }
 
     /**
      * Only invoices in the UNASSIGNED and DRAFT statuses can be deleted.
      */
     public void delete(String invoiceId) {
-        delete(invoiceId, null);
+        this.rawClient.delete(invoiceId).body();
     }
 
     /**
      * Only invoices in the UNASSIGNED and DRAFT statuses can be deleted.
      */
     public void delete(String invoiceId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("invoice")
-                .addPathSegment(invoiceId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("DELETE", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return;
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        this.rawClient.delete(invoiceId, requestOptions).body();
     }
 
     /**
      * Get all events for an invoice
      */
     public InvoiceEventsResponse events(String invoiceId) {
-        return events(invoiceId, InvoiceInvoiceGetEventsRequest.builder().build());
+        return this.rawClient.events(invoiceId).body();
     }
 
     /**
      * Get all events for an invoice
      */
     public InvoiceEventsResponse events(String invoiceId, InvoiceInvoiceGetEventsRequest request) {
-        return events(invoiceId, request, null);
+        return this.rawClient.events(invoiceId, request).body();
     }
 
     /**
@@ -411,51 +146,7 @@ public class InvoiceClient {
      */
     public InvoiceEventsResponse events(
             String invoiceId, InvoiceInvoiceGetEventsRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("invoice")
-                .addPathSegment(invoiceId)
-                .addPathSegments("events");
-        if (request.getStartDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startDate", request.getStartDate().get().toString(), false);
-        }
-        if (request.getEndDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "endDate", request.getEndDate().get().toString(), false);
-        }
-        if (request.getLimit().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "limit", request.getLimit().get().toString(), false);
-        }
-        if (request.getStartingAfter().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), InvoiceEventsResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.events(invoiceId, request, requestOptions).body();
     }
 
     public LineItemClient lineItem() {
@@ -464,6 +155,10 @@ public class InvoiceClient {
 
     public ApprovalClient approval() {
         return this.approvalClient.get();
+    }
+
+    public BnplClient bnpl() {
+        return this.bnplClient.get();
     }
 
     public BulkClient bulk() {

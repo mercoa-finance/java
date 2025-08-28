@@ -125,6 +125,9 @@ public final class GenerateOnboardingLink {
     }
 
     public interface TypeStage {
+        /**
+         * <p>The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.</p>
+         */
         _FinalStage type(@NotNull EntityOnboardingLinkType type);
 
         Builder from(GenerateOnboardingLink other);
@@ -133,18 +136,30 @@ public final class GenerateOnboardingLink {
     public interface _FinalStage {
         GenerateOnboardingLink build();
 
+        /**
+         * <p>Expressed in seconds or a string describing a time span. The default is 24h.</p>
+         */
         _FinalStage expiresIn(Optional<String> expiresIn);
 
         _FinalStage expiresIn(String expiresIn);
 
+        /**
+         * <p>The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.</p>
+         */
         _FinalStage connectedEntityId(Optional<String> connectedEntityId);
 
         _FinalStage connectedEntityId(String connectedEntityId);
 
+        /**
+         * <p>If true, the onboarding link will redirect to the vendor/customer portal if the entity is already onboarded. If false, the onboarding link will not redirect to the portal. The default is false.</p>
+         */
         _FinalStage redirectToPortal(Optional<Boolean> redirectToPortal);
 
         _FinalStage redirectToPortal(Boolean redirectToPortal);
 
+        /**
+         * <p>The options for the vendor portal.</p>
+         */
         _FinalStage vendorPortalOptions(Optional<VendorPortalOptions> vendorPortalOptions);
 
         _FinalStage vendorPortalOptions(VendorPortalOptions vendorPortalOptions);
@@ -179,6 +194,7 @@ public final class GenerateOnboardingLink {
 
         /**
          * <p>The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.</p>
+         * <p>The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -198,6 +214,9 @@ public final class GenerateOnboardingLink {
             return this;
         }
 
+        /**
+         * <p>The options for the vendor portal.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "vendorPortalOptions", nulls = Nulls.SKIP)
         public _FinalStage vendorPortalOptions(Optional<VendorPortalOptions> vendorPortalOptions) {
@@ -215,6 +234,9 @@ public final class GenerateOnboardingLink {
             return this;
         }
 
+        /**
+         * <p>If true, the onboarding link will redirect to the vendor/customer portal if the entity is already onboarded. If false, the onboarding link will not redirect to the portal. The default is false.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "redirectToPortal", nulls = Nulls.SKIP)
         public _FinalStage redirectToPortal(Optional<Boolean> redirectToPortal) {
@@ -232,6 +254,9 @@ public final class GenerateOnboardingLink {
             return this;
         }
 
+        /**
+         * <p>The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "connectedEntityId", nulls = Nulls.SKIP)
         public _FinalStage connectedEntityId(Optional<String> connectedEntityId) {
@@ -249,6 +274,9 @@ public final class GenerateOnboardingLink {
             return this;
         }
 
+        /**
+         * <p>Expressed in seconds or a string describing a time span. The default is 24h.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "expiresIn", nulls = Nulls.SKIP)
         public _FinalStage expiresIn(Optional<String> expiresIn) {

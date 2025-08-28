@@ -66,6 +66,9 @@ public final class BankLookupRequest {
     }
 
     public interface RoutingNumberStage {
+        /**
+         * <p>Routing number to validate</p>
+         */
         _FinalStage routingNumber(@NotNull String routingNumber);
 
         Builder from(BankLookupRequest other);
@@ -91,6 +94,7 @@ public final class BankLookupRequest {
         }
 
         /**
+         * <p>Routing number to validate</p>
          * <p>Routing number to validate</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

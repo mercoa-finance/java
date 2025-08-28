@@ -77,12 +77,18 @@ public final class MetadataRegexValidationRule {
     }
 
     public interface RegexStage {
+        /**
+         * <p>A regular expression that the value must match.</p>
+         */
         ErrorMessageStage regex(@NotNull String regex);
 
         Builder from(MetadataRegexValidationRule other);
     }
 
     public interface ErrorMessageStage {
+        /**
+         * <p>The error message to display if the value does not match the regular expression.</p>
+         */
         _FinalStage errorMessage(@NotNull String errorMessage);
     }
 
@@ -110,6 +116,7 @@ public final class MetadataRegexValidationRule {
 
         /**
          * <p>A regular expression that the value must match.</p>
+         * <p>A regular expression that the value must match.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -120,6 +127,7 @@ public final class MetadataRegexValidationRule {
         }
 
         /**
+         * <p>The error message to display if the value does not match the regular expression.</p>
          * <p>The error message to display if the value does not match the regular expression.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

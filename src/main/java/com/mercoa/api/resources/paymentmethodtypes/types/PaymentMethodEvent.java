@@ -138,32 +138,50 @@ public final class PaymentMethodEvent {
     }
 
     public interface IdStage {
+        /**
+         * <p>The ID of the event</p>
+         */
         DataStage id(@NotNull String id);
 
         Builder from(PaymentMethodEvent other);
     }
 
     public interface DataStage {
+        /**
+         * <p>The payment method data at the time of the event</p>
+         */
         CreatedAtStage data(@NotNull PaymentMethodResponse data);
     }
 
     public interface CreatedAtStage {
+        /**
+         * <p>The timestamp when the event was created</p>
+         */
         _FinalStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface _FinalStage {
         PaymentMethodEvent build();
 
+        /**
+         * <p>The list of webhook IDs associated with this event</p>
+         */
         _FinalStage webhookIds(List<String> webhookIds);
 
         _FinalStage addWebhookIds(String webhookIds);
 
         _FinalStage addAllWebhookIds(List<String> webhookIds);
 
+        /**
+         * <p>The ID of the user who triggered the event</p>
+         */
         _FinalStage userId(Optional<String> userId);
 
         _FinalStage userId(String userId);
 
+        /**
+         * <p>The ID of the entity that updated the payment method</p>
+         */
         _FinalStage updatedByEntityId(Optional<String> updatedByEntityId);
 
         _FinalStage updatedByEntityId(String updatedByEntityId);
@@ -201,6 +219,7 @@ public final class PaymentMethodEvent {
 
         /**
          * <p>The ID of the event</p>
+         * <p>The ID of the event</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -212,6 +231,7 @@ public final class PaymentMethodEvent {
 
         /**
          * <p>The payment method data at the time of the event</p>
+         * <p>The payment method data at the time of the event</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -222,6 +242,7 @@ public final class PaymentMethodEvent {
         }
 
         /**
+         * <p>The timestamp when the event was created</p>
          * <p>The timestamp when the event was created</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -242,6 +263,9 @@ public final class PaymentMethodEvent {
             return this;
         }
 
+        /**
+         * <p>The ID of the entity that updated the payment method</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "updatedByEntityId", nulls = Nulls.SKIP)
         public _FinalStage updatedByEntityId(Optional<String> updatedByEntityId) {
@@ -259,6 +283,9 @@ public final class PaymentMethodEvent {
             return this;
         }
 
+        /**
+         * <p>The ID of the user who triggered the event</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "userId", nulls = Nulls.SKIP)
         public _FinalStage userId(Optional<String> userId) {
@@ -272,7 +299,9 @@ public final class PaymentMethodEvent {
          */
         @java.lang.Override
         public _FinalStage addAllWebhookIds(List<String> webhookIds) {
-            this.webhookIds.addAll(webhookIds);
+            if (webhookIds != null) {
+                this.webhookIds.addAll(webhookIds);
+            }
             return this;
         }
 
@@ -286,6 +315,9 @@ public final class PaymentMethodEvent {
             return this;
         }
 
+        /**
+         * <p>The list of webhook IDs associated with this event</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "webhookIds", nulls = Nulls.SKIP)
         public _FinalStage webhookIds(List<String> webhookIds) {

@@ -3,16 +3,11 @@
  */
 package com.mercoa.api.resources.entity;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
 import com.mercoa.api.resources.entity.approvalpolicy.ApprovalPolicyClient;
+import com.mercoa.api.resources.entity.bnpl.BnplClient;
 import com.mercoa.api.resources.entity.bulk.BulkClient;
 import com.mercoa.api.resources.entity.counterparty.CounterpartyClient;
 import com.mercoa.api.resources.entity.customization.CustomizationClient;
@@ -37,18 +32,12 @@ import com.mercoa.api.resources.entitytypes.types.EntityResponse;
 import com.mercoa.api.resources.entitytypes.types.EntityUpdateRequest;
 import com.mercoa.api.resources.entitytypes.types.FindEntityResponse;
 import com.mercoa.api.resources.entitytypes.types.TokenGenerationOptions;
-import java.io.IOException;
 import java.util.function.Supplier;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class EntityClient {
     protected final ClientOptions clientOptions;
+
+    private final RawEntityClient rawClient;
 
     protected final Supplier<CounterpartyClient> counterpartyClient;
 
@@ -59,6 +48,8 @@ public class EntityClient {
     protected final Supplier<UserClient> userClient;
 
     protected final Supplier<ApprovalPolicyClient> approvalPolicyClient;
+
+    protected final Supplier<BnplClient> bnplClient;
 
     protected final Supplier<BulkClient> bulkClient;
 
@@ -80,11 +71,13 @@ public class EntityClient {
 
     public EntityClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new RawEntityClient(clientOptions);
         this.counterpartyClient = Suppliers.memoize(() -> new CounterpartyClient(clientOptions));
         this.emailLogClient = Suppliers.memoize(() -> new EmailLogClient(clientOptions));
         this.paymentMethodClient = Suppliers.memoize(() -> new PaymentMethodClient(clientOptions));
         this.userClient = Suppliers.memoize(() -> new UserClient(clientOptions));
         this.approvalPolicyClient = Suppliers.memoize(() -> new ApprovalPolicyClient(clientOptions));
+        this.bnplClient = Suppliers.memoize(() -> new BnplClient(clientOptions));
         this.bulkClient = Suppliers.memoize(() -> new BulkClient(clientOptions));
         this.customizationClient = Suppliers.memoize(() -> new CustomizationClient(clientOptions));
         this.documentClient = Suppliers.memoize(() -> new DocumentClient(clientOptions));
@@ -98,313 +91,91 @@ public class EntityClient {
     }
 
     /**
+     * Get responses with HTTP metadata like headers
+     */
+    public RawEntityClient withRawResponse() {
+        return this.rawClient;
+    }
+
+    /**
      * Search all entities with the given filters. If no filters are provided, all entities will be returned.
      */
     public FindEntityResponse find() {
-        return find(FindEntities.builder().build());
+        return this.rawClient.find().body();
     }
 
     /**
      * Search all entities with the given filters. If no filters are provided, all entities will be returned.
      */
     public FindEntityResponse find(FindEntities request) {
-        return find(request, null);
+        return this.rawClient.find(request).body();
     }
 
     /**
      * Search all entities with the given filters. If no filters are provided, all entities will be returned.
      */
     public FindEntityResponse find(FindEntities request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity");
-        if (request.getPaymentMethods().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "paymentMethods", request.getPaymentMethods().get().toString(), false);
-        }
-        if (request.getIsCustomer().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "isCustomer", request.getIsCustomer().get().toString(), false);
-        }
-        if (request.getForeignId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "foreignId", request.getForeignId().get(), false);
-        }
-        if (request.getStatus().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "status", request.getStatus().get().toString(), false);
-        }
-        if (request.getIsPayee().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "isPayee", request.getIsPayee().get().toString(), false);
-        }
-        if (request.getIsPayor().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "isPayor", request.getIsPayor().get().toString(), false);
-        }
-        if (request.getName().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "name", request.getName().get(), false);
-        }
-        if (request.getSearch().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "search", request.getSearch().get(), false);
-        }
-        if (request.getMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "metadata", request.getMetadata().get().toString(), false);
-        }
-        if (request.getReturnMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "returnMetadata", request.getReturnMetadata().get(), false);
-        }
-        if (request.getLimit().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "limit", request.getLimit().get().toString(), false);
-        }
-        if (request.getStartingAfter().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), FindEntityResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.find(request, requestOptions).body();
     }
 
     public EntityResponse create(EntityRequest request) {
-        return create(request, null);
+        return this.rawClient.create(request).body();
     }
 
     public EntityResponse create(EntityRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.create(request, requestOptions).body();
     }
 
     public EntityResponse get(String entityId) {
-        return get(entityId, EntityGetRequest.builder().build());
+        return this.rawClient.get(entityId).body();
     }
 
     public EntityResponse get(String entityId, EntityGetRequest request) {
-        return get(entityId, request, null);
+        return this.rawClient.get(entityId, request).body();
     }
 
     public EntityResponse get(String entityId, EntityGetRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId);
-        if (request.getReturnMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "returnMetadata", request.getReturnMetadata().get(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.get(entityId, request, requestOptions).body();
     }
 
     public EntityResponse update(String entityId) {
-        return update(entityId, EntityUpdateRequest.builder().build());
+        return this.rawClient.update(entityId).body();
     }
 
     public EntityResponse update(String entityId, EntityUpdateRequest request) {
-        return update(entityId, request, null);
+        return this.rawClient.update(entityId, request).body();
     }
 
     public EntityResponse update(String entityId, EntityUpdateRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.update(entityId, request, requestOptions).body();
     }
 
     /**
      * Will archive the entity. This action cannot be undone, and the entity will no longer be available for use. The foreignId on the entity will be cleared as well.
      */
     public void delete(String entityId) {
-        delete(entityId, null);
+        this.rawClient.delete(entityId).body();
     }
 
     /**
      * Will archive the entity. This action cannot be undone, and the entity will no longer be available for use. The foreignId on the entity will be cleared as well.
      */
     public void delete(String entityId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("DELETE", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return;
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        this.rawClient.delete(entityId, requestOptions).body();
     }
 
     /**
      * This endpoint is used to indicate acceptance of Mercoa's terms of service for an entity. Send a request to this endpoint only after the entity has accepted the Mercoa ToS. Entities must accept Mercoa ToS before they can be send or pay invoices using Mercoa's payment rails.
      */
     public void acceptTermsOfService(String entityId) {
-        acceptTermsOfService(entityId, null);
+        this.rawClient.acceptTermsOfService(entityId).body();
     }
 
     /**
      * This endpoint is used to indicate acceptance of Mercoa's terms of service for an entity. Send a request to this endpoint only after the entity has accepted the Mercoa ToS. Entities must accept Mercoa ToS before they can be send or pay invoices using Mercoa's payment rails.
      */
     public void acceptTermsOfService(String entityId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("accept-tos")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", RequestBody.create("", null))
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return;
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        this.rawClient.acceptTermsOfService(entityId, requestOptions).body();
     }
 
     /**
@@ -413,7 +184,7 @@ public class EntityClient {
      * all representatives have been added, and all required fields have been filled out.
      */
     public void initiateKyb(String entityId) {
-        initiateKyb(entityId, null);
+        this.rawClient.initiateKyb(entityId).body();
     }
 
     /**
@@ -422,35 +193,7 @@ public class EntityClient {
      * all representatives have been added, and all required fields have been filled out.
      */
     public void initiateKyb(String entityId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("request-kyb")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", RequestBody.create("", null))
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return;
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        this.rawClient.initiateKyb(entityId, requestOptions).body();
     }
 
     /**
@@ -458,7 +201,7 @@ public class EntityClient {
      * <p>&lt;Warning&gt;We recommend using <a href="/api-reference/entity/user/get-token">this endpoint</a>. This will enable features such as approvals and comments.&lt;/Warning&gt;</p>
      */
     public String getToken(String entityId) {
-        return getToken(entityId, TokenGenerationOptions.builder().build());
+        return this.rawClient.getToken(entityId).body();
     }
 
     /**
@@ -466,7 +209,7 @@ public class EntityClient {
      * <p>&lt;Warning&gt;We recommend using <a href="/api-reference/entity/user/get-token">this endpoint</a>. This will enable features such as approvals and comments.&lt;/Warning&gt;</p>
      */
     public String getToken(String entityId, TokenGenerationOptions request) {
-        return getToken(entityId, request, null);
+        return this.rawClient.getToken(entityId, request).body();
     }
 
     /**
@@ -474,186 +217,51 @@ public class EntityClient {
      * <p>&lt;Warning&gt;We recommend using <a href="/api-reference/entity/user/get-token">this endpoint</a>. This will enable features such as approvals and comments.&lt;/Warning&gt;</p>
      */
     public String getToken(String entityId, TokenGenerationOptions request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("token")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.getToken(entityId, request, requestOptions).body();
     }
 
     /**
      * Generate an onboarding link for the entity.
      */
     public String getOnboardingLink(String entityId, GenerateOnboardingLink request) {
-        return getOnboardingLink(entityId, request, null);
+        return this.rawClient.getOnboardingLink(entityId, request).body();
     }
 
     /**
      * Generate an onboarding link for the entity.
      */
     public String getOnboardingLink(String entityId, GenerateOnboardingLink request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("onboarding");
-        QueryStringMapper.addQueryParameter(httpUrl, "type", request.getType().toString(), false);
-        if (request.getExpiresIn().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "expiresIn", request.getExpiresIn().get(), false);
-        }
-        if (request.getConnectedEntityId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "connectedEntityId", request.getConnectedEntityId().get(), false);
-        }
-        if (request.getRedirectToPortal().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "redirectToPortal",
-                    request.getRedirectToPortal().get().toString(),
-                    false);
-        }
-        if (request.getVendorPortalOptions().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "vendorPortalOptions",
-                    request.getVendorPortalOptions().get().toString(),
-                    false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient
+                .getOnboardingLink(entityId, request, requestOptions)
+                .body();
     }
 
     /**
      * Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity.
      */
     public void sendOnboardingLink(String entityId, SendOnboardingLink request) {
-        sendOnboardingLink(entityId, request, null);
+        this.rawClient.sendOnboardingLink(entityId, request).body();
     }
 
     /**
      * Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity.
      */
     public void sendOnboardingLink(String entityId, SendOnboardingLink request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("onboarding");
-        QueryStringMapper.addQueryParameter(httpUrl, "type", request.getType().toString(), false);
-        if (request.getExpiresIn().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "expiresIn", request.getExpiresIn().get(), false);
-        }
-        if (request.getConnectedEntityId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "connectedEntityId", request.getConnectedEntityId().get(), false);
-        }
-        if (request.getRedirectToPortal().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "redirectToPortal",
-                    request.getRedirectToPortal().get().toString(),
-                    false);
-        }
-        if (request.getVendorPortalOptions().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "vendorPortalOptions",
-                    request.getVendorPortalOptions().get().toString(),
-                    false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("POST", RequestBody.create("", null))
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return;
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        this.rawClient.sendOnboardingLink(entityId, request, requestOptions).body();
     }
 
     /**
      * Get all events for an entity
      */
     public EntityEventsResponse events(String entityId) {
-        return events(entityId, EntityEntityGetEventsRequest.builder().build());
+        return this.rawClient.events(entityId).body();
     }
 
     /**
      * Get all events for an entity
      */
     public EntityEventsResponse events(String entityId, EntityEntityGetEventsRequest request) {
-        return events(entityId, request, null);
+        return this.rawClient.events(entityId, request).body();
     }
 
     /**
@@ -661,51 +269,7 @@ public class EntityClient {
      */
     public EntityEventsResponse events(
             String entityId, EntityEntityGetEventsRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("events");
-        if (request.getStartDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startDate", request.getStartDate().get().toString(), false);
-        }
-        if (request.getEndDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "endDate", request.getEndDate().get().toString(), false);
-        }
-        if (request.getLimit().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "limit", request.getLimit().get().toString(), false);
-        }
-        if (request.getStartingAfter().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityEventsResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.events(entityId, request, requestOptions).body();
     }
 
     public CounterpartyClient counterparty() {
@@ -726,6 +290,10 @@ public class EntityClient {
 
     public ApprovalPolicyClient approvalPolicy() {
         return this.approvalPolicyClient.get();
+    }
+
+    public BnplClient bnpl() {
+        return this.bnplClient.get();
     }
 
     public BulkClient bulk() {

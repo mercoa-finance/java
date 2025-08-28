@@ -157,6 +157,9 @@ public final class CustomPaymentMethodSchemaField {
     }
 
     public interface OptionalStage {
+        /**
+         * <p>Indicates whether this field is optional</p>
+         */
         _FinalStage optional(boolean optional);
     }
 
@@ -167,14 +170,23 @@ public final class CustomPaymentMethodSchemaField {
 
         _FinalStage displayName(String displayName);
 
+        /**
+         * <p>Indicates whether this field should be used as the name of the payment method. Only one field can be used as the name. Will set the accountName field of the payment method to the value of this field.</p>
+         */
         _FinalStage useAsAccountName(Optional<Boolean> useAsAccountName);
 
         _FinalStage useAsAccountName(Boolean useAsAccountName);
 
+        /**
+         * <p>Indicates whether this field should be used as the account number of the payment method. Only one field can be used as the account number. Will set the accountNumber field of the payment method to the value of this field.</p>
+         */
         _FinalStage useAsAccountNumber(Optional<Boolean> useAsAccountNumber);
 
         _FinalStage useAsAccountNumber(Boolean useAsAccountNumber);
 
+        /**
+         * <p>When type is 'select', provide options that can be selected</p>
+         */
         _FinalStage options(Optional<List<String>> options);
 
         _FinalStage options(List<String> options);
@@ -229,6 +241,7 @@ public final class CustomPaymentMethodSchemaField {
 
         /**
          * <p>Indicates whether this field is optional</p>
+         * <p>Indicates whether this field is optional</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -248,6 +261,9 @@ public final class CustomPaymentMethodSchemaField {
             return this;
         }
 
+        /**
+         * <p>When type is 'select', provide options that can be selected</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "options", nulls = Nulls.SKIP)
         public _FinalStage options(Optional<List<String>> options) {
@@ -265,6 +281,9 @@ public final class CustomPaymentMethodSchemaField {
             return this;
         }
 
+        /**
+         * <p>Indicates whether this field should be used as the account number of the payment method. Only one field can be used as the account number. Will set the accountNumber field of the payment method to the value of this field.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "useAsAccountNumber", nulls = Nulls.SKIP)
         public _FinalStage useAsAccountNumber(Optional<Boolean> useAsAccountNumber) {
@@ -282,6 +301,9 @@ public final class CustomPaymentMethodSchemaField {
             return this;
         }
 
+        /**
+         * <p>Indicates whether this field should be used as the name of the payment method. Only one field can be used as the name. Will set the accountName field of the payment method to the value of this field.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "useAsAccountName", nulls = Nulls.SKIP)
         public _FinalStage useAsAccountName(Optional<Boolean> useAsAccountName) {

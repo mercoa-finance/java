@@ -81,6 +81,9 @@ public final class MetadataFilter {
     }
 
     public interface ValueStage {
+        /**
+         * <p>If multiple values are provided, the filter will match if any of the values match (OR filter). To filter for the absence of a key, use the value 'NULL'. To filter for the presence of a key, use the value 'NOT NULL'.</p>
+         */
         _FinalStage value(@NotNull StringOrStringArray value);
     }
 
@@ -114,6 +117,7 @@ public final class MetadataFilter {
         }
 
         /**
+         * <p>If multiple values are provided, the filter will match if any of the values match (OR filter). To filter for the absence of a key, use the value 'NULL'. To filter for the presence of a key, use the value 'NOT NULL'.</p>
          * <p>If multiple values are provided, the filter will match if any of the values match (OR filter). To filter for the absence of a key, use the value 'NULL'. To filter for the presence of a key, use the value 'NOT NULL'.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

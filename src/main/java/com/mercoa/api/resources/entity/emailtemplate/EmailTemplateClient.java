@@ -3,170 +3,70 @@
  */
 package com.mercoa.api.resources.entity.emailtemplate;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.entitytypes.types.EmailTemplateRequest;
 import com.mercoa.api.resources.entitytypes.types.EmailTemplateResponse;
-import java.io.IOException;
 import java.util.List;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class EmailTemplateClient {
     protected final ClientOptions clientOptions;
 
+    private final RawEmailTemplateClient rawClient;
+
     public EmailTemplateClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new RawEmailTemplateClient(clientOptions);
+    }
+
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public RawEmailTemplateClient withRawResponse() {
+        return this.rawClient;
     }
 
     /**
      * Get all email templates for the entity
      */
     public List<EmailTemplateResponse> getAll(String entityId) {
-        return getAll(entityId, null);
+        return this.rawClient.getAll(entityId).body();
     }
 
     /**
      * Get all email templates for the entity
      */
     public List<EmailTemplateResponse> getAll(String entityId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("email-templates")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(
-                        responseBody.string(), new TypeReference<List<EmailTemplateResponse>>() {});
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.getAll(entityId, requestOptions).body();
     }
 
     public EmailTemplateResponse create(String entityId, EmailTemplateRequest request) {
-        return create(entityId, request, null);
+        return this.rawClient.create(entityId, request).body();
     }
 
     public EmailTemplateResponse create(String entityId, EmailTemplateRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("email-template")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EmailTemplateResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.create(entityId, request, requestOptions).body();
     }
 
     /**
      * Get entity email template
      */
     public EmailTemplateResponse get(String entityId, String emailTemplateId) {
-        return get(entityId, emailTemplateId, null);
+        return this.rawClient.get(entityId, emailTemplateId).body();
     }
 
     /**
      * Get entity email template
      */
     public EmailTemplateResponse get(String entityId, String emailTemplateId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("email-template")
-                .addPathSegment(emailTemplateId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EmailTemplateResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.get(entityId, emailTemplateId, requestOptions).body();
     }
 
     /**
      * Update entity email template
      */
     public EmailTemplateResponse update(String entityId, String emailTemplateId, EmailTemplateRequest request) {
-        return update(entityId, emailTemplateId, request, null);
+        return this.rawClient.update(entityId, emailTemplateId, request).body();
     }
 
     /**
@@ -174,86 +74,22 @@ public class EmailTemplateClient {
      */
     public EmailTemplateResponse update(
             String entityId, String emailTemplateId, EmailTemplateRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("email-template")
-                .addPathSegment(emailTemplateId)
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("PUT", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EmailTemplateResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient
+                .update(entityId, emailTemplateId, request, requestOptions)
+                .body();
     }
 
     /**
      * Delete entity email template. This will also remove the email template from all entities.
      */
     public void delete(String entityId, String emailTemplateId) {
-        delete(entityId, emailTemplateId, null);
+        this.rawClient.delete(entityId, emailTemplateId).body();
     }
 
     /**
      * Delete entity email template. This will also remove the email template from all entities.
      */
     public void delete(String entityId, String emailTemplateId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("email-template")
-                .addPathSegment(emailTemplateId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("DELETE", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return;
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        this.rawClient.delete(entityId, emailTemplateId, requestOptions).body();
     }
 }

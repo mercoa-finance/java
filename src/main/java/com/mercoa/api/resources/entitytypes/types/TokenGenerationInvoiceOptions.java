@@ -112,6 +112,9 @@ public final class TokenGenerationInvoiceOptions {
             return this;
         }
 
+        /**
+         * <p>Defaults to OPTIONAL. If set to REQUIRED, the user will be required to provide at least one line item when creating an invoice. If set to DISABLED, the user will not be able to provide line items when creating an invoice.</p>
+         */
         @JsonSetter(value = "lineItems", nulls = Nulls.SKIP)
         public Builder lineItems(Optional<LineItemAvailabilities> lineItems) {
             this.lineItems = lineItems;
@@ -136,10 +139,15 @@ public final class TokenGenerationInvoiceOptions {
         }
 
         public Builder addAllStatus(List<InvoiceStatus> status) {
-            this.status.addAll(status);
+            if (status != null) {
+                this.status.addAll(status);
+            }
             return this;
         }
 
+        /**
+         * <p>If true, recurring invoice templates will be available to the user.</p>
+         */
         @JsonSetter(value = "recurring", nulls = Nulls.SKIP)
         public Builder recurring(Optional<Boolean> recurring) {
             this.recurring = recurring;

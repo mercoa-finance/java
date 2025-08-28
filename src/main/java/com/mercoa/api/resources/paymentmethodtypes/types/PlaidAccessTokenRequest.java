@@ -80,6 +80,9 @@ public final class PlaidAccessTokenRequest {
     }
 
     public interface AccessTokenStage {
+        /**
+         * <p>Plaid access token for the account. If you already have an access token for the account (for example, you have linked the account to your app already), use this instead of publicToken.</p>
+         */
         _FinalStage accessToken(@NotNull String accessToken);
 
         Builder from(PlaidAccessTokenRequest other);
@@ -88,6 +91,9 @@ public final class PlaidAccessTokenRequest {
     public interface _FinalStage {
         PlaidAccessTokenRequest build();
 
+        /**
+         * <p>Plaid account ID. If not provided, will try to match the provided routing number and account number.</p>
+         */
         _FinalStage accountId(Optional<String> accountId);
 
         _FinalStage accountId(String accountId);
@@ -113,6 +119,7 @@ public final class PlaidAccessTokenRequest {
 
         /**
          * <p>Plaid access token for the account. If you already have an access token for the account (for example, you have linked the account to your app already), use this instead of publicToken.</p>
+         * <p>Plaid access token for the account. If you already have an access token for the account (for example, you have linked the account to your app already), use this instead of publicToken.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -132,6 +139,9 @@ public final class PlaidAccessTokenRequest {
             return this;
         }
 
+        /**
+         * <p>Plaid account ID. If not provided, will try to match the provided routing number and account number.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "accountId", nulls = Nulls.SKIP)
         public _FinalStage accountId(Optional<String> accountId) {

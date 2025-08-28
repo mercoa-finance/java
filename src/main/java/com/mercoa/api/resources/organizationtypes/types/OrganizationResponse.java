@@ -58,6 +58,8 @@ public final class OrganizationResponse {
 
     private final Optional<Map<String, List<Permission>>> rolePermissions;
 
+    private final Optional<Boolean> notificationsDisabled;
+
     private final Map<String, Object> additionalProperties;
 
     private OrganizationResponse(
@@ -79,6 +81,7 @@ public final class OrganizationResponse {
             Optional<List<String>> customDomains,
             Optional<String> organizationEntityId,
             Optional<Map<String, List<Permission>>> rolePermissions,
+            Optional<Boolean> notificationsDisabled,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.sandbox = sandbox;
@@ -98,6 +101,7 @@ public final class OrganizationResponse {
         this.customDomains = customDomains;
         this.organizationEntityId = organizationEntityId;
         this.rolePermissions = rolePermissions;
+        this.notificationsDisabled = notificationsDisabled;
         this.additionalProperties = additionalProperties;
     }
 
@@ -191,6 +195,11 @@ public final class OrganizationResponse {
         return rolePermissions;
     }
 
+    @JsonProperty("notificationsDisabled")
+    public Optional<Boolean> getNotificationsDisabled() {
+        return notificationsDisabled;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -220,7 +229,8 @@ public final class OrganizationResponse {
                 && notificationEmailTemplate.equals(other.notificationEmailTemplate)
                 && customDomains.equals(other.customDomains)
                 && organizationEntityId.equals(other.organizationEntityId)
-                && rolePermissions.equals(other.rolePermissions);
+                && rolePermissions.equals(other.rolePermissions)
+                && notificationsDisabled.equals(other.notificationsDisabled);
     }
 
     @java.lang.Override
@@ -243,7 +253,8 @@ public final class OrganizationResponse {
                 this.notificationEmailTemplate,
                 this.customDomains,
                 this.organizationEntityId,
-                this.rolePermissions);
+                this.rolePermissions,
+                this.notificationsDisabled);
     }
 
     @java.lang.Override
@@ -333,6 +344,10 @@ public final class OrganizationResponse {
         _FinalStage rolePermissions(Optional<Map<String, List<Permission>>> rolePermissions);
 
         _FinalStage rolePermissions(Map<String, List<Permission>> rolePermissions);
+
+        _FinalStage notificationsDisabled(Optional<Boolean> notificationsDisabled);
+
+        _FinalStage notificationsDisabled(Boolean notificationsDisabled);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -342,6 +357,8 @@ public final class OrganizationResponse {
         private boolean sandbox;
 
         private String name;
+
+        private Optional<Boolean> notificationsDisabled = Optional.empty();
 
         private Optional<Map<String, List<Permission>>> rolePermissions = Optional.empty();
 
@@ -398,6 +415,7 @@ public final class OrganizationResponse {
             customDomains(other.getCustomDomains());
             organizationEntityId(other.getOrganizationEntityId());
             rolePermissions(other.getRolePermissions());
+            notificationsDisabled(other.getNotificationsDisabled());
             return this;
         }
 
@@ -419,6 +437,19 @@ public final class OrganizationResponse {
         @JsonSetter("name")
         public _FinalStage name(@NotNull String name) {
             this.name = Objects.requireNonNull(name, "name must not be null");
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage notificationsDisabled(Boolean notificationsDisabled) {
+            this.notificationsDisabled = Optional.ofNullable(notificationsDisabled);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "notificationsDisabled", nulls = Nulls.SKIP)
+        public _FinalStage notificationsDisabled(Optional<Boolean> notificationsDisabled) {
+            this.notificationsDisabled = notificationsDisabled;
             return this;
         }
 
@@ -641,6 +672,7 @@ public final class OrganizationResponse {
                     customDomains,
                     organizationEntityId,
                     rolePermissions,
+                    notificationsDisabled,
                     additionalProperties);
         }
     }

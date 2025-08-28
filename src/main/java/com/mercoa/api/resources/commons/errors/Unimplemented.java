@@ -4,6 +4,7 @@
 package com.mercoa.api.resources.commons.errors;
 
 import com.mercoa.api.core.MercoaApiException;
+import okhttp3.Response;
 
 public final class Unimplemented extends MercoaApiException {
     /**
@@ -13,6 +14,11 @@ public final class Unimplemented extends MercoaApiException {
 
     public Unimplemented(String body) {
         super("Unimplemented", 501, body);
+        this.body = body;
+    }
+
+    public Unimplemented(String body, Response rawResponse) {
+        super("Unimplemented", 501, body, rawResponse);
         this.body = body;
     }
 

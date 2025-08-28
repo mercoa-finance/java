@@ -74,6 +74,9 @@ public final class WalletBalance {
     }
 
     public interface AmountStage {
+        /**
+         * <p>The amount in major units of the currency.</p>
+         */
         CurrencyStage amount(double amount);
 
         Builder from(WalletBalance other);
@@ -106,6 +109,7 @@ public final class WalletBalance {
         }
 
         /**
+         * <p>The amount in major units of the currency.</p>
          * <p>The amount in major units of the currency.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

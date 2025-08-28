@@ -282,6 +282,9 @@ public final class EntityUpdateRequest {
             return this;
         }
 
+        /**
+         * <p>The ID used to identify this entity in your system. This ID must be unique across all entities in your system.</p>
+         */
         @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
         public Builder foreignId(Optional<String> foreignId) {
             this.foreignId = foreignId;
@@ -293,6 +296,9 @@ public final class EntityUpdateRequest {
             return this;
         }
 
+        /**
+         * <p>Sets the email address to which to send invoices to be added to the Invoice Inbox. Only provide the local-part/username of the email address, do not include the @domain.com</p>
+         */
         @JsonSetter(value = "emailTo", nulls = Nulls.SKIP)
         public Builder emailTo(Optional<String> emailTo) {
             this.emailTo = emailTo;
@@ -304,6 +310,9 @@ public final class EntityUpdateRequest {
             return this;
         }
 
+        /**
+         * <p>Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias. Include the full email address.</p>
+         */
         @JsonSetter(value = "emailToAlias", nulls = Nulls.SKIP)
         public Builder emailToAlias(Optional<List<String>> emailToAlias) {
             this.emailToAlias = emailToAlias;
@@ -315,6 +324,9 @@ public final class EntityUpdateRequest {
             return this;
         }
 
+        /**
+         * <p>If this entity has a direct relationship with your organization (e.g your direct customer or client), set this to true. Otherwise, set to false (e.g your customer's vendors).</p>
+         */
         @JsonSetter(value = "isCustomer", nulls = Nulls.SKIP)
         public Builder isCustomer(Optional<Boolean> isCustomer) {
             this.isCustomer = isCustomer;
@@ -348,6 +360,9 @@ public final class EntityUpdateRequest {
             return this;
         }
 
+        /**
+         * <p>If this entity will be paying invoices, set this to true.</p>
+         */
         @JsonSetter(value = "isPayor", nulls = Nulls.SKIP)
         public Builder isPayor(Optional<Boolean> isPayor) {
             this.isPayor = isPayor;
@@ -359,6 +374,9 @@ public final class EntityUpdateRequest {
             return this;
         }
 
+        /**
+         * <p>If this entity will be receiving payments, set this to true.</p>
+         */
         @JsonSetter(value = "isPayee", nulls = Nulls.SKIP)
         public Builder isPayee(Optional<Boolean> isPayee) {
             this.isPayee = isPayee;
@@ -370,6 +388,9 @@ public final class EntityUpdateRequest {
             return this;
         }
 
+        /**
+         * <p>Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.</p>
+         */
         @JsonSetter(value = "isNetworkPayor", nulls = Nulls.SKIP)
         public Builder isNetworkPayor(Optional<Boolean> isNetworkPayor) {
             this.isNetworkPayor = isNetworkPayor;
@@ -381,6 +402,9 @@ public final class EntityUpdateRequest {
             return this;
         }
 
+        /**
+         * <p>Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.</p>
+         */
         @JsonSetter(value = "isNetworkPayee", nulls = Nulls.SKIP)
         public Builder isNetworkPayee(Optional<Boolean> isNetworkPayee) {
             this.isNetworkPayee = isNetworkPayee;
@@ -392,6 +416,9 @@ public final class EntityUpdateRequest {
             return this;
         }
 
+        /**
+         * <p>Base64 data URL of the entity logo. Must be in the <code>data:image/*;base64,XXXX</code> format. We recommend a PNG image under 100KB. Supported file types are <code>png</code>, <code>jpeg</code>, <code>gif</code>, <code>svg</code>.</p>
+         */
         @JsonSetter(value = "logo", nulls = Nulls.SKIP)
         public Builder logo(Optional<String> logo) {
             this.logo = logo;
@@ -403,6 +430,9 @@ public final class EntityUpdateRequest {
             return this;
         }
 
+        /**
+         * <p>Simple key/value metadata associated with this entity. For more complex metadata, use the Metadata API.</p>
+         */
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public Builder metadata(Optional<Map<String, String>> metadata) {
             this.metadata = metadata;
@@ -414,6 +444,9 @@ public final class EntityUpdateRequest {
             return this;
         }
 
+        /**
+         * <p>The ID of the entity that this entity is connected to. This is used to trigger notifications to the connected entity when this entity is updated.</p>
+         */
         @JsonSetter(value = "connectedEntityId", nulls = Nulls.SKIP)
         public Builder connectedEntityId(Optional<String> connectedEntityId) {
             this.connectedEntityId = connectedEntityId;

@@ -96,6 +96,9 @@ public final class CounterpartyCustomizationAccount {
     }
 
     public interface AccountIdStage {
+        /**
+         * <p>The ID the counterparty has assigned to this account.</p>
+         */
         _FinalStage accountId(@NotNull String accountId);
 
         Builder from(CounterpartyCustomizationAccount other);
@@ -104,10 +107,16 @@ public final class CounterpartyCustomizationAccount {
     public interface _FinalStage {
         CounterpartyCustomizationAccount build();
 
+        /**
+         * <p>The postal code the counterparty has assigned to this account.</p>
+         */
         _FinalStage postalCode(Optional<String> postalCode);
 
         _FinalStage postalCode(String postalCode);
 
+        /**
+         * <p>The name on the account the counterparty has assigned to this account.</p>
+         */
         _FinalStage nameOnAccount(Optional<String> nameOnAccount);
 
         _FinalStage nameOnAccount(String nameOnAccount);
@@ -136,6 +145,7 @@ public final class CounterpartyCustomizationAccount {
 
         /**
          * <p>The ID the counterparty has assigned to this account.</p>
+         * <p>The ID the counterparty has assigned to this account.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -155,6 +165,9 @@ public final class CounterpartyCustomizationAccount {
             return this;
         }
 
+        /**
+         * <p>The name on the account the counterparty has assigned to this account.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "nameOnAccount", nulls = Nulls.SKIP)
         public _FinalStage nameOnAccount(Optional<String> nameOnAccount) {
@@ -172,6 +185,9 @@ public final class CounterpartyCustomizationAccount {
             return this;
         }
 
+        /**
+         * <p>The postal code the counterparty has assigned to this account.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "postalCode", nulls = Nulls.SKIP)
         public _FinalStage postalCode(Optional<String> postalCode) {

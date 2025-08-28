@@ -66,6 +66,9 @@ public final class PlaidProcessorTokenRequest {
     }
 
     public interface ProcessorTokenStage {
+        /**
+         * <p>Plaid processor token for the account. If you already have a processor token for the account (for example, you have linked the account to your app already), use this instead of publicToken.</p>
+         */
         _FinalStage processorToken(@NotNull String processorToken);
 
         Builder from(PlaidProcessorTokenRequest other);
@@ -91,6 +94,7 @@ public final class PlaidProcessorTokenRequest {
         }
 
         /**
+         * <p>Plaid processor token for the account. If you already have a processor token for the account (for example, you have linked the account to your app already), use this instead of publicToken.</p>
          * <p>Plaid processor token for the account. If you already have a processor token for the account (for example, you have linked the account to your app already), use this instead of publicToken.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

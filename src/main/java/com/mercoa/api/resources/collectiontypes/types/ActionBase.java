@@ -101,10 +101,16 @@ public final class ActionBase implements IActionBase {
     }
 
     public interface ScheduledExecutionTimeStage {
+        /**
+         * <p>The UTC timestamp for when this action is scheduled for execution. Actual execution may be delayed by a few minutes due to processing time.</p>
+         */
         StatusStage scheduledExecutionTime(@NotNull OffsetDateTime scheduledExecutionTime);
     }
 
     public interface StatusStage {
+        /**
+         * <p>The current lifecycle state of the action. SUGGESTED actions are pending approval, APPROVED actions will be executed, and COMPLETED actions have been executed.</p>
+         */
         _FinalStage status(@NotNull ActionStatus status);
     }
 
@@ -142,6 +148,7 @@ public final class ActionBase implements IActionBase {
 
         /**
          * <p>The UTC timestamp for when this action is scheduled for execution. Actual execution may be delayed by a few minutes due to processing time.</p>
+         * <p>The UTC timestamp for when this action is scheduled for execution. Actual execution may be delayed by a few minutes due to processing time.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -153,6 +160,7 @@ public final class ActionBase implements IActionBase {
         }
 
         /**
+         * <p>The current lifecycle state of the action. SUGGESTED actions are pending approval, APPROVED actions will be executed, and COMPLETED actions have been executed.</p>
          * <p>The current lifecycle state of the action. SUGGESTED actions are pending approval, APPROVED actions will be executed, and COMPLETED actions have been executed.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

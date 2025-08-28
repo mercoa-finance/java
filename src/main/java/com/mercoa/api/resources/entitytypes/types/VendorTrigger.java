@@ -91,7 +91,9 @@ public final class VendorTrigger {
         }
 
         public Builder addAllVendorIds(List<String> vendorIds) {
-            this.vendorIds.addAll(vendorIds);
+            if (vendorIds != null) {
+                this.vendorIds.addAll(vendorIds);
+            }
             return this;
         }
 

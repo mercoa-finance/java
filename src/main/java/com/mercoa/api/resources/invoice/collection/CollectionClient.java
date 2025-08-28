@@ -3,83 +3,48 @@
  */
 package com.mercoa.api.resources.invoice.collection;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.collectiontypes.types.ActionResponse;
 import com.mercoa.api.resources.collectiontypes.types.UpdateNextActionRequest;
-import java.io.IOException;
 import java.util.Optional;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class CollectionClient {
     protected final ClientOptions clientOptions;
 
+    private final RawCollectionClient rawClient;
+
     public CollectionClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new RawCollectionClient(clientOptions);
+    }
+
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public RawCollectionClient withRawResponse() {
+        return this.rawClient;
     }
 
     /**
      * Get the collection agent's next action on this invoice. This endpoint will return an empty object if there is no action to return.
      */
     public Optional<ActionResponse> getNextAction(String invoiceId) {
-        return getNextAction(invoiceId, null);
+        return this.rawClient.getNextAction(invoiceId).body();
     }
 
     /**
      * Get the collection agent's next action on this invoice. This endpoint will return an empty object if there is no action to return.
      */
     public Optional<ActionResponse> getNextAction(String invoiceId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("invoice")
-                .addPathSegment(invoiceId)
-                .addPathSegments("collection")
-                .addPathSegments("next-action")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(
-                        responseBody.string(), new TypeReference<Optional<ActionResponse>>() {});
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.getNextAction(invoiceId, requestOptions).body();
     }
 
     /**
      * Update the collection agent's next action on this invoice with natural language. Note that updating any APPROVED action will reset the action to SUGGESTED.  This endpoint will throw an error if there is no action to update.
      */
     public ActionResponse updateNextAction(String invoiceId, UpdateNextActionRequest request) {
-        return updateNextAction(invoiceId, request, null);
+        return this.rawClient.updateNextAction(invoiceId, request).body();
     }
 
     /**
@@ -87,87 +52,22 @@ public class CollectionClient {
      */
     public ActionResponse updateNextAction(
             String invoiceId, UpdateNextActionRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("invoice")
-                .addPathSegment(invoiceId)
-                .addPathSegments("collection")
-                .addPathSegments("next-action")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("PATCH", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), ActionResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient
+                .updateNextAction(invoiceId, request, requestOptions)
+                .body();
     }
 
     /**
      * Approve the collection agent's next action on this invoice. This endpoint will throw an error if there is no action to approve.
      */
     public ActionResponse approveNextAction(String invoiceId) {
-        return approveNextAction(invoiceId, null);
+        return this.rawClient.approveNextAction(invoiceId).body();
     }
 
     /**
      * Approve the collection agent's next action on this invoice. This endpoint will throw an error if there is no action to approve.
      */
     public ActionResponse approveNextAction(String invoiceId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("invoice")
-                .addPathSegment(invoiceId)
-                .addPathSegments("collection")
-                .addPathSegments("next-action/approve")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("PATCH", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), ActionResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.approveNextAction(invoiceId, requestOptions).body();
     }
 }

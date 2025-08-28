@@ -4,192 +4,83 @@
 package com.mercoa.api.resources.transaction;
 
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
+import com.mercoa.api.resources.commons.types.BulkDownloadResponse;
+import com.mercoa.api.resources.transaction.requests.DownloadTransactionsRequest;
 import com.mercoa.api.resources.transaction.requests.FindTransactionsRequest;
 import com.mercoa.api.resources.transaction.types.FindTransactionsResponse;
 import com.mercoa.api.resources.transaction.types.TransactionResponse;
-import java.io.IOException;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class TransactionClient {
     protected final ClientOptions clientOptions;
 
+    private final RawTransactionClient rawClient;
+
     public TransactionClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new RawTransactionClient(clientOptions);
+    }
+
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public RawTransactionClient withRawResponse() {
+        return this.rawClient;
     }
 
     /**
      * Search transactions
      */
     public FindTransactionsResponse find() {
-        return find(FindTransactionsRequest.builder().build());
+        return this.rawClient.find().body();
     }
 
     /**
      * Search transactions
      */
     public FindTransactionsResponse find(FindTransactionsRequest request) {
-        return find(request, null);
+        return this.rawClient.find(request).body();
     }
 
     /**
      * Search transactions
      */
     public FindTransactionsResponse find(FindTransactionsRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("transactions");
-        if (request.getEntityId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "entityId", request.getEntityId().get(), false);
-        }
-        if (request.getEntityGroupId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "entityGroupId", request.getEntityGroupId().get(), false);
-        }
-        if (request.getStartDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startDate", request.getStartDate().get().toString(), false);
-        }
-        if (request.getEndDate().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "endDate", request.getEndDate().get().toString(), false);
-        }
-        if (request.getLimit().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "limit", request.getLimit().get().toString(), false);
-        }
-        if (request.getStartingAfter().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
-        }
-        if (request.getSearch().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "search", request.getSearch().get(), false);
-        }
-        if (request.getMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "metadata", request.getMetadata().get().toString(), false);
-        }
-        if (request.getLineItemMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "lineItemMetadata",
-                    request.getLineItemMetadata().get().toString(),
-                    false);
-        }
-        if (request.getLineItemGlAccountId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "lineItemGlAccountId",
-                    request.getLineItemGlAccountId().get(),
-                    false);
-        }
-        if (request.getPayerId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "payerId", request.getPayerId().get(), false);
-        }
-        if (request.getVendorId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "vendorId", request.getVendorId().get(), false);
-        }
-        if (request.getInvoiceId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "invoiceId", request.getInvoiceId().get(), false);
-        }
-        if (request.getTransactionId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "transactionId", request.getTransactionId().get(), false);
-        }
-        if (request.getStatus().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "status", request.getStatus().get().toString(), false);
-        }
-        if (request.getTransactionType().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "transactionType",
-                    request.getTransactionType().get().toString(),
-                    false);
-        }
-        if (request.getCreatorUserId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "creatorUserId", request.getCreatorUserId().get(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), FindTransactionsResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.find(request, requestOptions).body();
     }
 
     /**
      * Get Transaction
      */
     public TransactionResponse get(String transactionId) {
-        return get(transactionId, null);
+        return this.rawClient.get(transactionId).body();
     }
 
     /**
      * Get Transaction
      */
     public TransactionResponse get(String transactionId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("transaction")
-                .addPathSegment(transactionId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), TransactionResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.get(transactionId, requestOptions).body();
+    }
+
+    /**
+     * Get a URL to download transactions as a CSV/JSON file.
+     */
+    public BulkDownloadResponse download() {
+        return this.rawClient.download().body();
+    }
+
+    /**
+     * Get a URL to download transactions as a CSV/JSON file.
+     */
+    public BulkDownloadResponse download(DownloadTransactionsRequest request) {
+        return this.rawClient.download(request).body();
+    }
+
+    /**
+     * Get a URL to download transactions as a CSV/JSON file.
+     */
+    public BulkDownloadResponse download(DownloadTransactionsRequest request, RequestOptions requestOptions) {
+        return this.rawClient.download(request, requestOptions).body();
     }
 }

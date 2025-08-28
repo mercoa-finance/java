@@ -96,18 +96,27 @@ public final class ApproverRule {
     }
 
     public interface NumApproversStage {
+        /**
+         * <p>Number of approvals required to approve an invoice</p>
+         */
         IdentifierListStage numApprovers(int numApprovers);
 
         Builder from(ApproverRule other);
     }
 
     public interface IdentifierListStage {
+        /**
+         * <p>List of users or roles that should be used to determine eligible approvers</p>
+         */
         _FinalStage identifierList(@NotNull IdentifierList identifierList);
     }
 
     public interface _FinalStage {
         ApproverRule build();
 
+        /**
+         * <p>If true, the policy will automatically assign approvers to the invoice. If more than one approver is eligible, the policy will assign all eligible approvers to the invoice.</p>
+         */
         _FinalStage autoAssign(Optional<Boolean> autoAssign);
 
         _FinalStage autoAssign(Boolean autoAssign);
@@ -136,6 +145,7 @@ public final class ApproverRule {
 
         /**
          * <p>Number of approvals required to approve an invoice</p>
+         * <p>Number of approvals required to approve an invoice</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -146,6 +156,7 @@ public final class ApproverRule {
         }
 
         /**
+         * <p>List of users or roles that should be used to determine eligible approvers</p>
          * <p>List of users or roles that should be used to determine eligible approvers</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -166,6 +177,9 @@ public final class ApproverRule {
             return this;
         }
 
+        /**
+         * <p>If true, the policy will automatically assign approvers to the invoice. If more than one approver is eligible, the policy will assign all eligible approvers to the invoice.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "autoAssign", nulls = Nulls.SKIP)
         public _FinalStage autoAssign(Optional<Boolean> autoAssign) {

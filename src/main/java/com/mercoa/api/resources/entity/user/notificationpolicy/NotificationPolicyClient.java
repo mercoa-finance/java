@@ -3,85 +3,49 @@
  */
 package com.mercoa.api.resources.entity.user.notificationpolicy;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.entitytypes.types.NotificationType;
 import com.mercoa.api.resources.entitytypes.types.UserNotificationPolicyRequest;
 import com.mercoa.api.resources.entitytypes.types.UserNotificationPolicyResponse;
-import java.io.IOException;
 import java.util.List;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class NotificationPolicyClient {
     protected final ClientOptions clientOptions;
 
+    private final RawNotificationPolicyClient rawClient;
+
     public NotificationPolicyClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new RawNotificationPolicyClient(clientOptions);
+    }
+
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public RawNotificationPolicyClient withRawResponse() {
+        return this.rawClient;
     }
 
     /**
      * Retrieve all notification policies associated with this entity user
      */
     public List<UserNotificationPolicyResponse> getAll(String entityId, String userId) {
-        return getAll(entityId, userId, null);
+        return this.rawClient.getAll(entityId, userId).body();
     }
 
     /**
      * Retrieve all notification policies associated with this entity user
      */
     public List<UserNotificationPolicyResponse> getAll(String entityId, String userId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("user")
-                .addPathSegment(userId)
-                .addPathSegments("notification-policies")
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(
-                        responseBody.string(), new TypeReference<List<UserNotificationPolicyResponse>>() {});
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.getAll(entityId, userId, requestOptions).body();
     }
 
     /**
      * Retrieve notification policy associated with this entity user
      */
     public UserNotificationPolicyResponse get(String entityId, String userId, NotificationType notificationType) {
-        return get(entityId, userId, notificationType, null);
+        return this.rawClient.get(entityId, userId, notificationType).body();
     }
 
     /**
@@ -89,50 +53,16 @@ public class NotificationPolicyClient {
      */
     public UserNotificationPolicyResponse get(
             String entityId, String userId, NotificationType notificationType, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("user")
-                .addPathSegment(userId)
-                .addPathSegments("notification-policy")
-                .addPathSegment(notificationType.toString())
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), UserNotificationPolicyResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient
+                .get(entityId, userId, notificationType, requestOptions)
+                .body();
     }
 
     /**
      * Update notification policy associated with this entity user
      */
     public UserNotificationPolicyResponse update(String entityId, String userId, NotificationType notificationType) {
-        return update(
-                entityId,
-                userId,
-                notificationType,
-                UserNotificationPolicyRequest.builder().build());
+        return this.rawClient.update(entityId, userId, notificationType).body();
     }
 
     /**
@@ -140,7 +70,9 @@ public class NotificationPolicyClient {
      */
     public UserNotificationPolicyResponse update(
             String entityId, String userId, NotificationType notificationType, UserNotificationPolicyRequest request) {
-        return update(entityId, userId, notificationType, request, null);
+        return this.rawClient
+                .update(entityId, userId, notificationType, request)
+                .body();
     }
 
     /**
@@ -152,45 +84,8 @@ public class NotificationPolicyClient {
             NotificationType notificationType,
             UserNotificationPolicyRequest request,
             RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("user")
-                .addPathSegment(userId)
-                .addPathSegments("notification-policy")
-                .addPathSegment(notificationType.toString())
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), UserNotificationPolicyResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient
+                .update(entityId, userId, notificationType, request, requestOptions)
+                .body();
     }
 }

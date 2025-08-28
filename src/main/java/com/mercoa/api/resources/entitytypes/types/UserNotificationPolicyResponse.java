@@ -104,16 +104,25 @@ public final class UserNotificationPolicyResponse {
     }
 
     public interface DisabledStage {
+        /**
+         * <p>True if the selected notification type is disabled for this user</p>
+         */
         DigestStage disabled(boolean disabled);
 
         Builder from(UserNotificationPolicyResponse other);
     }
 
     public interface DigestStage {
+        /**
+         * <p>True if the selected notification type is sent as a digest.</p>
+         */
         ImmediateStage digest(boolean digest);
     }
 
     public interface ImmediateStage {
+        /**
+         * <p>True if the selected notification type is sent immediately.</p>
+         */
         TypeStage immediate(boolean immediate);
     }
 
@@ -151,6 +160,7 @@ public final class UserNotificationPolicyResponse {
 
         /**
          * <p>True if the selected notification type is disabled for this user</p>
+         * <p>True if the selected notification type is disabled for this user</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -162,6 +172,7 @@ public final class UserNotificationPolicyResponse {
 
         /**
          * <p>True if the selected notification type is sent as a digest.</p>
+         * <p>True if the selected notification type is sent as a digest.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -172,6 +183,7 @@ public final class UserNotificationPolicyResponse {
         }
 
         /**
+         * <p>True if the selected notification type is sent immediately.</p>
          * <p>True if the selected notification type is sent immediately.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

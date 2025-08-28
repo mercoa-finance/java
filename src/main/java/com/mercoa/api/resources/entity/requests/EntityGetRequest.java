@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,11 +22,11 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGetRequest.Builder.class)
 public final class EntityGetRequest {
-    private final Optional<String> returnMetadata;
+    private final Optional<List<String>> returnMetadata;
 
     private final Map<String, Object> additionalProperties;
 
-    private EntityGetRequest(Optional<String> returnMetadata, Map<String, Object> additionalProperties) {
+    private EntityGetRequest(Optional<List<String>> returnMetadata, Map<String, Object> additionalProperties) {
         this.returnMetadata = returnMetadata;
         this.additionalProperties = additionalProperties;
     }
@@ -33,7 +35,7 @@ public final class EntityGetRequest {
      * @return Return simple key/value metadata for the specified keys for the entities. For more complex metadata, use the Metadata API.
      */
     @JsonProperty("returnMetadata")
-    public Optional<String> getReturnMetadata() {
+    public Optional<List<String>> getReturnMetadata() {
         return returnMetadata;
     }
 
@@ -68,7 +70,7 @@ public final class EntityGetRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> returnMetadata = Optional.empty();
+        private Optional<List<String>> returnMetadata = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -80,14 +82,22 @@ public final class EntityGetRequest {
             return this;
         }
 
+        /**
+         * <p>Return simple key/value metadata for the specified keys for the entities. For more complex metadata, use the Metadata API.</p>
+         */
         @JsonSetter(value = "returnMetadata", nulls = Nulls.SKIP)
-        public Builder returnMetadata(Optional<String> returnMetadata) {
+        public Builder returnMetadata(Optional<List<String>> returnMetadata) {
             this.returnMetadata = returnMetadata;
             return this;
         }
 
-        public Builder returnMetadata(String returnMetadata) {
+        public Builder returnMetadata(List<String> returnMetadata) {
             this.returnMetadata = Optional.ofNullable(returnMetadata);
+            return this;
+        }
+
+        public Builder returnMetadata(String returnMetadata) {
+            this.returnMetadata = Optional.of(Collections.singletonList(returnMetadata));
             return this;
         }
 

@@ -29,6 +29,7 @@ public final class BulkEntityCreationRequest {
         return this.value;
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T visit(Visitor<T> visitor) {
         if (this.type == 0) {
             return visitor.visit((BulkEntityCreationFromObject) this.value);
@@ -74,7 +75,7 @@ public final class BulkEntityCreationRequest {
             Object value = p.readValueAs(Object.class);
             try {
                 return of(ObjectMappers.JSON_MAPPER.convertValue(value, BulkEntityCreationFromObject.class));
-            } catch (IllegalArgumentException e) {
+            } catch (RuntimeException e) {
             }
             throw new JsonParseException(p, "Failed to deserialize");
         }

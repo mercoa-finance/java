@@ -123,26 +123,41 @@ public final class OcrRequest {
     }
 
     public interface MimeTypeStage {
+        /**
+         * <p>MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.</p>
+         */
         ImageStage mimeType(@NotNull String mimeType);
 
         Builder from(OcrRequest other);
     }
 
     public interface ImageStage {
+        /**
+         * <p>Base64 encoded image or PDF. PNG, JPG, WEBP, and PDF are supported. 10MB max.</p>
+         */
         _FinalStage image(@NotNull String image);
     }
 
     public interface _FinalStage {
         OcrRequest build();
 
+        /**
+         * <p>Limit OCR vendor search to a specific network</p>
+         */
         _FinalStage vendorNetwork(Optional<VendorNetwork> vendorNetwork);
 
         _FinalStage vendorNetwork(VendorNetwork vendorNetwork);
 
+        /**
+         * <p>When using the Entity vendor network, specify the entity to use. EntityId on an auth token will take precedence over this parameter.</p>
+         */
         _FinalStage entityId(Optional<String> entityId);
 
         _FinalStage entityId(String entityId);
 
+        /**
+         * <p>If true, attempt to split the document into subdocuments before processing. Default is false. If a document is split into subdocuments, the linked OCR jobs will be accessible via the linkedJobIds field on each OCR job response.</p>
+         */
         _FinalStage splitDocument(Optional<Boolean> splitDocument);
 
         _FinalStage splitDocument(Boolean splitDocument);
@@ -177,6 +192,7 @@ public final class OcrRequest {
 
         /**
          * <p>MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.</p>
+         * <p>MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -187,6 +203,7 @@ public final class OcrRequest {
         }
 
         /**
+         * <p>Base64 encoded image or PDF. PNG, JPG, WEBP, and PDF are supported. 10MB max.</p>
          * <p>Base64 encoded image or PDF. PNG, JPG, WEBP, and PDF are supported. 10MB max.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -207,6 +224,9 @@ public final class OcrRequest {
             return this;
         }
 
+        /**
+         * <p>If true, attempt to split the document into subdocuments before processing. Default is false. If a document is split into subdocuments, the linked OCR jobs will be accessible via the linkedJobIds field on each OCR job response.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "splitDocument", nulls = Nulls.SKIP)
         public _FinalStage splitDocument(Optional<Boolean> splitDocument) {
@@ -224,6 +244,9 @@ public final class OcrRequest {
             return this;
         }
 
+        /**
+         * <p>When using the Entity vendor network, specify the entity to use. EntityId on an auth token will take precedence over this parameter.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "entityId", nulls = Nulls.SKIP)
         public _FinalStage entityId(Optional<String> entityId) {
@@ -241,6 +264,9 @@ public final class OcrRequest {
             return this;
         }
 
+        /**
+         * <p>Limit OCR vendor search to a specific network</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "vendorNetwork", nulls = Nulls.SKIP)
         public _FinalStage vendorNetwork(Optional<VendorNetwork> vendorNetwork) {

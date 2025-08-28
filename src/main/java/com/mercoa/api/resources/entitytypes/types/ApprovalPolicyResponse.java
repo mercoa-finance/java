@@ -218,7 +218,9 @@ public final class ApprovalPolicyResponse {
 
         @java.lang.Override
         public _FinalStage addAllTrigger(List<Trigger> trigger) {
-            this.trigger.addAll(trigger);
+            if (trigger != null) {
+                this.trigger.addAll(trigger);
+            }
             return this;
         }
 

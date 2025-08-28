@@ -112,20 +112,32 @@ public final class CalculatePaymentTimingResponse {
     }
 
     public interface EstimatedProcessingDateStage {
+        /**
+         * <p>Estimated date the payment will be or was processed.</p>
+         */
         BusinessDaysStage estimatedProcessingDate(@NotNull OffsetDateTime estimatedProcessingDate);
 
         Builder from(CalculatePaymentTimingResponse other);
     }
 
     public interface BusinessDaysStage {
+        /**
+         * <p>Number of business days between the estimated processing date and the estimated settlement date. This does not take into account bank holidays or weekends.</p>
+         */
         EstimatedProcessingTimeStage businessDays(int businessDays);
     }
 
     public interface EstimatedProcessingTimeStage {
+        /**
+         * <p>Estimated payment time in days. This time takes into account bank holidays and weekends.</p>
+         */
         EstimatedSettlementDateStage estimatedProcessingTime(int estimatedProcessingTime);
     }
 
     public interface EstimatedSettlementDateStage {
+        /**
+         * <p>Estimated date the payment will be or was settled. This is the same as the request's deductionDate plus the paymentTiming.</p>
+         */
         _FinalStage estimatedSettlementDate(@NotNull OffsetDateTime estimatedSettlementDate);
     }
 
@@ -164,6 +176,7 @@ public final class CalculatePaymentTimingResponse {
 
         /**
          * <p>Estimated date the payment will be or was processed.</p>
+         * <p>Estimated date the payment will be or was processed.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -176,6 +189,7 @@ public final class CalculatePaymentTimingResponse {
 
         /**
          * <p>Number of business days between the estimated processing date and the estimated settlement date. This does not take into account bank holidays or weekends.</p>
+         * <p>Number of business days between the estimated processing date and the estimated settlement date. This does not take into account bank holidays or weekends.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -187,6 +201,7 @@ public final class CalculatePaymentTimingResponse {
 
         /**
          * <p>Estimated payment time in days. This time takes into account bank holidays and weekends.</p>
+         * <p>Estimated payment time in days. This time takes into account bank holidays and weekends.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -197,6 +212,7 @@ public final class CalculatePaymentTimingResponse {
         }
 
         /**
+         * <p>Estimated date the payment will be or was settled. This is the same as the request's deductionDate plus the paymentTiming.</p>
          * <p>Estimated date the payment will be or was settled. This is the same as the request's deductionDate plus the paymentTiming.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

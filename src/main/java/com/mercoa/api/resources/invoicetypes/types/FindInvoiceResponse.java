@@ -88,12 +88,18 @@ public final class FindInvoiceResponse {
     }
 
     public interface CountStage {
+        /**
+         * <p>Total number of notifications for the given start and end date filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.</p>
+         */
         HasMoreStage count(int count);
 
         Builder from(FindInvoiceResponse other);
     }
 
     public interface HasMoreStage {
+        /**
+         * <p>True if there are more notifications available for the given start and end date filters.</p>
+         */
         _FinalStage hasMore(boolean hasMore);
     }
 
@@ -130,6 +136,7 @@ public final class FindInvoiceResponse {
 
         /**
          * <p>Total number of notifications for the given start and end date filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.</p>
+         * <p>Total number of notifications for the given start and end date filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -140,6 +147,7 @@ public final class FindInvoiceResponse {
         }
 
         /**
+         * <p>True if there are more notifications available for the given start and end date filters.</p>
          * <p>True if there are more notifications available for the given start and end date filters.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -152,7 +160,9 @@ public final class FindInvoiceResponse {
 
         @java.lang.Override
         public _FinalStage addAllData(List<InvoiceResponse> data) {
-            this.data.addAll(data);
+            if (data != null) {
+                this.data.addAll(data);
+            }
             return this;
         }
 

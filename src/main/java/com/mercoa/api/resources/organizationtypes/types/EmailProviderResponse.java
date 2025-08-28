@@ -144,7 +144,9 @@ public final class EmailProviderResponse {
 
         @java.lang.Override
         public _FinalStage addAllAlternativeInboxDomains(List<String> alternativeInboxDomains) {
-            this.alternativeInboxDomains.addAll(alternativeInboxDomains);
+            if (alternativeInboxDomains != null) {
+                this.alternativeInboxDomains.addAll(alternativeInboxDomains);
+            }
             return this;
         }
 

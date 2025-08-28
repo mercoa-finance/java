@@ -131,6 +131,9 @@ public final class NotificationResponse {
     public interface _FinalStage {
         NotificationResponse build();
 
+        /**
+         * <p>The invoice ID that this notification is related to. This field is only present for notifications related to invoices.</p>
+         */
         _FinalStage invoiceId(Optional<String> invoiceId);
 
         _FinalStage invoiceId(String invoiceId);
@@ -201,6 +204,9 @@ public final class NotificationResponse {
             return this;
         }
 
+        /**
+         * <p>The invoice ID that this notification is related to. This field is only present for notifications related to invoices.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "invoiceId", nulls = Nulls.SKIP)
         public _FinalStage invoiceId(Optional<String> invoiceId) {

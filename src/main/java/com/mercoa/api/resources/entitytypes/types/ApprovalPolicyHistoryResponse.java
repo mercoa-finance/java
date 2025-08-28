@@ -105,12 +105,18 @@ public final class ApprovalPolicyHistoryResponse {
     }
 
     public interface IdStage {
+        /**
+         * <p>The ID of the approval policy history</p>
+         */
         UserIdStage id(@NotNull String id);
 
         Builder from(ApprovalPolicyHistoryResponse other);
     }
 
     public interface UserIdStage {
+        /**
+         * <p>The user ID of the user who edited the approval policy</p>
+         */
         CreatedAtStage userId(@NotNull String userId);
     }
 
@@ -154,6 +160,7 @@ public final class ApprovalPolicyHistoryResponse {
 
         /**
          * <p>The ID of the approval policy history</p>
+         * <p>The ID of the approval policy history</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -164,6 +171,7 @@ public final class ApprovalPolicyHistoryResponse {
         }
 
         /**
+         * <p>The user ID of the user who edited the approval policy</p>
          * <p>The user ID of the user who edited the approval policy</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -183,7 +191,9 @@ public final class ApprovalPolicyHistoryResponse {
 
         @java.lang.Override
         public _FinalStage addAllPolicies(List<ApprovalPolicyResponse> policies) {
-            this.policies.addAll(policies);
+            if (policies != null) {
+                this.policies.addAll(policies);
+            }
             return this;
         }
 

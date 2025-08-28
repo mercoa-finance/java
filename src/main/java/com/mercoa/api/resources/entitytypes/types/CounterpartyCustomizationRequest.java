@@ -88,6 +88,9 @@ public final class CounterpartyCustomizationRequest {
     public interface _FinalStage {
         CounterpartyCustomizationRequest build();
 
+        /**
+         * <p>The list of accounts the entity has with the counterparty.</p>
+         */
         _FinalStage accounts(Optional<List<CounterpartyCustomizationAccount>> accounts);
 
         _FinalStage accounts(List<CounterpartyCustomizationAccount> accounts);
@@ -128,6 +131,9 @@ public final class CounterpartyCustomizationRequest {
             return this;
         }
 
+        /**
+         * <p>The list of accounts the entity has with the counterparty.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "accounts", nulls = Nulls.SKIP)
         public _FinalStage accounts(Optional<List<CounterpartyCustomizationAccount>> accounts) {

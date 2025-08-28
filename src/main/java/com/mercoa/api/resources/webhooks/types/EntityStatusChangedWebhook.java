@@ -139,30 +139,49 @@ public final class EntityStatusChangedWebhook {
     }
 
     public interface EventTypeStage {
+        /**
+         * <p>The type of the event.</p>
+         */
         EntityStage eventType(@NotNull String eventType);
 
         Builder from(EntityStatusChangedWebhook other);
     }
 
     public interface EntityStage {
+        /**
+         * <p>The entity involved in the event.</p>
+         */
         UpdatedByEntityIdStage entity(@NotNull EntityResponse entity);
     }
 
     public interface UpdatedByEntityIdStage {
+        /**
+         * <p>The ID of the entity that updated the entity. This will be different from the entityId if the entity was updated by a different entity (e.g. a C2 updating a C3).
+         * If the entity was created or updated by an admin, this will be 'admin'.</p>
+         */
         NewStatusStage updatedByEntityId(@NotNull String updatedByEntityId);
     }
 
     public interface NewStatusStage {
+        /**
+         * <p>The new status of the entity.</p>
+         */
         PreviousStatusStage newStatus(@NotNull String newStatus);
     }
 
     public interface PreviousStatusStage {
+        /**
+         * <p>The previous status of the entity.</p>
+         */
         _FinalStage previousStatus(@NotNull String previousStatus);
     }
 
     public interface _FinalStage {
         EntityStatusChangedWebhook build();
 
+        /**
+         * <p>User who initiated the change.</p>
+         */
         _FinalStage user(Optional<EntityUserResponse> user);
 
         _FinalStage user(EntityUserResponse user);
@@ -206,6 +225,7 @@ public final class EntityStatusChangedWebhook {
 
         /**
          * <p>The type of the event.</p>
+         * <p>The type of the event.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -216,6 +236,7 @@ public final class EntityStatusChangedWebhook {
         }
 
         /**
+         * <p>The entity involved in the event.</p>
          * <p>The entity involved in the event.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -229,6 +250,8 @@ public final class EntityStatusChangedWebhook {
         /**
          * <p>The ID of the entity that updated the entity. This will be different from the entityId if the entity was updated by a different entity (e.g. a C2 updating a C3).
          * If the entity was created or updated by an admin, this will be 'admin'.</p>
+         * <p>The ID of the entity that updated the entity. This will be different from the entityId if the entity was updated by a different entity (e.g. a C2 updating a C3).
+         * If the entity was created or updated by an admin, this will be 'admin'.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -240,6 +263,7 @@ public final class EntityStatusChangedWebhook {
 
         /**
          * <p>The new status of the entity.</p>
+         * <p>The new status of the entity.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -250,6 +274,7 @@ public final class EntityStatusChangedWebhook {
         }
 
         /**
+         * <p>The previous status of the entity.</p>
          * <p>The previous status of the entity.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -270,6 +295,9 @@ public final class EntityStatusChangedWebhook {
             return this;
         }
 
+        /**
+         * <p>User who initiated the change.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "user", nulls = Nulls.SKIP)
         public _FinalStage user(Optional<EntityUserResponse> user) {

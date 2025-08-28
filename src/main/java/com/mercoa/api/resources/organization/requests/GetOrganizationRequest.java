@@ -236,6 +236,9 @@ public final class GetOrganizationRequest {
             return this;
         }
 
+        /**
+         * <p>include supported payment methods in response</p>
+         */
         @JsonSetter(value = "paymentMethods", nulls = Nulls.SKIP)
         public Builder paymentMethods(Optional<Boolean> paymentMethods) {
             this.paymentMethods = paymentMethods;
@@ -247,6 +250,9 @@ public final class GetOrganizationRequest {
             return this;
         }
 
+        /**
+         * <p>include email provider info in response</p>
+         */
         @JsonSetter(value = "emailProvider", nulls = Nulls.SKIP)
         public Builder emailProvider(Optional<Boolean> emailProvider) {
             this.emailProvider = emailProvider;
@@ -258,6 +264,9 @@ public final class GetOrganizationRequest {
             return this;
         }
 
+        /**
+         * <p>include external accounting system provider info in response</p>
+         */
         @JsonSetter(value = "externalAccountingSystemProvider", nulls = Nulls.SKIP)
         public Builder externalAccountingSystemProvider(Optional<Boolean> externalAccountingSystemProvider) {
             this.externalAccountingSystemProvider = externalAccountingSystemProvider;
@@ -269,6 +278,9 @@ public final class GetOrganizationRequest {
             return this;
         }
 
+        /**
+         * <p>include color scheme info in response</p>
+         */
         @JsonSetter(value = "colorScheme", nulls = Nulls.SKIP)
         public Builder colorScheme(Optional<Boolean> colorScheme) {
             this.colorScheme = colorScheme;
@@ -280,6 +292,9 @@ public final class GetOrganizationRequest {
             return this;
         }
 
+        /**
+         * <p>include payee onboarding options in response</p>
+         */
         @JsonSetter(value = "payeeOnboardingOptions", nulls = Nulls.SKIP)
         public Builder payeeOnboardingOptions(Optional<Boolean> payeeOnboardingOptions) {
             this.payeeOnboardingOptions = payeeOnboardingOptions;
@@ -291,6 +306,9 @@ public final class GetOrganizationRequest {
             return this;
         }
 
+        /**
+         * <p>include payor onboarding options in response</p>
+         */
         @JsonSetter(value = "payorOnboardingOptions", nulls = Nulls.SKIP)
         public Builder payorOnboardingOptions(Optional<Boolean> payorOnboardingOptions) {
             this.payorOnboardingOptions = payorOnboardingOptions;
@@ -302,6 +320,9 @@ public final class GetOrganizationRequest {
             return this;
         }
 
+        /**
+         * <p>include metadata schema in response</p>
+         */
         @JsonSetter(value = "metadataSchema", nulls = Nulls.SKIP)
         public Builder metadataSchema(Optional<Boolean> metadataSchema) {
             this.metadataSchema = metadataSchema;
@@ -313,6 +334,9 @@ public final class GetOrganizationRequest {
             return this;
         }
 
+        /**
+         * <p>include notification-email-template in response</p>
+         */
         @JsonSetter(value = "notificationEmailTemplate", nulls = Nulls.SKIP)
         public Builder notificationEmailTemplate(Optional<Boolean> notificationEmailTemplate) {
             this.notificationEmailTemplate = notificationEmailTemplate;
@@ -324,6 +348,9 @@ public final class GetOrganizationRequest {
             return this;
         }
 
+        /**
+         * <p>include role permission config in response</p>
+         */
         @JsonSetter(value = "rolePermissions", nulls = Nulls.SKIP)
         public Builder rolePermissions(Optional<Boolean> rolePermissions) {
             this.rolePermissions = rolePermissions;
@@ -335,6 +362,9 @@ public final class GetOrganizationRequest {
             return this;
         }
 
+        /**
+         * <p>include custom domains in response</p>
+         */
         @JsonSetter(value = "customDomains", nulls = Nulls.SKIP)
         public Builder customDomains(Optional<Boolean> customDomains) {
             this.customDomains = customDomains;

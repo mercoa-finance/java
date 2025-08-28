@@ -127,18 +127,30 @@ public final class EmailCollectionActionResponse implements IActionBase {
     }
 
     public interface ScheduledExecutionTimeStage {
+        /**
+         * <p>The UTC timestamp for when this action is scheduled for execution. Actual execution may be delayed by a few minutes due to processing time.</p>
+         */
         StatusStage scheduledExecutionTime(@NotNull OffsetDateTime scheduledExecutionTime);
     }
 
     public interface StatusStage {
+        /**
+         * <p>The current lifecycle state of the action. SUGGESTED actions are pending approval, APPROVED actions will be executed, and COMPLETED actions have been executed.</p>
+         */
         SubjectStage status(@NotNull ActionStatus status);
     }
 
     public interface SubjectStage {
+        /**
+         * <p>The subject of the email</p>
+         */
         BodyStage subject(@NotNull String subject);
     }
 
     public interface BodyStage {
+        /**
+         * <p>The body of the email in plaintext</p>
+         */
         _FinalStage body(@NotNull String body);
     }
 
@@ -183,6 +195,7 @@ public final class EmailCollectionActionResponse implements IActionBase {
 
         /**
          * <p>The UTC timestamp for when this action is scheduled for execution. Actual execution may be delayed by a few minutes due to processing time.</p>
+         * <p>The UTC timestamp for when this action is scheduled for execution. Actual execution may be delayed by a few minutes due to processing time.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -195,6 +208,7 @@ public final class EmailCollectionActionResponse implements IActionBase {
 
         /**
          * <p>The current lifecycle state of the action. SUGGESTED actions are pending approval, APPROVED actions will be executed, and COMPLETED actions have been executed.</p>
+         * <p>The current lifecycle state of the action. SUGGESTED actions are pending approval, APPROVED actions will be executed, and COMPLETED actions have been executed.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -206,6 +220,7 @@ public final class EmailCollectionActionResponse implements IActionBase {
 
         /**
          * <p>The subject of the email</p>
+         * <p>The subject of the email</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -216,6 +231,7 @@ public final class EmailCollectionActionResponse implements IActionBase {
         }
 
         /**
+         * <p>The body of the email in plaintext</p>
          * <p>The body of the email in plaintext</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

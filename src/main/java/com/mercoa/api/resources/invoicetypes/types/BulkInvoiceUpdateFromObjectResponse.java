@@ -113,6 +113,9 @@ public final class BulkInvoiceUpdateFromObjectResponse {
             return this;
         }
 
+        /**
+         * <p>The ID of the invoice that was updated. If the invoice was not updated, this will be undefined</p>
+         */
         @JsonSetter(value = "id", nulls = Nulls.SKIP)
         public Builder id(Optional<String> id) {
             this.id = id;
@@ -124,6 +127,9 @@ public final class BulkInvoiceUpdateFromObjectResponse {
             return this;
         }
 
+        /**
+         * <p>If provided, this is the foreign ID of the invoice that was updated.</p>
+         */
         @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
         public Builder foreignId(Optional<String> foreignId) {
             this.foreignId = foreignId;
@@ -135,6 +141,9 @@ public final class BulkInvoiceUpdateFromObjectResponse {
             return this;
         }
 
+        /**
+         * <p>The error message if the invoice was not updated</p>
+         */
         @JsonSetter(value = "error", nulls = Nulls.SKIP)
         public Builder error(Optional<String> error) {
             this.error = error;

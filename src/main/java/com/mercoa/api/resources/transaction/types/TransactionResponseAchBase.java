@@ -329,6 +329,9 @@ public final class TransactionResponseAchBase implements ITransactionResponseAch
     public interface _FinalStage {
         TransactionResponseAchBase build();
 
+        /**
+         * <p>If the invoice failed to be paid, this field will be populated with the reason of failure.</p>
+         */
         _FinalStage failureReason(Optional<TransactionFailureReason> failureReason);
 
         _FinalStage failureReason(TransactionFailureReason failureReason);
@@ -555,6 +558,9 @@ public final class TransactionResponseAchBase implements ITransactionResponseAch
             return this;
         }
 
+        /**
+         * <p>If the invoice failed to be paid, this field will be populated with the reason of failure.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "failureReason", nulls = Nulls.SKIP)
         public _FinalStage failureReason(Optional<TransactionFailureReason> failureReason) {

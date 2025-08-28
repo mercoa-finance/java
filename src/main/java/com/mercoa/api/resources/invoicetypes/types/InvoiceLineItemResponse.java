@@ -235,6 +235,9 @@ public final class InvoiceLineItemResponse {
     }
 
     public interface CategoryStage {
+        /**
+         * <p>Category of the line item. Defaults to 'EXPENSE'.</p>
+         */
         CreatedAtStage category(@NotNull String category);
     }
 
@@ -249,6 +252,9 @@ public final class InvoiceLineItemResponse {
     public interface _FinalStage {
         InvoiceLineItemResponse build();
 
+        /**
+         * <p>Total amount of line item in major units.</p>
+         */
         _FinalStage amount(Optional<Double> amount);
 
         _FinalStage amount(Double amount);
@@ -265,6 +271,9 @@ public final class InvoiceLineItemResponse {
 
         _FinalStage quantity(Double quantity);
 
+        /**
+         * <p>Unit price of line item in major units.</p>
+         */
         _FinalStage unitPrice(Optional<Double> unitPrice);
 
         _FinalStage unitPrice(Double unitPrice);
@@ -281,6 +290,9 @@ public final class InvoiceLineItemResponse {
 
         _FinalStage metadata(Map<String, String> metadata);
 
+        /**
+         * <p>ID of general ledger account associated with this line item.</p>
+         */
         _FinalStage glAccountId(Optional<String> glAccountId);
 
         _FinalStage glAccountId(String glAccountId);
@@ -357,6 +369,7 @@ public final class InvoiceLineItemResponse {
 
         /**
          * <p>Category of the line item. Defaults to 'EXPENSE'.</p>
+         * <p>Category of the line item. Defaults to 'EXPENSE'.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -390,6 +403,9 @@ public final class InvoiceLineItemResponse {
             return this;
         }
 
+        /**
+         * <p>ID of general ledger account associated with this line item.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "glAccountId", nulls = Nulls.SKIP)
         public _FinalStage glAccountId(Optional<String> glAccountId) {
@@ -446,6 +462,9 @@ public final class InvoiceLineItemResponse {
             return this;
         }
 
+        /**
+         * <p>Unit price of line item in major units.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "unitPrice", nulls = Nulls.SKIP)
         public _FinalStage unitPrice(Optional<Double> unitPrice) {
@@ -502,6 +521,9 @@ public final class InvoiceLineItemResponse {
             return this;
         }
 
+        /**
+         * <p>Total amount of line item in major units.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "amount", nulls = Nulls.SKIP)
         public _FinalStage amount(Optional<Double> amount) {

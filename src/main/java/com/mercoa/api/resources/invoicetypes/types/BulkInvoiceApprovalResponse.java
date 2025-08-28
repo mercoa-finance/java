@@ -92,7 +92,9 @@ public final class BulkInvoiceApprovalResponse {
         }
 
         public Builder addAllData(List<BulkInvoiceApprovalFromObjectResponse> data) {
-            this.data.addAll(data);
+            if (data != null) {
+                this.data.addAll(data);
+            }
             return this;
         }
 

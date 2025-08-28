@@ -65,6 +65,9 @@ public final class FlatFee {
     }
 
     public interface AmountStage {
+        /**
+         * <p>The flat amount that will be charged as a fee. For example, if the fee is $2.50, set this to 2.5.</p>
+         */
         _FinalStage amount(double amount);
 
         Builder from(FlatFee other);
@@ -90,6 +93,7 @@ public final class FlatFee {
         }
 
         /**
+         * <p>The flat amount that will be charged as a fee. For example, if the fee is $2.50, set this to 2.5.</p>
          * <p>The flat amount that will be charged as a fee. For example, if the fee is $2.50, set this to 2.5.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

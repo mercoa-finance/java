@@ -348,6 +348,9 @@ public final class TransactionResponseWalletToBankWithInvoices
     public interface _FinalStage {
         TransactionResponseWalletToBankWithInvoices build();
 
+        /**
+         * <p>If the invoice failed to be paid, this field will be populated with the reason of failure.</p>
+         */
         _FinalStage failureReason(Optional<TransactionFailureReason> failureReason);
 
         _FinalStage failureReason(TransactionFailureReason failureReason);
@@ -360,6 +363,9 @@ public final class TransactionResponseWalletToBankWithInvoices
 
         _FinalStage fees(InvoiceFeesResponse fees);
 
+        /**
+         * <p>Invoices associated with this transaction</p>
+         */
         _FinalStage invoices(List<InvoiceResponse> invoices);
 
         _FinalStage addInvoices(InvoiceResponse invoices);
@@ -553,7 +559,9 @@ public final class TransactionResponseWalletToBankWithInvoices
          */
         @java.lang.Override
         public _FinalStage addAllInvoices(List<InvoiceResponse> invoices) {
-            this.invoices.addAll(invoices);
+            if (invoices != null) {
+                this.invoices.addAll(invoices);
+            }
             return this;
         }
 
@@ -567,6 +575,9 @@ public final class TransactionResponseWalletToBankWithInvoices
             return this;
         }
 
+        /**
+         * <p>Invoices associated with this transaction</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "invoices", nulls = Nulls.SKIP)
         public _FinalStage invoices(List<InvoiceResponse> invoices) {
@@ -611,6 +622,9 @@ public final class TransactionResponseWalletToBankWithInvoices
             return this;
         }
 
+        /**
+         * <p>If the invoice failed to be paid, this field will be populated with the reason of failure.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "failureReason", nulls = Nulls.SKIP)
         public _FinalStage failureReason(Optional<TransactionFailureReason> failureReason) {

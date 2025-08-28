@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.paymentmethodtypes.types.PaymentMethodType;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,11 +23,12 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GetAllPaymentMethodsRequest.Builder.class)
 public final class GetAllPaymentMethodsRequest {
-    private final Optional<PaymentMethodType> type;
+    private final Optional<List<PaymentMethodType>> type;
 
     private final Map<String, Object> additionalProperties;
 
-    private GetAllPaymentMethodsRequest(Optional<PaymentMethodType> type, Map<String, Object> additionalProperties) {
+    private GetAllPaymentMethodsRequest(
+            Optional<List<PaymentMethodType>> type, Map<String, Object> additionalProperties) {
         this.type = type;
         this.additionalProperties = additionalProperties;
     }
@@ -34,7 +37,7 @@ public final class GetAllPaymentMethodsRequest {
      * @return Type of payment method to filter
      */
     @JsonProperty("type")
-    public Optional<PaymentMethodType> getType() {
+    public Optional<List<PaymentMethodType>> getType() {
         return type;
     }
 
@@ -69,7 +72,7 @@ public final class GetAllPaymentMethodsRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<PaymentMethodType> type = Optional.empty();
+        private Optional<List<PaymentMethodType>> type = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -81,14 +84,22 @@ public final class GetAllPaymentMethodsRequest {
             return this;
         }
 
+        /**
+         * <p>Type of payment method to filter</p>
+         */
         @JsonSetter(value = "type", nulls = Nulls.SKIP)
-        public Builder type(Optional<PaymentMethodType> type) {
+        public Builder type(Optional<List<PaymentMethodType>> type) {
             this.type = type;
             return this;
         }
 
-        public Builder type(PaymentMethodType type) {
+        public Builder type(List<PaymentMethodType> type) {
             this.type = Optional.ofNullable(type);
+            return this;
+        }
+
+        public Builder type(PaymentMethodType type) {
+            this.type = Optional.of(Collections.singletonList(type));
             return this;
         }
 

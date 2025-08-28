@@ -3,51 +3,43 @@
  */
 package com.mercoa.api.resources.entity.document;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.commons.types.DocumentResponse;
 import com.mercoa.api.resources.entity.document.requests.GetDocumentsRequest;
 import com.mercoa.api.resources.entity.document.requests.UploadDocumentRequest;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import org.jetbrains.annotations.NotNull;
 
 public class AsyncDocumentClient {
     protected final ClientOptions clientOptions;
 
+    private final AsyncRawDocumentClient rawClient;
+
     public AsyncDocumentClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new AsyncRawDocumentClient(clientOptions);
+    }
+
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public AsyncRawDocumentClient withRawResponse() {
+        return this.rawClient;
     }
 
     /**
      * Get documents (1099/W9) associated with this entity
      */
     public CompletableFuture<List<DocumentResponse>> getAll(String entityId) {
-        return getAll(entityId, GetDocumentsRequest.builder().build());
+        return this.rawClient.getAll(entityId).thenApply(response -> response.body());
     }
 
     /**
      * Get documents (1099/W9) associated with this entity
      */
     public CompletableFuture<List<DocumentResponse>> getAll(String entityId, GetDocumentsRequest request) {
-        return getAll(entityId, request, null);
+        return this.rawClient.getAll(entityId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -55,60 +47,14 @@ public class AsyncDocumentClient {
      */
     public CompletableFuture<List<DocumentResponse>> getAll(
             String entityId, GetDocumentsRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("documents");
-        if (request.getType().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "type", request.getType().get().toString(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<List<DocumentResponse>> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(ObjectMappers.JSON_MAPPER.readValue(
-                                responseBody.string(), new TypeReference<List<DocumentResponse>>() {}));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.getAll(entityId, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Upload documents associated with this entity
      */
     public CompletableFuture<Void> upload(String entityId, UploadDocumentRequest request) {
-        return upload(entityId, request, null);
+        return this.rawClient.upload(entityId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -116,111 +62,20 @@ public class AsyncDocumentClient {
      */
     public CompletableFuture<Void> upload(
             String entityId, UploadDocumentRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("document")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(null);
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.upload(entityId, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Delete a document associated with this entity
      */
     public CompletableFuture<Void> delete(String entityId, String documentId) {
-        return delete(entityId, documentId, null);
+        return this.rawClient.delete(entityId, documentId).thenApply(response -> response.body());
     }
 
     /**
      * Delete a document associated with this entity
      */
     public CompletableFuture<Void> delete(String entityId, String documentId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("document")
-                .addPathSegment(documentId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("DELETE", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(null);
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.delete(entityId, documentId, requestOptions).thenApply(response -> response.body());
     }
 }

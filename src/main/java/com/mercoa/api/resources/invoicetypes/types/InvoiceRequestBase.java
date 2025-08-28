@@ -51,6 +51,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
     private final Optional<String> paymentSourceId;
 
+    private final Optional<PaymentSourceOptions> paymentSourceOptions;
+
     private final Optional<String> vendorId;
 
     private final Optional<String> paymentDestinationId;
@@ -85,6 +87,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
     private final Optional<String> ocrJobId;
 
+    private final Optional<Boolean> paymentDestinationConfirmed;
+
     private final Map<String, Object> additionalProperties;
 
     private InvoiceRequestBase(
@@ -102,6 +106,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             Optional<Integer> netTerms,
             Optional<String> payerId,
             Optional<String> paymentSourceId,
+            Optional<PaymentSourceOptions> paymentSourceOptions,
             Optional<String> vendorId,
             Optional<String> paymentDestinationId,
             Optional<PaymentDestinationOptions> paymentDestinationOptions,
@@ -119,6 +124,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             Optional<Double> taxAmount,
             Optional<Double> shippingAmount,
             Optional<String> ocrJobId,
+            Optional<Boolean> paymentDestinationConfirmed,
             Map<String, Object> additionalProperties) {
         this.status = status;
         this.amount = amount;
@@ -134,6 +140,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         this.netTerms = netTerms;
         this.payerId = payerId;
         this.paymentSourceId = paymentSourceId;
+        this.paymentSourceOptions = paymentSourceOptions;
         this.vendorId = vendorId;
         this.paymentDestinationId = paymentDestinationId;
         this.paymentDestinationOptions = paymentDestinationOptions;
@@ -151,6 +158,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         this.taxAmount = taxAmount;
         this.shippingAmount = shippingAmount;
         this.ocrJobId = ocrJobId;
+        this.paymentDestinationConfirmed = paymentDestinationConfirmed;
         this.additionalProperties = additionalProperties;
     }
 
@@ -266,6 +274,15 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
     @java.lang.Override
     public Optional<String> getPaymentSourceId() {
         return paymentSourceId;
+    }
+
+    /**
+     * @return Options for the payment source. Depending on the payment source, this may include things such as BNPL configuration.
+     */
+    @JsonProperty("paymentSourceOptions")
+    @java.lang.Override
+    public Optional<PaymentSourceOptions> getPaymentSourceOptions() {
+        return paymentSourceOptions;
     }
 
     /**
@@ -421,6 +438,15 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
         return ocrJobId;
     }
 
+    /**
+     * @return Set to true if the payment destination has been confirmed by the vendor or if the payment destination should default to the selected payment destination on the vendor portal.
+     */
+    @JsonProperty("paymentDestinationConfirmed")
+    @java.lang.Override
+    public Optional<Boolean> getPaymentDestinationConfirmed() {
+        return paymentDestinationConfirmed;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -447,6 +473,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 && netTerms.equals(other.netTerms)
                 && payerId.equals(other.payerId)
                 && paymentSourceId.equals(other.paymentSourceId)
+                && paymentSourceOptions.equals(other.paymentSourceOptions)
                 && vendorId.equals(other.vendorId)
                 && paymentDestinationId.equals(other.paymentDestinationId)
                 && paymentDestinationOptions.equals(other.paymentDestinationOptions)
@@ -463,7 +490,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 && vendorCreditIds.equals(other.vendorCreditIds)
                 && taxAmount.equals(other.taxAmount)
                 && shippingAmount.equals(other.shippingAmount)
-                && ocrJobId.equals(other.ocrJobId);
+                && ocrJobId.equals(other.ocrJobId)
+                && paymentDestinationConfirmed.equals(other.paymentDestinationConfirmed);
     }
 
     @java.lang.Override
@@ -483,6 +511,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 this.netTerms,
                 this.payerId,
                 this.paymentSourceId,
+                this.paymentSourceOptions,
                 this.vendorId,
                 this.paymentDestinationId,
                 this.paymentDestinationOptions,
@@ -499,7 +528,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                 this.vendorCreditIds,
                 this.taxAmount,
                 this.shippingAmount,
-                this.ocrJobId);
+                this.ocrJobId,
+                this.paymentDestinationConfirmed);
     }
 
     @java.lang.Override
@@ -541,6 +571,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
         private Optional<String> paymentSourceId = Optional.empty();
 
+        private Optional<PaymentSourceOptions> paymentSourceOptions = Optional.empty();
+
         private Optional<String> vendorId = Optional.empty();
 
         private Optional<String> paymentDestinationId = Optional.empty();
@@ -575,6 +607,8 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
         private Optional<String> ocrJobId = Optional.empty();
 
+        private Optional<Boolean> paymentDestinationConfirmed = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -595,6 +629,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             netTerms(other.getNetTerms());
             payerId(other.getPayerId());
             paymentSourceId(other.getPaymentSourceId());
+            paymentSourceOptions(other.getPaymentSourceOptions());
             vendorId(other.getVendorId());
             paymentDestinationId(other.getPaymentDestinationId());
             paymentDestinationOptions(other.getPaymentDestinationOptions());
@@ -612,6 +647,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             taxAmount(other.getTaxAmount());
             shippingAmount(other.getShippingAmount());
             ocrJobId(other.getOcrJobId());
+            paymentDestinationConfirmed(other.getPaymentDestinationConfirmed());
             return this;
         }
 
@@ -626,6 +662,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>Total amount of invoice in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
+         */
         @JsonSetter(value = "amount", nulls = Nulls.SKIP)
         public Builder amount(Optional<Double> amount) {
             this.amount = amount;
@@ -637,6 +676,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         */
         @JsonSetter(value = "currency", nulls = Nulls.SKIP)
         public Builder currency(Optional<CurrencyCode> currency) {
             this.currency = currency;
@@ -648,6 +690,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>Date the invoice was issued.</p>
+         */
         @JsonSetter(value = "invoiceDate", nulls = Nulls.SKIP)
         public Builder invoiceDate(Optional<OffsetDateTime> invoiceDate) {
             this.invoiceDate = invoiceDate;
@@ -659,6 +704,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>Initial date when funds are scheduled to be deducted from payer's account.</p>
+         */
         @JsonSetter(value = "deductionDate", nulls = Nulls.SKIP)
         public Builder deductionDate(Optional<OffsetDateTime> deductionDate) {
             this.deductionDate = deductionDate;
@@ -670,6 +718,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>Date of funds settlement.</p>
+         */
         @JsonSetter(value = "settlementDate", nulls = Nulls.SKIP)
         public Builder settlementDate(Optional<OffsetDateTime> settlementDate) {
             this.settlementDate = settlementDate;
@@ -681,6 +732,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>Due date of invoice.</p>
+         */
         @JsonSetter(value = "dueDate", nulls = Nulls.SKIP)
         public Builder dueDate(Optional<OffsetDateTime> dueDate) {
             this.dueDate = dueDate;
@@ -703,6 +757,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>Note to self or memo on invoice.</p>
+         */
         @JsonSetter(value = "noteToSelf", nulls = Nulls.SKIP)
         public Builder noteToSelf(Optional<String> noteToSelf) {
             this.noteToSelf = noteToSelf;
@@ -736,6 +793,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>Net terms in days. Must be a positive number.</p>
+         */
         @JsonSetter(value = "netTerms", nulls = Nulls.SKIP)
         public Builder netTerms(Optional<Integer> netTerms) {
             this.netTerms = netTerms;
@@ -747,6 +807,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>ID or foreign ID of the payer of this invoice.</p>
+         */
         @JsonSetter(value = "payerId", nulls = Nulls.SKIP)
         public Builder payerId(Optional<String> payerId) {
             this.payerId = payerId;
@@ -758,6 +821,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>ID of payment source for this invoice. If not provided, will attempt to use the default payment source for the payer when creating an invoice if a default payment source exists for the payer.</p>
+         */
         @JsonSetter(value = "paymentSourceId", nulls = Nulls.SKIP)
         public Builder paymentSourceId(Optional<String> paymentSourceId) {
             this.paymentSourceId = paymentSourceId;
@@ -769,6 +835,23 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>Options for the payment source. Depending on the payment source, this may include things such as BNPL configuration.</p>
+         */
+        @JsonSetter(value = "paymentSourceOptions", nulls = Nulls.SKIP)
+        public Builder paymentSourceOptions(Optional<PaymentSourceOptions> paymentSourceOptions) {
+            this.paymentSourceOptions = paymentSourceOptions;
+            return this;
+        }
+
+        public Builder paymentSourceOptions(PaymentSourceOptions paymentSourceOptions) {
+            this.paymentSourceOptions = Optional.ofNullable(paymentSourceOptions);
+            return this;
+        }
+
+        /**
+         * <p>ID or foreign ID of the vendor of this invoice.</p>
+         */
         @JsonSetter(value = "vendorId", nulls = Nulls.SKIP)
         public Builder vendorId(Optional<String> vendorId) {
             this.vendorId = vendorId;
@@ -780,6 +863,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>ID of payment destination for this invoice. If not provided, will attempt to use the default payment destination for the vendor when creating an invoice if a default payment destination exists for the vendor.</p>
+         */
         @JsonSetter(value = "paymentDestinationId", nulls = Nulls.SKIP)
         public Builder paymentDestinationId(Optional<String> paymentDestinationId) {
             this.paymentDestinationId = paymentDestinationId;
@@ -791,6 +877,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.</p>
+         */
         @JsonSetter(value = "paymentDestinationOptions", nulls = Nulls.SKIP)
         public Builder paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions) {
             this.paymentDestinationOptions = paymentDestinationOptions;
@@ -802,6 +891,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>Set approvers for this invoice.</p>
+         */
         @JsonSetter(value = "approvers", nulls = Nulls.SKIP)
         public Builder approvers(Optional<List<ApprovalSlotAssignment>> approvers) {
             this.approvers = approvers;
@@ -813,6 +905,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>Metadata associated with this invoice.</p>
+         */
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public Builder metadata(Optional<Map<String, String>> metadata) {
             this.metadata = metadata;
@@ -824,6 +919,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.</p>
+         */
         @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
         public Builder foreignId(Optional<String> foreignId) {
             this.foreignId = foreignId;
@@ -835,6 +933,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>Base64-encoded string. Supported file types include PNG, JPG, WEBP, PDF, and all Microsoft Office formats (automatically converted to PDF). Max file size 10MB. If the invoice already has a document, this will add a new document to the invoice.</p>
+         */
         @JsonSetter(value = "document", nulls = Nulls.SKIP)
         public Builder document(Optional<String> document) {
             this.document = document;
@@ -846,6 +947,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>DEPRECATED. Use document field instead.</p>
+         */
         @JsonSetter(value = "uploadedImage", nulls = Nulls.SKIP)
         public Builder uploadedImage(Optional<String> uploadedImage) {
             this.uploadedImage = uploadedImage;
@@ -857,6 +961,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>User ID or Foreign ID of entity user who created this invoice.</p>
+         */
         @JsonSetter(value = "creatorUserId", nulls = Nulls.SKIP)
         public Builder creatorUserId(Optional<String> creatorUserId) {
             this.creatorUserId = creatorUserId;
@@ -868,6 +975,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>If the invoice failed to be paid, indicate the failure reason. Only applicable for invoices with custom payment methods.</p>
+         */
         @JsonSetter(value = "failureType", nulls = Nulls.SKIP)
         public Builder failureType(Optional<InvoiceFailureType> failureType) {
             this.failureType = failureType;
@@ -879,6 +989,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>If using a custom payment method, you can override the default fees for this invoice. If not provided, the default fees for the custom payment method will be used.</p>
+         */
         @JsonSetter(value = "fees", nulls = Nulls.SKIP)
         public Builder fees(Optional<InvoiceFeesRequest> fees) {
             this.fees = fees;
@@ -890,6 +1003,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>If true, this invoice will be paid as a batch payment. Batches are automatically determined by Mercoa based on the payment source, destination, and scheduled payment date.</p>
+         */
         @JsonSetter(value = "batchPayment", nulls = Nulls.SKIP)
         public Builder batchPayment(Optional<Boolean> batchPayment) {
             this.batchPayment = batchPayment;
@@ -901,6 +1017,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.</p>
+         */
         @JsonSetter(value = "paymentSchedule", nulls = Nulls.SKIP)
         public Builder paymentSchedule(Optional<PaymentSchedule> paymentSchedule) {
             this.paymentSchedule = paymentSchedule;
@@ -912,6 +1031,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>The IDs of the vendor credits to be applied to this invoice. Passing this field will un-apply any previously applied vendor credits.</p>
+         */
         @JsonSetter(value = "vendorCreditIds", nulls = Nulls.SKIP)
         public Builder vendorCreditIds(Optional<List<String>> vendorCreditIds) {
             this.vendorCreditIds = vendorCreditIds;
@@ -923,6 +1045,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>Tax amount for this invoice.</p>
+         */
         @JsonSetter(value = "taxAmount", nulls = Nulls.SKIP)
         public Builder taxAmount(Optional<Double> taxAmount) {
             this.taxAmount = taxAmount;
@@ -934,6 +1059,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>Shipping amount for this invoice.</p>
+         */
         @JsonSetter(value = "shippingAmount", nulls = Nulls.SKIP)
         public Builder shippingAmount(Optional<Double> shippingAmount) {
             this.shippingAmount = shippingAmount;
@@ -945,6 +1073,9 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
             return this;
         }
 
+        /**
+         * <p>ID of the OCR job that processed this invoice.</p>
+         */
         @JsonSetter(value = "ocrJobId", nulls = Nulls.SKIP)
         public Builder ocrJobId(Optional<String> ocrJobId) {
             this.ocrJobId = ocrJobId;
@@ -953,6 +1084,20 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
 
         public Builder ocrJobId(String ocrJobId) {
             this.ocrJobId = Optional.ofNullable(ocrJobId);
+            return this;
+        }
+
+        /**
+         * <p>Set to true if the payment destination has been confirmed by the vendor or if the payment destination should default to the selected payment destination on the vendor portal.</p>
+         */
+        @JsonSetter(value = "paymentDestinationConfirmed", nulls = Nulls.SKIP)
+        public Builder paymentDestinationConfirmed(Optional<Boolean> paymentDestinationConfirmed) {
+            this.paymentDestinationConfirmed = paymentDestinationConfirmed;
+            return this;
+        }
+
+        public Builder paymentDestinationConfirmed(Boolean paymentDestinationConfirmed) {
+            this.paymentDestinationConfirmed = Optional.ofNullable(paymentDestinationConfirmed);
             return this;
         }
 
@@ -972,6 +1117,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                     netTerms,
                     payerId,
                     paymentSourceId,
+                    paymentSourceOptions,
                     vendorId,
                     paymentDestinationId,
                     paymentDestinationOptions,
@@ -989,6 +1135,7 @@ public final class InvoiceRequestBase implements IInvoiceRequestBase {
                     taxAmount,
                     shippingAmount,
                     ocrJobId,
+                    paymentDestinationConfirmed,
                     additionalProperties);
         }
     }

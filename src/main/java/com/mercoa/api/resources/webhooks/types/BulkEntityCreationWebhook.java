@@ -84,6 +84,9 @@ public final class BulkEntityCreationWebhook {
     }
 
     public interface EventTypeStage {
+        /**
+         * <p>The type of the event.</p>
+         */
         _FinalStage eventType(@NotNull String eventType);
 
         Builder from(BulkEntityCreationWebhook other);
@@ -92,6 +95,9 @@ public final class BulkEntityCreationWebhook {
     public interface _FinalStage {
         BulkEntityCreationWebhook build();
 
+        /**
+         * <p>A list of bulk entity creation responses.</p>
+         */
         _FinalStage data(List<BulkEntityCreationFromObjectResponse> data);
 
         _FinalStage addData(BulkEntityCreationFromObjectResponse data);
@@ -119,6 +125,7 @@ public final class BulkEntityCreationWebhook {
 
         /**
          * <p>The type of the event.</p>
+         * <p>The type of the event.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -134,7 +141,9 @@ public final class BulkEntityCreationWebhook {
          */
         @java.lang.Override
         public _FinalStage addAllData(List<BulkEntityCreationFromObjectResponse> data) {
-            this.data.addAll(data);
+            if (data != null) {
+                this.data.addAll(data);
+            }
             return this;
         }
 
@@ -148,6 +157,9 @@ public final class BulkEntityCreationWebhook {
             return this;
         }
 
+        /**
+         * <p>A list of bulk entity creation responses.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "data", nulls = Nulls.SKIP)
         public _FinalStage data(List<BulkEntityCreationFromObjectResponse> data) {

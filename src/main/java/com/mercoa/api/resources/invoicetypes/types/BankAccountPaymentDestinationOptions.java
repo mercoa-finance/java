@@ -100,6 +100,9 @@ public final class BankAccountPaymentDestinationOptions {
             return this;
         }
 
+        /**
+         * <p>Delivery method for ACH payments. Defaults to ACH_SAME_DAY.</p>
+         */
         @JsonSetter(value = "delivery", nulls = Nulls.SKIP)
         public Builder delivery(Optional<BankDeliveryMethod> delivery) {
             this.delivery = delivery;
@@ -111,6 +114,11 @@ public final class BankAccountPaymentDestinationOptions {
             return this;
         }
 
+        /**
+         * <p>ACH Statement Description.
+         * By default, this will be 'AP' followed by the first 8 characters of the invoice ID (for a single invoice) or the first 8 characters of the transaction ID (for a batch payment).
+         * Must be at least 4 characters and no more than 10 characters, and follow this regex pattern <code>^[a-zA-Z0-9\-#.$&amp;* ]{4,10}$</code></p>
+         */
         @JsonSetter(value = "description", nulls = Nulls.SKIP)
         public Builder description(Optional<String> description) {
             this.description = description;

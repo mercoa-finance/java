@@ -6,9 +6,7 @@ package com.mercoa.api.core;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ApiVersion {
-    _2024_08_01("2024-08-01"),
-
-    CURRENT("2024-08-01");
+    _2024_08_01("2024-08-01");
 
     private final String value;
 

@@ -16,7 +16,9 @@ import com.mercoa.api.resources.commons.types.OrderDirection;
 import com.mercoa.api.resources.entitytypes.types.NotificationStatus;
 import com.mercoa.api.resources.entitytypes.types.NotificationType;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,6 +26,8 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EntityGetNotificationsRequest.Builder.class)
 public final class EntityGetNotificationsRequest {
+    private final Optional<List<NotificationType>> notificationType;
+
     private final Optional<OffsetDateTime> startDate;
 
     private final Optional<OffsetDateTime> endDate;
@@ -34,29 +38,35 @@ public final class EntityGetNotificationsRequest {
 
     private final Optional<String> startingAfter;
 
-    private final Optional<NotificationType> notificationType;
-
     private final Optional<NotificationStatus> status;
 
     private final Map<String, Object> additionalProperties;
 
     private EntityGetNotificationsRequest(
+            Optional<List<NotificationType>> notificationType,
             Optional<OffsetDateTime> startDate,
             Optional<OffsetDateTime> endDate,
             Optional<OrderDirection> orderDirection,
             Optional<Integer> limit,
             Optional<String> startingAfter,
-            Optional<NotificationType> notificationType,
             Optional<NotificationStatus> status,
             Map<String, Object> additionalProperties) {
+        this.notificationType = notificationType;
         this.startDate = startDate;
         this.endDate = endDate;
         this.orderDirection = orderDirection;
         this.limit = limit;
         this.startingAfter = startingAfter;
-        this.notificationType = notificationType;
         this.status = status;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return The type of notification to filter by.
+     */
+    @JsonProperty("notificationType")
+    public Optional<List<NotificationType>> getNotificationType() {
+        return notificationType;
     }
 
     /**
@@ -100,14 +110,6 @@ public final class EntityGetNotificationsRequest {
     }
 
     /**
-     * @return The type of notification to filter by.
-     */
-    @JsonProperty("notificationType")
-    public Optional<NotificationType> getNotificationType() {
-        return notificationType;
-    }
-
-    /**
      * @return The status of the notification to filter by.
      */
     @JsonProperty("status")
@@ -127,24 +129,24 @@ public final class EntityGetNotificationsRequest {
     }
 
     private boolean equalTo(EntityGetNotificationsRequest other) {
-        return startDate.equals(other.startDate)
+        return notificationType.equals(other.notificationType)
+                && startDate.equals(other.startDate)
                 && endDate.equals(other.endDate)
                 && orderDirection.equals(other.orderDirection)
                 && limit.equals(other.limit)
                 && startingAfter.equals(other.startingAfter)
-                && notificationType.equals(other.notificationType)
                 && status.equals(other.status);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.notificationType,
                 this.startDate,
                 this.endDate,
                 this.orderDirection,
                 this.limit,
                 this.startingAfter,
-                this.notificationType,
                 this.status);
     }
 
@@ -159,6 +161,8 @@ public final class EntityGetNotificationsRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<List<NotificationType>> notificationType = Optional.empty();
+
         private Optional<OffsetDateTime> startDate = Optional.empty();
 
         private Optional<OffsetDateTime> endDate = Optional.empty();
@@ -169,8 +173,6 @@ public final class EntityGetNotificationsRequest {
 
         private Optional<String> startingAfter = Optional.empty();
 
-        private Optional<NotificationType> notificationType = Optional.empty();
-
         private Optional<NotificationStatus> status = Optional.empty();
 
         @JsonAnySetter
@@ -179,16 +181,38 @@ public final class EntityGetNotificationsRequest {
         private Builder() {}
 
         public Builder from(EntityGetNotificationsRequest other) {
+            notificationType(other.getNotificationType());
             startDate(other.getStartDate());
             endDate(other.getEndDate());
             orderDirection(other.getOrderDirection());
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
-            notificationType(other.getNotificationType());
             status(other.getStatus());
             return this;
         }
 
+        /**
+         * <p>The type of notification to filter by.</p>
+         */
+        @JsonSetter(value = "notificationType", nulls = Nulls.SKIP)
+        public Builder notificationType(Optional<List<NotificationType>> notificationType) {
+            this.notificationType = notificationType;
+            return this;
+        }
+
+        public Builder notificationType(List<NotificationType> notificationType) {
+            this.notificationType = Optional.ofNullable(notificationType);
+            return this;
+        }
+
+        public Builder notificationType(NotificationType notificationType) {
+            this.notificationType = Optional.of(Collections.singletonList(notificationType));
+            return this;
+        }
+
+        /**
+         * <p>Start date for notification created on date filter.</p>
+         */
         @JsonSetter(value = "startDate", nulls = Nulls.SKIP)
         public Builder startDate(Optional<OffsetDateTime> startDate) {
             this.startDate = startDate;
@@ -200,6 +224,9 @@ public final class EntityGetNotificationsRequest {
             return this;
         }
 
+        /**
+         * <p>End date for notification created date filter.</p>
+         */
         @JsonSetter(value = "endDate", nulls = Nulls.SKIP)
         public Builder endDate(Optional<OffsetDateTime> endDate) {
             this.endDate = endDate;
@@ -211,6 +238,9 @@ public final class EntityGetNotificationsRequest {
             return this;
         }
 
+        /**
+         * <p>Direction to order notifications by. Defaults to asc.</p>
+         */
         @JsonSetter(value = "orderDirection", nulls = Nulls.SKIP)
         public Builder orderDirection(Optional<OrderDirection> orderDirection) {
             this.orderDirection = orderDirection;
@@ -222,6 +252,9 @@ public final class EntityGetNotificationsRequest {
             return this;
         }
 
+        /**
+         * <p>Number of invoices to return. Limit can range between 1 and 100, and the default is 10.</p>
+         */
         @JsonSetter(value = "limit", nulls = Nulls.SKIP)
         public Builder limit(Optional<Integer> limit) {
             this.limit = limit;
@@ -233,6 +266,9 @@ public final class EntityGetNotificationsRequest {
             return this;
         }
 
+        /**
+         * <p>The ID of the notification to start after. If not provided, the first page of invoices will be returned.</p>
+         */
         @JsonSetter(value = "startingAfter", nulls = Nulls.SKIP)
         public Builder startingAfter(Optional<String> startingAfter) {
             this.startingAfter = startingAfter;
@@ -244,17 +280,9 @@ public final class EntityGetNotificationsRequest {
             return this;
         }
 
-        @JsonSetter(value = "notificationType", nulls = Nulls.SKIP)
-        public Builder notificationType(Optional<NotificationType> notificationType) {
-            this.notificationType = notificationType;
-            return this;
-        }
-
-        public Builder notificationType(NotificationType notificationType) {
-            this.notificationType = Optional.ofNullable(notificationType);
-            return this;
-        }
-
+        /**
+         * <p>The status of the notification to filter by.</p>
+         */
         @JsonSetter(value = "status", nulls = Nulls.SKIP)
         public Builder status(Optional<NotificationStatus> status) {
             this.status = status;
@@ -268,12 +296,12 @@ public final class EntityGetNotificationsRequest {
 
         public EntityGetNotificationsRequest build() {
             return new EntityGetNotificationsRequest(
+                    notificationType,
                     startDate,
                     endDate,
                     orderDirection,
                     limit,
                     startingAfter,
-                    notificationType,
                     status,
                     additionalProperties);
         }

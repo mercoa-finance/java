@@ -340,6 +340,9 @@ public final class TransactionResponseCardToWalletWithInvoices implements ITrans
 
         _FinalStage fees(InvoiceFeesResponse fees);
 
+        /**
+         * <p>Invoices associated with this transaction</p>
+         */
         _FinalStage invoices(List<InvoiceResponse> invoices);
 
         _FinalStage addInvoices(InvoiceResponse invoices);
@@ -530,7 +533,9 @@ public final class TransactionResponseCardToWalletWithInvoices implements ITrans
          */
         @java.lang.Override
         public _FinalStage addAllInvoices(List<InvoiceResponse> invoices) {
-            this.invoices.addAll(invoices);
+            if (invoices != null) {
+                this.invoices.addAll(invoices);
+            }
             return this;
         }
 
@@ -544,6 +549,9 @@ public final class TransactionResponseCardToWalletWithInvoices implements ITrans
             return this;
         }
 
+        /**
+         * <p>Invoices associated with this transaction</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "invoices", nulls = Nulls.SKIP)
         public _FinalStage invoices(List<InvoiceResponse> invoices) {

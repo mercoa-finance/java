@@ -75,6 +75,9 @@ public final class UploadDocumentRequest {
     }
 
     public interface DocumentStage {
+        /**
+         * <p>Base64 encoded image or PDF of document. PNG, JPG, WEBP, and PDF are supported. 10MB max.</p>
+         */
         TypeStage document(@NotNull String document);
 
         Builder from(UploadDocumentRequest other);
@@ -107,6 +110,7 @@ public final class UploadDocumentRequest {
         }
 
         /**
+         * <p>Base64 encoded image or PDF of document. PNG, JPG, WEBP, and PDF are supported. 10MB max.</p>
          * <p>Base64 encoded image or PDF of document. PNG, JPG, WEBP, and PDF are supported. 10MB max.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

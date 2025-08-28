@@ -9,23 +9,145 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.resources.commons.types.CountryCode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ProcessPaymentGatewayCardDetailsIframe.Builder.class)
-public final class ProcessPaymentGatewayCardDetailsIframe {
+public final class ProcessPaymentGatewayCardDetailsIframe implements IProcessPaymentGatewayCardDetailsBase {
+    private final String firstName;
+
+    private final String lastName;
+
+    private final String postalCode;
+
+    private final CountryCode country;
+
+    private final Optional<ProcessPaymentGatewayCardType> cardType;
+
+    private final Optional<String> phoneNumber;
+
+    private final Optional<String> email;
+
+    private final Optional<String> fullAddress;
+
+    private final Optional<ProcessPaymentGatewayAchDetails> achDetails;
+
     private final String iframeUrl;
 
     private final Map<String, Object> additionalProperties;
 
-    private ProcessPaymentGatewayCardDetailsIframe(String iframeUrl, Map<String, Object> additionalProperties) {
+    private ProcessPaymentGatewayCardDetailsIframe(
+            String firstName,
+            String lastName,
+            String postalCode,
+            CountryCode country,
+            Optional<ProcessPaymentGatewayCardType> cardType,
+            Optional<String> phoneNumber,
+            Optional<String> email,
+            Optional<String> fullAddress,
+            Optional<ProcessPaymentGatewayAchDetails> achDetails,
+            String iframeUrl,
+            Map<String, Object> additionalProperties) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.postalCode = postalCode;
+        this.country = country;
+        this.cardType = cardType;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.fullAddress = fullAddress;
+        this.achDetails = achDetails;
         this.iframeUrl = iframeUrl;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return The first name of the card user
+     */
+    @JsonProperty("firstName")
+    @java.lang.Override
+    public String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * @return The last name of the card user
+     */
+    @JsonProperty("lastName")
+    @java.lang.Override
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * @return The postal code of the address of the card
+     */
+    @JsonProperty("postalCode")
+    @java.lang.Override
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    /**
+     * @return The country of the address of the card
+     */
+    @JsonProperty("country")
+    @java.lang.Override
+    public CountryCode getCountry() {
+        return country;
+    }
+
+    /**
+     * @return The type of card (credit or debit). Defaults to debit.
+     */
+    @JsonProperty("cardType")
+    @java.lang.Override
+    public Optional<ProcessPaymentGatewayCardType> getCardType() {
+        return cardType;
+    }
+
+    /**
+     * @return The phone number of the card user
+     */
+    @JsonProperty("phoneNumber")
+    @java.lang.Override
+    public Optional<String> getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    /**
+     * @return The email of the card user
+     */
+    @JsonProperty("email")
+    @java.lang.Override
+    public Optional<String> getEmail() {
+        return email;
+    }
+
+    /**
+     * @return The full address of the card user
+     */
+    @JsonProperty("fullAddress")
+    @java.lang.Override
+    public Optional<String> getFullAddress() {
+        return fullAddress;
+    }
+
+    /**
+     * @return The details of the fallback ACH account to use for the payment. This will be used if a fee is charged for card processing.
+     */
+    @JsonProperty("achDetails")
+    @java.lang.Override
+    public Optional<ProcessPaymentGatewayAchDetails> getAchDetails() {
+        return achDetails;
     }
 
     /**
@@ -49,12 +171,31 @@ public final class ProcessPaymentGatewayCardDetailsIframe {
     }
 
     private boolean equalTo(ProcessPaymentGatewayCardDetailsIframe other) {
-        return iframeUrl.equals(other.iframeUrl);
+        return firstName.equals(other.firstName)
+                && lastName.equals(other.lastName)
+                && postalCode.equals(other.postalCode)
+                && country.equals(other.country)
+                && cardType.equals(other.cardType)
+                && phoneNumber.equals(other.phoneNumber)
+                && email.equals(other.email)
+                && fullAddress.equals(other.fullAddress)
+                && achDetails.equals(other.achDetails)
+                && iframeUrl.equals(other.iframeUrl);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.iframeUrl);
+        return Objects.hash(
+                this.firstName,
+                this.lastName,
+                this.postalCode,
+                this.country,
+                this.cardType,
+                this.phoneNumber,
+                this.email,
+                this.fullAddress,
+                this.achDetails,
+                this.iframeUrl);
     }
 
     @java.lang.Override
@@ -62,23 +203,108 @@ public final class ProcessPaymentGatewayCardDetailsIframe {
         return ObjectMappers.stringify(this);
     }
 
-    public static IframeUrlStage builder() {
+    public static FirstNameStage builder() {
         return new Builder();
     }
 
-    public interface IframeUrlStage {
-        _FinalStage iframeUrl(@NotNull String iframeUrl);
+    public interface FirstNameStage {
+        /**
+         * <p>The first name of the card user</p>
+         */
+        LastNameStage firstName(@NotNull String firstName);
 
         Builder from(ProcessPaymentGatewayCardDetailsIframe other);
     }
 
+    public interface LastNameStage {
+        /**
+         * <p>The last name of the card user</p>
+         */
+        PostalCodeStage lastName(@NotNull String lastName);
+    }
+
+    public interface PostalCodeStage {
+        /**
+         * <p>The postal code of the address of the card</p>
+         */
+        CountryStage postalCode(@NotNull String postalCode);
+    }
+
+    public interface CountryStage {
+        /**
+         * <p>The country of the address of the card</p>
+         */
+        IframeUrlStage country(@NotNull CountryCode country);
+    }
+
+    public interface IframeUrlStage {
+        /**
+         * <p>The URL of the iframe that render the virtual card details</p>
+         */
+        _FinalStage iframeUrl(@NotNull String iframeUrl);
+    }
+
     public interface _FinalStage {
         ProcessPaymentGatewayCardDetailsIframe build();
+
+        /**
+         * <p>The type of card (credit or debit). Defaults to debit.</p>
+         */
+        _FinalStage cardType(Optional<ProcessPaymentGatewayCardType> cardType);
+
+        _FinalStage cardType(ProcessPaymentGatewayCardType cardType);
+
+        /**
+         * <p>The phone number of the card user</p>
+         */
+        _FinalStage phoneNumber(Optional<String> phoneNumber);
+
+        _FinalStage phoneNumber(String phoneNumber);
+
+        /**
+         * <p>The email of the card user</p>
+         */
+        _FinalStage email(Optional<String> email);
+
+        _FinalStage email(String email);
+
+        /**
+         * <p>The full address of the card user</p>
+         */
+        _FinalStage fullAddress(Optional<String> fullAddress);
+
+        _FinalStage fullAddress(String fullAddress);
+
+        /**
+         * <p>The details of the fallback ACH account to use for the payment. This will be used if a fee is charged for card processing.</p>
+         */
+        _FinalStage achDetails(Optional<ProcessPaymentGatewayAchDetails> achDetails);
+
+        _FinalStage achDetails(ProcessPaymentGatewayAchDetails achDetails);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements IframeUrlStage, _FinalStage {
+    public static final class Builder
+            implements FirstNameStage, LastNameStage, PostalCodeStage, CountryStage, IframeUrlStage, _FinalStage {
+        private String firstName;
+
+        private String lastName;
+
+        private String postalCode;
+
+        private CountryCode country;
+
         private String iframeUrl;
+
+        private Optional<ProcessPaymentGatewayAchDetails> achDetails = Optional.empty();
+
+        private Optional<String> fullAddress = Optional.empty();
+
+        private Optional<String> email = Optional.empty();
+
+        private Optional<String> phoneNumber = Optional.empty();
+
+        private Optional<ProcessPaymentGatewayCardType> cardType = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -87,11 +313,69 @@ public final class ProcessPaymentGatewayCardDetailsIframe {
 
         @java.lang.Override
         public Builder from(ProcessPaymentGatewayCardDetailsIframe other) {
+            firstName(other.getFirstName());
+            lastName(other.getLastName());
+            postalCode(other.getPostalCode());
+            country(other.getCountry());
+            cardType(other.getCardType());
+            phoneNumber(other.getPhoneNumber());
+            email(other.getEmail());
+            fullAddress(other.getFullAddress());
+            achDetails(other.getAchDetails());
             iframeUrl(other.getIframeUrl());
             return this;
         }
 
         /**
+         * <p>The first name of the card user</p>
+         * <p>The first name of the card user</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("firstName")
+        public LastNameStage firstName(@NotNull String firstName) {
+            this.firstName = Objects.requireNonNull(firstName, "firstName must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The last name of the card user</p>
+         * <p>The last name of the card user</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("lastName")
+        public PostalCodeStage lastName(@NotNull String lastName) {
+            this.lastName = Objects.requireNonNull(lastName, "lastName must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The postal code of the address of the card</p>
+         * <p>The postal code of the address of the card</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("postalCode")
+        public CountryStage postalCode(@NotNull String postalCode) {
+            this.postalCode = Objects.requireNonNull(postalCode, "postalCode must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The country of the address of the card</p>
+         * <p>The country of the address of the card</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("country")
+        public IframeUrlStage country(@NotNull CountryCode country) {
+            this.country = Objects.requireNonNull(country, "country must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The URL of the iframe that render the virtual card details</p>
          * <p>The URL of the iframe that render the virtual card details</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -102,9 +386,120 @@ public final class ProcessPaymentGatewayCardDetailsIframe {
             return this;
         }
 
+        /**
+         * <p>The details of the fallback ACH account to use for the payment. This will be used if a fee is charged for card processing.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage achDetails(ProcessPaymentGatewayAchDetails achDetails) {
+            this.achDetails = Optional.ofNullable(achDetails);
+            return this;
+        }
+
+        /**
+         * <p>The details of the fallback ACH account to use for the payment. This will be used if a fee is charged for card processing.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "achDetails", nulls = Nulls.SKIP)
+        public _FinalStage achDetails(Optional<ProcessPaymentGatewayAchDetails> achDetails) {
+            this.achDetails = achDetails;
+            return this;
+        }
+
+        /**
+         * <p>The full address of the card user</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage fullAddress(String fullAddress) {
+            this.fullAddress = Optional.ofNullable(fullAddress);
+            return this;
+        }
+
+        /**
+         * <p>The full address of the card user</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "fullAddress", nulls = Nulls.SKIP)
+        public _FinalStage fullAddress(Optional<String> fullAddress) {
+            this.fullAddress = fullAddress;
+            return this;
+        }
+
+        /**
+         * <p>The email of the card user</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage email(String email) {
+            this.email = Optional.ofNullable(email);
+            return this;
+        }
+
+        /**
+         * <p>The email of the card user</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "email", nulls = Nulls.SKIP)
+        public _FinalStage email(Optional<String> email) {
+            this.email = email;
+            return this;
+        }
+
+        /**
+         * <p>The phone number of the card user</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage phoneNumber(String phoneNumber) {
+            this.phoneNumber = Optional.ofNullable(phoneNumber);
+            return this;
+        }
+
+        /**
+         * <p>The phone number of the card user</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "phoneNumber", nulls = Nulls.SKIP)
+        public _FinalStage phoneNumber(Optional<String> phoneNumber) {
+            this.phoneNumber = phoneNumber;
+            return this;
+        }
+
+        /**
+         * <p>The type of card (credit or debit). Defaults to debit.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage cardType(ProcessPaymentGatewayCardType cardType) {
+            this.cardType = Optional.ofNullable(cardType);
+            return this;
+        }
+
+        /**
+         * <p>The type of card (credit or debit). Defaults to debit.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "cardType", nulls = Nulls.SKIP)
+        public _FinalStage cardType(Optional<ProcessPaymentGatewayCardType> cardType) {
+            this.cardType = cardType;
+            return this;
+        }
+
         @java.lang.Override
         public ProcessPaymentGatewayCardDetailsIframe build() {
-            return new ProcessPaymentGatewayCardDetailsIframe(iframeUrl, additionalProperties);
+            return new ProcessPaymentGatewayCardDetailsIframe(
+                    firstName,
+                    lastName,
+                    postalCode,
+                    country,
+                    cardType,
+                    phoneNumber,
+                    email,
+                    fullAddress,
+                    achDetails,
+                    iframeUrl,
+                    additionalProperties);
         }
     }
 }

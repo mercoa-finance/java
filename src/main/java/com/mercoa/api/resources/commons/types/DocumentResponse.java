@@ -116,6 +116,9 @@ public final class DocumentResponse {
     public interface _FinalStage {
         DocumentResponse build();
 
+        /**
+         * <p>ID of the document. If not provided, this is a dynamic document that is generated on the fly.</p>
+         */
         _FinalStage id(Optional<String> id);
 
         _FinalStage id(String id);
@@ -176,6 +179,9 @@ public final class DocumentResponse {
             return this;
         }
 
+        /**
+         * <p>ID of the document. If not provided, this is a dynamic document that is generated on the fly.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "id", nulls = Nulls.SKIP)
         public _FinalStage id(Optional<String> id) {

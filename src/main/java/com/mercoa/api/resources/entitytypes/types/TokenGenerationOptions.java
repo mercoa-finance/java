@@ -164,6 +164,9 @@ public final class TokenGenerationOptions {
             return this;
         }
 
+        /**
+         * <p>Expressed in seconds or a string describing a time span. The default is 1h.</p>
+         */
         @JsonSetter(value = "expiresIn", nulls = Nulls.SKIP)
         public Builder expiresIn(Optional<String> expiresIn) {
             this.expiresIn = expiresIn;
@@ -230,6 +233,9 @@ public final class TokenGenerationOptions {
             return this;
         }
 
+        /**
+         * <p>Optional session ID to use for the token. If not provided, this token will not be associated with a session.</p>
+         */
         @JsonSetter(value = "sessionId", nulls = Nulls.SKIP)
         public Builder sessionId(Optional<String> sessionId) {
             this.sessionId = sessionId;

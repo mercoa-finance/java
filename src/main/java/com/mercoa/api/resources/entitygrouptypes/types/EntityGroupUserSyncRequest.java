@@ -132,6 +132,10 @@ public final class EntityGroupUserSyncRequest {
             return this;
         }
 
+        /**
+         * <p>Entity ID / foreign ID of an entity currently in the group to copy users and roles from.
+         * If not provided, users will be synced from the entity with the most users that has been updated most recently.</p>
+         */
         @JsonSetter(value = "copyUsersFrom", nulls = Nulls.SKIP)
         public Builder copyUsersFrom(Optional<String> copyUsersFrom) {
             this.copyUsersFrom = copyUsersFrom;
@@ -143,6 +147,9 @@ public final class EntityGroupUserSyncRequest {
             return this;
         }
 
+        /**
+         * <p>List of roles to filter users by. If not provided, all users will be copied. If provided, only users with the provided roles will be copied.</p>
+         */
         @JsonSetter(value = "filterRoles", nulls = Nulls.SKIP)
         public Builder filterRoles(Optional<List<String>> filterRoles) {
             this.filterRoles = filterRoles;
@@ -154,6 +161,9 @@ public final class EntityGroupUserSyncRequest {
             return this;
         }
 
+        /**
+         * <p>If true, users will be added to entities if they are not found in the copyUsersFrom entity. Default is true.</p>
+         */
         @JsonSetter(value = "addUsers", nulls = Nulls.SKIP)
         public Builder addUsers(Optional<Boolean> addUsers) {
             this.addUsers = addUsers;
@@ -165,6 +175,9 @@ public final class EntityGroupUserSyncRequest {
             return this;
         }
 
+        /**
+         * <p>If true, users will be removed from entities if they are not found in the copyUsersFrom entity. Default is false.</p>
+         */
         @JsonSetter(value = "removeUsers", nulls = Nulls.SKIP)
         public Builder removeUsers(Optional<Boolean> removeUsers) {
             this.removeUsers = removeUsers;

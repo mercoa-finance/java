@@ -91,12 +91,18 @@ public final class FindEntityResponse {
     }
 
     public interface CountStage {
+        /**
+         * <p>Total number of entities for the given filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.</p>
+         */
         HasMoreStage count(int count);
 
         Builder from(FindEntityResponse other);
     }
 
     public interface HasMoreStage {
+        /**
+         * <p>True if there are more entities available for the given filters.</p>
+         */
         _FinalStage hasMore(boolean hasMore);
     }
 
@@ -133,6 +139,7 @@ public final class FindEntityResponse {
 
         /**
          * <p>Total number of entities for the given filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.</p>
+         * <p>Total number of entities for the given filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -143,6 +150,7 @@ public final class FindEntityResponse {
         }
 
         /**
+         * <p>True if there are more entities available for the given filters.</p>
          * <p>True if there are more entities available for the given filters.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -155,7 +163,9 @@ public final class FindEntityResponse {
 
         @java.lang.Override
         public _FinalStage addAllData(List<EntityWithPaymentMethodResponse> data) {
-            this.data.addAll(data);
+            if (data != null) {
+                this.data.addAll(data);
+            }
             return this;
         }
 

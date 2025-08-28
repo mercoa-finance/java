@@ -147,6 +147,9 @@ public final class CommentResponse {
 
         _FinalStage user(EntityUserResponse user);
 
+        /**
+         * <p>If an approval action has triggered the generation of this comment, returns the associated approval action and actor</p>
+         */
         _FinalStage associatedApprovalAction(Optional<AssociatedApprovalAction> associatedApprovalAction);
 
         _FinalStage associatedApprovalAction(AssociatedApprovalAction associatedApprovalAction);
@@ -220,6 +223,9 @@ public final class CommentResponse {
             return this;
         }
 
+        /**
+         * <p>If an approval action has triggered the generation of this comment, returns the associated approval action and actor</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "associatedApprovalAction", nulls = Nulls.SKIP)
         public _FinalStage associatedApprovalAction(Optional<AssociatedApprovalAction> associatedApprovalAction) {

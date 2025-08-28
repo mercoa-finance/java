@@ -30,8 +30,8 @@ public final class ProcessPaymentGatewayResponse {
         return new ProcessPaymentGatewayResponse(new PendingValue(value));
     }
 
-    public static ProcessPaymentGatewayResponse completed(ProcessPaymentGatewayCompletedResponse value) {
-        return new ProcessPaymentGatewayResponse(new CompletedValue(value));
+    public static ProcessPaymentGatewayResponse success(ProcessPaymentGatewaySuccessResponse value) {
+        return new ProcessPaymentGatewayResponse(new SuccessValue(value));
     }
 
     public static ProcessPaymentGatewayResponse failed(ProcessPaymentGatewayFailedResponse value) {
@@ -42,8 +42,8 @@ public final class ProcessPaymentGatewayResponse {
         return value instanceof PendingValue;
     }
 
-    public boolean isCompleted() {
-        return value instanceof CompletedValue;
+    public boolean isSuccess() {
+        return value instanceof SuccessValue;
     }
 
     public boolean isFailed() {
@@ -61,9 +61,9 @@ public final class ProcessPaymentGatewayResponse {
         return Optional.empty();
     }
 
-    public Optional<ProcessPaymentGatewayCompletedResponse> getCompleted() {
-        if (isCompleted()) {
-            return Optional.of(((CompletedValue) value).value);
+    public Optional<ProcessPaymentGatewaySuccessResponse> getSuccess() {
+        if (isSuccess()) {
+            return Optional.of(((SuccessValue) value).value);
         }
         return Optional.empty();
     }
@@ -90,7 +90,7 @@ public final class ProcessPaymentGatewayResponse {
     public interface Visitor<T> {
         T visitPending(ProcessPaymentGatewayPendingResponse pending);
 
-        T visitCompleted(ProcessPaymentGatewayCompletedResponse completed);
+        T visitSuccess(ProcessPaymentGatewaySuccessResponse success);
 
         T visitFailed(ProcessPaymentGatewayFailedResponse failed);
 
@@ -100,7 +100,7 @@ public final class ProcessPaymentGatewayResponse {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "jobStatus", visible = true, defaultImpl = _UnknownValue.class)
     @JsonSubTypes({
         @JsonSubTypes.Type(PendingValue.class),
-        @JsonSubTypes.Type(CompletedValue.class),
+        @JsonSubTypes.Type(SuccessValue.class),
         @JsonSubTypes.Type(FailedValue.class)
     })
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -147,31 +147,31 @@ public final class ProcessPaymentGatewayResponse {
         }
     }
 
-    @JsonTypeName("completed")
+    @JsonTypeName("success")
     @JsonIgnoreProperties("jobStatus")
-    private static final class CompletedValue implements Value {
+    private static final class SuccessValue implements Value {
         @JsonUnwrapped
-        private ProcessPaymentGatewayCompletedResponse value;
+        private ProcessPaymentGatewaySuccessResponse value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-        private CompletedValue() {}
+        private SuccessValue() {}
 
-        private CompletedValue(ProcessPaymentGatewayCompletedResponse value) {
+        private SuccessValue(ProcessPaymentGatewaySuccessResponse value) {
             this.value = value;
         }
 
         @java.lang.Override
         public <T> T visit(Visitor<T> visitor) {
-            return visitor.visitCompleted(value);
+            return visitor.visitSuccess(value);
         }
 
         @java.lang.Override
         public boolean equals(Object other) {
             if (this == other) return true;
-            return other instanceof CompletedValue && equalTo((CompletedValue) other);
+            return other instanceof SuccessValue && equalTo((SuccessValue) other);
         }
 
-        private boolean equalTo(CompletedValue other) {
+        private boolean equalTo(SuccessValue other) {
             return value.equals(other.value);
         }
 

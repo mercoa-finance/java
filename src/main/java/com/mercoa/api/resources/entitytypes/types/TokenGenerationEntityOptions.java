@@ -81,6 +81,9 @@ public final class TokenGenerationEntityOptions {
             return this;
         }
 
+        /**
+         * <p>If true, will require entity to undergo KYB to use Mercoa payment rails and will capture required KYB data in the portal.</p>
+         */
         @JsonSetter(value = "enableMercoaPayments", nulls = Nulls.SKIP)
         public Builder enableMercoaPayments(Optional<Boolean> enableMercoaPayments) {
             this.enableMercoaPayments = enableMercoaPayments;

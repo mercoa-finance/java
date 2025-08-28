@@ -241,26 +241,44 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
     public interface _FinalStage {
         CardRequest build();
 
+        /**
+         * <p>If true, this payment method will be set as the default source. Only one payment method can be set as the default source. If another payment method is already set as the default source, it will be unset.</p>
+         */
         _FinalStage defaultSource(Optional<Boolean> defaultSource);
 
         _FinalStage defaultSource(Boolean defaultSource);
 
+        /**
+         * <p>If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.</p>
+         */
         _FinalStage defaultDestination(Optional<Boolean> defaultDestination);
 
         _FinalStage defaultDestination(Boolean defaultDestination);
 
+        /**
+         * <p>ID for this payment method in the external accounting system (e.g Rutter or Codat)</p>
+         */
         _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId);
 
         _FinalStage externalAccountingSystemId(String externalAccountingSystemId);
 
+        /**
+         * <p>If true, this payment method will be frozen. Frozen payment methods cannot be used for payments, but will still be returned in API responses.</p>
+         */
         _FinalStage frozen(Optional<Boolean> frozen);
 
         _FinalStage frozen(Boolean frozen);
 
+        /**
+         * <p>Metadata associated with this payment method.</p>
+         */
         _FinalStage metadata(Optional<Map<String, String>> metadata);
 
         _FinalStage metadata(Map<String, String> metadata);
 
+        /**
+         * <p>(ALPHA, MAY BE REMOVED) Indicate whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.</p>
+         */
         _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity);
 
         _FinalStage confirmedByEntity(Boolean confirmedByEntity);
@@ -373,6 +391,9 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
+        /**
+         * <p>(ALPHA, MAY BE REMOVED) Indicate whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "confirmedByEntity", nulls = Nulls.SKIP)
         public _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity) {
@@ -390,6 +411,9 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
+        /**
+         * <p>Metadata associated with this payment method.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public _FinalStage metadata(Optional<Map<String, String>> metadata) {
@@ -407,6 +431,9 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
+        /**
+         * <p>If true, this payment method will be frozen. Frozen payment methods cannot be used for payments, but will still be returned in API responses.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "frozen", nulls = Nulls.SKIP)
         public _FinalStage frozen(Optional<Boolean> frozen) {
@@ -424,6 +451,9 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
+        /**
+         * <p>ID for this payment method in the external accounting system (e.g Rutter or Codat)</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "externalAccountingSystemId", nulls = Nulls.SKIP)
         public _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId) {
@@ -441,6 +471,9 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
+        /**
+         * <p>If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "defaultDestination", nulls = Nulls.SKIP)
         public _FinalStage defaultDestination(Optional<Boolean> defaultDestination) {
@@ -458,6 +491,9 @@ public final class CardRequest implements IPaymentMethodBaseRequest {
             return this;
         }
 
+        /**
+         * <p>If true, this payment method will be set as the default source. Only one payment method can be set as the default source. If another payment method is already set as the default source, it will be unset.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "defaultSource", nulls = Nulls.SKIP)
         public _FinalStage defaultSource(Optional<Boolean> defaultSource) {

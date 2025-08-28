@@ -4,66 +4,38 @@
 package com.mercoa.api.resources.banklookup;
 
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.resources.banklookup.requests.BankLookupRequest;
 import com.mercoa.api.resources.banklookup.types.BankLookupResponse;
-import java.io.IOException;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class BankLookupClient {
     protected final ClientOptions clientOptions;
 
+    private final RawBankLookupClient rawClient;
+
     public BankLookupClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new RawBankLookupClient(clientOptions);
+    }
+
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public RawBankLookupClient withRawResponse() {
+        return this.rawClient;
     }
 
     /**
      * Find bank account details
      */
     public BankLookupResponse find(BankLookupRequest request) {
-        return find(request, null);
+        return this.rawClient.find(request).body();
     }
 
     /**
      * Find bank account details
      */
     public BankLookupResponse find(BankLookupRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("bankLookup");
-        QueryStringMapper.addQueryParameter(httpUrl, "routingNumber", request.getRoutingNumber(), false);
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), BankLookupResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.find(request, requestOptions).body();
     }
 }

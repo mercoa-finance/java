@@ -97,6 +97,9 @@ public final class InvoiceEmailWebhook {
     }
 
     public interface EventTypeStage {
+        /**
+         * <p>The type of the event.</p>
+         */
         _FinalStage eventType(@NotNull String eventType);
 
         Builder from(InvoiceEmailWebhook other);
@@ -105,10 +108,16 @@ public final class InvoiceEmailWebhook {
     public interface _FinalStage {
         InvoiceEmailWebhook build();
 
+        /**
+         * <p>If an invoice was created from the email, this will be present.</p>
+         */
         _FinalStage invoice(Optional<InvoiceResponse> invoice);
 
         _FinalStage invoice(InvoiceResponse invoice);
 
+        /**
+         * <p>If an existing invoice already exists for the email, this will be present.</p>
+         */
         _FinalStage existingInvoiceId(Optional<String> existingInvoiceId);
 
         _FinalStage existingInvoiceId(String existingInvoiceId);
@@ -137,6 +146,7 @@ public final class InvoiceEmailWebhook {
 
         /**
          * <p>The type of the event.</p>
+         * <p>The type of the event.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -156,6 +166,9 @@ public final class InvoiceEmailWebhook {
             return this;
         }
 
+        /**
+         * <p>If an existing invoice already exists for the email, this will be present.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "existingInvoiceId", nulls = Nulls.SKIP)
         public _FinalStage existingInvoiceId(Optional<String> existingInvoiceId) {
@@ -173,6 +186,9 @@ public final class InvoiceEmailWebhook {
             return this;
         }
 
+        /**
+         * <p>If an invoice was created from the email, this will be present.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "invoice", nulls = Nulls.SKIP)
         public _FinalStage invoice(Optional<InvoiceResponse> invoice) {

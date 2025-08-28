@@ -30,7 +30,8 @@ public final class TransactionResponseWithoutInvoices {
         return new TransactionResponseWithoutInvoices(new BankAccountToBankAccountValue(value));
     }
 
-    public static TransactionResponseWithoutInvoices bankAccountToMailedCheck(TransactionResponseCheckBase value) {
+    public static TransactionResponseWithoutInvoices bankAccountToMailedCheck(
+            TransactionResponseCheckBaseMailed value) {
         return new TransactionResponseWithoutInvoices(new BankAccountToMailedCheckValue(value));
     }
 
@@ -117,7 +118,7 @@ public final class TransactionResponseWithoutInvoices {
         return Optional.empty();
     }
 
-    public Optional<TransactionResponseCheckBase> getBankAccountToMailedCheck() {
+    public Optional<TransactionResponseCheckBaseMailed> getBankAccountToMailedCheck() {
         if (isBankAccountToMailedCheck()) {
             return Optional.of(((BankAccountToMailedCheckValue) value).value);
         }
@@ -195,7 +196,7 @@ public final class TransactionResponseWithoutInvoices {
     public interface Visitor<T> {
         T visitBankAccountToBankAccount(TransactionResponseAchBase bankAccountToBankAccount);
 
-        T visitBankAccountToMailedCheck(TransactionResponseCheckBase bankAccountToMailedCheck);
+        T visitBankAccountToMailedCheck(TransactionResponseCheckBaseMailed bankAccountToMailedCheck);
 
         T visitBankAccountToPrintedCheck(TransactionResponseCheckBase bankAccountToPrintedCheck);
 
@@ -277,12 +278,12 @@ public final class TransactionResponseWithoutInvoices {
     @JsonIgnoreProperties("type")
     private static final class BankAccountToMailedCheckValue implements Value {
         @JsonUnwrapped
-        private TransactionResponseCheckBase value;
+        private TransactionResponseCheckBaseMailed value;
 
         @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
         private BankAccountToMailedCheckValue() {}
 
-        private BankAccountToMailedCheckValue(TransactionResponseCheckBase value) {
+        private BankAccountToMailedCheckValue(TransactionResponseCheckBaseMailed value) {
             this.value = value;
         }
 

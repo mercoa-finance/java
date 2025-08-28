@@ -110,20 +110,32 @@ public final class InvoiceFeesResponse {
     }
 
     public interface SourcePaymentMethodFeeStage {
+        /**
+         * <p>Fee charged to the platform (C1) for processing the source payment method. For example, credit card interchange and acquiring fees.</p>
+         */
         SourcePlatformMarkupFeeStage sourcePaymentMethodFee(double sourcePaymentMethodFee);
 
         Builder from(InvoiceFeesResponse other);
     }
 
     public interface SourcePlatformMarkupFeeStage {
+        /**
+         * <p>Fee charged to the payer (C2).</p>
+         */
         DestinationPaymentMethodFeeStage sourcePlatformMarkupFee(double sourcePlatformMarkupFee);
     }
 
     public interface DestinationPaymentMethodFeeStage {
+        /**
+         * <p>Fee charged to the platform (C1) for processing the destination payment method. For example, postage for a check payment.</p>
+         */
         DestinationPlatformMarkupFeeStage destinationPaymentMethodFee(double destinationPaymentMethodFee);
     }
 
     public interface DestinationPlatformMarkupFeeStage {
+        /**
+         * <p>Fee charged to the payee (C3).</p>
+         */
         _FinalStage destinationPlatformMarkupFee(double destinationPlatformMarkupFee);
     }
 
@@ -162,6 +174,7 @@ public final class InvoiceFeesResponse {
 
         /**
          * <p>Fee charged to the platform (C1) for processing the source payment method. For example, credit card interchange and acquiring fees.</p>
+         * <p>Fee charged to the platform (C1) for processing the source payment method. For example, credit card interchange and acquiring fees.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -172,6 +185,7 @@ public final class InvoiceFeesResponse {
         }
 
         /**
+         * <p>Fee charged to the payer (C2).</p>
          * <p>Fee charged to the payer (C2).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -184,6 +198,7 @@ public final class InvoiceFeesResponse {
 
         /**
          * <p>Fee charged to the platform (C1) for processing the destination payment method. For example, postage for a check payment.</p>
+         * <p>Fee charged to the platform (C1) for processing the destination payment method. For example, postage for a check payment.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -194,6 +209,7 @@ public final class InvoiceFeesResponse {
         }
 
         /**
+         * <p>Fee charged to the payee (C3).</p>
          * <p>Fee charged to the payee (C3).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

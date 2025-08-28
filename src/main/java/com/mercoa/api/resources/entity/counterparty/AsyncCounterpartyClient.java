@@ -3,15 +3,10 @@
  */
 package com.mercoa.api.resources.entity.counterparty;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
+import com.mercoa.api.resources.entity.counterparty.bulk.AsyncBulkClient;
 import com.mercoa.api.resources.entity.counterparty.requests.FindPayeeCounterpartiesRequest;
 import com.mercoa.api.resources.entity.counterparty.requests.FindPayorCounterpartiesRequest;
 import com.mercoa.api.resources.entity.counterparty.vendorcredit.AsyncVendorCreditClient;
@@ -20,35 +15,37 @@ import com.mercoa.api.resources.entitytypes.types.EntityAddPayorsRequest;
 import com.mercoa.api.resources.entitytypes.types.EntityHidePayeesRequest;
 import com.mercoa.api.resources.entitytypes.types.EntityHidePayorsRequest;
 import com.mercoa.api.resources.entitytypes.types.FindCounterpartiesResponse;
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import org.jetbrains.annotations.NotNull;
 
 public class AsyncCounterpartyClient {
     protected final ClientOptions clientOptions;
+
+    private final AsyncRawCounterpartyClient rawClient;
+
+    protected final Supplier<AsyncBulkClient> bulkClient;
 
     protected final Supplier<AsyncVendorCreditClient> vendorCreditClient;
 
     public AsyncCounterpartyClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new AsyncRawCounterpartyClient(clientOptions);
+        this.bulkClient = Suppliers.memoize(() -> new AsyncBulkClient(clientOptions));
         this.vendorCreditClient = Suppliers.memoize(() -> new AsyncVendorCreditClient(clientOptions));
+    }
+
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public AsyncRawCounterpartyClient withRawResponse() {
+        return this.rawClient;
     }
 
     /**
      * Find payee counterparties. This endpoint lets you find vendors linked to the entity.
      */
     public CompletableFuture<FindCounterpartiesResponse> findPayees(String entityId) {
-        return findPayees(entityId, FindPayeeCounterpartiesRequest.builder().build());
+        return this.rawClient.findPayees(entityId).thenApply(response -> response.body());
     }
 
     /**
@@ -56,7 +53,7 @@ public class AsyncCounterpartyClient {
      */
     public CompletableFuture<FindCounterpartiesResponse> findPayees(
             String entityId, FindPayeeCounterpartiesRequest request) {
-        return findPayees(entityId, request, null);
+        return this.rawClient.findPayees(entityId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -64,96 +61,14 @@ public class AsyncCounterpartyClient {
      */
     public CompletableFuture<FindCounterpartiesResponse> findPayees(
             String entityId, FindPayeeCounterpartiesRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("counterparties/payees");
-        if (request.getName().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "name", request.getName().get(), false);
-        }
-        if (request.getSearch().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "search", request.getSearch().get(), false);
-        }
-        if (request.getNetworkType().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "networkType", request.getNetworkType().get().toString(), false);
-        }
-        if (request.getPaymentMethods().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "paymentMethods", request.getPaymentMethods().get().toString(), false);
-        }
-        if (request.getInvoiceMetrics().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "invoiceMetrics", request.getInvoiceMetrics().get().toString(), false);
-        }
-        if (request.getCounterpartyId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "counterpartyId", request.getCounterpartyId().get(), false);
-        }
-        if (request.getMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "metadata", request.getMetadata().get().toString(), false);
-        }
-        if (request.getReturnMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "returnMetadata", request.getReturnMetadata().get(), false);
-        }
-        if (request.getLimit().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "limit", request.getLimit().get().toString(), false);
-        }
-        if (request.getStartingAfter().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<FindCounterpartiesResponse> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(ObjectMappers.JSON_MAPPER.readValue(
-                                responseBody.string(), FindCounterpartiesResponse.class));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.findPayees(entityId, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Find payor counterparties. This endpoint lets you find customers linked to the entity.
      */
     public CompletableFuture<FindCounterpartiesResponse> findPayors(String entityId) {
-        return findPayors(entityId, FindPayorCounterpartiesRequest.builder().build());
+        return this.rawClient.findPayors(entityId).thenApply(response -> response.body());
     }
 
     /**
@@ -161,7 +76,7 @@ public class AsyncCounterpartyClient {
      */
     public CompletableFuture<FindCounterpartiesResponse> findPayors(
             String entityId, FindPayorCounterpartiesRequest request) {
-        return findPayors(entityId, request, null);
+        return this.rawClient.findPayors(entityId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -169,96 +84,14 @@ public class AsyncCounterpartyClient {
      */
     public CompletableFuture<FindCounterpartiesResponse> findPayors(
             String entityId, FindPayorCounterpartiesRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("counterparties/payors");
-        if (request.getName().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "name", request.getName().get(), false);
-        }
-        if (request.getSearch().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "search", request.getSearch().get(), false);
-        }
-        if (request.getNetworkType().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "networkType", request.getNetworkType().get().toString(), false);
-        }
-        if (request.getPaymentMethods().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "paymentMethods", request.getPaymentMethods().get().toString(), false);
-        }
-        if (request.getInvoiceMetrics().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "invoiceMetrics", request.getInvoiceMetrics().get().toString(), false);
-        }
-        if (request.getCounterpartyId().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "counterpartyId", request.getCounterpartyId().get(), false);
-        }
-        if (request.getMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "metadata", request.getMetadata().get().toString(), false);
-        }
-        if (request.getReturnMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "returnMetadata", request.getReturnMetadata().get(), false);
-        }
-        if (request.getLimit().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "limit", request.getLimit().get().toString(), false);
-        }
-        if (request.getStartingAfter().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<FindCounterpartiesResponse> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(ObjectMappers.JSON_MAPPER.readValue(
-                                responseBody.string(), FindCounterpartiesResponse.class));
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.findPayors(entityId, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Create association between Entity and a given list of Payees. If a Payee has previously been archived, unarchive the Payee.
      */
     public CompletableFuture<Void> addPayees(String entityId, EntityAddPayeesRequest request) {
-        return addPayees(entityId, request, null);
+        return this.rawClient.addPayees(entityId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -266,63 +99,14 @@ public class AsyncCounterpartyClient {
      */
     public CompletableFuture<Void> addPayees(
             String entityId, EntityAddPayeesRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("addPayees")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(null);
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.addPayees(entityId, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Marks Payees as unsearchable by Entity via Counterparty search. Invoices associated with these Payees will still be searchable via Invoice search.
      */
     public CompletableFuture<Void> hidePayees(String entityId, EntityHidePayeesRequest request) {
-        return hidePayees(entityId, request, null);
+        return this.rawClient.hidePayees(entityId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -330,63 +114,14 @@ public class AsyncCounterpartyClient {
      */
     public CompletableFuture<Void> hidePayees(
             String entityId, EntityHidePayeesRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("hidePayees")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(null);
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.hidePayees(entityId, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Create association between Entity and a given list of Payors. If a Payor has previously been archived, unarchive the Payor.
      */
     public CompletableFuture<Void> addPayors(String entityId, EntityAddPayorsRequest request) {
-        return addPayors(entityId, request, null);
+        return this.rawClient.addPayors(entityId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -394,63 +129,14 @@ public class AsyncCounterpartyClient {
      */
     public CompletableFuture<Void> addPayors(
             String entityId, EntityAddPayorsRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("addPayors")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(null);
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+        return this.rawClient.addPayors(entityId, request, requestOptions).thenApply(response -> response.body());
     }
 
     /**
      * Marks Payors as unsearchable by Entity via Counterparty search. Invoices associated with these Payors will still be searchable via Invoice search.
      */
     public CompletableFuture<Void> hidePayors(String entityId, EntityHidePayorsRequest request) {
-        return hidePayors(entityId, request, null);
+        return this.rawClient.hidePayors(entityId, request).thenApply(response -> response.body());
     }
 
     /**
@@ -458,56 +144,11 @@ public class AsyncCounterpartyClient {
      */
     public CompletableFuture<Void> hidePayors(
             String entityId, EntityHidePayorsRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entity")
-                .addPathSegment(entityId)
-                .addPathSegments("hidePayors")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (response.isSuccessful()) {
-                        future.complete(null);
-                        return;
-                    }
-                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-                    future.completeExceptionally(new MercoaApiException(
-                            "Error with status code " + response.code(),
-                            response.code(),
-                            ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class)));
-                    return;
-                } catch (IOException e) {
-                    future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-                }
-            }
+        return this.rawClient.hidePayors(entityId, request, requestOptions).thenApply(response -> response.body());
+    }
 
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                future.completeExceptionally(new MercoaException("Network error executing HTTP request", e));
-            }
-        });
-        return future;
+    public AsyncBulkClient bulk() {
+        return this.bulkClient.get();
     }
 
     public AsyncVendorCreditClient vendorCredit() {

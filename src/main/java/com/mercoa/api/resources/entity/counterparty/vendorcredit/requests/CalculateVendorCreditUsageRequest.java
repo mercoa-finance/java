@@ -110,6 +110,9 @@ public final class CalculateVendorCreditUsageRequest {
     }
 
     public interface AmountStage {
+        /**
+         * <p>The amount of the invoice to calculate vendor credit usage for.</p>
+         */
         _FinalStage amount(double amount);
 
         Builder from(CalculateVendorCreditUsageRequest other);
@@ -118,14 +121,23 @@ public final class CalculateVendorCreditUsageRequest {
     public interface _FinalStage {
         CalculateVendorCreditUsageRequest build();
 
+        /**
+         * <p>The currency of the invoice to calculate vendor credit usage for. Defaults to USD.</p>
+         */
         _FinalStage currency(Optional<CurrencyCode> currency);
 
         _FinalStage currency(CurrencyCode currency);
 
+        /**
+         * <p>List of invoice IDs to exclude from the calculation. If not provided or an empty list, no invoices will be excluded. This is useful for recalculating vendor credit usage on invoices that already have vendor credits applied.</p>
+         */
         _FinalStage excludedInvoiceIds(Optional<List<String>> excludedInvoiceIds);
 
         _FinalStage excludedInvoiceIds(List<String> excludedInvoiceIds);
 
+        /**
+         * <p>List of vendor credit IDs to include in the calculation. If not provided, all applicable vendor credits will be included, while an empty list will not include ANY vendor credits.  This is useful for recalculating vendor credit usage on invoices that have a fixed list of applied vendor credits (e.g. a SCHEDULED or PENDING invoice).</p>
+         */
         _FinalStage includedVendorCreditIds(Optional<List<String>> includedVendorCreditIds);
 
         _FinalStage includedVendorCreditIds(List<String> includedVendorCreditIds);
@@ -157,6 +169,7 @@ public final class CalculateVendorCreditUsageRequest {
 
         /**
          * <p>The amount of the invoice to calculate vendor credit usage for.</p>
+         * <p>The amount of the invoice to calculate vendor credit usage for.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -176,6 +189,9 @@ public final class CalculateVendorCreditUsageRequest {
             return this;
         }
 
+        /**
+         * <p>List of vendor credit IDs to include in the calculation. If not provided, all applicable vendor credits will be included, while an empty list will not include ANY vendor credits.  This is useful for recalculating vendor credit usage on invoices that have a fixed list of applied vendor credits (e.g. a SCHEDULED or PENDING invoice).</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "includedVendorCreditIds", nulls = Nulls.SKIP)
         public _FinalStage includedVendorCreditIds(Optional<List<String>> includedVendorCreditIds) {
@@ -193,6 +209,9 @@ public final class CalculateVendorCreditUsageRequest {
             return this;
         }
 
+        /**
+         * <p>List of invoice IDs to exclude from the calculation. If not provided or an empty list, no invoices will be excluded. This is useful for recalculating vendor credit usage on invoices that already have vendor credits applied.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "excludedInvoiceIds", nulls = Nulls.SKIP)
         public _FinalStage excludedInvoiceIds(Optional<List<String>> excludedInvoiceIds) {
@@ -210,6 +229,9 @@ public final class CalculateVendorCreditUsageRequest {
             return this;
         }
 
+        /**
+         * <p>The currency of the invoice to calculate vendor credit usage for. Defaults to USD.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "currency", nulls = Nulls.SKIP)
         public _FinalStage currency(Optional<CurrencyCode> currency) {

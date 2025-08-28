@@ -95,6 +95,9 @@ public final class TransactionFailureReason {
             return this;
         }
 
+        /**
+         * <p>The failure reason code.</p>
+         */
         @JsonSetter(value = "code", nulls = Nulls.SKIP)
         public Builder code(Optional<String> code) {
             this.code = code;
@@ -106,6 +109,9 @@ public final class TransactionFailureReason {
             return this;
         }
 
+        /**
+         * <p>The failure reason description.</p>
+         */
         @JsonSetter(value = "description", nulls = Nulls.SKIP)
         public Builder description(Optional<String> description) {
             this.description = description;

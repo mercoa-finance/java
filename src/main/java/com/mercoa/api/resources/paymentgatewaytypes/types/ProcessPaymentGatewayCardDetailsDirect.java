@@ -9,18 +9,36 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.commons.types.CountryCode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ProcessPaymentGatewayCardDetailsDirect.Builder.class)
-public final class ProcessPaymentGatewayCardDetailsDirect {
-    private final String nameOnCard;
+public final class ProcessPaymentGatewayCardDetailsDirect implements IProcessPaymentGatewayCardDetailsBase {
+    private final String firstName;
+
+    private final String lastName;
+
+    private final String postalCode;
+
+    private final CountryCode country;
+
+    private final Optional<ProcessPaymentGatewayCardType> cardType;
+
+    private final Optional<String> phoneNumber;
+
+    private final Optional<String> email;
+
+    private final Optional<String> fullAddress;
+
+    private final Optional<ProcessPaymentGatewayAchDetails> achDetails;
 
     private final String cardNumber;
 
@@ -30,37 +48,118 @@ public final class ProcessPaymentGatewayCardDetailsDirect {
 
     private final String cvv;
 
-    private final String postalCode;
-
-    private final CountryCode country;
-
     private final Map<String, Object> additionalProperties;
 
     private ProcessPaymentGatewayCardDetailsDirect(
-            String nameOnCard,
+            String firstName,
+            String lastName,
+            String postalCode,
+            CountryCode country,
+            Optional<ProcessPaymentGatewayCardType> cardType,
+            Optional<String> phoneNumber,
+            Optional<String> email,
+            Optional<String> fullAddress,
+            Optional<ProcessPaymentGatewayAchDetails> achDetails,
             String cardNumber,
             int expirationMonth,
             int expirationYear,
             String cvv,
-            String postalCode,
-            CountryCode country,
             Map<String, Object> additionalProperties) {
-        this.nameOnCard = nameOnCard;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.postalCode = postalCode;
+        this.country = country;
+        this.cardType = cardType;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.fullAddress = fullAddress;
+        this.achDetails = achDetails;
         this.cardNumber = cardNumber;
         this.expirationMonth = expirationMonth;
         this.expirationYear = expirationYear;
         this.cvv = cvv;
-        this.postalCode = postalCode;
-        this.country = country;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return The name on the card to use for the payment
+     * @return The first name of the card user
      */
-    @JsonProperty("nameOnCard")
-    public String getNameOnCard() {
-        return nameOnCard;
+    @JsonProperty("firstName")
+    @java.lang.Override
+    public String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * @return The last name of the card user
+     */
+    @JsonProperty("lastName")
+    @java.lang.Override
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * @return The postal code of the address of the card
+     */
+    @JsonProperty("postalCode")
+    @java.lang.Override
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    /**
+     * @return The country of the address of the card
+     */
+    @JsonProperty("country")
+    @java.lang.Override
+    public CountryCode getCountry() {
+        return country;
+    }
+
+    /**
+     * @return The type of card (credit or debit). Defaults to debit.
+     */
+    @JsonProperty("cardType")
+    @java.lang.Override
+    public Optional<ProcessPaymentGatewayCardType> getCardType() {
+        return cardType;
+    }
+
+    /**
+     * @return The phone number of the card user
+     */
+    @JsonProperty("phoneNumber")
+    @java.lang.Override
+    public Optional<String> getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    /**
+     * @return The email of the card user
+     */
+    @JsonProperty("email")
+    @java.lang.Override
+    public Optional<String> getEmail() {
+        return email;
+    }
+
+    /**
+     * @return The full address of the card user
+     */
+    @JsonProperty("fullAddress")
+    @java.lang.Override
+    public Optional<String> getFullAddress() {
+        return fullAddress;
+    }
+
+    /**
+     * @return The details of the fallback ACH account to use for the payment. This will be used if a fee is charged for card processing.
+     */
+    @JsonProperty("achDetails")
+    @java.lang.Override
+    public Optional<ProcessPaymentGatewayAchDetails> getAchDetails() {
+        return achDetails;
     }
 
     /**
@@ -95,22 +194,6 @@ public final class ProcessPaymentGatewayCardDetailsDirect {
         return cvv;
     }
 
-    /**
-     * @return The postal code of the address of the card to use for the payment
-     */
-    @JsonProperty("postalCode")
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    /**
-     * @return The country of the address of the card to use for the payment
-     */
-    @JsonProperty("country")
-    public CountryCode getCountry() {
-        return country;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -124,25 +207,37 @@ public final class ProcessPaymentGatewayCardDetailsDirect {
     }
 
     private boolean equalTo(ProcessPaymentGatewayCardDetailsDirect other) {
-        return nameOnCard.equals(other.nameOnCard)
+        return firstName.equals(other.firstName)
+                && lastName.equals(other.lastName)
+                && postalCode.equals(other.postalCode)
+                && country.equals(other.country)
+                && cardType.equals(other.cardType)
+                && phoneNumber.equals(other.phoneNumber)
+                && email.equals(other.email)
+                && fullAddress.equals(other.fullAddress)
+                && achDetails.equals(other.achDetails)
                 && cardNumber.equals(other.cardNumber)
                 && expirationMonth == other.expirationMonth
                 && expirationYear == other.expirationYear
-                && cvv.equals(other.cvv)
-                && postalCode.equals(other.postalCode)
-                && country.equals(other.country);
+                && cvv.equals(other.cvv);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.nameOnCard,
+                this.firstName,
+                this.lastName,
+                this.postalCode,
+                this.country,
+                this.cardType,
+                this.phoneNumber,
+                this.email,
+                this.fullAddress,
+                this.achDetails,
                 this.cardNumber,
                 this.expirationMonth,
                 this.expirationYear,
-                this.cvv,
-                this.postalCode,
-                this.country);
+                this.cvv);
     }
 
     @java.lang.Override
@@ -150,55 +245,125 @@ public final class ProcessPaymentGatewayCardDetailsDirect {
         return ObjectMappers.stringify(this);
     }
 
-    public static NameOnCardStage builder() {
+    public static FirstNameStage builder() {
         return new Builder();
     }
 
-    public interface NameOnCardStage {
-        CardNumberStage nameOnCard(@NotNull String nameOnCard);
+    public interface FirstNameStage {
+        /**
+         * <p>The first name of the card user</p>
+         */
+        LastNameStage firstName(@NotNull String firstName);
 
         Builder from(ProcessPaymentGatewayCardDetailsDirect other);
     }
 
-    public interface CardNumberStage {
-        ExpirationMonthStage cardNumber(@NotNull String cardNumber);
-    }
-
-    public interface ExpirationMonthStage {
-        ExpirationYearStage expirationMonth(int expirationMonth);
-    }
-
-    public interface ExpirationYearStage {
-        CvvStage expirationYear(int expirationYear);
-    }
-
-    public interface CvvStage {
-        PostalCodeStage cvv(@NotNull String cvv);
+    public interface LastNameStage {
+        /**
+         * <p>The last name of the card user</p>
+         */
+        PostalCodeStage lastName(@NotNull String lastName);
     }
 
     public interface PostalCodeStage {
+        /**
+         * <p>The postal code of the address of the card</p>
+         */
         CountryStage postalCode(@NotNull String postalCode);
     }
 
     public interface CountryStage {
-        _FinalStage country(@NotNull CountryCode country);
+        /**
+         * <p>The country of the address of the card</p>
+         */
+        CardNumberStage country(@NotNull CountryCode country);
+    }
+
+    public interface CardNumberStage {
+        /**
+         * <p>The number of the card to use for the payment</p>
+         */
+        ExpirationMonthStage cardNumber(@NotNull String cardNumber);
+    }
+
+    public interface ExpirationMonthStage {
+        /**
+         * <p>The month of the expiration date of the card to use for the payment. This must be a number between 1 and 12.</p>
+         */
+        ExpirationYearStage expirationMonth(int expirationMonth);
+    }
+
+    public interface ExpirationYearStage {
+        /**
+         * <p>The year of the expiration date of the card to use for the payment. This must be the full year, not the last two digits.</p>
+         */
+        CvvStage expirationYear(int expirationYear);
+    }
+
+    public interface CvvStage {
+        /**
+         * <p>The CVV of the card to use for the payment</p>
+         */
+        _FinalStage cvv(@NotNull String cvv);
     }
 
     public interface _FinalStage {
         ProcessPaymentGatewayCardDetailsDirect build();
+
+        /**
+         * <p>The type of card (credit or debit). Defaults to debit.</p>
+         */
+        _FinalStage cardType(Optional<ProcessPaymentGatewayCardType> cardType);
+
+        _FinalStage cardType(ProcessPaymentGatewayCardType cardType);
+
+        /**
+         * <p>The phone number of the card user</p>
+         */
+        _FinalStage phoneNumber(Optional<String> phoneNumber);
+
+        _FinalStage phoneNumber(String phoneNumber);
+
+        /**
+         * <p>The email of the card user</p>
+         */
+        _FinalStage email(Optional<String> email);
+
+        _FinalStage email(String email);
+
+        /**
+         * <p>The full address of the card user</p>
+         */
+        _FinalStage fullAddress(Optional<String> fullAddress);
+
+        _FinalStage fullAddress(String fullAddress);
+
+        /**
+         * <p>The details of the fallback ACH account to use for the payment. This will be used if a fee is charged for card processing.</p>
+         */
+        _FinalStage achDetails(Optional<ProcessPaymentGatewayAchDetails> achDetails);
+
+        _FinalStage achDetails(ProcessPaymentGatewayAchDetails achDetails);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder
-            implements NameOnCardStage,
+            implements FirstNameStage,
+                    LastNameStage,
+                    PostalCodeStage,
+                    CountryStage,
                     CardNumberStage,
                     ExpirationMonthStage,
                     ExpirationYearStage,
                     CvvStage,
-                    PostalCodeStage,
-                    CountryStage,
                     _FinalStage {
-        private String nameOnCard;
+        private String firstName;
+
+        private String lastName;
+
+        private String postalCode;
+
+        private CountryCode country;
 
         private String cardNumber;
 
@@ -208,9 +373,15 @@ public final class ProcessPaymentGatewayCardDetailsDirect {
 
         private String cvv;
 
-        private String postalCode;
+        private Optional<ProcessPaymentGatewayAchDetails> achDetails = Optional.empty();
 
-        private CountryCode country;
+        private Optional<String> fullAddress = Optional.empty();
+
+        private Optional<String> email = Optional.empty();
+
+        private Optional<String> phoneNumber = Optional.empty();
+
+        private Optional<ProcessPaymentGatewayCardType> cardType = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -219,28 +390,72 @@ public final class ProcessPaymentGatewayCardDetailsDirect {
 
         @java.lang.Override
         public Builder from(ProcessPaymentGatewayCardDetailsDirect other) {
-            nameOnCard(other.getNameOnCard());
+            firstName(other.getFirstName());
+            lastName(other.getLastName());
+            postalCode(other.getPostalCode());
+            country(other.getCountry());
+            cardType(other.getCardType());
+            phoneNumber(other.getPhoneNumber());
+            email(other.getEmail());
+            fullAddress(other.getFullAddress());
+            achDetails(other.getAchDetails());
             cardNumber(other.getCardNumber());
             expirationMonth(other.getExpirationMonth());
             expirationYear(other.getExpirationYear());
             cvv(other.getCvv());
-            postalCode(other.getPostalCode());
-            country(other.getCountry());
             return this;
         }
 
         /**
-         * <p>The name on the card to use for the payment</p>
+         * <p>The first name of the card user</p>
+         * <p>The first name of the card user</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        @JsonSetter("nameOnCard")
-        public CardNumberStage nameOnCard(@NotNull String nameOnCard) {
-            this.nameOnCard = Objects.requireNonNull(nameOnCard, "nameOnCard must not be null");
+        @JsonSetter("firstName")
+        public LastNameStage firstName(@NotNull String firstName) {
+            this.firstName = Objects.requireNonNull(firstName, "firstName must not be null");
             return this;
         }
 
         /**
+         * <p>The last name of the card user</p>
+         * <p>The last name of the card user</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("lastName")
+        public PostalCodeStage lastName(@NotNull String lastName) {
+            this.lastName = Objects.requireNonNull(lastName, "lastName must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The postal code of the address of the card</p>
+         * <p>The postal code of the address of the card</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("postalCode")
+        public CountryStage postalCode(@NotNull String postalCode) {
+            this.postalCode = Objects.requireNonNull(postalCode, "postalCode must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The country of the address of the card</p>
+         * <p>The country of the address of the card</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("country")
+        public CardNumberStage country(@NotNull CountryCode country) {
+            this.country = Objects.requireNonNull(country, "country must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The number of the card to use for the payment</p>
          * <p>The number of the card to use for the payment</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -253,6 +468,7 @@ public final class ProcessPaymentGatewayCardDetailsDirect {
 
         /**
          * <p>The month of the expiration date of the card to use for the payment. This must be a number between 1 and 12.</p>
+         * <p>The month of the expiration date of the card to use for the payment. This must be a number between 1 and 12.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -263,6 +479,7 @@ public final class ProcessPaymentGatewayCardDetailsDirect {
         }
 
         /**
+         * <p>The year of the expiration date of the card to use for the payment. This must be the full year, not the last two digits.</p>
          * <p>The year of the expiration date of the card to use for the payment. This must be the full year, not the last two digits.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -275,47 +492,132 @@ public final class ProcessPaymentGatewayCardDetailsDirect {
 
         /**
          * <p>The CVV of the card to use for the payment</p>
+         * <p>The CVV of the card to use for the payment</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
         @JsonSetter("cvv")
-        public PostalCodeStage cvv(@NotNull String cvv) {
+        public _FinalStage cvv(@NotNull String cvv) {
             this.cvv = Objects.requireNonNull(cvv, "cvv must not be null");
             return this;
         }
 
         /**
-         * <p>The postal code of the address of the card to use for the payment</p>
+         * <p>The details of the fallback ACH account to use for the payment. This will be used if a fee is charged for card processing.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        @JsonSetter("postalCode")
-        public CountryStage postalCode(@NotNull String postalCode) {
-            this.postalCode = Objects.requireNonNull(postalCode, "postalCode must not be null");
+        public _FinalStage achDetails(ProcessPaymentGatewayAchDetails achDetails) {
+            this.achDetails = Optional.ofNullable(achDetails);
             return this;
         }
 
         /**
-         * <p>The country of the address of the card to use for the payment</p>
+         * <p>The details of the fallback ACH account to use for the payment. This will be used if a fee is charged for card processing.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "achDetails", nulls = Nulls.SKIP)
+        public _FinalStage achDetails(Optional<ProcessPaymentGatewayAchDetails> achDetails) {
+            this.achDetails = achDetails;
+            return this;
+        }
+
+        /**
+         * <p>The full address of the card user</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        @JsonSetter("country")
-        public _FinalStage country(@NotNull CountryCode country) {
-            this.country = Objects.requireNonNull(country, "country must not be null");
+        public _FinalStage fullAddress(String fullAddress) {
+            this.fullAddress = Optional.ofNullable(fullAddress);
+            return this;
+        }
+
+        /**
+         * <p>The full address of the card user</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "fullAddress", nulls = Nulls.SKIP)
+        public _FinalStage fullAddress(Optional<String> fullAddress) {
+            this.fullAddress = fullAddress;
+            return this;
+        }
+
+        /**
+         * <p>The email of the card user</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage email(String email) {
+            this.email = Optional.ofNullable(email);
+            return this;
+        }
+
+        /**
+         * <p>The email of the card user</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "email", nulls = Nulls.SKIP)
+        public _FinalStage email(Optional<String> email) {
+            this.email = email;
+            return this;
+        }
+
+        /**
+         * <p>The phone number of the card user</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage phoneNumber(String phoneNumber) {
+            this.phoneNumber = Optional.ofNullable(phoneNumber);
+            return this;
+        }
+
+        /**
+         * <p>The phone number of the card user</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "phoneNumber", nulls = Nulls.SKIP)
+        public _FinalStage phoneNumber(Optional<String> phoneNumber) {
+            this.phoneNumber = phoneNumber;
+            return this;
+        }
+
+        /**
+         * <p>The type of card (credit or debit). Defaults to debit.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage cardType(ProcessPaymentGatewayCardType cardType) {
+            this.cardType = Optional.ofNullable(cardType);
+            return this;
+        }
+
+        /**
+         * <p>The type of card (credit or debit). Defaults to debit.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "cardType", nulls = Nulls.SKIP)
+        public _FinalStage cardType(Optional<ProcessPaymentGatewayCardType> cardType) {
+            this.cardType = cardType;
             return this;
         }
 
         @java.lang.Override
         public ProcessPaymentGatewayCardDetailsDirect build() {
             return new ProcessPaymentGatewayCardDetailsDirect(
-                    nameOnCard,
+                    firstName,
+                    lastName,
+                    postalCode,
+                    country,
+                    cardType,
+                    phoneNumber,
+                    email,
+                    fullAddress,
+                    achDetails,
                     cardNumber,
                     expirationMonth,
                     expirationYear,
                     cvv,
-                    postalCode,
-                    country,
                     additionalProperties);
         }
     }

@@ -77,12 +77,18 @@ public final class EmailMessageResponse {
     }
 
     public interface SubjectStage {
+        /**
+         * <p>The subject of the email</p>
+         */
         BodyStage subject(@NotNull String subject);
 
         Builder from(EmailMessageResponse other);
     }
 
     public interface BodyStage {
+        /**
+         * <p>The body of the email in plaintext</p>
+         */
         _FinalStage body(@NotNull String body);
     }
 
@@ -110,6 +116,7 @@ public final class EmailMessageResponse {
 
         /**
          * <p>The subject of the email</p>
+         * <p>The subject of the email</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -120,6 +127,7 @@ public final class EmailMessageResponse {
         }
 
         /**
+         * <p>The body of the email in plaintext</p>
          * <p>The body of the email in plaintext</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

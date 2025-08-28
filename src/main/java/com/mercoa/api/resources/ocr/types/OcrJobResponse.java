@@ -123,16 +123,25 @@ public final class OcrJobResponse {
     }
 
     public interface StatusStage {
+        /**
+         * <p>The status of the OCR job.</p>
+         */
         _FinalStage status(@NotNull OcrJobStatus status);
     }
 
     public interface _FinalStage {
         OcrJobResponse build();
 
+        /**
+         * <p>The IDs of any OCR jobs that are processing other subdocuments of the same document.</p>
+         */
         _FinalStage linkedJobIds(Optional<List<String>> linkedJobIds);
 
         _FinalStage linkedJobIds(List<String> linkedJobIds);
 
+        /**
+         * <p>The start and end page numbers of the corresponding subdocument (zero-indexed, inclusive). If not provided, the document was not split during OCR.</p>
+         */
         _FinalStage pageRange(Optional<OcrPageRange> pageRange);
 
         _FinalStage pageRange(OcrPageRange pageRange);
@@ -178,6 +187,7 @@ public final class OcrJobResponse {
 
         /**
          * <p>The status of the OCR job.</p>
+         * <p>The status of the OCR job.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -210,6 +220,9 @@ public final class OcrJobResponse {
             return this;
         }
 
+        /**
+         * <p>The start and end page numbers of the corresponding subdocument (zero-indexed, inclusive). If not provided, the document was not split during OCR.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "pageRange", nulls = Nulls.SKIP)
         public _FinalStage pageRange(Optional<OcrPageRange> pageRange) {
@@ -227,6 +240,9 @@ public final class OcrJobResponse {
             return this;
         }
 
+        /**
+         * <p>The IDs of any OCR jobs that are processing other subdocuments of the same document.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "linkedJobIds", nulls = Nulls.SKIP)
         public _FinalStage linkedJobIds(Optional<List<String>> linkedJobIds) {

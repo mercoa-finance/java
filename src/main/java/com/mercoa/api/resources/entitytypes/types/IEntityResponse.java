@@ -31,6 +31,10 @@ public interface IEntityResponse {
 
     EntityStatus getStatus();
 
+    Optional<String> getOatfiStatus();
+
+    Optional<Map<String, String>> getOatfiUnderwritingResponse();
+
     boolean getAcceptedTos();
 
     boolean getIsPayor();

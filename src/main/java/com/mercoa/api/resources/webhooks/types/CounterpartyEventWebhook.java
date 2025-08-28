@@ -91,16 +91,25 @@ public final class CounterpartyEventWebhook {
     }
 
     public interface EventTypeStage {
+        /**
+         * <p>The type of the event.</p>
+         */
         EntityIdStage eventType(@NotNull String eventType);
 
         Builder from(CounterpartyEventWebhook other);
     }
 
     public interface EntityIdStage {
+        /**
+         * <p>The ID of the entity that owns the counterparty relationship</p>
+         */
         CounterpartyIdStage entityId(@NotNull String entityId);
     }
 
     public interface CounterpartyIdStage {
+        /**
+         * <p>The ID of the counterparty</p>
+         */
         _FinalStage counterpartyId(@NotNull String counterpartyId);
     }
 
@@ -131,6 +140,7 @@ public final class CounterpartyEventWebhook {
 
         /**
          * <p>The type of the event.</p>
+         * <p>The type of the event.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -142,6 +152,7 @@ public final class CounterpartyEventWebhook {
 
         /**
          * <p>The ID of the entity that owns the counterparty relationship</p>
+         * <p>The ID of the entity that owns the counterparty relationship</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -152,6 +163,7 @@ public final class CounterpartyEventWebhook {
         }
 
         /**
+         * <p>The ID of the counterparty</p>
          * <p>The ID of the counterparty</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

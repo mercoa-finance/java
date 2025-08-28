@@ -19,7 +19,9 @@ import com.mercoa.api.resources.invoicetypes.types.InvoiceMetricsPerDateGroupBy;
 import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
 import com.mercoa.api.resources.paymentmethodtypes.types.CurrencyCode;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,6 +29,20 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GroupInvoiceMetricsRequest.Builder.class)
 public final class GroupInvoiceMetricsRequest {
+    private final Optional<List<InvoiceMetricsGroupBy>> groupBy;
+
+    private final Optional<List<String>> payerId;
+
+    private final Optional<List<String>> vendorId;
+
+    private final Optional<List<String>> approverId;
+
+    private final Optional<List<String>> invoiceId;
+
+    private final Optional<List<InvoiceStatus>> status;
+
+    private final Optional<List<CurrencyCode>> currency;
+
     private final Optional<String> search;
 
     private final Optional<Boolean> excludePayables;
@@ -37,17 +53,7 @@ public final class GroupInvoiceMetricsRequest {
 
     private final Optional<InvoiceMetricsPerDateFrequency> returnByDateFrequency;
 
-    private final Optional<InvoiceMetricsGroupBy> groupBy;
-
-    private final Optional<String> payerId;
-
-    private final Optional<String> vendorId;
-
-    private final Optional<String> approverId;
-
-    private final Optional<String> invoiceId;
-
-    private final Optional<InvoiceStatus> status;
+    private final Optional<String> approverCount;
 
     private final Optional<OffsetDateTime> startDate;
 
@@ -55,43 +61,99 @@ public final class GroupInvoiceMetricsRequest {
 
     private final Optional<InvoiceDateFilter> dateType;
 
-    private final Optional<CurrencyCode> currency;
-
     private final Map<String, Object> additionalProperties;
 
     private GroupInvoiceMetricsRequest(
+            Optional<List<InvoiceMetricsGroupBy>> groupBy,
+            Optional<List<String>> payerId,
+            Optional<List<String>> vendorId,
+            Optional<List<String>> approverId,
+            Optional<List<String>> invoiceId,
+            Optional<List<InvoiceStatus>> status,
+            Optional<List<CurrencyCode>> currency,
             Optional<String> search,
             Optional<Boolean> excludePayables,
             Optional<Boolean> excludeReceivables,
             Optional<InvoiceMetricsPerDateGroupBy> returnByDate,
             Optional<InvoiceMetricsPerDateFrequency> returnByDateFrequency,
-            Optional<InvoiceMetricsGroupBy> groupBy,
-            Optional<String> payerId,
-            Optional<String> vendorId,
-            Optional<String> approverId,
-            Optional<String> invoiceId,
-            Optional<InvoiceStatus> status,
+            Optional<String> approverCount,
             Optional<OffsetDateTime> startDate,
             Optional<OffsetDateTime> endDate,
             Optional<InvoiceDateFilter> dateType,
-            Optional<CurrencyCode> currency,
             Map<String, Object> additionalProperties) {
-        this.search = search;
-        this.excludePayables = excludePayables;
-        this.excludeReceivables = excludeReceivables;
-        this.returnByDate = returnByDate;
-        this.returnByDateFrequency = returnByDateFrequency;
         this.groupBy = groupBy;
         this.payerId = payerId;
         this.vendorId = vendorId;
         this.approverId = approverId;
         this.invoiceId = invoiceId;
         this.status = status;
+        this.currency = currency;
+        this.search = search;
+        this.excludePayables = excludePayables;
+        this.excludeReceivables = excludeReceivables;
+        this.returnByDate = returnByDate;
+        this.returnByDateFrequency = returnByDateFrequency;
+        this.approverCount = approverCount;
         this.startDate = startDate;
         this.endDate = endDate;
         this.dateType = dateType;
-        this.currency = currency;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Return invoice metrics grouped by.
+     */
+    @JsonProperty("groupBy")
+    public Optional<List<InvoiceMetricsGroupBy>> getGroupBy() {
+        return groupBy;
+    }
+
+    /**
+     * @return Filter invoices by payer ID.
+     */
+    @JsonProperty("payerId")
+    public Optional<List<String>> getPayerId() {
+        return payerId;
+    }
+
+    /**
+     * @return Filter invoices by vendor ID.
+     */
+    @JsonProperty("vendorId")
+    public Optional<List<String>> getVendorId() {
+        return vendorId;
+    }
+
+    /**
+     * @return Filter invoices by assigned approver user ID.
+     */
+    @JsonProperty("approverId")
+    public Optional<List<String>> getApproverId() {
+        return approverId;
+    }
+
+    /**
+     * @return Filter invoices by invoice ID or invoice foreign ID.
+     */
+    @JsonProperty("invoiceId")
+    public Optional<List<String>> getInvoiceId() {
+        return invoiceId;
+    }
+
+    /**
+     * @return Invoice status to filter on
+     */
+    @JsonProperty("status")
+    public Optional<List<InvoiceStatus>> getStatus() {
+        return status;
+    }
+
+    /**
+     * @return Currency to filter on
+     */
+    @JsonProperty("currency")
+    public Optional<List<CurrencyCode>> getCurrency() {
+        return currency;
     }
 
     /**
@@ -135,51 +197,11 @@ public final class GroupInvoiceMetricsRequest {
     }
 
     /**
-     * @return Return invoice metrics grouped by.
+     * @return Filter invoices by the number of approvers. Use exact number (e.g., 3) or range (e.g., &quot;&gt;3&quot;, &quot;&lt;5&quot;, &quot;&gt;=2&quot;, &quot;&lt;=4&quot;).
      */
-    @JsonProperty("groupBy")
-    public Optional<InvoiceMetricsGroupBy> getGroupBy() {
-        return groupBy;
-    }
-
-    /**
-     * @return Filter invoices by payer ID.
-     */
-    @JsonProperty("payerId")
-    public Optional<String> getPayerId() {
-        return payerId;
-    }
-
-    /**
-     * @return Filter invoices by vendor ID.
-     */
-    @JsonProperty("vendorId")
-    public Optional<String> getVendorId() {
-        return vendorId;
-    }
-
-    /**
-     * @return Filter invoices by assigned approver user ID.
-     */
-    @JsonProperty("approverId")
-    public Optional<String> getApproverId() {
-        return approverId;
-    }
-
-    /**
-     * @return Filter invoices by invoice ID or invoice foreign ID.
-     */
-    @JsonProperty("invoiceId")
-    public Optional<String> getInvoiceId() {
-        return invoiceId;
-    }
-
-    /**
-     * @return Invoice status to filter on
-     */
-    @JsonProperty("status")
-    public Optional<InvoiceStatus> getStatus() {
-        return status;
+    @JsonProperty("approverCount")
+    public Optional<String> getApproverCount() {
+        return approverCount;
     }
 
     /**
@@ -206,14 +228,6 @@ public final class GroupInvoiceMetricsRequest {
         return dateType;
     }
 
-    /**
-     * @return Currency to filter on
-     */
-    @JsonProperty("currency")
-    public Optional<CurrencyCode> getCurrency() {
-        return currency;
-    }
-
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -226,41 +240,43 @@ public final class GroupInvoiceMetricsRequest {
     }
 
     private boolean equalTo(GroupInvoiceMetricsRequest other) {
-        return search.equals(other.search)
-                && excludePayables.equals(other.excludePayables)
-                && excludeReceivables.equals(other.excludeReceivables)
-                && returnByDate.equals(other.returnByDate)
-                && returnByDateFrequency.equals(other.returnByDateFrequency)
-                && groupBy.equals(other.groupBy)
+        return groupBy.equals(other.groupBy)
                 && payerId.equals(other.payerId)
                 && vendorId.equals(other.vendorId)
                 && approverId.equals(other.approverId)
                 && invoiceId.equals(other.invoiceId)
                 && status.equals(other.status)
+                && currency.equals(other.currency)
+                && search.equals(other.search)
+                && excludePayables.equals(other.excludePayables)
+                && excludeReceivables.equals(other.excludeReceivables)
+                && returnByDate.equals(other.returnByDate)
+                && returnByDateFrequency.equals(other.returnByDateFrequency)
+                && approverCount.equals(other.approverCount)
                 && startDate.equals(other.startDate)
                 && endDate.equals(other.endDate)
-                && dateType.equals(other.dateType)
-                && currency.equals(other.currency);
+                && dateType.equals(other.dateType);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.search,
-                this.excludePayables,
-                this.excludeReceivables,
-                this.returnByDate,
-                this.returnByDateFrequency,
                 this.groupBy,
                 this.payerId,
                 this.vendorId,
                 this.approverId,
                 this.invoiceId,
                 this.status,
+                this.currency,
+                this.search,
+                this.excludePayables,
+                this.excludeReceivables,
+                this.returnByDate,
+                this.returnByDateFrequency,
+                this.approverCount,
                 this.startDate,
                 this.endDate,
-                this.dateType,
-                this.currency);
+                this.dateType);
     }
 
     @java.lang.Override
@@ -274,6 +290,20 @@ public final class GroupInvoiceMetricsRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<List<InvoiceMetricsGroupBy>> groupBy = Optional.empty();
+
+        private Optional<List<String>> payerId = Optional.empty();
+
+        private Optional<List<String>> vendorId = Optional.empty();
+
+        private Optional<List<String>> approverId = Optional.empty();
+
+        private Optional<List<String>> invoiceId = Optional.empty();
+
+        private Optional<List<InvoiceStatus>> status = Optional.empty();
+
+        private Optional<List<CurrencyCode>> currency = Optional.empty();
+
         private Optional<String> search = Optional.empty();
 
         private Optional<Boolean> excludePayables = Optional.empty();
@@ -284,17 +314,7 @@ public final class GroupInvoiceMetricsRequest {
 
         private Optional<InvoiceMetricsPerDateFrequency> returnByDateFrequency = Optional.empty();
 
-        private Optional<InvoiceMetricsGroupBy> groupBy = Optional.empty();
-
-        private Optional<String> payerId = Optional.empty();
-
-        private Optional<String> vendorId = Optional.empty();
-
-        private Optional<String> approverId = Optional.empty();
-
-        private Optional<String> invoiceId = Optional.empty();
-
-        private Optional<InvoiceStatus> status = Optional.empty();
+        private Optional<String> approverCount = Optional.empty();
 
         private Optional<OffsetDateTime> startDate = Optional.empty();
 
@@ -302,32 +322,167 @@ public final class GroupInvoiceMetricsRequest {
 
         private Optional<InvoiceDateFilter> dateType = Optional.empty();
 
-        private Optional<CurrencyCode> currency = Optional.empty();
-
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
         public Builder from(GroupInvoiceMetricsRequest other) {
-            search(other.getSearch());
-            excludePayables(other.getExcludePayables());
-            excludeReceivables(other.getExcludeReceivables());
-            returnByDate(other.getReturnByDate());
-            returnByDateFrequency(other.getReturnByDateFrequency());
             groupBy(other.getGroupBy());
             payerId(other.getPayerId());
             vendorId(other.getVendorId());
             approverId(other.getApproverId());
             invoiceId(other.getInvoiceId());
             status(other.getStatus());
+            currency(other.getCurrency());
+            search(other.getSearch());
+            excludePayables(other.getExcludePayables());
+            excludeReceivables(other.getExcludeReceivables());
+            returnByDate(other.getReturnByDate());
+            returnByDateFrequency(other.getReturnByDateFrequency());
+            approverCount(other.getApproverCount());
             startDate(other.getStartDate());
             endDate(other.getEndDate());
             dateType(other.getDateType());
-            currency(other.getCurrency());
             return this;
         }
 
+        /**
+         * <p>Return invoice metrics grouped by.</p>
+         */
+        @JsonSetter(value = "groupBy", nulls = Nulls.SKIP)
+        public Builder groupBy(Optional<List<InvoiceMetricsGroupBy>> groupBy) {
+            this.groupBy = groupBy;
+            return this;
+        }
+
+        public Builder groupBy(List<InvoiceMetricsGroupBy> groupBy) {
+            this.groupBy = Optional.ofNullable(groupBy);
+            return this;
+        }
+
+        public Builder groupBy(InvoiceMetricsGroupBy groupBy) {
+            this.groupBy = Optional.of(Collections.singletonList(groupBy));
+            return this;
+        }
+
+        /**
+         * <p>Filter invoices by payer ID.</p>
+         */
+        @JsonSetter(value = "payerId", nulls = Nulls.SKIP)
+        public Builder payerId(Optional<List<String>> payerId) {
+            this.payerId = payerId;
+            return this;
+        }
+
+        public Builder payerId(List<String> payerId) {
+            this.payerId = Optional.ofNullable(payerId);
+            return this;
+        }
+
+        public Builder payerId(String payerId) {
+            this.payerId = Optional.of(Collections.singletonList(payerId));
+            return this;
+        }
+
+        /**
+         * <p>Filter invoices by vendor ID.</p>
+         */
+        @JsonSetter(value = "vendorId", nulls = Nulls.SKIP)
+        public Builder vendorId(Optional<List<String>> vendorId) {
+            this.vendorId = vendorId;
+            return this;
+        }
+
+        public Builder vendorId(List<String> vendorId) {
+            this.vendorId = Optional.ofNullable(vendorId);
+            return this;
+        }
+
+        public Builder vendorId(String vendorId) {
+            this.vendorId = Optional.of(Collections.singletonList(vendorId));
+            return this;
+        }
+
+        /**
+         * <p>Filter invoices by assigned approver user ID.</p>
+         */
+        @JsonSetter(value = "approverId", nulls = Nulls.SKIP)
+        public Builder approverId(Optional<List<String>> approverId) {
+            this.approverId = approverId;
+            return this;
+        }
+
+        public Builder approverId(List<String> approverId) {
+            this.approverId = Optional.ofNullable(approverId);
+            return this;
+        }
+
+        public Builder approverId(String approverId) {
+            this.approverId = Optional.of(Collections.singletonList(approverId));
+            return this;
+        }
+
+        /**
+         * <p>Filter invoices by invoice ID or invoice foreign ID.</p>
+         */
+        @JsonSetter(value = "invoiceId", nulls = Nulls.SKIP)
+        public Builder invoiceId(Optional<List<String>> invoiceId) {
+            this.invoiceId = invoiceId;
+            return this;
+        }
+
+        public Builder invoiceId(List<String> invoiceId) {
+            this.invoiceId = Optional.ofNullable(invoiceId);
+            return this;
+        }
+
+        public Builder invoiceId(String invoiceId) {
+            this.invoiceId = Optional.of(Collections.singletonList(invoiceId));
+            return this;
+        }
+
+        /**
+         * <p>Invoice status to filter on</p>
+         */
+        @JsonSetter(value = "status", nulls = Nulls.SKIP)
+        public Builder status(Optional<List<InvoiceStatus>> status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder status(List<InvoiceStatus> status) {
+            this.status = Optional.ofNullable(status);
+            return this;
+        }
+
+        public Builder status(InvoiceStatus status) {
+            this.status = Optional.of(Collections.singletonList(status));
+            return this;
+        }
+
+        /**
+         * <p>Currency to filter on</p>
+         */
+        @JsonSetter(value = "currency", nulls = Nulls.SKIP)
+        public Builder currency(Optional<List<CurrencyCode>> currency) {
+            this.currency = currency;
+            return this;
+        }
+
+        public Builder currency(List<CurrencyCode> currency) {
+            this.currency = Optional.ofNullable(currency);
+            return this;
+        }
+
+        public Builder currency(CurrencyCode currency) {
+            this.currency = Optional.of(Collections.singletonList(currency));
+            return this;
+        }
+
+        /**
+         * <p>Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.</p>
+         */
         @JsonSetter(value = "search", nulls = Nulls.SKIP)
         public Builder search(Optional<String> search) {
             this.search = search;
@@ -339,6 +494,9 @@ public final class GroupInvoiceMetricsRequest {
             return this;
         }
 
+        /**
+         * <p>Only return invoices that are not payable by the entity. This will return only invoices that are receivable by the entity.</p>
+         */
         @JsonSetter(value = "excludePayables", nulls = Nulls.SKIP)
         public Builder excludePayables(Optional<Boolean> excludePayables) {
             this.excludePayables = excludePayables;
@@ -350,6 +508,9 @@ public final class GroupInvoiceMetricsRequest {
             return this;
         }
 
+        /**
+         * <p>Only return invoices that are not receivable by the entity. This will return only invoices that are payable by the entity.</p>
+         */
         @JsonSetter(value = "excludeReceivables", nulls = Nulls.SKIP)
         public Builder excludeReceivables(Optional<Boolean> excludeReceivables) {
             this.excludeReceivables = excludeReceivables;
@@ -361,6 +522,9 @@ public final class GroupInvoiceMetricsRequest {
             return this;
         }
 
+        /**
+         * <p>Return invoice metrics grouped by date.</p>
+         */
         @JsonSetter(value = "returnByDate", nulls = Nulls.SKIP)
         public Builder returnByDate(Optional<InvoiceMetricsPerDateGroupBy> returnByDate) {
             this.returnByDate = returnByDate;
@@ -372,6 +536,9 @@ public final class GroupInvoiceMetricsRequest {
             return this;
         }
 
+        /**
+         * <p>Return invoice metrics grouped by date. Defaults to daily.</p>
+         */
         @JsonSetter(value = "returnByDateFrequency", nulls = Nulls.SKIP)
         public Builder returnByDateFrequency(Optional<InvoiceMetricsPerDateFrequency> returnByDateFrequency) {
             this.returnByDateFrequency = returnByDateFrequency;
@@ -383,72 +550,23 @@ public final class GroupInvoiceMetricsRequest {
             return this;
         }
 
-        @JsonSetter(value = "groupBy", nulls = Nulls.SKIP)
-        public Builder groupBy(Optional<InvoiceMetricsGroupBy> groupBy) {
-            this.groupBy = groupBy;
+        /**
+         * <p>Filter invoices by the number of approvers. Use exact number (e.g., 3) or range (e.g., &quot;&gt;3&quot;, &quot;&lt;5&quot;, &quot;&gt;=2&quot;, &quot;&lt;=4&quot;).</p>
+         */
+        @JsonSetter(value = "approverCount", nulls = Nulls.SKIP)
+        public Builder approverCount(Optional<String> approverCount) {
+            this.approverCount = approverCount;
             return this;
         }
 
-        public Builder groupBy(InvoiceMetricsGroupBy groupBy) {
-            this.groupBy = Optional.ofNullable(groupBy);
+        public Builder approverCount(String approverCount) {
+            this.approverCount = Optional.ofNullable(approverCount);
             return this;
         }
 
-        @JsonSetter(value = "payerId", nulls = Nulls.SKIP)
-        public Builder payerId(Optional<String> payerId) {
-            this.payerId = payerId;
-            return this;
-        }
-
-        public Builder payerId(String payerId) {
-            this.payerId = Optional.ofNullable(payerId);
-            return this;
-        }
-
-        @JsonSetter(value = "vendorId", nulls = Nulls.SKIP)
-        public Builder vendorId(Optional<String> vendorId) {
-            this.vendorId = vendorId;
-            return this;
-        }
-
-        public Builder vendorId(String vendorId) {
-            this.vendorId = Optional.ofNullable(vendorId);
-            return this;
-        }
-
-        @JsonSetter(value = "approverId", nulls = Nulls.SKIP)
-        public Builder approverId(Optional<String> approverId) {
-            this.approverId = approverId;
-            return this;
-        }
-
-        public Builder approverId(String approverId) {
-            this.approverId = Optional.ofNullable(approverId);
-            return this;
-        }
-
-        @JsonSetter(value = "invoiceId", nulls = Nulls.SKIP)
-        public Builder invoiceId(Optional<String> invoiceId) {
-            this.invoiceId = invoiceId;
-            return this;
-        }
-
-        public Builder invoiceId(String invoiceId) {
-            this.invoiceId = Optional.ofNullable(invoiceId);
-            return this;
-        }
-
-        @JsonSetter(value = "status", nulls = Nulls.SKIP)
-        public Builder status(Optional<InvoiceStatus> status) {
-            this.status = status;
-            return this;
-        }
-
-        public Builder status(InvoiceStatus status) {
-            this.status = Optional.ofNullable(status);
-            return this;
-        }
-
+        /**
+         * <p>Start date filter. Defaults to CREATED_AT unless specified the dateType is specified</p>
+         */
         @JsonSetter(value = "startDate", nulls = Nulls.SKIP)
         public Builder startDate(Optional<OffsetDateTime> startDate) {
             this.startDate = startDate;
@@ -460,6 +578,9 @@ public final class GroupInvoiceMetricsRequest {
             return this;
         }
 
+        /**
+         * <p>End date filter. Defaults to CREATED_AT unless specified the dateType is specified</p>
+         */
         @JsonSetter(value = "endDate", nulls = Nulls.SKIP)
         public Builder endDate(Optional<OffsetDateTime> endDate) {
             this.endDate = endDate;
@@ -471,6 +592,9 @@ public final class GroupInvoiceMetricsRequest {
             return this;
         }
 
+        /**
+         * <p>Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.</p>
+         */
         @JsonSetter(value = "dateType", nulls = Nulls.SKIP)
         public Builder dateType(Optional<InvoiceDateFilter> dateType) {
             this.dateType = dateType;
@@ -482,34 +606,24 @@ public final class GroupInvoiceMetricsRequest {
             return this;
         }
 
-        @JsonSetter(value = "currency", nulls = Nulls.SKIP)
-        public Builder currency(Optional<CurrencyCode> currency) {
-            this.currency = currency;
-            return this;
-        }
-
-        public Builder currency(CurrencyCode currency) {
-            this.currency = Optional.ofNullable(currency);
-            return this;
-        }
-
         public GroupInvoiceMetricsRequest build() {
             return new GroupInvoiceMetricsRequest(
-                    search,
-                    excludePayables,
-                    excludeReceivables,
-                    returnByDate,
-                    returnByDateFrequency,
                     groupBy,
                     payerId,
                     vendorId,
                     approverId,
                     invoiceId,
                     status,
+                    currency,
+                    search,
+                    excludePayables,
+                    excludeReceivables,
+                    returnByDate,
+                    returnByDateFrequency,
+                    approverCount,
                     startDate,
                     endDate,
                     dateType,
-                    currency,
                     additionalProperties);
         }
     }

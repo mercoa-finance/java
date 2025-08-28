@@ -97,18 +97,27 @@ public final class WithdrawWalletFundsRequest {
     }
 
     public interface AmountStage {
+        /**
+         * <p>The amount of the funds to withdraw. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
+         */
         DestinationPaymentMethodIdStage amount(double amount);
 
         Builder from(WithdrawWalletFundsRequest other);
     }
 
     public interface DestinationPaymentMethodIdStage {
+        /**
+         * <p>The ID of the bank account to withdraw funds to. The destination payment method ID must refer to a bank account.</p>
+         */
         _FinalStage destinationPaymentMethodId(@NotNull String destinationPaymentMethodId);
     }
 
     public interface _FinalStage {
         WithdrawWalletFundsRequest build();
 
+        /**
+         * <p>The currency of the funds to withdraw. (Defaults to USD, currently only USD is supported.)</p>
+         */
         _FinalStage currency(Optional<CurrencyCode> currency);
 
         _FinalStage currency(CurrencyCode currency);
@@ -137,6 +146,7 @@ public final class WithdrawWalletFundsRequest {
 
         /**
          * <p>The amount of the funds to withdraw. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
+         * <p>The amount of the funds to withdraw. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -147,6 +157,7 @@ public final class WithdrawWalletFundsRequest {
         }
 
         /**
+         * <p>The ID of the bank account to withdraw funds to. The destination payment method ID must refer to a bank account.</p>
          * <p>The ID of the bank account to withdraw funds to. The destination payment method ID must refer to a bank account.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -168,6 +179,9 @@ public final class WithdrawWalletFundsRequest {
             return this;
         }
 
+        /**
+         * <p>The currency of the funds to withdraw. (Defaults to USD, currently only USD is supported.)</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "currency", nulls = Nulls.SKIP)
         public _FinalStage currency(Optional<CurrencyCode> currency) {

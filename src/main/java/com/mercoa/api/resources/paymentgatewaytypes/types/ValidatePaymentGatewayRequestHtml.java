@@ -66,6 +66,9 @@ public final class ValidatePaymentGatewayRequestHtml {
     }
 
     public interface HtmlStage {
+        /**
+         * <p>The HTML from an email to extract the payment gateway from</p>
+         */
         _FinalStage html(@NotNull String html);
 
         Builder from(ValidatePaymentGatewayRequestHtml other);
@@ -91,6 +94,7 @@ public final class ValidatePaymentGatewayRequestHtml {
         }
 
         /**
+         * <p>The HTML from an email to extract the payment gateway from</p>
          * <p>The HTML from an email to extract the payment gateway from</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

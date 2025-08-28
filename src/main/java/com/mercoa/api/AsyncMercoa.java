@@ -32,8 +32,6 @@ public class AsyncMercoa {
 
     protected final Supplier<AsyncOrganizationClient> organizationClient;
 
-    protected final Supplier<AsyncPaymentGatewayClient> paymentGatewayClient;
-
     protected final Supplier<AsyncBankLookupClient> bankLookupClient;
 
     protected final Supplier<AsyncCalculateClient> calculateClient;
@@ -41,6 +39,8 @@ public class AsyncMercoa {
     protected final Supplier<AsyncCustomPaymentMethodSchemaClient> customPaymentMethodSchemaClient;
 
     protected final Supplier<AsyncOcrClient> ocrClient;
+
+    protected final Supplier<AsyncPaymentGatewayClient> paymentGatewayClient;
 
     protected final Supplier<AsyncPaymentMethodsClient> paymentMethodsClient;
 
@@ -53,12 +53,12 @@ public class AsyncMercoa {
         this.invoiceTemplateClient = Suppliers.memoize(() -> new AsyncInvoiceTemplateClient(clientOptions));
         this.invoiceClient = Suppliers.memoize(() -> new AsyncInvoiceClient(clientOptions));
         this.organizationClient = Suppliers.memoize(() -> new AsyncOrganizationClient(clientOptions));
-        this.paymentGatewayClient = Suppliers.memoize(() -> new AsyncPaymentGatewayClient(clientOptions));
         this.bankLookupClient = Suppliers.memoize(() -> new AsyncBankLookupClient(clientOptions));
         this.calculateClient = Suppliers.memoize(() -> new AsyncCalculateClient(clientOptions));
         this.customPaymentMethodSchemaClient =
                 Suppliers.memoize(() -> new AsyncCustomPaymentMethodSchemaClient(clientOptions));
         this.ocrClient = Suppliers.memoize(() -> new AsyncOcrClient(clientOptions));
+        this.paymentGatewayClient = Suppliers.memoize(() -> new AsyncPaymentGatewayClient(clientOptions));
         this.paymentMethodsClient = Suppliers.memoize(() -> new AsyncPaymentMethodsClient(clientOptions));
         this.transactionClient = Suppliers.memoize(() -> new AsyncTransactionClient(clientOptions));
     }
@@ -83,10 +83,6 @@ public class AsyncMercoa {
         return this.organizationClient.get();
     }
 
-    public AsyncPaymentGatewayClient paymentGateway() {
-        return this.paymentGatewayClient.get();
-    }
-
     public AsyncBankLookupClient bankLookup() {
         return this.bankLookupClient.get();
     }
@@ -101,6 +97,10 @@ public class AsyncMercoa {
 
     public AsyncOcrClient ocr() {
         return this.ocrClient.get();
+    }
+
+    public AsyncPaymentGatewayClient paymentGateway() {
+        return this.paymentGatewayClient.get();
     }
 
     public AsyncPaymentMethodsClient paymentMethods() {

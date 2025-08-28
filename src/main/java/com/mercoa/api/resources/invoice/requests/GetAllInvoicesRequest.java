@@ -20,6 +20,7 @@ import com.mercoa.api.resources.invoicetypes.types.InvoiceStatus;
 import com.mercoa.api.resources.invoicetypes.types.MetadataFilter;
 import com.mercoa.api.resources.invoicetypes.types.PaymentType;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,29 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GetAllInvoicesRequest.Builder.class)
 public final class GetAllInvoicesRequest {
-    private final Optional<String> entityId;
+    private final Optional<List<String>> entityId;
+
+    private final Optional<List<MetadataFilter>> metadata;
+
+    private final Optional<List<MetadataFilter>> lineItemMetadata;
+
+    private final Optional<List<String>> lineItemGlAccountId;
+
+    private final Optional<List<String>> payerId;
+
+    private final Optional<List<String>> vendorId;
+
+    private final Optional<List<String>> creatorUserId;
+
+    private final Optional<List<String>> approverId;
+
+    private final Optional<List<ApproverAction>> approverAction;
+
+    private final Optional<List<String>> invoiceId;
+
+    private final Optional<List<InvoiceStatus>> status;
+
+    private final Optional<List<String>> invoiceTemplateId;
 
     private final Optional<String> entityGroupId;
 
@@ -49,29 +72,9 @@ public final class GetAllInvoicesRequest {
 
     private final Optional<String> search;
 
-    private final Optional<MetadataFilter> metadata;
-
-    private final Optional<MetadataFilter> lineItemMetadata;
-
-    private final Optional<String> lineItemGlAccountId;
-
-    private final Optional<String> payerId;
-
-    private final Optional<String> vendorId;
-
-    private final Optional<String> creatorUserId;
-
-    private final Optional<String> approverId;
-
-    private final Optional<ApproverAction> approverAction;
-
-    private final Optional<String> invoiceId;
-
-    private final Optional<InvoiceStatus> status;
+    private final Optional<String> approverCount;
 
     private final Optional<List<PaymentType>> paymentType;
-
-    private final Optional<String> invoiceTemplateId;
 
     private final Optional<Boolean> returnPayerMetadata;
 
@@ -82,7 +85,18 @@ public final class GetAllInvoicesRequest {
     private final Map<String, Object> additionalProperties;
 
     private GetAllInvoicesRequest(
-            Optional<String> entityId,
+            Optional<List<String>> entityId,
+            Optional<List<MetadataFilter>> metadata,
+            Optional<List<MetadataFilter>> lineItemMetadata,
+            Optional<List<String>> lineItemGlAccountId,
+            Optional<List<String>> payerId,
+            Optional<List<String>> vendorId,
+            Optional<List<String>> creatorUserId,
+            Optional<List<String>> approverId,
+            Optional<List<ApproverAction>> approverAction,
+            Optional<List<String>> invoiceId,
+            Optional<List<InvoiceStatus>> status,
+            Optional<List<String>> invoiceTemplateId,
             Optional<String> entityGroupId,
             Optional<OffsetDateTime> startDate,
             Optional<OffsetDateTime> endDate,
@@ -92,32 +106,13 @@ public final class GetAllInvoicesRequest {
             Optional<Integer> limit,
             Optional<String> startingAfter,
             Optional<String> search,
-            Optional<MetadataFilter> metadata,
-            Optional<MetadataFilter> lineItemMetadata,
-            Optional<String> lineItemGlAccountId,
-            Optional<String> payerId,
-            Optional<String> vendorId,
-            Optional<String> creatorUserId,
-            Optional<String> approverId,
-            Optional<ApproverAction> approverAction,
-            Optional<String> invoiceId,
-            Optional<InvoiceStatus> status,
+            Optional<String> approverCount,
             Optional<List<PaymentType>> paymentType,
-            Optional<String> invoiceTemplateId,
             Optional<Boolean> returnPayerMetadata,
             Optional<Boolean> returnVendorMetadata,
             Optional<Boolean> returnPaymentTiming,
             Map<String, Object> additionalProperties) {
         this.entityId = entityId;
-        this.entityGroupId = entityGroupId;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.dateType = dateType;
-        this.orderBy = orderBy;
-        this.orderDirection = orderDirection;
-        this.limit = limit;
-        this.startingAfter = startingAfter;
-        this.search = search;
         this.metadata = metadata;
         this.lineItemMetadata = lineItemMetadata;
         this.lineItemGlAccountId = lineItemGlAccountId;
@@ -128,8 +123,18 @@ public final class GetAllInvoicesRequest {
         this.approverAction = approverAction;
         this.invoiceId = invoiceId;
         this.status = status;
-        this.paymentType = paymentType;
         this.invoiceTemplateId = invoiceTemplateId;
+        this.entityGroupId = entityGroupId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.dateType = dateType;
+        this.orderBy = orderBy;
+        this.orderDirection = orderDirection;
+        this.limit = limit;
+        this.startingAfter = startingAfter;
+        this.search = search;
+        this.approverCount = approverCount;
+        this.paymentType = paymentType;
         this.returnPayerMetadata = returnPayerMetadata;
         this.returnVendorMetadata = returnVendorMetadata;
         this.returnPaymentTiming = returnPaymentTiming;
@@ -140,8 +145,96 @@ public final class GetAllInvoicesRequest {
      * @return Filter invoices by the ID or foreign ID of the entity that is the payer or the vendor of the invoice.
      */
     @JsonProperty("entityId")
-    public Optional<String> getEntityId() {
+    public Optional<List<String>> getEntityId() {
         return entityId;
+    }
+
+    /**
+     * @return Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+     */
+    @JsonProperty("metadata")
+    public Optional<List<MetadataFilter>> getMetadata() {
+        return metadata;
+    }
+
+    /**
+     * @return Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+     */
+    @JsonProperty("lineItemMetadata")
+    public Optional<List<MetadataFilter>> getLineItemMetadata() {
+        return lineItemMetadata;
+    }
+
+    /**
+     * @return Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
+     */
+    @JsonProperty("lineItemGlAccountId")
+    public Optional<List<String>> getLineItemGlAccountId() {
+        return lineItemGlAccountId;
+    }
+
+    /**
+     * @return Filter invoices by payer ID or payer foreign ID.
+     */
+    @JsonProperty("payerId")
+    public Optional<List<String>> getPayerId() {
+        return payerId;
+    }
+
+    /**
+     * @return Filter invoices by vendor ID or vendor foreign ID.
+     */
+    @JsonProperty("vendorId")
+    public Optional<List<String>> getVendorId() {
+        return vendorId;
+    }
+
+    /**
+     * @return Filter invoices by the ID or foreign ID of the user that created the invoice.
+     */
+    @JsonProperty("creatorUserId")
+    public Optional<List<String>> getCreatorUserId() {
+        return creatorUserId;
+    }
+
+    /**
+     * @return Filter invoices by assigned approver user ID. Only invoices with all upstream policies approved will be returned.
+     */
+    @JsonProperty("approverId")
+    public Optional<List<String>> getApproverId() {
+        return approverId;
+    }
+
+    /**
+     * @return Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+     */
+    @JsonProperty("approverAction")
+    public Optional<List<ApproverAction>> getApproverAction() {
+        return approverAction;
+    }
+
+    /**
+     * @return Filter invoices by invoice ID or invoice foreign ID.
+     */
+    @JsonProperty("invoiceId")
+    public Optional<List<String>> getInvoiceId() {
+        return invoiceId;
+    }
+
+    /**
+     * @return Invoice status to filter on
+     */
+    @JsonProperty("status")
+    public Optional<List<InvoiceStatus>> getStatus() {
+        return status;
+    }
+
+    /**
+     * @return Filter invoice by invoice template ID
+     */
+    @JsonProperty("invoiceTemplateId")
+    public Optional<List<String>> getInvoiceTemplateId() {
+        return invoiceTemplateId;
     }
 
     /**
@@ -217,83 +310,11 @@ public final class GetAllInvoicesRequest {
     }
 
     /**
-     * @return Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+     * @return Filter invoices by the number of approvers. Use exact number (e.g., 3) or range (e.g., &quot;&gt;3&quot;, &quot;&lt;5&quot;, &quot;&gt;=2&quot;, &quot;&lt;=4&quot;).
      */
-    @JsonProperty("metadata")
-    public Optional<MetadataFilter> getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * @return Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
-     */
-    @JsonProperty("lineItemMetadata")
-    public Optional<MetadataFilter> getLineItemMetadata() {
-        return lineItemMetadata;
-    }
-
-    /**
-     * @return Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
-     */
-    @JsonProperty("lineItemGlAccountId")
-    public Optional<String> getLineItemGlAccountId() {
-        return lineItemGlAccountId;
-    }
-
-    /**
-     * @return Filter invoices by payer ID or payer foreign ID.
-     */
-    @JsonProperty("payerId")
-    public Optional<String> getPayerId() {
-        return payerId;
-    }
-
-    /**
-     * @return Filter invoices by vendor ID or vendor foreign ID.
-     */
-    @JsonProperty("vendorId")
-    public Optional<String> getVendorId() {
-        return vendorId;
-    }
-
-    /**
-     * @return Filter invoices by the ID or foreign ID of the user that created the invoice.
-     */
-    @JsonProperty("creatorUserId")
-    public Optional<String> getCreatorUserId() {
-        return creatorUserId;
-    }
-
-    /**
-     * @return Filter invoices by assigned approver user ID. Only invoices with all upstream policies approved will be returned.
-     */
-    @JsonProperty("approverId")
-    public Optional<String> getApproverId() {
-        return approverId;
-    }
-
-    /**
-     * @return Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
-     */
-    @JsonProperty("approverAction")
-    public Optional<ApproverAction> getApproverAction() {
-        return approverAction;
-    }
-
-    /**
-     * @return Filter invoices by invoice ID or invoice foreign ID.
-     */
-    @JsonProperty("invoiceId")
-    public Optional<String> getInvoiceId() {
-        return invoiceId;
-    }
-
-    /**
-     * @return Invoice status to filter on
-     */
-    @JsonProperty("status")
-    public Optional<InvoiceStatus> getStatus() {
-        return status;
+    @JsonProperty("approverCount")
+    public Optional<String> getApproverCount() {
+        return approverCount;
     }
 
     /**
@@ -302,14 +323,6 @@ public final class GetAllInvoicesRequest {
     @JsonProperty("paymentType")
     public Optional<List<PaymentType>> getPaymentType() {
         return paymentType;
-    }
-
-    /**
-     * @return Filter invoice by invoice template ID
-     */
-    @JsonProperty("invoiceTemplateId")
-    public Optional<String> getInvoiceTemplateId() {
-        return invoiceTemplateId;
     }
 
     /**
@@ -349,15 +362,6 @@ public final class GetAllInvoicesRequest {
 
     private boolean equalTo(GetAllInvoicesRequest other) {
         return entityId.equals(other.entityId)
-                && entityGroupId.equals(other.entityGroupId)
-                && startDate.equals(other.startDate)
-                && endDate.equals(other.endDate)
-                && dateType.equals(other.dateType)
-                && orderBy.equals(other.orderBy)
-                && orderDirection.equals(other.orderDirection)
-                && limit.equals(other.limit)
-                && startingAfter.equals(other.startingAfter)
-                && search.equals(other.search)
                 && metadata.equals(other.metadata)
                 && lineItemMetadata.equals(other.lineItemMetadata)
                 && lineItemGlAccountId.equals(other.lineItemGlAccountId)
@@ -368,8 +372,18 @@ public final class GetAllInvoicesRequest {
                 && approverAction.equals(other.approverAction)
                 && invoiceId.equals(other.invoiceId)
                 && status.equals(other.status)
-                && paymentType.equals(other.paymentType)
                 && invoiceTemplateId.equals(other.invoiceTemplateId)
+                && entityGroupId.equals(other.entityGroupId)
+                && startDate.equals(other.startDate)
+                && endDate.equals(other.endDate)
+                && dateType.equals(other.dateType)
+                && orderBy.equals(other.orderBy)
+                && orderDirection.equals(other.orderDirection)
+                && limit.equals(other.limit)
+                && startingAfter.equals(other.startingAfter)
+                && search.equals(other.search)
+                && approverCount.equals(other.approverCount)
+                && paymentType.equals(other.paymentType)
                 && returnPayerMetadata.equals(other.returnPayerMetadata)
                 && returnVendorMetadata.equals(other.returnVendorMetadata)
                 && returnPaymentTiming.equals(other.returnPaymentTiming);
@@ -379,15 +393,6 @@ public final class GetAllInvoicesRequest {
     public int hashCode() {
         return Objects.hash(
                 this.entityId,
-                this.entityGroupId,
-                this.startDate,
-                this.endDate,
-                this.dateType,
-                this.orderBy,
-                this.orderDirection,
-                this.limit,
-                this.startingAfter,
-                this.search,
                 this.metadata,
                 this.lineItemMetadata,
                 this.lineItemGlAccountId,
@@ -398,8 +403,18 @@ public final class GetAllInvoicesRequest {
                 this.approverAction,
                 this.invoiceId,
                 this.status,
-                this.paymentType,
                 this.invoiceTemplateId,
+                this.entityGroupId,
+                this.startDate,
+                this.endDate,
+                this.dateType,
+                this.orderBy,
+                this.orderDirection,
+                this.limit,
+                this.startingAfter,
+                this.search,
+                this.approverCount,
+                this.paymentType,
                 this.returnPayerMetadata,
                 this.returnVendorMetadata,
                 this.returnPaymentTiming);
@@ -416,7 +431,29 @@ public final class GetAllInvoicesRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<String> entityId = Optional.empty();
+        private Optional<List<String>> entityId = Optional.empty();
+
+        private Optional<List<MetadataFilter>> metadata = Optional.empty();
+
+        private Optional<List<MetadataFilter>> lineItemMetadata = Optional.empty();
+
+        private Optional<List<String>> lineItemGlAccountId = Optional.empty();
+
+        private Optional<List<String>> payerId = Optional.empty();
+
+        private Optional<List<String>> vendorId = Optional.empty();
+
+        private Optional<List<String>> creatorUserId = Optional.empty();
+
+        private Optional<List<String>> approverId = Optional.empty();
+
+        private Optional<List<ApproverAction>> approverAction = Optional.empty();
+
+        private Optional<List<String>> invoiceId = Optional.empty();
+
+        private Optional<List<InvoiceStatus>> status = Optional.empty();
+
+        private Optional<List<String>> invoiceTemplateId = Optional.empty();
 
         private Optional<String> entityGroupId = Optional.empty();
 
@@ -436,29 +473,9 @@ public final class GetAllInvoicesRequest {
 
         private Optional<String> search = Optional.empty();
 
-        private Optional<MetadataFilter> metadata = Optional.empty();
-
-        private Optional<MetadataFilter> lineItemMetadata = Optional.empty();
-
-        private Optional<String> lineItemGlAccountId = Optional.empty();
-
-        private Optional<String> payerId = Optional.empty();
-
-        private Optional<String> vendorId = Optional.empty();
-
-        private Optional<String> creatorUserId = Optional.empty();
-
-        private Optional<String> approverId = Optional.empty();
-
-        private Optional<ApproverAction> approverAction = Optional.empty();
-
-        private Optional<String> invoiceId = Optional.empty();
-
-        private Optional<InvoiceStatus> status = Optional.empty();
+        private Optional<String> approverCount = Optional.empty();
 
         private Optional<List<PaymentType>> paymentType = Optional.empty();
-
-        private Optional<String> invoiceTemplateId = Optional.empty();
 
         private Optional<Boolean> returnPayerMetadata = Optional.empty();
 
@@ -473,15 +490,6 @@ public final class GetAllInvoicesRequest {
 
         public Builder from(GetAllInvoicesRequest other) {
             entityId(other.getEntityId());
-            entityGroupId(other.getEntityGroupId());
-            startDate(other.getStartDate());
-            endDate(other.getEndDate());
-            dateType(other.getDateType());
-            orderBy(other.getOrderBy());
-            orderDirection(other.getOrderDirection());
-            limit(other.getLimit());
-            startingAfter(other.getStartingAfter());
-            search(other.getSearch());
             metadata(other.getMetadata());
             lineItemMetadata(other.getLineItemMetadata());
             lineItemGlAccountId(other.getLineItemGlAccountId());
@@ -492,25 +500,255 @@ public final class GetAllInvoicesRequest {
             approverAction(other.getApproverAction());
             invoiceId(other.getInvoiceId());
             status(other.getStatus());
-            paymentType(other.getPaymentType());
             invoiceTemplateId(other.getInvoiceTemplateId());
+            entityGroupId(other.getEntityGroupId());
+            startDate(other.getStartDate());
+            endDate(other.getEndDate());
+            dateType(other.getDateType());
+            orderBy(other.getOrderBy());
+            orderDirection(other.getOrderDirection());
+            limit(other.getLimit());
+            startingAfter(other.getStartingAfter());
+            search(other.getSearch());
+            approverCount(other.getApproverCount());
+            paymentType(other.getPaymentType());
             returnPayerMetadata(other.getReturnPayerMetadata());
             returnVendorMetadata(other.getReturnVendorMetadata());
             returnPaymentTiming(other.getReturnPaymentTiming());
             return this;
         }
 
+        /**
+         * <p>Filter invoices by the ID or foreign ID of the entity that is the payer or the vendor of the invoice.</p>
+         */
         @JsonSetter(value = "entityId", nulls = Nulls.SKIP)
-        public Builder entityId(Optional<String> entityId) {
+        public Builder entityId(Optional<List<String>> entityId) {
             this.entityId = entityId;
             return this;
         }
 
-        public Builder entityId(String entityId) {
+        public Builder entityId(List<String> entityId) {
             this.entityId = Optional.ofNullable(entityId);
             return this;
         }
 
+        public Builder entityId(String entityId) {
+            this.entityId = Optional.of(Collections.singletonList(entityId));
+            return this;
+        }
+
+        /**
+         * <p>Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.</p>
+         */
+        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
+        public Builder metadata(Optional<List<MetadataFilter>> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        public Builder metadata(List<MetadataFilter> metadata) {
+            this.metadata = Optional.ofNullable(metadata);
+            return this;
+        }
+
+        public Builder metadata(MetadataFilter metadata) {
+            this.metadata = Optional.of(Collections.singletonList(metadata));
+            return this;
+        }
+
+        /**
+         * <p>Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.</p>
+         */
+        @JsonSetter(value = "lineItemMetadata", nulls = Nulls.SKIP)
+        public Builder lineItemMetadata(Optional<List<MetadataFilter>> lineItemMetadata) {
+            this.lineItemMetadata = lineItemMetadata;
+            return this;
+        }
+
+        public Builder lineItemMetadata(List<MetadataFilter> lineItemMetadata) {
+            this.lineItemMetadata = Optional.ofNullable(lineItemMetadata);
+            return this;
+        }
+
+        public Builder lineItemMetadata(MetadataFilter lineItemMetadata) {
+            this.lineItemMetadata = Optional.of(Collections.singletonList(lineItemMetadata));
+            return this;
+        }
+
+        /**
+         * <p>Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.</p>
+         */
+        @JsonSetter(value = "lineItemGlAccountId", nulls = Nulls.SKIP)
+        public Builder lineItemGlAccountId(Optional<List<String>> lineItemGlAccountId) {
+            this.lineItemGlAccountId = lineItemGlAccountId;
+            return this;
+        }
+
+        public Builder lineItemGlAccountId(List<String> lineItemGlAccountId) {
+            this.lineItemGlAccountId = Optional.ofNullable(lineItemGlAccountId);
+            return this;
+        }
+
+        public Builder lineItemGlAccountId(String lineItemGlAccountId) {
+            this.lineItemGlAccountId = Optional.of(Collections.singletonList(lineItemGlAccountId));
+            return this;
+        }
+
+        /**
+         * <p>Filter invoices by payer ID or payer foreign ID.</p>
+         */
+        @JsonSetter(value = "payerId", nulls = Nulls.SKIP)
+        public Builder payerId(Optional<List<String>> payerId) {
+            this.payerId = payerId;
+            return this;
+        }
+
+        public Builder payerId(List<String> payerId) {
+            this.payerId = Optional.ofNullable(payerId);
+            return this;
+        }
+
+        public Builder payerId(String payerId) {
+            this.payerId = Optional.of(Collections.singletonList(payerId));
+            return this;
+        }
+
+        /**
+         * <p>Filter invoices by vendor ID or vendor foreign ID.</p>
+         */
+        @JsonSetter(value = "vendorId", nulls = Nulls.SKIP)
+        public Builder vendorId(Optional<List<String>> vendorId) {
+            this.vendorId = vendorId;
+            return this;
+        }
+
+        public Builder vendorId(List<String> vendorId) {
+            this.vendorId = Optional.ofNullable(vendorId);
+            return this;
+        }
+
+        public Builder vendorId(String vendorId) {
+            this.vendorId = Optional.of(Collections.singletonList(vendorId));
+            return this;
+        }
+
+        /**
+         * <p>Filter invoices by the ID or foreign ID of the user that created the invoice.</p>
+         */
+        @JsonSetter(value = "creatorUserId", nulls = Nulls.SKIP)
+        public Builder creatorUserId(Optional<List<String>> creatorUserId) {
+            this.creatorUserId = creatorUserId;
+            return this;
+        }
+
+        public Builder creatorUserId(List<String> creatorUserId) {
+            this.creatorUserId = Optional.ofNullable(creatorUserId);
+            return this;
+        }
+
+        public Builder creatorUserId(String creatorUserId) {
+            this.creatorUserId = Optional.of(Collections.singletonList(creatorUserId));
+            return this;
+        }
+
+        /**
+         * <p>Filter invoices by assigned approver user ID. Only invoices with all upstream policies approved will be returned.</p>
+         */
+        @JsonSetter(value = "approverId", nulls = Nulls.SKIP)
+        public Builder approverId(Optional<List<String>> approverId) {
+            this.approverId = approverId;
+            return this;
+        }
+
+        public Builder approverId(List<String> approverId) {
+            this.approverId = Optional.ofNullable(approverId);
+            return this;
+        }
+
+        public Builder approverId(String approverId) {
+            this.approverId = Optional.of(Collections.singletonList(approverId));
+            return this;
+        }
+
+        /**
+         * <p>Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.</p>
+         */
+        @JsonSetter(value = "approverAction", nulls = Nulls.SKIP)
+        public Builder approverAction(Optional<List<ApproverAction>> approverAction) {
+            this.approverAction = approverAction;
+            return this;
+        }
+
+        public Builder approverAction(List<ApproverAction> approverAction) {
+            this.approverAction = Optional.ofNullable(approverAction);
+            return this;
+        }
+
+        public Builder approverAction(ApproverAction approverAction) {
+            this.approverAction = Optional.of(Collections.singletonList(approverAction));
+            return this;
+        }
+
+        /**
+         * <p>Filter invoices by invoice ID or invoice foreign ID.</p>
+         */
+        @JsonSetter(value = "invoiceId", nulls = Nulls.SKIP)
+        public Builder invoiceId(Optional<List<String>> invoiceId) {
+            this.invoiceId = invoiceId;
+            return this;
+        }
+
+        public Builder invoiceId(List<String> invoiceId) {
+            this.invoiceId = Optional.ofNullable(invoiceId);
+            return this;
+        }
+
+        public Builder invoiceId(String invoiceId) {
+            this.invoiceId = Optional.of(Collections.singletonList(invoiceId));
+            return this;
+        }
+
+        /**
+         * <p>Invoice status to filter on</p>
+         */
+        @JsonSetter(value = "status", nulls = Nulls.SKIP)
+        public Builder status(Optional<List<InvoiceStatus>> status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder status(List<InvoiceStatus> status) {
+            this.status = Optional.ofNullable(status);
+            return this;
+        }
+
+        public Builder status(InvoiceStatus status) {
+            this.status = Optional.of(Collections.singletonList(status));
+            return this;
+        }
+
+        /**
+         * <p>Filter invoice by invoice template ID</p>
+         */
+        @JsonSetter(value = "invoiceTemplateId", nulls = Nulls.SKIP)
+        public Builder invoiceTemplateId(Optional<List<String>> invoiceTemplateId) {
+            this.invoiceTemplateId = invoiceTemplateId;
+            return this;
+        }
+
+        public Builder invoiceTemplateId(List<String> invoiceTemplateId) {
+            this.invoiceTemplateId = Optional.ofNullable(invoiceTemplateId);
+            return this;
+        }
+
+        public Builder invoiceTemplateId(String invoiceTemplateId) {
+            this.invoiceTemplateId = Optional.of(Collections.singletonList(invoiceTemplateId));
+            return this;
+        }
+
+        /**
+         * <p>Filter invoices by the ID or foreign ID of the entity group that the entity belongs to.</p>
+         */
         @JsonSetter(value = "entityGroupId", nulls = Nulls.SKIP)
         public Builder entityGroupId(Optional<String> entityGroupId) {
             this.entityGroupId = entityGroupId;
@@ -522,6 +760,9 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
+        /**
+         * <p>Start date filter. Defaults to CREATED_AT unless specified the dateType is specified</p>
+         */
         @JsonSetter(value = "startDate", nulls = Nulls.SKIP)
         public Builder startDate(Optional<OffsetDateTime> startDate) {
             this.startDate = startDate;
@@ -533,6 +774,9 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
+        /**
+         * <p>End date filter. Defaults to CREATED_AT unless specified the dateType is specified</p>
+         */
         @JsonSetter(value = "endDate", nulls = Nulls.SKIP)
         public Builder endDate(Optional<OffsetDateTime> endDate) {
             this.endDate = endDate;
@@ -544,6 +788,9 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
+        /**
+         * <p>Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.</p>
+         */
         @JsonSetter(value = "dateType", nulls = Nulls.SKIP)
         public Builder dateType(Optional<InvoiceDateFilter> dateType) {
             this.dateType = dateType;
@@ -555,6 +802,9 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
+        /**
+         * <p>Field to order invoices by. Defaults to CREATED_AT.</p>
+         */
         @JsonSetter(value = "orderBy", nulls = Nulls.SKIP)
         public Builder orderBy(Optional<InvoiceOrderByField> orderBy) {
             this.orderBy = orderBy;
@@ -566,6 +816,9 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
+        /**
+         * <p>Direction to order invoices by. Defaults to asc.</p>
+         */
         @JsonSetter(value = "orderDirection", nulls = Nulls.SKIP)
         public Builder orderDirection(Optional<OrderDirection> orderDirection) {
             this.orderDirection = orderDirection;
@@ -577,6 +830,9 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
+        /**
+         * <p>Number of invoices to return. Limit can range between 1 and 100, and the default is 10.</p>
+         */
         @JsonSetter(value = "limit", nulls = Nulls.SKIP)
         public Builder limit(Optional<Integer> limit) {
             this.limit = limit;
@@ -588,6 +844,9 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
+        /**
+         * <p>The ID of the invoice to start after. If not provided, the first page of invoices will be returned.</p>
+         */
         @JsonSetter(value = "startingAfter", nulls = Nulls.SKIP)
         public Builder startingAfter(Optional<String> startingAfter) {
             this.startingAfter = startingAfter;
@@ -599,6 +858,9 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
+        /**
+         * <p>Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.</p>
+         */
         @JsonSetter(value = "search", nulls = Nulls.SKIP)
         public Builder search(Optional<String> search) {
             this.search = search;
@@ -610,116 +872,23 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
-        @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
-        public Builder metadata(Optional<MetadataFilter> metadata) {
-            this.metadata = metadata;
+        /**
+         * <p>Filter invoices by the number of approvers. Use exact number (e.g., 3) or range (e.g., &quot;&gt;3&quot;, &quot;&lt;5&quot;, &quot;&gt;=2&quot;, &quot;&lt;=4&quot;).</p>
+         */
+        @JsonSetter(value = "approverCount", nulls = Nulls.SKIP)
+        public Builder approverCount(Optional<String> approverCount) {
+            this.approverCount = approverCount;
             return this;
         }
 
-        public Builder metadata(MetadataFilter metadata) {
-            this.metadata = Optional.ofNullable(metadata);
+        public Builder approverCount(String approverCount) {
+            this.approverCount = Optional.ofNullable(approverCount);
             return this;
         }
 
-        @JsonSetter(value = "lineItemMetadata", nulls = Nulls.SKIP)
-        public Builder lineItemMetadata(Optional<MetadataFilter> lineItemMetadata) {
-            this.lineItemMetadata = lineItemMetadata;
-            return this;
-        }
-
-        public Builder lineItemMetadata(MetadataFilter lineItemMetadata) {
-            this.lineItemMetadata = Optional.ofNullable(lineItemMetadata);
-            return this;
-        }
-
-        @JsonSetter(value = "lineItemGlAccountId", nulls = Nulls.SKIP)
-        public Builder lineItemGlAccountId(Optional<String> lineItemGlAccountId) {
-            this.lineItemGlAccountId = lineItemGlAccountId;
-            return this;
-        }
-
-        public Builder lineItemGlAccountId(String lineItemGlAccountId) {
-            this.lineItemGlAccountId = Optional.ofNullable(lineItemGlAccountId);
-            return this;
-        }
-
-        @JsonSetter(value = "payerId", nulls = Nulls.SKIP)
-        public Builder payerId(Optional<String> payerId) {
-            this.payerId = payerId;
-            return this;
-        }
-
-        public Builder payerId(String payerId) {
-            this.payerId = Optional.ofNullable(payerId);
-            return this;
-        }
-
-        @JsonSetter(value = "vendorId", nulls = Nulls.SKIP)
-        public Builder vendorId(Optional<String> vendorId) {
-            this.vendorId = vendorId;
-            return this;
-        }
-
-        public Builder vendorId(String vendorId) {
-            this.vendorId = Optional.ofNullable(vendorId);
-            return this;
-        }
-
-        @JsonSetter(value = "creatorUserId", nulls = Nulls.SKIP)
-        public Builder creatorUserId(Optional<String> creatorUserId) {
-            this.creatorUserId = creatorUserId;
-            return this;
-        }
-
-        public Builder creatorUserId(String creatorUserId) {
-            this.creatorUserId = Optional.ofNullable(creatorUserId);
-            return this;
-        }
-
-        @JsonSetter(value = "approverId", nulls = Nulls.SKIP)
-        public Builder approverId(Optional<String> approverId) {
-            this.approverId = approverId;
-            return this;
-        }
-
-        public Builder approverId(String approverId) {
-            this.approverId = Optional.ofNullable(approverId);
-            return this;
-        }
-
-        @JsonSetter(value = "approverAction", nulls = Nulls.SKIP)
-        public Builder approverAction(Optional<ApproverAction> approverAction) {
-            this.approverAction = approverAction;
-            return this;
-        }
-
-        public Builder approverAction(ApproverAction approverAction) {
-            this.approverAction = Optional.ofNullable(approverAction);
-            return this;
-        }
-
-        @JsonSetter(value = "invoiceId", nulls = Nulls.SKIP)
-        public Builder invoiceId(Optional<String> invoiceId) {
-            this.invoiceId = invoiceId;
-            return this;
-        }
-
-        public Builder invoiceId(String invoiceId) {
-            this.invoiceId = Optional.ofNullable(invoiceId);
-            return this;
-        }
-
-        @JsonSetter(value = "status", nulls = Nulls.SKIP)
-        public Builder status(Optional<InvoiceStatus> status) {
-            this.status = status;
-            return this;
-        }
-
-        public Builder status(InvoiceStatus status) {
-            this.status = Optional.ofNullable(status);
-            return this;
-        }
-
+        /**
+         * <p>Filter invoices by recurring status</p>
+         */
         @JsonSetter(value = "paymentType", nulls = Nulls.SKIP)
         public Builder paymentType(Optional<List<PaymentType>> paymentType) {
             this.paymentType = paymentType;
@@ -731,17 +900,9 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
-        @JsonSetter(value = "invoiceTemplateId", nulls = Nulls.SKIP)
-        public Builder invoiceTemplateId(Optional<String> invoiceTemplateId) {
-            this.invoiceTemplateId = invoiceTemplateId;
-            return this;
-        }
-
-        public Builder invoiceTemplateId(String invoiceTemplateId) {
-            this.invoiceTemplateId = Optional.ofNullable(invoiceTemplateId);
-            return this;
-        }
-
+        /**
+         * <p>Whether to return payer metadata in the response</p>
+         */
         @JsonSetter(value = "returnPayerMetadata", nulls = Nulls.SKIP)
         public Builder returnPayerMetadata(Optional<Boolean> returnPayerMetadata) {
             this.returnPayerMetadata = returnPayerMetadata;
@@ -753,6 +914,9 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
+        /**
+         * <p>Whether to return vendor metadata in the response</p>
+         */
         @JsonSetter(value = "returnVendorMetadata", nulls = Nulls.SKIP)
         public Builder returnVendorMetadata(Optional<Boolean> returnVendorMetadata) {
             this.returnVendorMetadata = returnVendorMetadata;
@@ -764,6 +928,9 @@ public final class GetAllInvoicesRequest {
             return this;
         }
 
+        /**
+         * <p>Whether to return payment timing in the response</p>
+         */
         @JsonSetter(value = "returnPaymentTiming", nulls = Nulls.SKIP)
         public Builder returnPaymentTiming(Optional<Boolean> returnPaymentTiming) {
             this.returnPaymentTiming = returnPaymentTiming;
@@ -778,15 +945,6 @@ public final class GetAllInvoicesRequest {
         public GetAllInvoicesRequest build() {
             return new GetAllInvoicesRequest(
                     entityId,
-                    entityGroupId,
-                    startDate,
-                    endDate,
-                    dateType,
-                    orderBy,
-                    orderDirection,
-                    limit,
-                    startingAfter,
-                    search,
                     metadata,
                     lineItemMetadata,
                     lineItemGlAccountId,
@@ -797,8 +955,18 @@ public final class GetAllInvoicesRequest {
                     approverAction,
                     invoiceId,
                     status,
-                    paymentType,
                     invoiceTemplateId,
+                    entityGroupId,
+                    startDate,
+                    endDate,
+                    dateType,
+                    orderBy,
+                    orderDirection,
+                    limit,
+                    startingAfter,
+                    search,
+                    approverCount,
+                    paymentType,
                     returnPayerMetadata,
                     returnVendorMetadata,
                     returnPaymentTiming,

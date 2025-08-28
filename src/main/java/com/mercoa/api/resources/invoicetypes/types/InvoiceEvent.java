@@ -152,36 +152,57 @@ public final class InvoiceEvent {
     }
 
     public interface IdStage {
+        /**
+         * <p>The ID of the event</p>
+         */
         DataStage id(@NotNull String id);
 
         Builder from(InvoiceEvent other);
     }
 
     public interface DataStage {
+        /**
+         * <p>The data related to the invoice update</p>
+         */
         CreatedAtStage data(@NotNull InvoiceUpdateRequest data);
     }
 
     public interface CreatedAtStage {
+        /**
+         * <p>The timestamp when the event was created</p>
+         */
         _FinalStage createdAt(@NotNull OffsetDateTime createdAt);
     }
 
     public interface _FinalStage {
         InvoiceEvent build();
 
+        /**
+         * <p>The list of webhook IDs associated with this event</p>
+         */
         _FinalStage webhookIds(List<String> webhookIds);
 
         _FinalStage addWebhookIds(String webhookIds);
 
         _FinalStage addAllWebhookIds(List<String> webhookIds);
 
+        /**
+         * <p>The current status of the invoice event</p>
+         */
         _FinalStage status(Optional<InvoiceStatus> status);
 
         _FinalStage status(InvoiceStatus status);
 
+        /**
+         * <p>The ID of the user who triggered this event</p>
+         */
         _FinalStage userId(Optional<String> userId);
 
         _FinalStage userId(String userId);
 
+        /**
+         * <p>The IP address of the user who triggered the event</p>
+         */
         _FinalStage ipAddress(Optional<String> ipAddress);
 
         _FinalStage ipAddress(String ipAddress);
@@ -222,6 +243,7 @@ public final class InvoiceEvent {
 
         /**
          * <p>The ID of the event</p>
+         * <p>The ID of the event</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -233,6 +255,7 @@ public final class InvoiceEvent {
 
         /**
          * <p>The data related to the invoice update</p>
+         * <p>The data related to the invoice update</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -243,6 +266,7 @@ public final class InvoiceEvent {
         }
 
         /**
+         * <p>The timestamp when the event was created</p>
          * <p>The timestamp when the event was created</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -263,6 +287,9 @@ public final class InvoiceEvent {
             return this;
         }
 
+        /**
+         * <p>The IP address of the user who triggered the event</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "ipAddress", nulls = Nulls.SKIP)
         public _FinalStage ipAddress(Optional<String> ipAddress) {
@@ -280,6 +307,9 @@ public final class InvoiceEvent {
             return this;
         }
 
+        /**
+         * <p>The ID of the user who triggered this event</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "userId", nulls = Nulls.SKIP)
         public _FinalStage userId(Optional<String> userId) {
@@ -297,6 +327,9 @@ public final class InvoiceEvent {
             return this;
         }
 
+        /**
+         * <p>The current status of the invoice event</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "status", nulls = Nulls.SKIP)
         public _FinalStage status(Optional<InvoiceStatus> status) {
@@ -310,7 +343,9 @@ public final class InvoiceEvent {
          */
         @java.lang.Override
         public _FinalStage addAllWebhookIds(List<String> webhookIds) {
-            this.webhookIds.addAll(webhookIds);
+            if (webhookIds != null) {
+                this.webhookIds.addAll(webhookIds);
+            }
             return this;
         }
 
@@ -324,6 +359,9 @@ public final class InvoiceEvent {
             return this;
         }
 
+        /**
+         * <p>The list of webhook IDs associated with this event</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "webhookIds", nulls = Nulls.SKIP)
         public _FinalStage webhookIds(List<String> webhookIds) {

@@ -113,6 +113,9 @@ public final class CheckPaymentMethodCustomizationRequest implements IGenericPay
     }
 
     public interface DisabledStage {
+        /**
+         * <p>If true, this method will will not be available to the entity.</p>
+         */
         _FinalStage disabled(boolean disabled);
 
         Builder from(CheckPaymentMethodCustomizationRequest other);
@@ -121,14 +124,23 @@ public final class CheckPaymentMethodCustomizationRequest implements IGenericPay
     public interface _FinalStage {
         CheckPaymentMethodCustomizationRequest build();
 
+        /**
+         * <p>The default delivery method for this payment method.</p>
+         */
         _FinalStage defaultDeliveryMethod(Optional<CheckDeliveryMethod> defaultDeliveryMethod);
 
         _FinalStage defaultDeliveryMethod(CheckDeliveryMethod defaultDeliveryMethod);
 
+        /**
+         * <p>The delivery methods that are available for this payment method.</p>
+         */
         _FinalStage availableDeliveryMethods(Optional<List<CheckDeliveryMethod>> availableDeliveryMethods);
 
         _FinalStage availableDeliveryMethods(List<CheckDeliveryMethod> availableDeliveryMethods);
 
+        /**
+         * <p>If true, the check will be printed with the description.</p>
+         */
         _FinalStage printDescription(Optional<Boolean> printDescription);
 
         _FinalStage printDescription(Boolean printDescription);
@@ -160,6 +172,7 @@ public final class CheckPaymentMethodCustomizationRequest implements IGenericPay
 
         /**
          * <p>If true, this method will will not be available to the entity.</p>
+         * <p>If true, this method will will not be available to the entity.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -179,6 +192,9 @@ public final class CheckPaymentMethodCustomizationRequest implements IGenericPay
             return this;
         }
 
+        /**
+         * <p>If true, the check will be printed with the description.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "printDescription", nulls = Nulls.SKIP)
         public _FinalStage printDescription(Optional<Boolean> printDescription) {
@@ -196,6 +212,9 @@ public final class CheckPaymentMethodCustomizationRequest implements IGenericPay
             return this;
         }
 
+        /**
+         * <p>The delivery methods that are available for this payment method.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "availableDeliveryMethods", nulls = Nulls.SKIP)
         public _FinalStage availableDeliveryMethods(Optional<List<CheckDeliveryMethod>> availableDeliveryMethods) {
@@ -213,6 +232,9 @@ public final class CheckPaymentMethodCustomizationRequest implements IGenericPay
             return this;
         }
 
+        /**
+         * <p>The default delivery method for this payment method.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "defaultDeliveryMethod", nulls = Nulls.SKIP)
         public _FinalStage defaultDeliveryMethod(Optional<CheckDeliveryMethod> defaultDeliveryMethod) {

@@ -26,6 +26,8 @@ import org.jetbrains.annotations.NotNull;
 public final class VendorCreditResponse {
     private final String id;
 
+    private final Optional<String> memoNumber;
+
     private final Optional<Double> totalAmount;
 
     private final Optional<Double> remainingAmount;
@@ -50,6 +52,7 @@ public final class VendorCreditResponse {
 
     private VendorCreditResponse(
             String id,
+            Optional<String> memoNumber,
             Optional<Double> totalAmount,
             Optional<Double> remainingAmount,
             Optional<CurrencyCode> currency,
@@ -62,6 +65,7 @@ public final class VendorCreditResponse {
             OffsetDateTime updatedAt,
             Map<String, Object> additionalProperties) {
         this.id = id;
+        this.memoNumber = memoNumber;
         this.totalAmount = totalAmount;
         this.remainingAmount = remainingAmount;
         this.currency = currency;
@@ -78,6 +82,14 @@ public final class VendorCreditResponse {
     @JsonProperty("id")
     public String getId() {
         return id;
+    }
+
+    /**
+     * @return Memo number for the vendor credit
+     */
+    @JsonProperty("memoNumber")
+    public Optional<String> getMemoNumber() {
+        return memoNumber;
     }
 
     /**
@@ -167,6 +179,7 @@ public final class VendorCreditResponse {
 
     private boolean equalTo(VendorCreditResponse other) {
         return id.equals(other.id)
+                && memoNumber.equals(other.memoNumber)
                 && totalAmount.equals(other.totalAmount)
                 && remainingAmount.equals(other.remainingAmount)
                 && currency.equals(other.currency)
@@ -183,6 +196,7 @@ public final class VendorCreditResponse {
     public int hashCode() {
         return Objects.hash(
                 this.id,
+                this.memoNumber,
                 this.totalAmount,
                 this.remainingAmount,
                 this.currency,
@@ -211,10 +225,16 @@ public final class VendorCreditResponse {
     }
 
     public interface VendorIdStage {
+        /**
+         * <p>ID of the vendor the vendor credit may be used for</p>
+         */
         PayerIdStage vendorId(@NotNull String vendorId);
     }
 
     public interface PayerIdStage {
+        /**
+         * <p>ID of the payer who may use the vendor credit</p>
+         */
         CreatedAtStage payerId(@NotNull String payerId);
     }
 
@@ -229,26 +249,51 @@ public final class VendorCreditResponse {
     public interface _FinalStage {
         VendorCreditResponse build();
 
+        /**
+         * <p>Memo number for the vendor credit</p>
+         */
+        _FinalStage memoNumber(Optional<String> memoNumber);
+
+        _FinalStage memoNumber(String memoNumber);
+
+        /**
+         * <p>Total issued amount of the vendor credit in major units</p>
+         */
         _FinalStage totalAmount(Optional<Double> totalAmount);
 
         _FinalStage totalAmount(Double totalAmount);
 
+        /**
+         * <p>Remaining usable amount in the vendor credit in major units</p>
+         */
         _FinalStage remainingAmount(Optional<Double> remainingAmount);
 
         _FinalStage remainingAmount(Double remainingAmount);
 
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         */
         _FinalStage currency(Optional<CurrencyCode> currency);
 
         _FinalStage currency(CurrencyCode currency);
 
+        /**
+         * <p>ID of the entity that created this vendor credit</p>
+         */
         _FinalStage creatorEntityId(Optional<String> creatorEntityId);
 
         _FinalStage creatorEntityId(String creatorEntityId);
 
+        /**
+         * <p>An optional note to attach to the vendor credit</p>
+         */
         _FinalStage note(Optional<String> note);
 
         _FinalStage note(String note);
 
+        /**
+         * <p>The IDs of the invoices that this vendor credit has been applied to</p>
+         */
         _FinalStage invoiceIds(Optional<List<String>> invoiceIds);
 
         _FinalStage invoiceIds(List<String> invoiceIds);
@@ -279,6 +324,8 @@ public final class VendorCreditResponse {
 
         private Optional<Double> totalAmount = Optional.empty();
 
+        private Optional<String> memoNumber = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -287,6 +334,7 @@ public final class VendorCreditResponse {
         @java.lang.Override
         public Builder from(VendorCreditResponse other) {
             id(other.getId());
+            memoNumber(other.getMemoNumber());
             totalAmount(other.getTotalAmount());
             remainingAmount(other.getRemainingAmount());
             currency(other.getCurrency());
@@ -309,6 +357,7 @@ public final class VendorCreditResponse {
 
         /**
          * <p>ID of the vendor the vendor credit may be used for</p>
+         * <p>ID of the vendor the vendor credit may be used for</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -319,6 +368,7 @@ public final class VendorCreditResponse {
         }
 
         /**
+         * <p>ID of the payer who may use the vendor credit</p>
          * <p>ID of the payer who may use the vendor credit</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -353,6 +403,9 @@ public final class VendorCreditResponse {
             return this;
         }
 
+        /**
+         * <p>The IDs of the invoices that this vendor credit has been applied to</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "invoiceIds", nulls = Nulls.SKIP)
         public _FinalStage invoiceIds(Optional<List<String>> invoiceIds) {
@@ -370,6 +423,9 @@ public final class VendorCreditResponse {
             return this;
         }
 
+        /**
+         * <p>An optional note to attach to the vendor credit</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "note", nulls = Nulls.SKIP)
         public _FinalStage note(Optional<String> note) {
@@ -387,6 +443,9 @@ public final class VendorCreditResponse {
             return this;
         }
 
+        /**
+         * <p>ID of the entity that created this vendor credit</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "creatorEntityId", nulls = Nulls.SKIP)
         public _FinalStage creatorEntityId(Optional<String> creatorEntityId) {
@@ -404,6 +463,9 @@ public final class VendorCreditResponse {
             return this;
         }
 
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "currency", nulls = Nulls.SKIP)
         public _FinalStage currency(Optional<CurrencyCode> currency) {
@@ -421,6 +483,9 @@ public final class VendorCreditResponse {
             return this;
         }
 
+        /**
+         * <p>Remaining usable amount in the vendor credit in major units</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "remainingAmount", nulls = Nulls.SKIP)
         public _FinalStage remainingAmount(Optional<Double> remainingAmount) {
@@ -438,6 +503,9 @@ public final class VendorCreditResponse {
             return this;
         }
 
+        /**
+         * <p>Total issued amount of the vendor credit in major units</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "totalAmount", nulls = Nulls.SKIP)
         public _FinalStage totalAmount(Optional<Double> totalAmount) {
@@ -445,10 +513,31 @@ public final class VendorCreditResponse {
             return this;
         }
 
+        /**
+         * <p>Memo number for the vendor credit</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage memoNumber(String memoNumber) {
+            this.memoNumber = Optional.ofNullable(memoNumber);
+            return this;
+        }
+
+        /**
+         * <p>Memo number for the vendor credit</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "memoNumber", nulls = Nulls.SKIP)
+        public _FinalStage memoNumber(Optional<String> memoNumber) {
+            this.memoNumber = memoNumber;
+            return this;
+        }
+
         @java.lang.Override
         public VendorCreditResponse build() {
             return new VendorCreditResponse(
                     id,
+                    memoNumber,
                     totalAmount,
                     remainingAmount,
                     currency,

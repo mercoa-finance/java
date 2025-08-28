@@ -138,7 +138,9 @@ public final class EntityEventsResponse {
 
         @java.lang.Override
         public _FinalStage addAllData(List<EntityEvent> data) {
-            this.data.addAll(data);
+            if (data != null) {
+                this.data.addAll(data);
+            }
             return this;
         }
 

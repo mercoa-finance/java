@@ -98,6 +98,9 @@ public final class MetadataOcrRules {
             return this;
         }
 
+        /**
+         * <p>Attempt to extract this field from reading the document. Only applicable to line item metadata fields. Defaults to false.</p>
+         */
         @JsonSetter(value = "extractFromDocument", nulls = Nulls.SKIP)
         public Builder extractFromDocument(Optional<Boolean> extractFromDocument) {
             this.extractFromDocument = extractFromDocument;
@@ -109,6 +112,9 @@ public final class MetadataOcrRules {
             return this;
         }
 
+        /**
+         * <p>Attempt to predict this field from historical invoice metadata. Only applicable to line item metadata fields. Defaults to true.</p>
+         */
         @JsonSetter(value = "predictFromHistory", nulls = Nulls.SKIP)
         public Builder predictFromHistory(Optional<Boolean> predictFromHistory) {
             this.predictFromHistory = predictFromHistory;

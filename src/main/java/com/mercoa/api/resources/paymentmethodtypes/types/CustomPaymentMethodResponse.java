@@ -294,14 +294,23 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
     }
 
     public interface IsDefaultSourceStage {
+        /**
+         * <p>Indicates whether this payment method is the default source for the entity</p>
+         */
         IsDefaultDestinationStage isDefaultSource(boolean isDefaultSource);
     }
 
     public interface IsDefaultDestinationStage {
+        /**
+         * <p>Indicates whether this payment method is the default destination for the entity</p>
+         */
         FrozenStage isDefaultDestination(boolean isDefaultDestination);
     }
 
     public interface FrozenStage {
+        /**
+         * <p>Frozen payment methods cannot be used for payments, but will still be returned in API responses.</p>
+         */
         CreatedAtStage frozen(boolean frozen);
     }
 
@@ -314,6 +323,9 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
     }
 
     public interface SchemaIdStage {
+        /**
+         * <p>Payment method schema used for this payment method. Defines the fields that this payment method contains.</p>
+         */
         SchemaStage schemaId(@NotNull String schemaId);
     }
 
@@ -330,20 +342,32 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
         _FinalStage addAllSupportedCurrencies(List<CurrencyCode> supportedCurrencies);
 
+        /**
+         * <p>ID for this payment method in the external accounting system (e.g Rutter or Codat)</p>
+         */
         _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId);
 
         _FinalStage externalAccountingSystemId(String externalAccountingSystemId);
 
+        /**
+         * <p>Metadata associated with this payment method.</p>
+         */
         _FinalStage metadata(Map<String, String> metadata);
 
         _FinalStage putAllMetadata(Map<String, String> metadata);
 
         _FinalStage metadata(String key, String value);
 
+        /**
+         * <p>(ALPHA, MAY BE REMOVED) Indicates whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.</p>
+         */
         _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity);
 
         _FinalStage confirmedByEntity(Boolean confirmedByEntity);
 
+        /**
+         * <p>ID for this payment method in your system</p>
+         */
         _FinalStage foreignId(Optional<String> foreignId);
 
         _FinalStage foreignId(String foreignId);
@@ -356,10 +380,16 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
         _FinalStage accountNumber(String accountNumber);
 
+        /**
+         * <p>The available balance for this payment method.</p>
+         */
         _FinalStage availableBalance(Optional<Double> availableBalance);
 
         _FinalStage availableBalance(Double availableBalance);
 
+        /**
+         * <p>Object of key/value pairs that matches the keys in the linked payment method schema.</p>
+         */
         _FinalStage data(Map<String, String> data);
 
         _FinalStage putAllData(Map<String, String> data);
@@ -448,6 +478,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
         /**
          * <p>Indicates whether this payment method is the default source for the entity</p>
+         * <p>Indicates whether this payment method is the default source for the entity</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -459,6 +490,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
         /**
          * <p>Indicates whether this payment method is the default destination for the entity</p>
+         * <p>Indicates whether this payment method is the default destination for the entity</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -469,6 +501,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
         }
 
         /**
+         * <p>Frozen payment methods cannot be used for payments, but will still be returned in API responses.</p>
          * <p>Frozen payment methods cannot be used for payments, but will still be returned in API responses.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -494,6 +527,7 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
         }
 
         /**
+         * <p>Payment method schema used for this payment method. Defines the fields that this payment method contains.</p>
          * <p>Payment method schema used for this payment method. Defines the fields that this payment method contains.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -527,10 +561,15 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
          */
         @java.lang.Override
         public _FinalStage putAllData(Map<String, String> data) {
-            this.data.putAll(data);
+            if (data != null) {
+                this.data.putAll(data);
+            }
             return this;
         }
 
+        /**
+         * <p>Object of key/value pairs that matches the keys in the linked payment method schema.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "data", nulls = Nulls.SKIP)
         public _FinalStage data(Map<String, String> data) {
@@ -549,6 +588,9 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
             return this;
         }
 
+        /**
+         * <p>The available balance for this payment method.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "availableBalance", nulls = Nulls.SKIP)
         public _FinalStage availableBalance(Optional<Double> availableBalance) {
@@ -592,6 +634,9 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
             return this;
         }
 
+        /**
+         * <p>ID for this payment method in your system</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "foreignId", nulls = Nulls.SKIP)
         public _FinalStage foreignId(Optional<String> foreignId) {
@@ -609,6 +654,9 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
             return this;
         }
 
+        /**
+         * <p>(ALPHA, MAY BE REMOVED) Indicates whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "confirmedByEntity", nulls = Nulls.SKIP)
         public _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity) {
@@ -632,10 +680,15 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
          */
         @java.lang.Override
         public _FinalStage putAllMetadata(Map<String, String> metadata) {
-            this.metadata.putAll(metadata);
+            if (metadata != null) {
+                this.metadata.putAll(metadata);
+            }
             return this;
         }
 
+        /**
+         * <p>Metadata associated with this payment method.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public _FinalStage metadata(Map<String, String> metadata) {
@@ -654,6 +707,9 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
             return this;
         }
 
+        /**
+         * <p>ID for this payment method in the external accounting system (e.g Rutter or Codat)</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "externalAccountingSystemId", nulls = Nulls.SKIP)
         public _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId) {
@@ -663,7 +719,9 @@ public final class CustomPaymentMethodResponse implements IPaymentMethodBaseResp
 
         @java.lang.Override
         public _FinalStage addAllSupportedCurrencies(List<CurrencyCode> supportedCurrencies) {
-            this.supportedCurrencies.addAll(supportedCurrencies);
+            if (supportedCurrencies != null) {
+                this.supportedCurrencies.addAll(supportedCurrencies);
+            }
             return this;
         }
 

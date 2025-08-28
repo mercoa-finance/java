@@ -4,6 +4,7 @@
 package com.mercoa.api.resources.commons.errors;
 
 import com.mercoa.api.core.MercoaApiException;
+import okhttp3.Response;
 
 public final class BadRequest extends MercoaApiException {
     /**
@@ -13,6 +14,11 @@ public final class BadRequest extends MercoaApiException {
 
     public BadRequest(String body) {
         super("BadRequest", 400, body);
+        this.body = body;
+    }
+
+    public BadRequest(String body, Response rawResponse) {
+        super("BadRequest", 400, body, rawResponse);
         this.body = body;
     }
 

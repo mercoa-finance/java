@@ -67,6 +67,9 @@ public final class GenericPaymentMethodCustomizationRequest implements IGenericP
     }
 
     public interface DisabledStage {
+        /**
+         * <p>If true, this method will will not be available to the entity.</p>
+         */
         _FinalStage disabled(boolean disabled);
 
         Builder from(GenericPaymentMethodCustomizationRequest other);
@@ -92,6 +95,7 @@ public final class GenericPaymentMethodCustomizationRequest implements IGenericP
         }
 
         /**
+         * <p>If true, this method will will not be available to the entity.</p>
          * <p>If true, this method will will not be available to the entity.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

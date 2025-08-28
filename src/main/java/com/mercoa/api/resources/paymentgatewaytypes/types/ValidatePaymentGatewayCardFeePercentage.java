@@ -66,6 +66,9 @@ public final class ValidatePaymentGatewayCardFeePercentage {
     }
 
     public interface ValueStage {
+        /**
+         * <p>The fee percentage in bps. For example, if the fee is 2.5% and the payment amount is $100, set this to 250.</p>
+         */
         _FinalStage value(double value);
 
         Builder from(ValidatePaymentGatewayCardFeePercentage other);
@@ -91,6 +94,7 @@ public final class ValidatePaymentGatewayCardFeePercentage {
         }
 
         /**
+         * <p>The fee percentage in bps. For example, if the fee is 2.5% and the payment amount is $100, set this to 250.</p>
          * <p>The fee percentage in bps. For example, if the fee is 2.5% and the payment amount is $100, set this to 250.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

@@ -93,18 +93,27 @@ public final class ApprovalRequestWithId implements IApprovalRequest {
     }
 
     public interface UserIdStage {
+        /**
+         * <p>The ID or the Foreign ID of the user</p>
+         */
         InvoiceIdStage userId(@NotNull String userId);
 
         Builder from(ApprovalRequestWithId other);
     }
 
     public interface InvoiceIdStage {
+        /**
+         * <p>The ID or foreign ID of the invoice to approve</p>
+         */
         _FinalStage invoiceId(@NotNull String invoiceId);
     }
 
     public interface _FinalStage {
         ApprovalRequestWithId build();
 
+        /**
+         * <p>Comment associated with this approval action.</p>
+         */
         _FinalStage text(Optional<String> text);
 
         _FinalStage text(String text);
@@ -133,6 +142,7 @@ public final class ApprovalRequestWithId implements IApprovalRequest {
 
         /**
          * <p>The ID or the Foreign ID of the user</p>
+         * <p>The ID or the Foreign ID of the user</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -143,6 +153,7 @@ public final class ApprovalRequestWithId implements IApprovalRequest {
         }
 
         /**
+         * <p>The ID or foreign ID of the invoice to approve</p>
          * <p>The ID or foreign ID of the invoice to approve</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -163,6 +174,9 @@ public final class ApprovalRequestWithId implements IApprovalRequest {
             return this;
         }
 
+        /**
+         * <p>Comment associated with this approval action.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "text", nulls = Nulls.SKIP)
         public _FinalStage text(Optional<String> text) {

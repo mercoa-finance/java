@@ -79,12 +79,18 @@ public final class TransactionWebhook {
     }
 
     public interface EventTypeStage {
+        /**
+         * <p>The type of the event.</p>
+         */
         TransactionStage eventType(@NotNull String eventType);
 
         Builder from(TransactionWebhook other);
     }
 
     public interface TransactionStage {
+        /**
+         * <p>The transaction details.</p>
+         */
         _FinalStage transaction(@NotNull TransactionResponse transaction);
     }
 
@@ -112,6 +118,7 @@ public final class TransactionWebhook {
 
         /**
          * <p>The type of the event.</p>
+         * <p>The type of the event.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -122,6 +129,7 @@ public final class TransactionWebhook {
         }
 
         /**
+         * <p>The transaction details.</p>
          * <p>The transaction details.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

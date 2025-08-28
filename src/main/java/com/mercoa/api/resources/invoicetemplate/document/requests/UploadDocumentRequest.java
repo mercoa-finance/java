@@ -81,6 +81,9 @@ public final class UploadDocumentRequest {
     }
 
     public interface DocumentStage {
+        /**
+         * <p>Base64-encoded string. Supported file types include PNG, JPG, WEBP, PDF, and all Microsoft Office formats (automatically converted to PDF). Max file size 10MB.</p>
+         */
         _FinalStage document(@NotNull String document);
 
         Builder from(UploadDocumentRequest other);
@@ -89,6 +92,9 @@ public final class UploadDocumentRequest {
     public interface _FinalStage {
         UploadDocumentRequest build();
 
+        /**
+         * <p>Specify Document Type, defaults to INVOICE</p>
+         */
         _FinalStage type(Optional<DocumentType> type);
 
         _FinalStage type(DocumentType type);
@@ -114,6 +120,7 @@ public final class UploadDocumentRequest {
 
         /**
          * <p>Base64-encoded string. Supported file types include PNG, JPG, WEBP, PDF, and all Microsoft Office formats (automatically converted to PDF). Max file size 10MB.</p>
+         * <p>Base64-encoded string. Supported file types include PNG, JPG, WEBP, PDF, and all Microsoft Office formats (automatically converted to PDF). Max file size 10MB.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -133,6 +140,9 @@ public final class UploadDocumentRequest {
             return this;
         }
 
+        /**
+         * <p>Specify Document Type, defaults to INVOICE</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "type", nulls = Nulls.SKIP)
         public _FinalStage type(Optional<DocumentType> type) {

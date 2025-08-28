@@ -205,14 +205,23 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
     }
 
     public interface IsDefaultSourceStage {
+        /**
+         * <p>Indicates whether this payment method is the default source for the entity</p>
+         */
         IsDefaultDestinationStage isDefaultSource(boolean isDefaultSource);
     }
 
     public interface IsDefaultDestinationStage {
+        /**
+         * <p>Indicates whether this payment method is the default destination for the entity</p>
+         */
         FrozenStage isDefaultDestination(boolean isDefaultDestination);
     }
 
     public interface FrozenStage {
+        /**
+         * <p>Frozen payment methods cannot be used for payments, but will still be returned in API responses.</p>
+         */
         CreatedAtStage frozen(boolean frozen);
     }
 
@@ -233,16 +242,25 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
 
         _FinalStage addAllSupportedCurrencies(List<CurrencyCode> supportedCurrencies);
 
+        /**
+         * <p>ID for this payment method in the external accounting system (e.g Rutter or Codat)</p>
+         */
         _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId);
 
         _FinalStage externalAccountingSystemId(String externalAccountingSystemId);
 
+        /**
+         * <p>Metadata associated with this payment method.</p>
+         */
         _FinalStage metadata(Map<String, String> metadata);
 
         _FinalStage putAllMetadata(Map<String, String> metadata);
 
         _FinalStage metadata(String key, String value);
 
+        /**
+         * <p>(ALPHA, MAY BE REMOVED) Indicates whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.</p>
+         */
         _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity);
 
         _FinalStage confirmedByEntity(Boolean confirmedByEntity);
@@ -306,6 +324,7 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
 
         /**
          * <p>Indicates whether this payment method is the default source for the entity</p>
+         * <p>Indicates whether this payment method is the default source for the entity</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -317,6 +336,7 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
 
         /**
          * <p>Indicates whether this payment method is the default destination for the entity</p>
+         * <p>Indicates whether this payment method is the default destination for the entity</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -327,6 +347,7 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
         }
 
         /**
+         * <p>Frozen payment methods cannot be used for payments, but will still be returned in API responses.</p>
          * <p>Frozen payment methods cannot be used for payments, but will still be returned in API responses.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -361,6 +382,9 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
             return this;
         }
 
+        /**
+         * <p>(ALPHA, MAY BE REMOVED) Indicates whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "confirmedByEntity", nulls = Nulls.SKIP)
         public _FinalStage confirmedByEntity(Optional<Boolean> confirmedByEntity) {
@@ -384,10 +408,15 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
          */
         @java.lang.Override
         public _FinalStage putAllMetadata(Map<String, String> metadata) {
-            this.metadata.putAll(metadata);
+            if (metadata != null) {
+                this.metadata.putAll(metadata);
+            }
             return this;
         }
 
+        /**
+         * <p>Metadata associated with this payment method.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "metadata", nulls = Nulls.SKIP)
         public _FinalStage metadata(Map<String, String> metadata) {
@@ -406,6 +435,9 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
             return this;
         }
 
+        /**
+         * <p>ID for this payment method in the external accounting system (e.g Rutter or Codat)</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "externalAccountingSystemId", nulls = Nulls.SKIP)
         public _FinalStage externalAccountingSystemId(Optional<String> externalAccountingSystemId) {
@@ -415,7 +447,9 @@ public final class PaymentMethodBaseResponse implements IPaymentMethodBaseRespon
 
         @java.lang.Override
         public _FinalStage addAllSupportedCurrencies(List<CurrencyCode> supportedCurrencies) {
-            this.supportedCurrencies.addAll(supportedCurrencies);
+            if (supportedCurrencies != null) {
+                this.supportedCurrencies.addAll(supportedCurrencies);
+            }
             return this;
         }
 

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -21,10 +22,20 @@ import org.jetbrains.annotations.NotNull;
 public final class ValidatePaymentGatewayPendingResponse {
     private final String jobId;
 
+    private final OffsetDateTime createdAt;
+
+    private final OffsetDateTime updatedAt;
+
     private final Map<String, Object> additionalProperties;
 
-    private ValidatePaymentGatewayPendingResponse(String jobId, Map<String, Object> additionalProperties) {
+    private ValidatePaymentGatewayPendingResponse(
+            String jobId,
+            OffsetDateTime createdAt,
+            OffsetDateTime updatedAt,
+            Map<String, Object> additionalProperties) {
         this.jobId = jobId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
     }
 
@@ -34,6 +45,22 @@ public final class ValidatePaymentGatewayPendingResponse {
     @JsonProperty("jobId")
     public String getJobId() {
         return jobId;
+    }
+
+    /**
+     * @return The timestamp when the job was created
+     */
+    @JsonProperty("createdAt")
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    /**
+     * @return The timestamp when the job was last updated
+     */
+    @JsonProperty("updatedAt")
+    public OffsetDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     @java.lang.Override
@@ -49,12 +76,12 @@ public final class ValidatePaymentGatewayPendingResponse {
     }
 
     private boolean equalTo(ValidatePaymentGatewayPendingResponse other) {
-        return jobId.equals(other.jobId);
+        return jobId.equals(other.jobId) && createdAt.equals(other.createdAt) && updatedAt.equals(other.updatedAt);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.jobId);
+        return Objects.hash(this.jobId, this.createdAt, this.updatedAt);
     }
 
     @java.lang.Override
@@ -67,9 +94,26 @@ public final class ValidatePaymentGatewayPendingResponse {
     }
 
     public interface JobIdStage {
-        _FinalStage jobId(@NotNull String jobId);
+        /**
+         * <p>The job ID of the payment gateway validation job</p>
+         */
+        CreatedAtStage jobId(@NotNull String jobId);
 
         Builder from(ValidatePaymentGatewayPendingResponse other);
+    }
+
+    public interface CreatedAtStage {
+        /**
+         * <p>The timestamp when the job was created</p>
+         */
+        UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt);
+    }
+
+    public interface UpdatedAtStage {
+        /**
+         * <p>The timestamp when the job was last updated</p>
+         */
+        _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt);
     }
 
     public interface _FinalStage {
@@ -77,8 +121,12 @@ public final class ValidatePaymentGatewayPendingResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements JobIdStage, _FinalStage {
+    public static final class Builder implements JobIdStage, CreatedAtStage, UpdatedAtStage, _FinalStage {
         private String jobId;
+
+        private OffsetDateTime createdAt;
+
+        private OffsetDateTime updatedAt;
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -88,23 +136,50 @@ public final class ValidatePaymentGatewayPendingResponse {
         @java.lang.Override
         public Builder from(ValidatePaymentGatewayPendingResponse other) {
             jobId(other.getJobId());
+            createdAt(other.getCreatedAt());
+            updatedAt(other.getUpdatedAt());
             return this;
         }
 
         /**
          * <p>The job ID of the payment gateway validation job</p>
+         * <p>The job ID of the payment gateway validation job</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
         @JsonSetter("jobId")
-        public _FinalStage jobId(@NotNull String jobId) {
+        public CreatedAtStage jobId(@NotNull String jobId) {
             this.jobId = Objects.requireNonNull(jobId, "jobId must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The timestamp when the job was created</p>
+         * <p>The timestamp when the job was created</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("createdAt")
+        public UpdatedAtStage createdAt(@NotNull OffsetDateTime createdAt) {
+            this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The timestamp when the job was last updated</p>
+         * <p>The timestamp when the job was last updated</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("updatedAt")
+        public _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt) {
+            this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
             return this;
         }
 
         @java.lang.Override
         public ValidatePaymentGatewayPendingResponse build() {
-            return new ValidatePaymentGatewayPendingResponse(jobId, additionalProperties);
+            return new ValidatePaymentGatewayPendingResponse(jobId, createdAt, updatedAt, additionalProperties);
         }
     }
 }

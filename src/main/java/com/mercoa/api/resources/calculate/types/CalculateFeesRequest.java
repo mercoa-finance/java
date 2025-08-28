@@ -157,34 +157,55 @@ public final class CalculateFeesRequest {
     }
 
     public interface AmountStage {
+        /**
+         * <p>Total amount in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
+         */
         PaymentSourceIdStage amount(double amount);
 
         Builder from(CalculateFeesRequest other);
     }
 
     public interface PaymentSourceIdStage {
+        /**
+         * <p>ID of payment source.</p>
+         */
         PaymentDestinationIdStage paymentSourceId(@NotNull String paymentSourceId);
     }
 
     public interface PaymentDestinationIdStage {
+        /**
+         * <p>ID of payment destination.</p>
+         */
         _FinalStage paymentDestinationId(@NotNull String paymentDestinationId);
     }
 
     public interface _FinalStage {
         CalculateFeesRequest build();
 
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         */
         _FinalStage currency(Optional<CurrencyCode> currency);
 
         _FinalStage currency(CurrencyCode currency);
 
+        /**
+         * <p>ID of the entity creating the invoice. If not provided, the fees will be calculated with the default pricing for the organization.</p>
+         */
         _FinalStage creatorEntityId(Optional<String> creatorEntityId);
 
         _FinalStage creatorEntityId(String creatorEntityId);
 
+        /**
+         * <p>Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.</p>
+         */
         _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions);
 
         _FinalStage paymentDestinationOptions(PaymentDestinationOptions paymentDestinationOptions);
 
+        /**
+         * <p>Type of payment to calculate fees for. Defaults to PAYABLE (Accounts Payable).</p>
+         */
         _FinalStage type(Optional<FeeCalculationType> type);
 
         _FinalStage type(FeeCalculationType type);
@@ -226,6 +247,7 @@ public final class CalculateFeesRequest {
 
         /**
          * <p>Total amount in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
+         * <p>Total amount in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -237,6 +259,7 @@ public final class CalculateFeesRequest {
 
         /**
          * <p>ID of payment source.</p>
+         * <p>ID of payment source.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -247,6 +270,7 @@ public final class CalculateFeesRequest {
         }
 
         /**
+         * <p>ID of payment destination.</p>
          * <p>ID of payment destination.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -268,6 +292,9 @@ public final class CalculateFeesRequest {
             return this;
         }
 
+        /**
+         * <p>Type of payment to calculate fees for. Defaults to PAYABLE (Accounts Payable).</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "type", nulls = Nulls.SKIP)
         public _FinalStage type(Optional<FeeCalculationType> type) {
@@ -285,6 +312,9 @@ public final class CalculateFeesRequest {
             return this;
         }
 
+        /**
+         * <p>Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "paymentDestinationOptions", nulls = Nulls.SKIP)
         public _FinalStage paymentDestinationOptions(Optional<PaymentDestinationOptions> paymentDestinationOptions) {
@@ -302,6 +332,9 @@ public final class CalculateFeesRequest {
             return this;
         }
 
+        /**
+         * <p>ID of the entity creating the invoice. If not provided, the fees will be calculated with the default pricing for the organization.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "creatorEntityId", nulls = Nulls.SKIP)
         public _FinalStage creatorEntityId(Optional<String> creatorEntityId) {
@@ -319,6 +352,9 @@ public final class CalculateFeesRequest {
             return this;
         }
 
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "currency", nulls = Nulls.SKIP)
         public _FinalStage currency(Optional<CurrencyCode> currency) {

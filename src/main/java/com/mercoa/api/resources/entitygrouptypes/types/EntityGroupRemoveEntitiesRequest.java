@@ -81,6 +81,9 @@ public final class EntityGroupRemoveEntitiesRequest {
             return this;
         }
 
+        /**
+         * <p>List of entity IDs or foreign IDs to remove from the group</p>
+         */
         @JsonSetter(value = "entityIds", nulls = Nulls.SKIP)
         public Builder entityIds(List<String> entityIds) {
             this.entityIds.clear();
@@ -94,7 +97,9 @@ public final class EntityGroupRemoveEntitiesRequest {
         }
 
         public Builder addAllEntityIds(List<String> entityIds) {
-            this.entityIds.addAll(entityIds);
+            if (entityIds != null) {
+                this.entityIds.addAll(entityIds);
+            }
             return this;
         }
 

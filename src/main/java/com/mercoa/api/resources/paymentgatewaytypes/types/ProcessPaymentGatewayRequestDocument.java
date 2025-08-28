@@ -33,7 +33,7 @@ public final class ProcessPaymentGatewayRequestDocument {
     }
 
     /**
-     * @return The invoice document to extract the payment gateway from in base64 format
+     * @return The invoice document PDF to extract the payment gateway from. Must be in base64 format or a publicly accessible URL.
      */
     @JsonProperty("document")
     public String getDocument() {
@@ -79,12 +79,18 @@ public final class ProcessPaymentGatewayRequestDocument {
     }
 
     public interface DocumentStage {
+        /**
+         * <p>The invoice document PDF to extract the payment gateway from. Must be in base64 format or a publicly accessible URL.</p>
+         */
         CardDetailsStage document(@NotNull String document);
 
         Builder from(ProcessPaymentGatewayRequestDocument other);
     }
 
     public interface CardDetailsStage {
+        /**
+         * <p>The details of the card to use for the payment</p>
+         */
         _FinalStage cardDetails(@NotNull ProcessPaymentGatewayCardDetails cardDetails);
     }
 
@@ -111,7 +117,8 @@ public final class ProcessPaymentGatewayRequestDocument {
         }
 
         /**
-         * <p>The invoice document to extract the payment gateway from in base64 format</p>
+         * <p>The invoice document PDF to extract the payment gateway from. Must be in base64 format or a publicly accessible URL.</p>
+         * <p>The invoice document PDF to extract the payment gateway from. Must be in base64 format or a publicly accessible URL.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -122,6 +129,7 @@ public final class ProcessPaymentGatewayRequestDocument {
         }
 
         /**
+         * <p>The details of the card to use for the payment</p>
          * <p>The details of the card to use for the payment</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

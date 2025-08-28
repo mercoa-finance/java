@@ -116,7 +116,9 @@ public final class EntityMetadataResponse {
 
         @java.lang.Override
         public _FinalStage addAllValue(List<String> value) {
-            this.value.addAll(value);
+            if (value != null) {
+                this.value.addAll(value);
+            }
             return this;
         }
 

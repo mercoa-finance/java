@@ -65,6 +65,9 @@ public final class ValidatePaymentGatewayCardFeeFlat {
     }
 
     public interface ValueStage {
+        /**
+         * <p>The fee amount in major units of the invoice currency. For example, if the fee is a flat $2.50, set this to 2.5.</p>
+         */
         _FinalStage value(double value);
 
         Builder from(ValidatePaymentGatewayCardFeeFlat other);
@@ -90,6 +93,7 @@ public final class ValidatePaymentGatewayCardFeeFlat {
         }
 
         /**
+         * <p>The fee amount in major units of the invoice currency. For example, if the fee is a flat $2.50, set this to 2.5.</p>
          * <p>The fee amount in major units of the invoice currency. For example, if the fee is a flat $2.50, set this to 2.5.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

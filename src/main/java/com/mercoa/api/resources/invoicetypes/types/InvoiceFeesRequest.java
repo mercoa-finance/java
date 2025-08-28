@@ -80,12 +80,18 @@ public final class InvoiceFeesRequest {
     }
 
     public interface SourcePlatformMarkupFeeStage {
+        /**
+         * <p>Fee charged to the payer (C2).</p>
+         */
         DestinationPlatformMarkupFeeStage sourcePlatformMarkupFee(double sourcePlatformMarkupFee);
 
         Builder from(InvoiceFeesRequest other);
     }
 
     public interface DestinationPlatformMarkupFeeStage {
+        /**
+         * <p>Fee charged to the payee (C3).</p>
+         */
         _FinalStage destinationPlatformMarkupFee(double destinationPlatformMarkupFee);
     }
 
@@ -114,6 +120,7 @@ public final class InvoiceFeesRequest {
 
         /**
          * <p>Fee charged to the payer (C2).</p>
+         * <p>Fee charged to the payer (C2).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -124,6 +131,7 @@ public final class InvoiceFeesRequest {
         }
 
         /**
+         * <p>Fee charged to the payee (C3).</p>
          * <p>Fee charged to the payee (C3).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

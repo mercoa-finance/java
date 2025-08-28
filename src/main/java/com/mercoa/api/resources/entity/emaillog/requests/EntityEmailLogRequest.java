@@ -163,6 +163,9 @@ public final class EntityEmailLogRequest {
             return this;
         }
 
+        /**
+         * <p>Number of logs to return. Limit can range between 1 and 100, and the default is 10.</p>
+         */
         @JsonSetter(value = "limit", nulls = Nulls.SKIP)
         public Builder limit(Optional<Integer> limit) {
             this.limit = limit;
@@ -174,6 +177,9 @@ public final class EntityEmailLogRequest {
             return this;
         }
 
+        /**
+         * <p>The ID of the log to start after. If not provided, the first page of logs will be returned.</p>
+         */
         @JsonSetter(value = "startingAfter", nulls = Nulls.SKIP)
         public Builder startingAfter(Optional<String> startingAfter) {
             this.startingAfter = startingAfter;
@@ -185,6 +191,9 @@ public final class EntityEmailLogRequest {
             return this;
         }
 
+        /**
+         * <p>Search for logs by email address or subject</p>
+         */
         @JsonSetter(value = "search", nulls = Nulls.SKIP)
         public Builder search(Optional<String> search) {
             this.search = search;

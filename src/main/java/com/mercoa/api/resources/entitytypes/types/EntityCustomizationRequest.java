@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import com.mercoa.api.resources.customizationtypes.types.FeeCustomizationRequest;
+import com.mercoa.api.resources.customizationtypes.types.InvoiceCustomizationRequest;
 import com.mercoa.api.resources.customizationtypes.types.MetadataCustomizationRequest;
 import com.mercoa.api.resources.customizationtypes.types.NotificationCustomizationRequest;
 import com.mercoa.api.resources.customizationtypes.types.OcrCustomizationRequest;
@@ -42,6 +43,8 @@ public final class EntityCustomizationRequest {
 
     private final Optional<WorkflowCustomizationRequest> workflow;
 
+    private final Optional<InvoiceCustomizationRequest> invoice;
+
     private final Optional<FeeCustomizationRequest> fees;
 
     private final Optional<Map<String, List<Permission>>> rolePermissions;
@@ -56,6 +59,7 @@ public final class EntityCustomizationRequest {
             Optional<OcrCustomizationRequest> ocr,
             Optional<NotificationCustomizationRequest> notifications,
             Optional<WorkflowCustomizationRequest> workflow,
+            Optional<InvoiceCustomizationRequest> invoice,
             Optional<FeeCustomizationRequest> fees,
             Optional<Map<String, List<Permission>>> rolePermissions,
             Map<String, Object> additionalProperties) {
@@ -66,6 +70,7 @@ public final class EntityCustomizationRequest {
         this.ocr = ocr;
         this.notifications = notifications;
         this.workflow = workflow;
+        this.invoice = invoice;
         this.fees = fees;
         this.rolePermissions = rolePermissions;
         this.additionalProperties = additionalProperties;
@@ -106,6 +111,11 @@ public final class EntityCustomizationRequest {
         return workflow;
     }
 
+    @JsonProperty("invoice")
+    public Optional<InvoiceCustomizationRequest> getInvoice() {
+        return invoice;
+    }
+
     @JsonProperty("fees")
     public Optional<FeeCustomizationRequest> getFees() {
         return fees;
@@ -135,6 +145,7 @@ public final class EntityCustomizationRequest {
                 && ocr.equals(other.ocr)
                 && notifications.equals(other.notifications)
                 && workflow.equals(other.workflow)
+                && invoice.equals(other.invoice)
                 && fees.equals(other.fees)
                 && rolePermissions.equals(other.rolePermissions);
     }
@@ -149,6 +160,7 @@ public final class EntityCustomizationRequest {
                 this.ocr,
                 this.notifications,
                 this.workflow,
+                this.invoice,
                 this.fees,
                 this.rolePermissions);
     }
@@ -178,6 +190,8 @@ public final class EntityCustomizationRequest {
 
         private Optional<WorkflowCustomizationRequest> workflow = Optional.empty();
 
+        private Optional<InvoiceCustomizationRequest> invoice = Optional.empty();
+
         private Optional<FeeCustomizationRequest> fees = Optional.empty();
 
         private Optional<Map<String, List<Permission>>> rolePermissions = Optional.empty();
@@ -195,6 +209,7 @@ public final class EntityCustomizationRequest {
             ocr(other.getOcr());
             notifications(other.getNotifications());
             workflow(other.getWorkflow());
+            invoice(other.getInvoice());
             fees(other.getFees());
             rolePermissions(other.getRolePermissions());
             return this;
@@ -277,6 +292,17 @@ public final class EntityCustomizationRequest {
             return this;
         }
 
+        @JsonSetter(value = "invoice", nulls = Nulls.SKIP)
+        public Builder invoice(Optional<InvoiceCustomizationRequest> invoice) {
+            this.invoice = invoice;
+            return this;
+        }
+
+        public Builder invoice(InvoiceCustomizationRequest invoice) {
+            this.invoice = Optional.ofNullable(invoice);
+            return this;
+        }
+
         @JsonSetter(value = "fees", nulls = Nulls.SKIP)
         public Builder fees(Optional<FeeCustomizationRequest> fees) {
             this.fees = fees;
@@ -308,6 +334,7 @@ public final class EntityCustomizationRequest {
                     ocr,
                     notifications,
                     workflow,
+                    invoice,
                     fees,
                     rolePermissions,
                     additionalProperties);

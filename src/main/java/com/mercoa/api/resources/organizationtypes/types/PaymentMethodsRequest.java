@@ -115,6 +115,9 @@ public final class PaymentMethodsRequest {
             return this;
         }
 
+        /**
+         * <p>List of payment methods that can be used to pay invoices.</p>
+         */
         @JsonSetter(value = "payerPayments", nulls = Nulls.SKIP)
         public Builder payerPayments(List<PaymentRailRequest> payerPayments) {
             this.payerPayments.clear();
@@ -128,10 +131,15 @@ public final class PaymentMethodsRequest {
         }
 
         public Builder addAllPayerPayments(List<PaymentRailRequest> payerPayments) {
-            this.payerPayments.addAll(payerPayments);
+            if (payerPayments != null) {
+                this.payerPayments.addAll(payerPayments);
+            }
             return this;
         }
 
+        /**
+         * <p>List of payment methods that can be created by a payor to send disbursements.</p>
+         */
         @JsonSetter(value = "backupDisbursements", nulls = Nulls.SKIP)
         public Builder backupDisbursements(List<PaymentRailRequest> backupDisbursements) {
             this.backupDisbursements.clear();
@@ -145,10 +153,15 @@ public final class PaymentMethodsRequest {
         }
 
         public Builder addAllBackupDisbursements(List<PaymentRailRequest> backupDisbursements) {
-            this.backupDisbursements.addAll(backupDisbursements);
+            if (backupDisbursements != null) {
+                this.backupDisbursements.addAll(backupDisbursements);
+            }
             return this;
         }
 
+        /**
+         * <p>List of payment methods that can be created by a payee to receive disbursements.</p>
+         */
         @JsonSetter(value = "vendorDisbursements", nulls = Nulls.SKIP)
         public Builder vendorDisbursements(List<PaymentRailRequest> vendorDisbursements) {
             this.vendorDisbursements.clear();
@@ -162,7 +175,9 @@ public final class PaymentMethodsRequest {
         }
 
         public Builder addAllVendorDisbursements(List<PaymentRailRequest> vendorDisbursements) {
-            this.vendorDisbursements.addAll(vendorDisbursements);
+            if (vendorDisbursements != null) {
+                this.vendorDisbursements.addAll(vendorDisbursements);
+            }
             return this;
         }
 

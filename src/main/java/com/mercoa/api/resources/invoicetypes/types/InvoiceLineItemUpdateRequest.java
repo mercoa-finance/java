@@ -263,6 +263,9 @@ public final class InvoiceLineItemUpdateRequest implements IInvoiceLineItemReque
             return this;
         }
 
+        /**
+         * <p>Currency code for the amount. Defaults to USD.</p>
+         */
         @JsonSetter(value = "currency", nulls = Nulls.SKIP)
         public Builder currency(Optional<CurrencyCode> currency) {
             this.currency = currency;
@@ -296,6 +299,9 @@ public final class InvoiceLineItemUpdateRequest implements IInvoiceLineItemReque
             return this;
         }
 
+        /**
+         * <p>Unit price of the line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
+         */
         @JsonSetter(value = "unitPrice", nulls = Nulls.SKIP)
         public Builder unitPrice(Optional<Double> unitPrice) {
             this.unitPrice = unitPrice;
@@ -307,6 +313,9 @@ public final class InvoiceLineItemUpdateRequest implements IInvoiceLineItemReque
             return this;
         }
 
+        /**
+         * <p>Category of the line item.</p>
+         */
         @JsonSetter(value = "category", nulls = Nulls.SKIP)
         public Builder category(Optional<String> category) {
             this.category = category;
@@ -351,6 +360,9 @@ public final class InvoiceLineItemUpdateRequest implements IInvoiceLineItemReque
             return this;
         }
 
+        /**
+         * <p>ID of general ledger account associated with this line item.</p>
+         */
         @JsonSetter(value = "glAccountId", nulls = Nulls.SKIP)
         public Builder glAccountId(Optional<String> glAccountId) {
             this.glAccountId = glAccountId;
@@ -362,6 +374,9 @@ public final class InvoiceLineItemUpdateRequest implements IInvoiceLineItemReque
             return this;
         }
 
+        /**
+         * <p>If provided, will overwrite line item on the invoice with this ID. If not provided, will create a new line item.</p>
+         */
         @JsonSetter(value = "id", nulls = Nulls.SKIP)
         public Builder id(Optional<String> id) {
             this.id = id;
@@ -373,6 +388,9 @@ public final class InvoiceLineItemUpdateRequest implements IInvoiceLineItemReque
             return this;
         }
 
+        /**
+         * <p>Total amount of line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.</p>
+         */
         @JsonSetter(value = "amount", nulls = Nulls.SKIP)
         public Builder amount(Optional<Double> amount) {
             this.amount = amount;

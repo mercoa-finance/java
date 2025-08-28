@@ -3,15 +3,10 @@
  */
 package com.mercoa.api.resources.entitygroup;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mercoa.api.core.ClientOptions;
-import com.mercoa.api.core.MediaTypes;
-import com.mercoa.api.core.MercoaApiException;
-import com.mercoa.api.core.MercoaException;
-import com.mercoa.api.core.ObjectMappers;
-import com.mercoa.api.core.QueryStringMapper;
 import com.mercoa.api.core.RequestOptions;
 import com.mercoa.api.core.Suppliers;
+import com.mercoa.api.resources.entitygroup.counterparty.CounterpartyClient;
 import com.mercoa.api.resources.entitygroup.invoice.InvoiceClient;
 import com.mercoa.api.resources.entitygroup.requests.EntityGroupFindRequest;
 import com.mercoa.api.resources.entitygroup.requests.EntityGroupGetRequest;
@@ -23,18 +18,14 @@ import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupRemoveEntities
 import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupResponse;
 import com.mercoa.api.resources.entitygrouptypes.types.EntityGroupUpdateRequest;
 import com.mercoa.api.resources.entitytypes.types.TokenGenerationOptions;
-import java.io.IOException;
 import java.util.function.Supplier;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class EntityGroupClient {
     protected final ClientOptions clientOptions;
+
+    private final RawEntityGroupClient rawClient;
+
+    protected final Supplier<CounterpartyClient> counterpartyClient;
 
     protected final Supplier<UserClient> userClient;
 
@@ -42,187 +33,94 @@ public class EntityGroupClient {
 
     public EntityGroupClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.rawClient = new RawEntityGroupClient(clientOptions);
+        this.counterpartyClient = Suppliers.memoize(() -> new CounterpartyClient(clientOptions));
         this.userClient = Suppliers.memoize(() -> new UserClient(clientOptions));
         this.invoiceClient = Suppliers.memoize(() -> new InvoiceClient(clientOptions));
+    }
+
+    /**
+     * Get responses with HTTP metadata like headers
+     */
+    public RawEntityGroupClient withRawResponse() {
+        return this.rawClient;
     }
 
     /**
      * Get all entity groups. If using a JWT, will return all groups the entity is part of. If using an API key, will return all groups for the organization.
      */
     public EntityGroupFindResponse getAll() {
-        return getAll(EntityGroupFindRequest.builder().build());
+        return this.rawClient.getAll().body();
     }
 
     /**
      * Get all entity groups. If using a JWT, will return all groups the entity is part of. If using an API key, will return all groups for the organization.
      */
     public EntityGroupFindResponse getAll(EntityGroupFindRequest request) {
-        return getAll(request, null);
+        return this.rawClient.getAll(request).body();
     }
 
     /**
      * Get all entity groups. If using a JWT, will return all groups the entity is part of. If using an API key, will return all groups for the organization.
      */
     public EntityGroupFindResponse getAll(EntityGroupFindRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroups");
-        if (request.getLimit().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "limit", request.getLimit().get().toString(), false);
-        }
-        if (request.getStartingAfter().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl, "startingAfter", request.getStartingAfter().get(), false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityGroupFindResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.getAll(request, requestOptions).body();
     }
 
     /**
      * Create an entity group
      */
     public EntityGroupResponse create() {
-        return create(EntityGroupCreateRequest.builder().build());
+        return this.rawClient.create().body();
     }
 
     /**
      * Create an entity group
      */
     public EntityGroupResponse create(EntityGroupCreateRequest request) {
-        return create(request, null);
+        return this.rawClient.create(request).body();
     }
 
     /**
      * Create an entity group
      */
     public EntityGroupResponse create(EntityGroupCreateRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroup")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityGroupResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.create(request, requestOptions).body();
     }
 
     /**
      * Get an entity group
      */
     public EntityGroupResponse get(String entityGroupId) {
-        return get(entityGroupId, EntityGroupGetRequest.builder().build());
+        return this.rawClient.get(entityGroupId).body();
     }
 
     /**
      * Get an entity group
      */
     public EntityGroupResponse get(String entityGroupId, EntityGroupGetRequest request) {
-        return get(entityGroupId, request, null);
+        return this.rawClient.get(entityGroupId, request).body();
     }
 
     /**
      * Get an entity group
      */
     public EntityGroupResponse get(String entityGroupId, EntityGroupGetRequest request, RequestOptions requestOptions) {
-        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroup")
-                .addPathSegment(entityGroupId);
-        if (request.getReturnEntityMetadata().isPresent()) {
-            QueryStringMapper.addQueryParameter(
-                    httpUrl,
-                    "returnEntityMetadata",
-                    request.getReturnEntityMetadata().get(),
-                    false);
-        }
-        Request.Builder _requestBuilder = new Request.Builder()
-                .url(httpUrl.build())
-                .method("GET", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json");
-        Request okhttpRequest = _requestBuilder.build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityGroupResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.get(entityGroupId, request, requestOptions).body();
     }
 
     /**
      * Update an entity group
      */
     public EntityGroupResponse update(String entityGroupId) {
-        return update(entityGroupId, EntityGroupUpdateRequest.builder().build());
+        return this.rawClient.update(entityGroupId).body();
     }
 
     /**
      * Update an entity group
      */
     public EntityGroupResponse update(String entityGroupId, EntityGroupUpdateRequest request) {
-        return update(entityGroupId, request, null);
+        return this.rawClient.update(entityGroupId, request).body();
     }
 
     /**
@@ -230,83 +128,21 @@ public class EntityGroupClient {
      */
     public EntityGroupResponse update(
             String entityGroupId, EntityGroupUpdateRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroup")
-                .addPathSegment(entityGroupId)
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityGroupResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.update(entityGroupId, request, requestOptions).body();
     }
 
     /**
      * Delete an entity group
      */
     public void delete(String entityGroupId) {
-        delete(entityGroupId, null);
+        this.rawClient.delete(entityGroupId).body();
     }
 
     /**
      * Delete an entity group
      */
     public void delete(String entityGroupId, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroup")
-                .addPathSegment(entityGroupId)
-                .build();
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("DELETE", null)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return;
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        this.rawClient.delete(entityGroupId, requestOptions).body();
     }
 
     /**
@@ -314,7 +150,7 @@ public class EntityGroupClient {
      * <p>&lt;Warning&gt;We recommend using <a href="/api-reference/entity-group/user/get-token">this endpoint</a>. This will enable features such as approvals and comments.&lt;/Warning&gt;</p>
      */
     public String getToken(String entityGroupId) {
-        return getToken(entityGroupId, TokenGenerationOptions.builder().build());
+        return this.rawClient.getToken(entityGroupId).body();
     }
 
     /**
@@ -322,7 +158,7 @@ public class EntityGroupClient {
      * <p>&lt;Warning&gt;We recommend using <a href="/api-reference/entity-group/user/get-token">this endpoint</a>. This will enable features such as approvals and comments.&lt;/Warning&gt;</p>
      */
     public String getToken(String entityGroupId, TokenGenerationOptions request) {
-        return getToken(entityGroupId, request, null);
+        return this.rawClient.getToken(entityGroupId, request).body();
     }
 
     /**
@@ -330,50 +166,14 @@ public class EntityGroupClient {
      * <p>&lt;Warning&gt;We recommend using <a href="/api-reference/entity-group/user/get-token">this endpoint</a>. This will enable features such as approvals and comments.&lt;/Warning&gt;</p>
      */
     public String getToken(String entityGroupId, TokenGenerationOptions request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroup")
-                .addPathSegment(entityGroupId)
-                .addPathSegments("token")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), String.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient.getToken(entityGroupId, request, requestOptions).body();
     }
 
     /**
      * Add entities to an entity group
      */
     public EntityGroupResponse addEntities(String entityGroupId, EntityGroupAddEntitiesRequest request) {
-        return addEntities(entityGroupId, request, null);
+        return this.rawClient.addEntities(entityGroupId, request).body();
     }
 
     /**
@@ -381,50 +181,16 @@ public class EntityGroupClient {
      */
     public EntityGroupResponse addEntities(
             String entityGroupId, EntityGroupAddEntitiesRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroup")
-                .addPathSegment(entityGroupId)
-                .addPathSegments("addEntities")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityGroupResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient
+                .addEntities(entityGroupId, request, requestOptions)
+                .body();
     }
 
     /**
      * Remove entities from an entity group
      */
     public EntityGroupResponse removeEntities(String entityGroupId, EntityGroupRemoveEntitiesRequest request) {
-        return removeEntities(entityGroupId, request, null);
+        return this.rawClient.removeEntities(entityGroupId, request).body();
     }
 
     /**
@@ -432,43 +198,13 @@ public class EntityGroupClient {
      */
     public EntityGroupResponse removeEntities(
             String entityGroupId, EntityGroupRemoveEntitiesRequest request, RequestOptions requestOptions) {
-        HttpUrl httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
-                .newBuilder()
-                .addPathSegments("entityGroup")
-                .addPathSegment(entityGroupId)
-                .addPathSegments("removeEntities")
-                .build();
-        RequestBody body;
-        try {
-            body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
-        } catch (JsonProcessingException e) {
-            throw new MercoaException("Failed to serialize request", e);
-        }
-        Request okhttpRequest = new Request.Builder()
-                .url(httpUrl)
-                .method("POST", body)
-                .headers(Headers.of(clientOptions.headers(requestOptions)))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build();
-        OkHttpClient client = clientOptions.httpClient();
-        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
-            client = clientOptions.httpClientWithTimeout(requestOptions);
-        }
-        try (Response response = client.newCall(okhttpRequest).execute()) {
-            ResponseBody responseBody = response.body();
-            if (response.isSuccessful()) {
-                return ObjectMappers.JSON_MAPPER.readValue(responseBody.string(), EntityGroupResponse.class);
-            }
-            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
-            throw new MercoaApiException(
-                    "Error with status code " + response.code(),
-                    response.code(),
-                    ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class));
-        } catch (IOException e) {
-            throw new MercoaException("Network error executing HTTP request", e);
-        }
+        return this.rawClient
+                .removeEntities(entityGroupId, request, requestOptions)
+                .body();
+    }
+
+    public CounterpartyClient counterparty() {
+        return this.counterpartyClient.get();
     }
 
     public UserClient user() {
