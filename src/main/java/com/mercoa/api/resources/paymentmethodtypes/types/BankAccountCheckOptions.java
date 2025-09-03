@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
+import com.mercoa.api.resources.commons.types.Address;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -29,6 +30,10 @@ public final class BankAccountCheckOptions {
 
     private final Optional<String> accountNumberOverride;
 
+    private final Optional<String> accountHolderNameOverride;
+
+    private final Optional<Address> accountHolderAddressOverride;
+
     private final String signatoryName;
 
     private final Optional<String> signatureImage;
@@ -42,6 +47,8 @@ public final class BankAccountCheckOptions {
             Optional<Integer> initialCheckNumber,
             Optional<String> routingNumberOverride,
             Optional<String> accountNumberOverride,
+            Optional<String> accountHolderNameOverride,
+            Optional<Address> accountHolderAddressOverride,
             String signatoryName,
             Optional<String> signatureImage,
             Optional<Boolean> useSignatureImage,
@@ -50,6 +57,8 @@ public final class BankAccountCheckOptions {
         this.initialCheckNumber = initialCheckNumber;
         this.routingNumberOverride = routingNumberOverride;
         this.accountNumberOverride = accountNumberOverride;
+        this.accountHolderNameOverride = accountHolderNameOverride;
+        this.accountHolderAddressOverride = accountHolderAddressOverride;
         this.signatoryName = signatoryName;
         this.signatureImage = signatureImage;
         this.useSignatureImage = useSignatureImage;
@@ -86,6 +95,22 @@ public final class BankAccountCheckOptions {
     @JsonProperty("accountNumberOverride")
     public Optional<String> getAccountNumberOverride() {
         return accountNumberOverride;
+    }
+
+    /**
+     * @return If provided, will print a check with the provided account holder name instead of the payer name from the invoice
+     */
+    @JsonProperty("accountHolderNameOverride")
+    public Optional<String> getAccountHolderNameOverride() {
+        return accountHolderNameOverride;
+    }
+
+    /**
+     * @return If provided, will print a check with the provided account holder address instead of the payer address from the invoice
+     */
+    @JsonProperty("accountHolderAddressOverride")
+    public Optional<Address> getAccountHolderAddressOverride() {
+        return accountHolderAddressOverride;
     }
 
     /**
@@ -128,6 +153,8 @@ public final class BankAccountCheckOptions {
                 && initialCheckNumber.equals(other.initialCheckNumber)
                 && routingNumberOverride.equals(other.routingNumberOverride)
                 && accountNumberOverride.equals(other.accountNumberOverride)
+                && accountHolderNameOverride.equals(other.accountHolderNameOverride)
+                && accountHolderAddressOverride.equals(other.accountHolderAddressOverride)
                 && signatoryName.equals(other.signatoryName)
                 && signatureImage.equals(other.signatureImage)
                 && useSignatureImage.equals(other.useSignatureImage);
@@ -140,6 +167,8 @@ public final class BankAccountCheckOptions {
                 this.initialCheckNumber,
                 this.routingNumberOverride,
                 this.accountNumberOverride,
+                this.accountHolderNameOverride,
+                this.accountHolderAddressOverride,
                 this.signatoryName,
                 this.signatureImage,
                 this.useSignatureImage);
@@ -195,6 +224,20 @@ public final class BankAccountCheckOptions {
         _FinalStage accountNumberOverride(String accountNumberOverride);
 
         /**
+         * <p>If provided, will print a check with the provided account holder name instead of the payer name from the invoice</p>
+         */
+        _FinalStage accountHolderNameOverride(Optional<String> accountHolderNameOverride);
+
+        _FinalStage accountHolderNameOverride(String accountHolderNameOverride);
+
+        /**
+         * <p>If provided, will print a check with the provided account holder address instead of the payer address from the invoice</p>
+         */
+        _FinalStage accountHolderAddressOverride(Optional<Address> accountHolderAddressOverride);
+
+        _FinalStage accountHolderAddressOverride(Address accountHolderAddressOverride);
+
+        /**
          * <p>Base64 encoded image of the signature. If not provided, will use the signatoryName to generate a signature. Mercoa will automatically grayscale, resize, and convert the image to a PNG the image to fit on the check.</p>
          */
         _FinalStage signatureImage(Optional<String> signatureImage);
@@ -217,6 +260,10 @@ public final class BankAccountCheckOptions {
 
         private Optional<String> signatureImage = Optional.empty();
 
+        private Optional<Address> accountHolderAddressOverride = Optional.empty();
+
+        private Optional<String> accountHolderNameOverride = Optional.empty();
+
         private Optional<String> accountNumberOverride = Optional.empty();
 
         private Optional<String> routingNumberOverride = Optional.empty();
@@ -236,6 +283,8 @@ public final class BankAccountCheckOptions {
             initialCheckNumber(other.getInitialCheckNumber());
             routingNumberOverride(other.getRoutingNumberOverride());
             accountNumberOverride(other.getAccountNumberOverride());
+            accountHolderNameOverride(other.getAccountHolderNameOverride());
+            accountHolderAddressOverride(other.getAccountHolderAddressOverride());
             signatoryName(other.getSignatoryName());
             signatureImage(other.getSignatureImage());
             useSignatureImage(other.getUseSignatureImage());
@@ -291,6 +340,46 @@ public final class BankAccountCheckOptions {
         @JsonSetter(value = "signatureImage", nulls = Nulls.SKIP)
         public _FinalStage signatureImage(Optional<String> signatureImage) {
             this.signatureImage = signatureImage;
+            return this;
+        }
+
+        /**
+         * <p>If provided, will print a check with the provided account holder address instead of the payer address from the invoice</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage accountHolderAddressOverride(Address accountHolderAddressOverride) {
+            this.accountHolderAddressOverride = Optional.ofNullable(accountHolderAddressOverride);
+            return this;
+        }
+
+        /**
+         * <p>If provided, will print a check with the provided account holder address instead of the payer address from the invoice</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "accountHolderAddressOverride", nulls = Nulls.SKIP)
+        public _FinalStage accountHolderAddressOverride(Optional<Address> accountHolderAddressOverride) {
+            this.accountHolderAddressOverride = accountHolderAddressOverride;
+            return this;
+        }
+
+        /**
+         * <p>If provided, will print a check with the provided account holder name instead of the payer name from the invoice</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage accountHolderNameOverride(String accountHolderNameOverride) {
+            this.accountHolderNameOverride = Optional.ofNullable(accountHolderNameOverride);
+            return this;
+        }
+
+        /**
+         * <p>If provided, will print a check with the provided account holder name instead of the payer name from the invoice</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "accountHolderNameOverride", nulls = Nulls.SKIP)
+        public _FinalStage accountHolderNameOverride(Optional<String> accountHolderNameOverride) {
+            this.accountHolderNameOverride = accountHolderNameOverride;
             return this;
         }
 
@@ -381,6 +470,8 @@ public final class BankAccountCheckOptions {
                     initialCheckNumber,
                     routingNumberOverride,
                     accountNumberOverride,
+                    accountHolderNameOverride,
+                    accountHolderAddressOverride,
                     signatoryName,
                     signatureImage,
                     useSignatureImage,

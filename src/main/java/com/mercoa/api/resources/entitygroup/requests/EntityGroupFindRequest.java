@@ -24,17 +24,23 @@ public final class EntityGroupFindRequest {
 
     private final Optional<String> startingAfter;
 
+    private final Optional<String> search;
+
     private final Map<String, Object> additionalProperties;
 
     private EntityGroupFindRequest(
-            Optional<Integer> limit, Optional<String> startingAfter, Map<String, Object> additionalProperties) {
+            Optional<Integer> limit,
+            Optional<String> startingAfter,
+            Optional<String> search,
+            Map<String, Object> additionalProperties) {
         this.limit = limit;
         this.startingAfter = startingAfter;
+        this.search = search;
         this.additionalProperties = additionalProperties;
     }
 
     /**
-     * @return The maximum number of results to return. Defaults to 1. Max is 10.
+     * @return The maximum number of results to return. Defaults to 1. Max is 20.
      */
     @JsonProperty("limit")
     public Optional<Integer> getLimit() {
@@ -44,6 +50,14 @@ public final class EntityGroupFindRequest {
     @JsonProperty("startingAfter")
     public Optional<String> getStartingAfter() {
         return startingAfter;
+    }
+
+    /**
+     * @return Search entity groups by name. This will perform a case-insensitive search on the group name.
+     */
+    @JsonProperty("search")
+    public Optional<String> getSearch() {
+        return search;
     }
 
     @java.lang.Override
@@ -58,12 +72,12 @@ public final class EntityGroupFindRequest {
     }
 
     private boolean equalTo(EntityGroupFindRequest other) {
-        return limit.equals(other.limit) && startingAfter.equals(other.startingAfter);
+        return limit.equals(other.limit) && startingAfter.equals(other.startingAfter) && search.equals(other.search);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.limit, this.startingAfter);
+        return Objects.hash(this.limit, this.startingAfter, this.search);
     }
 
     @java.lang.Override
@@ -81,6 +95,8 @@ public final class EntityGroupFindRequest {
 
         private Optional<String> startingAfter = Optional.empty();
 
+        private Optional<String> search = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -89,11 +105,12 @@ public final class EntityGroupFindRequest {
         public Builder from(EntityGroupFindRequest other) {
             limit(other.getLimit());
             startingAfter(other.getStartingAfter());
+            search(other.getSearch());
             return this;
         }
 
         /**
-         * <p>The maximum number of results to return. Defaults to 1. Max is 10.</p>
+         * <p>The maximum number of results to return. Defaults to 1. Max is 20.</p>
          */
         @JsonSetter(value = "limit", nulls = Nulls.SKIP)
         public Builder limit(Optional<Integer> limit) {
@@ -117,8 +134,22 @@ public final class EntityGroupFindRequest {
             return this;
         }
 
+        /**
+         * <p>Search entity groups by name. This will perform a case-insensitive search on the group name.</p>
+         */
+        @JsonSetter(value = "search", nulls = Nulls.SKIP)
+        public Builder search(Optional<String> search) {
+            this.search = search;
+            return this;
+        }
+
+        public Builder search(String search) {
+            this.search = Optional.ofNullable(search);
+            return this;
+        }
+
         public EntityGroupFindRequest build() {
-            return new EntityGroupFindRequest(limit, startingAfter, additionalProperties);
+            return new EntityGroupFindRequest(limit, startingAfter, search, additionalProperties);
         }
     }
 }
