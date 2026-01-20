@@ -5,6 +5,21 @@
 
 The Mercoa Java library provides convenient access to the Mercoa APIs from Java.
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Reference](#reference)
+- [Usage](#usage)
+- [Environments](#environments)
+- [Base Url](#base-url)
+- [Exception Handling](#exception-handling)
+- [Advanced](#advanced)
+  - [Custom Client](#custom-client)
+  - [Retries](#retries)
+  - [Timeouts](#timeouts)
+  - [Custom Headers](#custom-headers)
+- [Contributing](#contributing)
+
 ## Installation
 
 ### Gradle
@@ -25,7 +40,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>com.mercoa</groupId>
   <artifactId>mercoa</artifactId>
-  <version>0.7.1</version>
+  <version>0.7.2</version>
 </dependency>
 ```
 

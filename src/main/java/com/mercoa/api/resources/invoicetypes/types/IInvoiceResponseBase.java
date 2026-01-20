@@ -83,6 +83,10 @@ public interface IInvoiceResponseBase {
 
     Optional<String> getCreatorEntityId();
 
+    Optional<String> getEntityGroupId();
+
+    Optional<String> getEntityGroupForeignId();
+
     Optional<EntityUserResponse> getCreatorUser();
 
     OffsetDateTime getCreatedAt();

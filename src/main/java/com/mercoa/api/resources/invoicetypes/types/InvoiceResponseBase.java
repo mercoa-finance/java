@@ -99,6 +99,10 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
 
     private final Optional<String> creatorEntityId;
 
+    private final Optional<String> entityGroupId;
+
+    private final Optional<String> entityGroupForeignId;
+
     private final Optional<EntityUserResponse> creatorUser;
 
     private final OffsetDateTime createdAt;
@@ -152,6 +156,8 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
             List<ApprovalPolicyResponse> approvalPolicy,
             Map<String, String> metadata,
             Optional<String> creatorEntityId,
+            Optional<String> entityGroupId,
+            Optional<String> entityGroupForeignId,
             Optional<EntityUserResponse> creatorUser,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
@@ -195,6 +201,8 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
         this.approvalPolicy = approvalPolicy;
         this.metadata = metadata;
         this.creatorEntityId = creatorEntityId;
+        this.entityGroupId = entityGroupId;
+        this.entityGroupForeignId = entityGroupForeignId;
         this.creatorUser = creatorUser;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -456,6 +464,24 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
     }
 
     /**
+     * @return The ID of the entity group that created this invoice.
+     */
+    @JsonProperty("entityGroupId")
+    @java.lang.Override
+    public Optional<String> getEntityGroupId() {
+        return entityGroupId;
+    }
+
+    /**
+     * @return The foreign ID of the entity group that created this invoice.
+     */
+    @JsonProperty("entityGroupForeignId")
+    @java.lang.Override
+    public Optional<String> getEntityGroupForeignId() {
+        return entityGroupForeignId;
+    }
+
+    /**
      * @return Entity user who created this invoice.
      */
     @JsonProperty("creatorUser")
@@ -564,6 +590,8 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
                 && approvalPolicy.equals(other.approvalPolicy)
                 && metadata.equals(other.metadata)
                 && creatorEntityId.equals(other.creatorEntityId)
+                && entityGroupId.equals(other.entityGroupId)
+                && entityGroupForeignId.equals(other.entityGroupForeignId)
                 && creatorUser.equals(other.creatorUser)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt)
@@ -611,6 +639,8 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
                 this.approvalPolicy,
                 this.metadata,
                 this.creatorEntityId,
+                this.entityGroupId,
+                this.entityGroupForeignId,
                 this.creatorUser,
                 this.createdAt,
                 this.updatedAt,
@@ -831,6 +861,20 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
         _FinalStage creatorEntityId(String creatorEntityId);
 
         /**
+         * <p>The ID of the entity group that created this invoice.</p>
+         */
+        _FinalStage entityGroupId(Optional<String> entityGroupId);
+
+        _FinalStage entityGroupId(String entityGroupId);
+
+        /**
+         * <p>The foreign ID of the entity group that created this invoice.</p>
+         */
+        _FinalStage entityGroupForeignId(Optional<String> entityGroupForeignId);
+
+        _FinalStage entityGroupForeignId(String entityGroupForeignId);
+
+        /**
          * <p>Entity user who created this invoice.</p>
          */
         _FinalStage creatorUser(Optional<EntityUserResponse> creatorUser);
@@ -902,6 +946,10 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
         private Optional<List<CommentResponse>> comments = Optional.empty();
 
         private Optional<EntityUserResponse> creatorUser = Optional.empty();
+
+        private Optional<String> entityGroupForeignId = Optional.empty();
+
+        private Optional<String> entityGroupId = Optional.empty();
 
         private Optional<String> creatorEntityId = Optional.empty();
 
@@ -1004,6 +1052,8 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
             approvalPolicy(other.getApprovalPolicy());
             metadata(other.getMetadata());
             creatorEntityId(other.getCreatorEntityId());
+            entityGroupId(other.getEntityGroupId());
+            entityGroupForeignId(other.getEntityGroupForeignId());
             creatorUser(other.getCreatorUser());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
@@ -1182,6 +1232,46 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
         @JsonSetter(value = "creatorUser", nulls = Nulls.SKIP)
         public _FinalStage creatorUser(Optional<EntityUserResponse> creatorUser) {
             this.creatorUser = creatorUser;
+            return this;
+        }
+
+        /**
+         * <p>The foreign ID of the entity group that created this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage entityGroupForeignId(String entityGroupForeignId) {
+            this.entityGroupForeignId = Optional.ofNullable(entityGroupForeignId);
+            return this;
+        }
+
+        /**
+         * <p>The foreign ID of the entity group that created this invoice.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "entityGroupForeignId", nulls = Nulls.SKIP)
+        public _FinalStage entityGroupForeignId(Optional<String> entityGroupForeignId) {
+            this.entityGroupForeignId = entityGroupForeignId;
+            return this;
+        }
+
+        /**
+         * <p>The ID of the entity group that created this invoice.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage entityGroupId(String entityGroupId) {
+            this.entityGroupId = Optional.ofNullable(entityGroupId);
+            return this;
+        }
+
+        /**
+         * <p>The ID of the entity group that created this invoice.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "entityGroupId", nulls = Nulls.SKIP)
+        public _FinalStage entityGroupId(Optional<String> entityGroupId) {
+            this.entityGroupId = entityGroupId;
             return this;
         }
 
@@ -1727,6 +1817,8 @@ public final class InvoiceResponseBase implements IInvoiceResponseBase {
                     approvalPolicy,
                     metadata,
                     creatorEntityId,
+                    entityGroupId,
+                    entityGroupForeignId,
                     creatorUser,
                     createdAt,
                     updatedAt,

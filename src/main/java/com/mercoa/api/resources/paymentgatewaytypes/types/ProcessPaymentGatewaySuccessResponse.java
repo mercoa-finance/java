@@ -34,6 +34,8 @@ public final class ProcessPaymentGatewaySuccessResponse {
 
     private final Optional<String> vendorName;
 
+    private final Optional<ValidatePaymentGatewayRequiredData> requiredData;
+
     private final List<PaymentGatewayAttempt> attempts;
 
     private final OffsetDateTime createdAt;
@@ -48,6 +50,7 @@ public final class ProcessPaymentGatewaySuccessResponse {
             Optional<Double> invoiceAmount,
             Optional<Double> gatewayAmount,
             Optional<String> vendorName,
+            Optional<ValidatePaymentGatewayRequiredData> requiredData,
             List<PaymentGatewayAttempt> attempts,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
@@ -57,6 +60,7 @@ public final class ProcessPaymentGatewaySuccessResponse {
         this.invoiceAmount = invoiceAmount;
         this.gatewayAmount = gatewayAmount;
         this.vendorName = vendorName;
+        this.requiredData = requiredData;
         this.attempts = attempts;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -104,6 +108,14 @@ public final class ProcessPaymentGatewaySuccessResponse {
     }
 
     /**
+     * @return Information about what data is required to proceed with payment
+     */
+    @JsonProperty("requiredData")
+    public Optional<ValidatePaymentGatewayRequiredData> getRequiredData() {
+        return requiredData;
+    }
+
+    /**
      * @return List of payment gateway attempts for this job
      */
     @JsonProperty("attempts")
@@ -145,6 +157,7 @@ public final class ProcessPaymentGatewaySuccessResponse {
                 && invoiceAmount.equals(other.invoiceAmount)
                 && gatewayAmount.equals(other.gatewayAmount)
                 && vendorName.equals(other.vendorName)
+                && requiredData.equals(other.requiredData)
                 && attempts.equals(other.attempts)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt);
@@ -158,6 +171,7 @@ public final class ProcessPaymentGatewaySuccessResponse {
                 this.invoiceAmount,
                 this.gatewayAmount,
                 this.vendorName,
+                this.requiredData,
                 this.attempts,
                 this.createdAt,
                 this.updatedAt);
@@ -227,6 +241,13 @@ public final class ProcessPaymentGatewaySuccessResponse {
         _FinalStage vendorName(String vendorName);
 
         /**
+         * <p>Information about what data is required to proceed with payment</p>
+         */
+        _FinalStage requiredData(Optional<ValidatePaymentGatewayRequiredData> requiredData);
+
+        _FinalStage requiredData(ValidatePaymentGatewayRequiredData requiredData);
+
+        /**
          * <p>List of payment gateway attempts for this job</p>
          */
         _FinalStage attempts(List<PaymentGatewayAttempt> attempts);
@@ -245,6 +266,8 @@ public final class ProcessPaymentGatewaySuccessResponse {
         private OffsetDateTime updatedAt;
 
         private List<PaymentGatewayAttempt> attempts = new ArrayList<>();
+
+        private Optional<ValidatePaymentGatewayRequiredData> requiredData = Optional.empty();
 
         private Optional<String> vendorName = Optional.empty();
 
@@ -266,6 +289,7 @@ public final class ProcessPaymentGatewaySuccessResponse {
             invoiceAmount(other.getInvoiceAmount());
             gatewayAmount(other.getGatewayAmount());
             vendorName(other.getVendorName());
+            requiredData(other.getRequiredData());
             attempts(other.getAttempts());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
@@ -338,6 +362,26 @@ public final class ProcessPaymentGatewaySuccessResponse {
         public _FinalStage attempts(List<PaymentGatewayAttempt> attempts) {
             this.attempts.clear();
             this.attempts.addAll(attempts);
+            return this;
+        }
+
+        /**
+         * <p>Information about what data is required to proceed with payment</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage requiredData(ValidatePaymentGatewayRequiredData requiredData) {
+            this.requiredData = Optional.ofNullable(requiredData);
+            return this;
+        }
+
+        /**
+         * <p>Information about what data is required to proceed with payment</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "requiredData", nulls = Nulls.SKIP)
+        public _FinalStage requiredData(Optional<ValidatePaymentGatewayRequiredData> requiredData) {
+            this.requiredData = requiredData;
             return this;
         }
 
@@ -429,6 +473,7 @@ public final class ProcessPaymentGatewaySuccessResponse {
                     invoiceAmount,
                     gatewayAmount,
                     vendorName,
+                    requiredData,
                     attempts,
                     createdAt,
                     updatedAt,

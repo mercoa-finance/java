@@ -42,6 +42,10 @@ public final class ProcessPaymentGatewayCardDetails {
         return new ProcessPaymentGatewayCardDetails(new LithicValue(value));
     }
 
+    public static ProcessPaymentGatewayCardDetails marqetaJs(ProcessPaymentGatewayCardDetailsMarqetaJs value) {
+        return new ProcessPaymentGatewayCardDetails(new MarqetaJsValue(value));
+    }
+
     public boolean isDirect() {
         return value instanceof DirectValue;
     }
@@ -56,6 +60,10 @@ public final class ProcessPaymentGatewayCardDetails {
 
     public boolean isLithic() {
         return value instanceof LithicValue;
+    }
+
+    public boolean isMarqetaJs() {
+        return value instanceof MarqetaJsValue;
     }
 
     public boolean _isUnknown() {
@@ -90,6 +98,13 @@ public final class ProcessPaymentGatewayCardDetails {
         return Optional.empty();
     }
 
+    public Optional<ProcessPaymentGatewayCardDetailsMarqetaJs> getMarqetaJs() {
+        if (isMarqetaJs()) {
+            return Optional.of(((MarqetaJsValue) value).value);
+        }
+        return Optional.empty();
+    }
+
     public Optional<Object> _getUnknown() {
         if (_isUnknown()) {
             return Optional.of(((_UnknownValue) value).value);
@@ -111,6 +126,8 @@ public final class ProcessPaymentGatewayCardDetails {
 
         T visitLithic(ProcessPaymentGatewayCardDetailsLithic lithic);
 
+        T visitMarqetaJs(ProcessPaymentGatewayCardDetailsMarqetaJs marqetaJs);
+
         T _visitUnknown(Object unknownType);
     }
 
@@ -119,7 +136,8 @@ public final class ProcessPaymentGatewayCardDetails {
         @JsonSubTypes.Type(DirectValue.class),
         @JsonSubTypes.Type(IframeValue.class),
         @JsonSubTypes.Type(StripeIssuingValue.class),
-        @JsonSubTypes.Type(LithicValue.class)
+        @JsonSubTypes.Type(LithicValue.class),
+        @JsonSubTypes.Type(MarqetaJsValue.class)
     })
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
@@ -268,6 +286,45 @@ public final class ProcessPaymentGatewayCardDetails {
         }
 
         private boolean equalTo(LithicValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "ProcessPaymentGatewayCardDetails{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("marqetaJs")
+    @JsonIgnoreProperties("type")
+    private static final class MarqetaJsValue implements Value {
+        @JsonUnwrapped
+        private ProcessPaymentGatewayCardDetailsMarqetaJs value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private MarqetaJsValue() {}
+
+        private MarqetaJsValue(ProcessPaymentGatewayCardDetailsMarqetaJs value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitMarqetaJs(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof MarqetaJsValue && equalTo((MarqetaJsValue) other);
+        }
+
+        private boolean equalTo(MarqetaJsValue other) {
             return value.equals(other.value);
         }
 

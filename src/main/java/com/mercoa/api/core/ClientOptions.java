@@ -41,10 +41,10 @@ public final class ClientOptions {
         this.headers.putAll(headers);
         this.headers.putAll(new HashMap<String, String>() {
             {
-                put("User-Agent", "com.mercoa:mercoa/0.7.1");
+                put("User-Agent", "com.mercoa:mercoa/0.7.2");
                 put("X-Fern-Language", "JAVA");
                 put("X-Fern-SDK-Name", "com.mercoa.fern:api-sdk");
-                put("X-Fern-SDK-Version", "0.7.1");
+                put("X-Fern-SDK-Version", "0.7.2");
             }
         });
         this.headerSuppliers = headerSuppliers;
@@ -204,7 +204,11 @@ public final class ClientOptions {
             builder.environment = clientOptions.environment();
             builder.timeout = Optional.of(clientOptions.timeout(null));
             builder.httpClient = clientOptions.httpClient();
-            if (clientOptions.version != null) builder.version = clientOptions.version;
+            if (clientOptions.version != null) {
+                builder.version = Optional.of(clientOptions.version);
+            } else {
+                builder.version = Optional.of(ApiVersion._2024_08_01);
+            }
             return builder;
         }
     }

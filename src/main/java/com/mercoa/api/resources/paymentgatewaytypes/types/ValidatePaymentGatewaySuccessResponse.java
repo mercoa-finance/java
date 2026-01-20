@@ -34,6 +34,8 @@ public final class ValidatePaymentGatewaySuccessResponse {
 
     private final Optional<String> vendorName;
 
+    private final Optional<ValidatePaymentGatewayRequiredData> requiredData;
+
     private final OffsetDateTime createdAt;
 
     private final OffsetDateTime updatedAt;
@@ -47,6 +49,7 @@ public final class ValidatePaymentGatewaySuccessResponse {
             Optional<Double> invoiceAmount,
             Optional<Double> gatewayAmount,
             Optional<String> vendorName,
+            Optional<ValidatePaymentGatewayRequiredData> requiredData,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Map<String, Object> additionalProperties) {
@@ -56,6 +59,7 @@ public final class ValidatePaymentGatewaySuccessResponse {
         this.invoiceAmount = invoiceAmount;
         this.gatewayAmount = gatewayAmount;
         this.vendorName = vendorName;
+        this.requiredData = requiredData;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
@@ -86,7 +90,7 @@ public final class ValidatePaymentGatewaySuccessResponse {
     }
 
     /**
-     * @return The invoice amount detected from the payment gateway
+     * @return The invoice amount detected from the invoice
      */
     @JsonProperty("invoiceAmount")
     public Optional<Double> getInvoiceAmount() {
@@ -102,11 +106,19 @@ public final class ValidatePaymentGatewaySuccessResponse {
     }
 
     /**
-     * @return The vendor name detected from the payment gateway
+     * @return The vendor name
      */
     @JsonProperty("vendorName")
     public Optional<String> getVendorName() {
         return vendorName;
+    }
+
+    /**
+     * @return Information about what data is required to proceed with payment
+     */
+    @JsonProperty("requiredData")
+    public Optional<ValidatePaymentGatewayRequiredData> getRequiredData() {
+        return requiredData;
     }
 
     /**
@@ -144,6 +156,7 @@ public final class ValidatePaymentGatewaySuccessResponse {
                 && invoiceAmount.equals(other.invoiceAmount)
                 && gatewayAmount.equals(other.gatewayAmount)
                 && vendorName.equals(other.vendorName)
+                && requiredData.equals(other.requiredData)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt);
     }
@@ -157,6 +170,7 @@ public final class ValidatePaymentGatewaySuccessResponse {
                 this.invoiceAmount,
                 this.gatewayAmount,
                 this.vendorName,
+                this.requiredData,
                 this.createdAt,
                 this.updatedAt);
     }
@@ -211,7 +225,7 @@ public final class ValidatePaymentGatewaySuccessResponse {
         _FinalStage card(ValidatePaymentGatewayCardResponse card);
 
         /**
-         * <p>The invoice amount detected from the payment gateway</p>
+         * <p>The invoice amount detected from the invoice</p>
          */
         _FinalStage invoiceAmount(Optional<Double> invoiceAmount);
 
@@ -225,11 +239,18 @@ public final class ValidatePaymentGatewaySuccessResponse {
         _FinalStage gatewayAmount(Double gatewayAmount);
 
         /**
-         * <p>The vendor name detected from the payment gateway</p>
+         * <p>The vendor name</p>
          */
         _FinalStage vendorName(Optional<String> vendorName);
 
         _FinalStage vendorName(String vendorName);
+
+        /**
+         * <p>Information about what data is required to proceed with payment</p>
+         */
+        _FinalStage requiredData(Optional<ValidatePaymentGatewayRequiredData> requiredData);
+
+        _FinalStage requiredData(ValidatePaymentGatewayRequiredData requiredData);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -239,6 +260,8 @@ public final class ValidatePaymentGatewaySuccessResponse {
         private OffsetDateTime createdAt;
 
         private OffsetDateTime updatedAt;
+
+        private Optional<ValidatePaymentGatewayRequiredData> requiredData = Optional.empty();
 
         private Optional<String> vendorName = Optional.empty();
 
@@ -263,6 +286,7 @@ public final class ValidatePaymentGatewaySuccessResponse {
             invoiceAmount(other.getInvoiceAmount());
             gatewayAmount(other.getGatewayAmount());
             vendorName(other.getVendorName());
+            requiredData(other.getRequiredData());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             return this;
@@ -305,7 +329,27 @@ public final class ValidatePaymentGatewaySuccessResponse {
         }
 
         /**
-         * <p>The vendor name detected from the payment gateway</p>
+         * <p>Information about what data is required to proceed with payment</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage requiredData(ValidatePaymentGatewayRequiredData requiredData) {
+            this.requiredData = Optional.ofNullable(requiredData);
+            return this;
+        }
+
+        /**
+         * <p>Information about what data is required to proceed with payment</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "requiredData", nulls = Nulls.SKIP)
+        public _FinalStage requiredData(Optional<ValidatePaymentGatewayRequiredData> requiredData) {
+            this.requiredData = requiredData;
+            return this;
+        }
+
+        /**
+         * <p>The vendor name</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -315,7 +359,7 @@ public final class ValidatePaymentGatewaySuccessResponse {
         }
 
         /**
-         * <p>The vendor name detected from the payment gateway</p>
+         * <p>The vendor name</p>
          */
         @java.lang.Override
         @JsonSetter(value = "vendorName", nulls = Nulls.SKIP)
@@ -345,7 +389,7 @@ public final class ValidatePaymentGatewaySuccessResponse {
         }
 
         /**
-         * <p>The invoice amount detected from the payment gateway</p>
+         * <p>The invoice amount detected from the invoice</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -355,7 +399,7 @@ public final class ValidatePaymentGatewaySuccessResponse {
         }
 
         /**
-         * <p>The invoice amount detected from the payment gateway</p>
+         * <p>The invoice amount detected from the invoice</p>
          */
         @java.lang.Override
         @JsonSetter(value = "invoiceAmount", nulls = Nulls.SKIP)
@@ -413,6 +457,7 @@ public final class ValidatePaymentGatewaySuccessResponse {
                     invoiceAmount,
                     gatewayAmount,
                     vendorName,
+                    requiredData,
                     createdAt,
                     updatedAt,
                     additionalProperties);

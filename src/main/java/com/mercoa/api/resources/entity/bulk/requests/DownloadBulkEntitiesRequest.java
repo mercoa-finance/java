@@ -156,7 +156,7 @@ public final class DownloadBulkEntitiesRequest {
     }
 
     /**
-     * @return Find entities by name, email, or emailTo. Partial matches are supported.
+     * @return Find entities by name, email, emailTo, entity ID, or foreign ID. Partial matches are supported for name, email, and emailTo. Exact matches are used for entity ID and foreign ID.
      */
     @JsonProperty("search")
     public Optional<String> getSearch() {
@@ -432,7 +432,7 @@ public final class DownloadBulkEntitiesRequest {
         }
 
         /**
-         * <p>Find entities by name, email, or emailTo. Partial matches are supported.</p>
+         * <p>Find entities by name, email, emailTo, entity ID, or foreign ID. Partial matches are supported for name, email, and emailTo. Exact matches are used for entity ID and foreign ID.</p>
          */
         @JsonSetter(value = "search", nulls = Nulls.SKIP)
         public Builder search(Optional<String> search) {
