@@ -29,6 +29,8 @@ public final class EmailSenderRequest {
 
     private final Optional<String> apiKey;
 
+    private final Optional<Boolean> useSmartReplyTo;
+
     private final Map<String, Object> additionalProperties;
 
     private EmailSenderRequest(
@@ -36,11 +38,13 @@ public final class EmailSenderRequest {
             String fromEmail,
             String fromName,
             Optional<String> apiKey,
+            Optional<Boolean> useSmartReplyTo,
             Map<String, Object> additionalProperties) {
         this.provider = provider;
         this.fromEmail = fromEmail;
         this.fromName = fromName;
         this.apiKey = apiKey;
+        this.useSmartReplyTo = useSmartReplyTo;
         this.additionalProperties = additionalProperties;
     }
 
@@ -64,6 +68,11 @@ public final class EmailSenderRequest {
         return apiKey;
     }
 
+    @JsonProperty("useSmartReplyTo")
+    public Optional<Boolean> getUseSmartReplyTo() {
+        return useSmartReplyTo;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -79,12 +88,13 @@ public final class EmailSenderRequest {
         return provider.equals(other.provider)
                 && fromEmail.equals(other.fromEmail)
                 && fromName.equals(other.fromName)
-                && apiKey.equals(other.apiKey);
+                && apiKey.equals(other.apiKey)
+                && useSmartReplyTo.equals(other.useSmartReplyTo);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.provider, this.fromEmail, this.fromName, this.apiKey);
+        return Objects.hash(this.provider, this.fromEmail, this.fromName, this.apiKey, this.useSmartReplyTo);
     }
 
     @java.lang.Override
@@ -116,6 +126,10 @@ public final class EmailSenderRequest {
         _FinalStage apiKey(Optional<String> apiKey);
 
         _FinalStage apiKey(String apiKey);
+
+        _FinalStage useSmartReplyTo(Optional<Boolean> useSmartReplyTo);
+
+        _FinalStage useSmartReplyTo(Boolean useSmartReplyTo);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -125,6 +139,8 @@ public final class EmailSenderRequest {
         private String fromEmail;
 
         private String fromName;
+
+        private Optional<Boolean> useSmartReplyTo = Optional.empty();
 
         private Optional<String> apiKey = Optional.empty();
 
@@ -139,6 +155,7 @@ public final class EmailSenderRequest {
             fromEmail(other.getFromEmail());
             fromName(other.getFromName());
             apiKey(other.getApiKey());
+            useSmartReplyTo(other.getUseSmartReplyTo());
             return this;
         }
 
@@ -164,6 +181,19 @@ public final class EmailSenderRequest {
         }
 
         @java.lang.Override
+        public _FinalStage useSmartReplyTo(Boolean useSmartReplyTo) {
+            this.useSmartReplyTo = Optional.ofNullable(useSmartReplyTo);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "useSmartReplyTo", nulls = Nulls.SKIP)
+        public _FinalStage useSmartReplyTo(Optional<Boolean> useSmartReplyTo) {
+            this.useSmartReplyTo = useSmartReplyTo;
+            return this;
+        }
+
+        @java.lang.Override
         public _FinalStage apiKey(String apiKey) {
             this.apiKey = Optional.ofNullable(apiKey);
             return this;
@@ -178,7 +208,7 @@ public final class EmailSenderRequest {
 
         @java.lang.Override
         public EmailSenderRequest build() {
-            return new EmailSenderRequest(provider, fromEmail, fromName, apiKey, additionalProperties);
+            return new EmailSenderRequest(provider, fromEmail, fromName, apiKey, useSmartReplyTo, additionalProperties);
         }
     }
 }

@@ -16,6 +16,8 @@ public enum InvoiceStatus {
 
     SCHEDULED("SCHEDULED"),
 
+    PROCESSING("PROCESSING"),
+
     PENDING("PENDING"),
 
     PAID("PAID"),

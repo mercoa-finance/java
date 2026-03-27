@@ -9,11 +9,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mercoa.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
@@ -27,6 +29,8 @@ public final class EmailSenderResponse {
 
     private final boolean hasApiKey;
 
+    private final Optional<Boolean> useSmartReplyTo;
+
     private final Map<String, Object> additionalProperties;
 
     private EmailSenderResponse(
@@ -34,11 +38,13 @@ public final class EmailSenderResponse {
             String fromEmail,
             String fromName,
             boolean hasApiKey,
+            Optional<Boolean> useSmartReplyTo,
             Map<String, Object> additionalProperties) {
         this.provider = provider;
         this.fromEmail = fromEmail;
         this.fromName = fromName;
         this.hasApiKey = hasApiKey;
+        this.useSmartReplyTo = useSmartReplyTo;
         this.additionalProperties = additionalProperties;
     }
 
@@ -62,6 +68,11 @@ public final class EmailSenderResponse {
         return hasApiKey;
     }
 
+    @JsonProperty("useSmartReplyTo")
+    public Optional<Boolean> getUseSmartReplyTo() {
+        return useSmartReplyTo;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -77,12 +88,13 @@ public final class EmailSenderResponse {
         return provider.equals(other.provider)
                 && fromEmail.equals(other.fromEmail)
                 && fromName.equals(other.fromName)
-                && hasApiKey == other.hasApiKey;
+                && hasApiKey == other.hasApiKey
+                && useSmartReplyTo.equals(other.useSmartReplyTo);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.provider, this.fromEmail, this.fromName, this.hasApiKey);
+        return Objects.hash(this.provider, this.fromEmail, this.fromName, this.hasApiKey, this.useSmartReplyTo);
     }
 
     @java.lang.Override
@@ -114,6 +126,10 @@ public final class EmailSenderResponse {
 
     public interface _FinalStage {
         EmailSenderResponse build();
+
+        _FinalStage useSmartReplyTo(Optional<Boolean> useSmartReplyTo);
+
+        _FinalStage useSmartReplyTo(Boolean useSmartReplyTo);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -127,6 +143,8 @@ public final class EmailSenderResponse {
 
         private boolean hasApiKey;
 
+        private Optional<Boolean> useSmartReplyTo = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -138,6 +156,7 @@ public final class EmailSenderResponse {
             fromEmail(other.getFromEmail());
             fromName(other.getFromName());
             hasApiKey(other.getHasApiKey());
+            useSmartReplyTo(other.getUseSmartReplyTo());
             return this;
         }
 
@@ -170,8 +189,22 @@ public final class EmailSenderResponse {
         }
 
         @java.lang.Override
+        public _FinalStage useSmartReplyTo(Boolean useSmartReplyTo) {
+            this.useSmartReplyTo = Optional.ofNullable(useSmartReplyTo);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "useSmartReplyTo", nulls = Nulls.SKIP)
+        public _FinalStage useSmartReplyTo(Optional<Boolean> useSmartReplyTo) {
+            this.useSmartReplyTo = useSmartReplyTo;
+            return this;
+        }
+
+        @java.lang.Override
         public EmailSenderResponse build() {
-            return new EmailSenderResponse(provider, fromEmail, fromName, hasApiKey, additionalProperties);
+            return new EmailSenderResponse(
+                    provider, fromEmail, fromName, hasApiKey, useSmartReplyTo, additionalProperties);
         }
     }
 }

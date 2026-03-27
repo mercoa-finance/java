@@ -28,7 +28,7 @@ Add the dependency in your `build.gradle` file:
 
 ```groovy
 dependencies {
-  implementation 'com.mercoa:mercoa'
+  implementation 'com.mercoa:mercoa:0.7.3'
 }
 ```
 
@@ -40,7 +40,7 @@ Add the dependency in your `pom.xml` file:
 <dependency>
   <groupId>com.mercoa</groupId>
   <artifactId>mercoa</artifactId>
-  <version>0.7.2</version>
+  <version>0.7.3</version>
 </dependency>
 ```
 
